@@ -1,0 +1,17 @@
+appdirs==1.4.3
+beautifulsoup4==4.7.1
+certifi==2019.3.9
+chardet==3.0.4
+google==2.0.2
+google-speech==1.1.0
+idna==2.8
+mock==3.0.5
+patch==1.16
+PyAudio==0.2.11
+requests==2.21.0
+six==1.12.0
+soupsieve==1.9.1
+SpeechRecognition==3.8.1
+urllib3==1.24.3
+web-cache==1.1.0
+wikipedia==1.4.0
