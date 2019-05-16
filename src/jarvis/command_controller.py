@@ -1,8 +1,8 @@
 import speech_recognition as sr
 import logging
 
-from assistant.action_controller import ActionController
-from assistant.settings import *
+from jarvis.action_controller import ActionController
+from jarvis.settings import *
 
 commands_dict = {BROWSER_TRIGGERING_WORD: ActionController.open_website_in_browser,
                  TELL_TIME: ActionController.tell_the_time,

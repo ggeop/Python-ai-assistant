@@ -1,6 +1,6 @@
-from assistant.action_controller import ActionController
-from assistant.command_controller import CommandController
-from assistant.assistant_utils import assistant_response
+from jarvis.action_controller import ActionController
+from jarvis.command_controller import CommandController
+from jarvis.assistant_utils import assistant_response
 
 
 def main():

@@ -5,9 +5,9 @@ import wikipedia
 import logging
 from datetime import datetime
 
-from assistant.command_words import CommandWords
-from assistant.settings import *
-from assistant.assistant_utils import assistant_response
+from jarvis.command_words import CommandWords
+from jarvis.settings import *
+from jarvis.assistant_utils import assistant_response
 
 
 class ActionController:
