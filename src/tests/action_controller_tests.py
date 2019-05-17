@@ -6,7 +6,7 @@ from jarvis.action_controller import ActionController
 
 class ActionControllerTests(unittest.TestCase):
 
-    @patch('jarvis.command_controller.get_words')
+    @patch('jarvis.command_controller._get_words')
     def test_wake_up(self, mocked_get_words):
         self.assertEqual(True, ActionController.wake_up('There is a hello in the sentence'))
         self.assertEqual(None, ActionController.wake_up('Sentence with no the triggering word'))

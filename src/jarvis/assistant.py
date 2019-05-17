@@ -4,14 +4,12 @@ from jarvis.assistant_utils import assistant_response
 
 
 def main():
+    command_controller = CommandController()
     assistant_response("Hi!!")
     while True:
-        words = CommandController.get_words()
-        if ActionController.wake_up(words):
-            assistant_response('What do you want to do for you sir?')
-            commands = CommandController.run(words)
-
-        ActionController.shutdown(words)
+        if command_controller.wake_up():
+            commands = command_controller.run()
+        command_controller.shutdown()
 
 
 if __name__ == '__main__':

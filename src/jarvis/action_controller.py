@@ -2,38 +2,15 @@ import re
 import sys
 import subprocess
 import wikipedia
+import pyowm
 import logging
 from datetime import datetime
 
-from jarvis.command_words import CommandWords
 from jarvis.settings import *
 from jarvis.assistant_utils import assistant_response
 
 
 class ActionController:
-
-    @classmethod
-    def wake_up(cls, words):
-        if CommandWords.hello in words:
-            cls._wake_up_response()
-            return True
-
-    @classmethod
-    def _wake_up_response(cls):
-        now = datetime.now()
-        day_time = int(now.strftime('%H'))
-        if day_time < 12:
-            assistant_response('Hello Sir. Good morning')
-        elif 12 <= day_time < 18:
-            assistant_response('Hello Sir. Good afternoon')
-        else:
-            assistant_response('Hello Sir. Good evening')
-
-    @classmethod
-    def shutdown(cls, words):
-        if CommandWords.shutdown in words:
-            assistant_response('Bye bye Sir. Have a nice day')
-            sys.exit()
 
     @classmethod
     def open_website_in_browser(cls, words):
@@ -48,7 +25,15 @@ class ActionController:
 
     @classmethod
     def tell_the_weather(cls, words):
-        pass
+        reg_ex = re.search('current now in (.*)', words)
+        if reg_ex:
+            city = reg_ex.group(1)
+            owm = OWM(API_key='ab0d5e80e8dafb2cb81fa9e82431c1fa')
+            obs = owm.weather_at_place(city)
+            w = obs.get_weather()
+            k = w.get_status()
+            x = w.get_temperature(unit='celsius')
+            assistant_response('Current weather in %s is %s. The maximum temperature is %0.2f and the minimum temperature is %0.2f degree celcius' % (city, k, x['temp_max'], x['temp_min']))
 
     @classmethod
     def tell_the_time(cls):

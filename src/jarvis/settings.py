@@ -7,6 +7,7 @@ TRIGGERING_WORDS ={
     'launch_application' : 'launch'
     'tell_time' : 'time'
     'tell_about' : 'tell me about'
+    'current_weather': 'weather now in'
 }
 
 # Google API Speech recognition settings
