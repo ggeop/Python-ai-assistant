@@ -2,22 +2,22 @@ import speech_recognition as sr
 import logging
 
 from jarvis.action_controller import ActionController
-from jarvis.settings import *
-
-commands_dict = {BROWSER_TRIGGERING_WORD: ActionController.open_website_in_browser,
-                 TELL_TIME: ActionController.tell_the_time,
-                 TELL_ME_ABOUT: ActionController.tell_me_about
-                 }
+from jarvis.settings import TRIGGERING_WORDS
 
 
 class CommandController:
+    commands_dict = {
+        TRIGGERING_WORDS['open_browser']: ActionController.open_website_in_browser,
+        TRIGGERING_WORDS['tell_time']: ActionController.tell_the_time,
+        TRIGGERING_WORDS['tell_about']: ActionController.tell_me_about
+    }
 
     @classmethod
     def execute_commands(cls, commands, words):
         if bool(commands):
             for command in commands:
                 logging.info('Execute the command {0}'.format(command))
-                commands_dict[command](words)
+                cls.commands_dict[command](words)
         else:
             logging.info('Sorry, no commands to execute')
 
