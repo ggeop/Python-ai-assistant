@@ -6,7 +6,7 @@ import pyowm
 import logging
 from datetime import datetime
 
-from jarvis.settings import *
+from jarvis.settings import TRIGGERING_WORDS, SPEECH_RECOGNITION
 from jarvis.assistant_utils import assistant_response
 
 
