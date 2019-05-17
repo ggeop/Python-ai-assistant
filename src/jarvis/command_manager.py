@@ -25,6 +25,7 @@ class CommandController:
     def run(self):
         self.words = self._get_words()
         commands = self._get_commands()
+        logging.info('The {0} commands will be execute'.format(commands))
         self._execute_commands(commands)
 
     def wake_up_check(self):
@@ -37,6 +38,7 @@ class CommandController:
         if CommandWords.hello in self.words:
             self._wake_up_response()
             return True
+
     @log
     def shutdown_check(self):
         if CommandWords.shutdown in self.words:
@@ -55,7 +57,6 @@ class CommandController:
             assistant_response('Hello Sir. Good evening')
         assistant_response('What do you want to do for you sir?')
 
-    @log
     def _execute_commands(self, commands):
         if bool(commands):
             for command in commands:
@@ -64,7 +65,6 @@ class CommandController:
         else:
             logging.info('Sorry, no commands to execute')
 
-    @log
     def _get_commands(self):
         words = self.words.split()
         commands_set = set(self.commands_dict.keys())

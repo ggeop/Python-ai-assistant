@@ -1,18 +1,16 @@
 import re
 import subprocess
 import wikipedia
-import pyowm
 import logging
+from pyowm import OWM
 from datetime import datetime
 
-from jarvis.settings import TRIGGERING_WORDS
-from jarvis.assistant_utils import assistant_response
+from jarvis.settings import TRIGGERING_WORDS, WEATHER_API
 from jarvis.assistant_utils import assistant_response, log
 
 
 class ActionController:
 
-    @log
     @classmethod
     def open_website_in_browser(cls, words):
         reg_ex = re.search(TRIGGERING_WORDS['open_browser'] + ' (.+)', words)
@@ -24,30 +22,26 @@ class ActionController:
         else:
             pass
 
-    @log
     @classmethod
     def tell_the_weather(cls, words):
-        reg_ex = re.search('current now in (.*)', words)
+        reg_ex = re.search('weather in (.*)', words)
         if reg_ex:
-            print('weather')
-            # city = reg_ex.group(1)
-            # owm = OWM(API_key='ab0d5e80e8dafb2cb81fa9e82431c1fa')
-            # obs = owm.weather_at_place(city)
-            # w = obs.get_weather()
-            # k = w.get_status()
-            # x = w.get_temperature(unit='celsius')
-            # assistant_response('Current weather in %s is %s. The maximum temperature is %0.2f and the minimum temperature is %0.2f degree celcius' % (city, k, x['temp_max'], x['temp_min']))
+            city = reg_ex.group(1)
+            owm = OWM(API_key=WEATHER_API['key'])
+            obs = owm.weather_at_place(city)
+            w = obs.get_weather()
+            k = w.get_status()
+            x = w.get_temperature(unit='celsius')
+            assistant_response('Current weather in %s is %s. The maximum temperature is %0.2f and the minimum temperature is %0.2f degree celcius' % (city, k, x['temp_max'], x['temp_min']))
 
-    @log
     @classmethod
     def tell_the_time(cls):
         now = datetime.now()
         assistant_response('Current time is %d hours %d minutes' % (now.hour, now.minute))
 
-    @log
     @classmethod
     def tell_me_about(cls, words):
-        reg_ex = re.search('tell me about (.*)', words)
+        reg_ex = re.search('about (.*)', words)
         try:
             if reg_ex:
                 topic = reg_ex.group(1)
