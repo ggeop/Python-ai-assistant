@@ -2,8 +2,8 @@ import speech_recognition as sr
 import logging
 
 from jarvis.action_controller import ActionController
-from jarvis.settings import TRIGGERING_WORDS
-from jarvis.command_words import CommandWords
+from jarvis.settings import TRIGGERING_WORDS, SPEECH_RECOGNITION
+from jarvis.assistant_utils import CommandWords
 
 
 class CommandController:
@@ -78,7 +78,7 @@ class CommandController:
 
     def _listen(self):
         with self.microphone as source:
-            self.r.pause_threshold = PAUSE_THESHOLD
-            self.r.adjust_for_ambient_noise(source, duration=AMBIENT_DURATION)
+            self.r.pause_threshold = SPEECH_RECOGNITION['pause_treshold']
+            self.r.adjust_for_ambient_noise(source, duration=SPEECH_RECOGNITION['ambient_duration'])
             audio_text = self.r._listen(source)
         return audio_text

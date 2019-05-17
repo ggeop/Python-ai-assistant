@@ -11,5 +11,7 @@ TRIGGERING_WORDS ={
 }
 
 # Google API Speech recognition settings
-AMBIENT_DURATION = 0.5
-PAUSE_THESHOLD = 1
+SPEECH_RECOGNITION={
+    'ambient_duration' = 0.5
+    'pause_treshold' = 1
+}
