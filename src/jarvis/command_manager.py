@@ -1,9 +1,12 @@
-import speech_recognition as sr
+import sys
 import logging
+import speech_recognition as sr
+from datetime import datetime
 
-from jarvis.action_controller import ActionController
+from jarvis.action_manager import ActionController
 from jarvis.settings import TRIGGERING_WORDS, SPEECH_RECOGNITION
 from jarvis.assistant_utils import CommandWords
+from jarvis.assistant_utils import assistant_response, log
 
 
 class CommandController:
@@ -24,8 +27,8 @@ class CommandController:
         commands = self._get_commands()
         self._execute_commands(commands)
 
-    def wake_up(self):
-        audio = self._listen()
+    def wake_up_check(self):
+        audio = self._record()
         try:
             self.words = self.r.recognize_google(audio).lower()
         except sr.UnknownValueError:
@@ -33,15 +36,15 @@ class CommandController:
 
         if CommandWords.hello in self.words:
             self._wake_up_response()
-            self.words = None
             return True
-
-    def shutdown(self):
+    @log
+    def shutdown_check(self):
         if CommandWords.shutdown in self.words:
             assistant_response('Bye bye Sir. Have a nice day')
             sys.exit()
 
-    def _wake_up_response(self):
+    @staticmethod
+    def _wake_up_response():
         now = datetime.now()
         day_time = int(now.strftime('%H'))
         if day_time < 12:
@@ -52,22 +55,24 @@ class CommandController:
             assistant_response('Hello Sir. Good evening')
         assistant_response('What do you want to do for you sir?')
 
+    @log
     def _execute_commands(self, commands):
         if bool(commands):
             for command in commands:
                 logging.info('Execute the command {0}'.format(command))
-                cls.commands_dict[command](self.words)
+                self.commands_dict[command](self.words)
         else:
             logging.info('Sorry, no commands to execute')
 
+    @log
     def _get_commands(self):
         words = self.words.split()
-        commands_set = set(commands_dict.keys())
+        commands_set = set(self.commands_dict.keys())
         words_set = set(words)
         return commands_set.intersection(words_set)
 
     def _get_words(self):
-        audio = self._listen()
+        audio = self._record()
         try:
             recognized_words = self.r.recognize_google(audio).lower()
             print('You said: ' + recognized_words)
@@ -76,9 +81,9 @@ class CommandController:
             recognized_words = self._get_words()
         return recognized_words
 
-    def _listen(self):
+    def _record(self):
         with self.microphone as source:
             self.r.pause_threshold = SPEECH_RECOGNITION['pause_treshold']
             self.r.adjust_for_ambient_noise(source, duration=SPEECH_RECOGNITION['ambient_duration'])
-            audio_text = self.r._listen(source)
+            audio_text = self.r.listen(source)
         return audio_text

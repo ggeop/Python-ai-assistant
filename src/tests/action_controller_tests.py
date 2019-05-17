@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from jarvis.action_controller import ActionController
+from jarvis.action_manager import ActionController
 
 
 class ActionControllerTests(unittest.TestCase):

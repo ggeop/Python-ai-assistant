@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from jarvis.command_controller import CommandController
+from jarvis.command_manager import CommandController
 from jarvis.settings import TRIGGERING_WORDS
 
 
