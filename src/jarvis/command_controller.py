@@ -21,8 +21,8 @@ class CommandController:
 
     def run(self):
         self.words = self._get_words()
-        commands = self._get_commands(self.words)
-        self._execute_commands(commands, self.words)
+        commands = self._get_commands()
+        self._execute_commands(commands)
 
     def wake_up(self):
         audio = self._listen()
@@ -70,7 +70,7 @@ class CommandController:
         audio = self._listen()
         try:
             recognized_words = self.r.recognize_google(audio).lower()
-            print('You said: ' + recognized_words + '\n')
+            print('You said: ' + recognized_words)
         except sr.UnknownValueError:
             print('....')
             recognized_words = self._get_words()

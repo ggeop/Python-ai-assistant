@@ -1,7 +1,7 @@
 
 # Trigger words
 TRIGGERING_WORDS ={
-    'enable_jarvis' : 'hello'
+    'enable_jarvis' : 'hello jarvis'
     'open_browser' : 'open'
     'sent_email' : 'email'
     'launch_application' : 'launch'

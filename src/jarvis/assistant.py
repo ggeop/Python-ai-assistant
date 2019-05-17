@@ -8,7 +8,7 @@ def main():
     assistant_response("Hi!!")
     while True:
         if command_controller.wake_up():
-            commands = command_controller.run()
+            command_controller.run()
         command_controller.shutdown()
 
 
