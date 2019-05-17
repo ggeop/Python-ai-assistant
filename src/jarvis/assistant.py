@@ -8,11 +8,8 @@ def main():
     while True:
         words = CommandController.get_words()
         if ActionController.wake_up(words):
-            assistant_response('What do you want sir?')
-            words = CommandController.get_words()
-
-            commands = CommandController.get_commands(words)
-            CommandController.execute_commands(commands, words)
+            assistant_response('What do you want to do for you sir?')
+            commands = CommandController.run(words)
 
         ActionController.shutdown(words)
 
