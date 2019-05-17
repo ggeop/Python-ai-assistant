@@ -75,9 +75,9 @@ class CommandController:
         audio = self._record()
         try:
             recognized_words = self.r.recognize_google(audio).lower()
-            print('You said: ' + recognized_words)
+            logging.info('You said: ' + recognized_words)
         except sr.UnknownValueError:
-            print('....')
+            logging.info('....')
             recognized_words = self._get_words()
         return recognized_words
 

@@ -1,6 +1,9 @@
 import sys
 import traceback
 import logging.config
+from google_speech import Speech
+
+from jarvis.settings import GOOGLE_SPEECH
 
 logging.config.fileConfig(fname='config.conf', disable_existing_loggers=False)
 
@@ -27,5 +30,7 @@ class CommandWords:
 
 @log
 def assistant_response(text):
-    print(text)
+    logging.info('User said: {0}'.format(text))
+    speech = Speech(text, GOOGLE_SPEECH['lang'])
+    speech.play()
 

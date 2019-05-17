@@ -1,7 +1,7 @@
 
 # Trigger words
 TRIGGERING_WORDS = {
-    'enable_jarvis': 'hello jarvis',
+    'enable_jarvis': 'hi',
     'open_browser': 'open',
     'sent_email': 'email',
     'launch_application': 'launch',
@@ -14,6 +14,12 @@ TRIGGERING_WORDS = {
 SPEECH_RECOGNITION = {
     'ambient_duration': 0.1,
     'pause_treshold': 1
+}
+
+# Google text to speech API settings
+GOOGLE_SPEECH = {
+    'lang': "en"
+
 }
 
 # Open weather map API conf settings
