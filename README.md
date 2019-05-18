@@ -1,5 +1,6 @@
 # Jarvis (Voice Assistant)
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/jarvis_logo.png)
+
 Jarvis is a voice assistant service. It can understand human speech, talk to user and execute basic commands
 
 # Dependencies
