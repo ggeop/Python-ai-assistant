@@ -1,7 +1,14 @@
 
+# General assistant settings
+GENERAL_SETTINGS = {
+    'response_in_speech': False,
+    'response_in_text': True
+}
+
 # Trigger words
 TRIGGERING_WORDS = {
-    'enable_jarvis': 'hi',
+    'enable_jarvis': 'start',
+    'disable_jarvis': 'stop',
     'open_browser': 'open',
     'sent_email': 'email',
     'launch_application': 'launch',
@@ -13,7 +20,7 @@ TRIGGERING_WORDS = {
 # Google API Speech recognition settings
 SPEECH_RECOGNITION = {
     'ambient_duration': 0.1,
-    'pause_treshold': 1
+    'pause_threshold': 1
 }
 
 # Google text to speech API settings

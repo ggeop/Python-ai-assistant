@@ -2,8 +2,9 @@ import sys
 import traceback
 import logging.config
 from google_speech import Speech
-
 from jarvis.settings import GOOGLE_SPEECH
+
+from jarvis.settings import GENERAL_SETTINGS
 
 logging.config.fileConfig(fname='config.conf', disable_existing_loggers=False)
 
@@ -23,14 +24,11 @@ def log(func):
     return wrapper
 
 
-class CommandWords:
-    hello = 'hello'
-    shutdown = 'shut down'
-
-
 @log
 def assistant_response(text):
-    logging.info('User said: {0}'.format(text))
-    speech = Speech(text, GOOGLE_SPEECH['lang'])
-    speech.play()
+    if GENERAL_SETTINGS['response_in_speech']:
+        speech = Speech(text, GOOGLE_SPEECH['lang'])
+        speech.play()
+    if GENERAL_SETTINGS['response_in_text']:
+        print(text)
 
