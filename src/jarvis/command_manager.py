@@ -5,7 +5,6 @@ from datetime import datetime
 
 from jarvis.action_manager import ActionController
 from jarvis.settings import TRIGGERING_WORDS, SPEECH_RECOGNITION
-from jarvis.assistant_utils import CommandWords
 from jarvis.assistant_utils import assistant_response, log
 
 
@@ -35,13 +34,13 @@ class CommandController:
         except sr.UnknownValueError:
             self.words = self._get_words()
 
-        if CommandWords.hello in self.words:
+        if TRIGGERING_WORDS['enable_jarvis'] in self.words:
             self._wake_up_response()
             return True
 
     @log
     def shutdown_check(self):
-        if CommandWords.shutdown in self.words:
+        if TRIGGERING_WORDS['disable_jarvis'] in self.words:
             assistant_response('Bye bye Sir. Have a nice day')
             sys.exit()
 
