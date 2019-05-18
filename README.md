@@ -1,29 +1,18 @@
 # Jarvis (Voice Assistant)
 
+Jarvis is a voice assistant service. It can understand human speech, talk to user and execute basic commands
+
 # Dependencies
+* Linux Ubundu
+* Python 3.5 +
 
 # Features
-* Continues listening service, triggered by 'hello'
-* Search on the internet
-* Launch applications
-* Tells the time
-
-### SOON Features
+* Continues listening service, triggered by a phrase e.g ('hi', 'hello jarvis')
+* Opens a web page
+* Tells about something, by searching on the internet
 * Tells the weather
-* Play a song from youtube
-* Can spell a word
-* Keep a note
-
-# Processing Components
-```
-voice--> text--> extract commands--> execute commands--> results -->speech
-```
-* ```voice--> text```
-For voice recognition we used google recognition API
-
-* ```text--> extract commands```
-This component extract specific commands from the free text.
+* Tells the time
 
 # How it works
 Start and run voice assistant service in the background.
-``` nohup assistant.py >/dev/null 2>&1 &```
+``` nohup run.py >/dev/null 2>&1 &```

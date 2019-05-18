@@ -1,11 +1,8 @@
 from jarvis.command_manager import CommandController
-from jarvis.assistant_utils import assistant_response
 
 
 def main():
     command_controller = CommandController()
-
-    assistant_response("Hi!!")
     while True:
         if command_controller.wake_up_check():
             command_controller.run()
