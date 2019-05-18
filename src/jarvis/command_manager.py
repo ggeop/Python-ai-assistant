@@ -82,7 +82,7 @@ class CommandController:
 
     def _record(self):
         with self.microphone as source:
-            self.r.pause_threshold = SPEECH_RECOGNITION['pause_treshold']
+            self.r.pause_threshold = SPEECH_RECOGNITION['pause_threshold']
             self.r.adjust_for_ambient_noise(source, duration=SPEECH_RECOGNITION['ambient_duration'])
             audio_text = self.r.listen(source)
         return audio_text
