@@ -28,6 +28,10 @@ class CommandController:
         self._execute_commands(commands)
 
     def wake_up_check(self):
+        """
+        Checks if there is the enable word in user speech.
+        :return: boolean
+        """
         audio = self._record()
         try:
             self.words = self.r.recognize_google(audio).lower()
@@ -37,15 +41,23 @@ class CommandController:
         if TRIGGERING_WORDS['enable_jarvis'] in self.words:
             self._wake_up_response()
             return True
+        else:
+            return False
 
     @log
     def shutdown_check(self):
+        """
+        Checks if there is the shutdown word, and if exists the assistant service stops.
+        """
         if TRIGGERING_WORDS['disable_jarvis'] in self.words:
             assistant_response('Bye bye Sir. Have a nice day')
             sys.exit()
 
     @staticmethod
     def _wake_up_response():
+        """
+        Creates the assistant respond according to the datetime hour.
+        """
         now = datetime.now()
         day_time = int(now.strftime('%H'))
         if day_time < 12:
@@ -56,7 +68,21 @@ class CommandController:
             assistant_response('Hello Sir. Good evening')
         assistant_response('What do you want to do for you sir?')
 
+    def _get_commands(self):
+        """
+        Retrieve all the commands from the user text (free text --> commands).
+        :return:
+        """
+        words = self.words.split()
+        commands_set = set(self.commands_dict.keys())
+        words_set = set(words)
+        return commands_set.intersection(words_set)
+
     def _execute_commands(self, commands):
+        """
+        Execute iteratively all the commands in the input dict.
+        :param commands: dict (e.g {'open', 'search'})
+        """
         if bool(commands):
             for command in commands:
                 logging.debug('Execute the command {0}'.format(command))
@@ -64,13 +90,10 @@ class CommandController:
         else:
             assistant_response('Sorry, no commands to execute')
 
-    def _get_commands(self):
-        words = self.words.split()
-        commands_set = set(self.commands_dict.keys())
-        words_set = set(words)
-        return commands_set.intersection(words_set)
-
     def _get_words(self):
+        """
+        Capture the words from the recorded audio (audio stream --> free text).
+        """
         audio = self._record()
         try:
             recognized_words = self.r.recognize_google(audio).lower()
@@ -82,6 +105,9 @@ class CommandController:
         return recognized_words
 
     def _record(self):
+        """
+        Capture the user speech and transform it to audio stream (speech --> audio stream).
+        """
         with self.microphone as source:
             self.r.pause_threshold = SPEECH_RECOGNITION['pause_threshold']
             self.r.adjust_for_ambient_noise(source, duration=SPEECH_RECOGNITION['ambient_duration'])
