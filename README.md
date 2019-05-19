@@ -14,8 +14,8 @@ Jarvis is a voice assistant service. It can understand human speech, talk to use
 * Tells the time
 
 # How it works
-* Run voice assistant service.
-``` python run.py &```
+* Run voice assistant service:
+``` python run.py```
 
-* Run Jarvis service in the background.
+* Run Jarvis service in the background:
 ``` nohup python run.py >/dev/null 2>&1 &```
