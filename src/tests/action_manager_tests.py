@@ -1,10 +1,3 @@
-import os
-import sys
-
-src_path = os.path.join(sys.path[0], '..')
-config_path = os.path.join(src_path, 'jarvis', 'config.conf')
-sys.path.insert(3, config_path)
-
 import unittest
 from unittest.mock import patch
 from jarvis.action_manager import ActionManager
