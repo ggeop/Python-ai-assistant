@@ -5,7 +5,7 @@ from datetime import datetime
 
 from jarvis.action_manager import ActionController
 from jarvis.settings import TRIGGERING_WORDS, SPEECH_RECOGNITION
-from jarvis.assistant_utils import assistant_response, log
+from jarvis.assistant_utils import assistant_response, user_speech_playback, log
 
 
 class CommandController:
@@ -24,7 +24,7 @@ class CommandController:
     def run(self):
         self.words = self._get_words()
         commands = self._get_commands()
-        logging.info('The {0} commands will be execute'.format(commands))
+        logging.debug('The {0} commands will be execute'.format(commands))
         self._execute_commands(commands)
 
     def wake_up_check(self):
@@ -59,10 +59,10 @@ class CommandController:
     def _execute_commands(self, commands):
         if bool(commands):
             for command in commands:
-                logging.info('Execute the command {0}'.format(command))
+                logging.debug('Execute the command {0}'.format(command))
                 self.commands_dict[command](self.words)
         else:
-            logging.info('Sorry, no commands to execute')
+            assistant_response('Sorry, no commands to execute')
 
     def _get_commands(self):
         words = self.words.split()
@@ -74,9 +74,10 @@ class CommandController:
         audio = self._record()
         try:
             recognized_words = self.r.recognize_google(audio).lower()
-            logging.info('You said: ' + recognized_words)
+            logging.debug('Recognized words: ' + recognized_words)
+            user_speech_playback(recognized_words)
         except sr.UnknownValueError:
-            logging.info('....')
+            assistant_response('....')
             recognized_words = self._get_words()
         return recognized_words
 

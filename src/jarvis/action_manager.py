@@ -20,7 +20,7 @@ class ActionController:
         reg_ex = re.search(TRIGGERING_WORDS['open_browser'] + ' (.+)', words)
         if reg_ex:
             domain = reg_ex.group(1)
-            assistant_response('Open the site {0}'.format(domain))
+            assistant_response('Yes sir, I will open the {0}'.format(domain))
             url = cls._create_url(domain)
             subprocess.Popen(["python", "-m",  "webbrowser",  "-t",  url], stdout=subprocess.PIPE)
         else:
