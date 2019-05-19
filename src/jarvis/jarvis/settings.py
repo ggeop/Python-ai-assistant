@@ -30,10 +30,10 @@ SPEECH_RECOGNITION = {
 # Google text to speech API settings
 GOOGLE_SPEECH = {
     'lang': "en"
-
 }
 
 # Open weather map API conf settings
 WEATHER_API = {
+    'unit': 'celsius',
     'key': '2e63db2f8df7cc9ebd13a441d8b2eb8a'
 }
