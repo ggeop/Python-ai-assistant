@@ -9,7 +9,7 @@ from jarvis.settings import TRIGGERING_WORDS, WEATHER_API
 from jarvis.assistant_utils import assistant_response
 
 
-class ActionController:
+class ActionManager:
 
     @classmethod
     def open_website_in_browser(cls, words):
@@ -52,17 +52,17 @@ class ActionController:
             obs = owm.weather_at_place(city)
             w = obs.get_weather()
             k = w.get_status()
-            x = w.get_temperature(unit='celsius')
+            x = w.get_temperature(WEATHER_API['unit'])
             assistant_response('Current weather in %s is %s. The maximum temperature is %0.2f and the minimum '
                                'temperature is %0.2f degree celcius' % (city, k, x['temp_max'], x['temp_min']))
 
     @classmethod
-    def tell_the_time(cls):
+    def tell_the_time(cls, *args):
         """
         Tells ths current time
         """
         now = datetime.now()
-        assistant_response('Current time is %d hours %d minutes' % (now.hour, now.minute))
+        assistant_response('Current time is: {0}:{1}'.format(now.hour, now.minute))
 
     @classmethod
     def tell_me_about(cls, words):

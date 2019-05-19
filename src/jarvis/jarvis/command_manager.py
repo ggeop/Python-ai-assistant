@@ -3,17 +3,17 @@ import logging
 import speech_recognition as sr
 from datetime import datetime
 
-from jarvis.action_manager import ActionController
+from jarvis.action_manager import ActionManager
 from jarvis.settings import TRIGGERING_WORDS, SPEECH_RECOGNITION
 from jarvis.assistant_utils import assistant_response, user_speech_playback, log
 
 
-class CommandController:
+class CommandManager:
     commands_dict = {
-        TRIGGERING_WORDS['open_browser']: ActionController.open_website_in_browser,
-        TRIGGERING_WORDS['tell_time']: ActionController.tell_the_time,
-        TRIGGERING_WORDS['tell_about']: ActionController.tell_me_about,
-        TRIGGERING_WORDS['current_weather']: ActionController.tell_the_weather,
+        TRIGGERING_WORDS['open_browser']: ActionManager.open_website_in_browser,
+        TRIGGERING_WORDS['tell_time']: ActionManager.tell_the_time,
+        TRIGGERING_WORDS['tell_about']: ActionManager.tell_me_about,
+        TRIGGERING_WORDS['current_weather']: ActionManager.tell_the_weather,
     }
 
     def __init__(self):
