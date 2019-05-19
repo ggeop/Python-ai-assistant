@@ -29,7 +29,11 @@ class OutputStyler:
     UNDERLINE = '\033[4m'
 
 
-logging.config.fileConfig(fname='config.conf', disable_existing_loggers=False)
+# Relative path to configuration file
+jarvis_path = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(jarvis_path, '..', 'config.conf')
+
+logging.config.fileConfig(fname=config_path, disable_existing_loggers=False)
 logger = logging.getLogger(__name__)  # Create logger
 
 
