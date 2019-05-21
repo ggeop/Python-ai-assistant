@@ -21,6 +21,7 @@ class CommandManager:
         self.r = sr.Recognizer()
         self.words = None
 
+    @log
     def run(self):
         self.words = self._get_words()
         commands = self._get_commands()
@@ -37,7 +38,6 @@ class CommandManager:
             self.words = self.r.recognize_google(audio).lower()
         except sr.UnknownValueError:
             self.words = self._get_words()
-
         if TRIGGERING_WORDS['enable_jarvis'] in self.words:
             self._wake_up_response()
             return True
@@ -51,6 +51,7 @@ class CommandManager:
         """
         if TRIGGERING_WORDS['disable_jarvis'] in self.words:
             assistant_response('Bye bye Sir. Have a nice day')
+            logging.debug('Application terminated gracefully.')
             sys.exit()
 
     @staticmethod
@@ -78,6 +79,7 @@ class CommandManager:
         words_set = set(words)
         return commands_set.intersection(words_set)
 
+    @log
     def _execute_commands(self, commands):
         """
         Execute iteratively all the commands in the input dict.
@@ -112,4 +114,5 @@ class CommandManager:
             self.r.pause_threshold = SPEECH_RECOGNITION['pause_threshold']
             self.r.adjust_for_ambient_noise(source, duration=SPEECH_RECOGNITION['ambient_duration'])
             audio_text = self.r.listen(source)
+
         return audio_text

@@ -9,13 +9,13 @@ LOG_SETTINGS = {
             'class': 'logging.StreamHandler',
             'level': 'INFO',
             'formatter': 'detailed',
-            'stream': 'ext://sys.stdout',
+            'stream': 'sys.stdout',
         },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'level': 'INFO',
+            'level': 'DEBUG',
             'formatter': 'detailed',
-            'filename': '/var/logs/jarvis.log',
+            'filename': '/var/log/jarvis.log',
             'mode': 'a',
             'maxBytes': 10000000,
             'backupCount': 3,
@@ -23,10 +23,9 @@ LOG_SETTINGS = {
     },
     'formatters': {
         'detailed': {
-            #format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            'format': '%(asctime)s %(module)-17s line:%(lineno)-4d ' \
-            '%(levelname)-8s %(message)s',
-    },
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        },
+    }
 }
 
 
