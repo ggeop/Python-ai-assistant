@@ -39,8 +39,8 @@ def log(func):
         except Exception as e:
             logger.error(func.__name__)
             traceback.print_exc(file=sys.stdout)
-
     return wrapper
+return log
 
 
 @log
