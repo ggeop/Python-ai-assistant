@@ -81,7 +81,7 @@ class CommandManager:
     def _execute_commands(self, commands):
         """
         Execute iteratively all the commands in the input dict.
-        :param commands: dict (e.g {'open', 'search'})
+        :param commands: set (e.g {'open', 'search'})
         """
         if bool(commands):
             for command in commands:
