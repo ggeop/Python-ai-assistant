@@ -1,12 +1,12 @@
 import sys
 import os
 import traceback
-import logging.config
+import logging
+import dictconfig
 from google_speech import Speech
 from subprocess import call
-from jarvis.settings import GOOGLE_SPEECH
 
-from jarvis.settings import GENERAL_SETTINGS
+from jarvis.settings import GOOGLE_SPEECH, GENERAL_SETTINGS, LOG_SETTINGS
 
 
 Jarvis_logo = ""\
@@ -28,14 +28,8 @@ class OutputStyler:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-
-# Relative path to configuration file
-jarvis_path = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(jarvis_path, '..', 'config.conf')
-
-logging.config.fileConfig(fname=config_path, disable_existing_loggers=False)
-logger = logging.getLogger(__name__)  # Create logger
-
+# Create a Console & Rotating file logger
+dictconfig.dictConfig(LOG_SETTINGS)
 
 def log(func):
     def wrapper(*args, **kwargs):
