@@ -17,7 +17,7 @@ class ActionManager:
         Opens a web page in the browser.
         :param words: string (e.g Open the site youtube)
         """
-        reg_ex = re.search(TRIGGERING_WORDS['open_browser'] + ' (.+)', words)
+        reg_ex = re.search(TRIGGERING_WORDS['open_browser'] + ' ([a-zA-Z]+)', words)
         if reg_ex:
             domain = reg_ex.group(1)
             assistant_response('Yes sir, I will open the {0}'.format(domain))
