@@ -1,3 +1,33 @@
+LOG_SETTINGS = {
+    'version': 1,
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['console', 'file'],
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'INFO',
+            'formatter': 'detailed',
+            'stream': 'sys.stdout',
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'filename': '/var/log/jarvis.log',
+            'mode': 'a',
+            'maxBytes': 10000000,
+            'backupCount': 3,
+        },
+    },
+    'formatters': {
+        'detailed': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        },
+    }
+}
+
 
 # General assistant settings
 GENERAL_SETTINGS = {

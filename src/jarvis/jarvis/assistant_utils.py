@@ -1,12 +1,12 @@
 import sys
 import os
 import traceback
-import logging.config
+import logging
+from logging import config
 from google_speech import Speech
 from subprocess import call
-from jarvis.settings import GOOGLE_SPEECH
 
-from jarvis.settings import GENERAL_SETTINGS
+from jarvis.settings import GOOGLE_SPEECH, GENERAL_SETTINGS, LOG_SETTINGS
 
 
 Jarvis_logo = ""\
@@ -29,27 +29,21 @@ class OutputStyler:
     UNDERLINE = '\033[4m'
 
 
-# Relative path to configuration file
-jarvis_path = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(jarvis_path, '..', 'config.conf')
-
-logging.config.fileConfig(fname=config_path, disable_existing_loggers=False)
-logger = logging.getLogger(__name__)  # Create logger
+# Create a Console & Rotating file logger
+config.dictConfig(LOG_SETTINGS)
 
 
 def log(func):
     def wrapper(*args, **kwargs):
         try:
-            logger.debug(func.__name__)
+            logging.debug(func.__name__)
             func(*args, **kwargs)
         except Exception as e:
-            logger.error(func.__name__)
+            logging.error(func.__name__)
             traceback.print_exc(file=sys.stdout)
-
     return wrapper
 
 
-@log
 def assistant_response(text):
     """
     Assistant response in voice or/and in text
@@ -64,7 +58,7 @@ def assistant_response(text):
 
 
 def user_speech_playback(text):
-    user_speech = str(OutputStyler.GREEN + 'You: ' + text)
+    user_speech = str(OutputStyler.GREEN + 'You: ' + text + '\n')
     sys.stdout.write(OutputStyler.BLUE + user_speech + OutputStyler.ENDC)
 
 
