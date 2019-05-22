@@ -7,6 +7,9 @@ It can understand human speech, talk to user and execute basic commands.
 A quick look of Jarvis console output:
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
 
+At the same time in the background world:
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
+
 ---
 
 ## Install Python Dependencies
