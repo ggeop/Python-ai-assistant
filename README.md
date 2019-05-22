@@ -25,7 +25,7 @@ pip install -r requirements.txt
 * Tells about something, by searching on the internet (e.g Jarvis tells me about oranges)
 * Tells the weather for a place (e.g Jarvis tell me the weather in London)
 * Tells the current time (e.g Jarvis tells me time)
-* Easy voice-command costumization
+* Easy voice-command customization
 * Vocal or/and text response 
 
 ---
