@@ -14,7 +14,7 @@ class CommandControllerTests(unittest.TestCase):
     @patch('jarvis.command_manager.CommandManager._record')
     @patch('jarvis.command_manager.sr.Microphone')
     @patch('jarvis.command_manager.sr.Recognizer.recognize_google')
-    @patch('jarvis.command_manager.CommandManager._get_words')
+    @patch('jarvis.command_manager.CommandManager._get_voice_transcript')
     def test_wake_up(self, mocked_get_words, mocked_recognize_google, mocked_microphone, mocked_record):
         mocked_recognize_google.return_value = 'can you '
         self.assertEqual(False, self.command_controller.wake_up_check())

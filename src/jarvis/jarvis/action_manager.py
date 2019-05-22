@@ -83,3 +83,11 @@ class ActionManager:
                 assistant_response(ny.content[:500].encode('utf-8'))
         except Exception as e:
             logging.error(e)
+
+
+actions_mapping = {
+    TRIGGERING_WORDS['open_browser']['command']: ActionManager.open_website_in_browser,
+    TRIGGERING_WORDS['tell_time']['command']: ActionManager.tell_the_time,
+    TRIGGERING_WORDS['tell_about']['command']: ActionManager.tell_me_about,
+    TRIGGERING_WORDS['current_weather']['command']: ActionManager.tell_the_weather,
+}
