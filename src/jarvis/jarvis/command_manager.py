@@ -14,7 +14,6 @@ class CommandManager:
         TRIGGERING_WORDS['tell_time']['command']: ActionManager.tell_the_time,
         TRIGGERING_WORDS['tell_about']['command']: ActionManager.tell_me_about,
         TRIGGERING_WORDS['current_weather']['command']: ActionManager.tell_the_weather,
-        TRIGGERING_WORDS['disable_jarvis']['command']: ActionManager.disable_jarvis,
     }
 
     def __init__(self):
@@ -25,7 +24,7 @@ class CommandManager:
     @log
     def run(self):
         self.words = self._get_words()
-        self._execute_commands(commands)
+        self._execute_commands()
 
     def wake_up_check(self):
         """

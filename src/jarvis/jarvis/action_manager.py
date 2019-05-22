@@ -43,7 +43,7 @@ class ActionManager:
         return url
 
     @classmethod
-    def tell_the_weather(cls,triggered_word, words):
+    def tell_the_weather(cls, triggered_word, words):
         """
         Tells the weather of a place
         :param triggered_word: string (e.g 'weather')

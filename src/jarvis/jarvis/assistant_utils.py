@@ -58,7 +58,7 @@ def assistant_response(text):
 
 
 def user_speech_playback(text):
-    user_speech = str(OutputStyler.GREEN + 'You: ' + text + '\n')
+    user_speech = str('You: ' + text + '\n')
     sys.stdout.write(OutputStyler.BLUE + user_speech + OutputStyler.ENDC)
 
 
