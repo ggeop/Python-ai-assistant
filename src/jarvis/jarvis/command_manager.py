@@ -19,7 +19,7 @@ class CommandManager:
     @log
     def run(self):
         self._get_voice_transcript()
-        self._get_user_commands(self.latest_voice_transcript)
+        self._get_user_commands()
         self._execute_commands()
 
     def wake_up_check(self):
@@ -67,14 +67,14 @@ class CommandManager:
         assistant_response('What do you want to do for you sir?')
 
     @log
-    def _get_user_commands(self, voice_transcript):
+    def _get_user_commands(self):
         for triggering_words in TRIGGERING_WORDS.values():
             for triggering_word in triggering_words['triggering_words']:
-                if triggering_word in voice_transcript:
+                if triggering_word in self.latest_voice_transcript:
                     command = triggering_words['command']
                     exist_command = actions_mapping.get(command)
                     if exist_command:
-                        self.commands.append({'voice_transcript': voice_transcript,
+                        self.commands.append({'voice_transcript': self.latest_voice_transcript,
                                               'triggering_word': triggering_word,
                                               'command': command})
 
