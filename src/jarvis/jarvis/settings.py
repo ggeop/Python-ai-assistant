@@ -38,14 +38,12 @@ GENERAL_SETTINGS = {
 
 # Trigger words
 TRIGGERING_WORDS = {
-    'enable_jarvis': 'start',
-    'disable_jarvis': 'stop',
-    'open_browser': 'open',
-    'sent_email': 'email',
-    'launch_application': 'launch',
-    'tell_time': 'time',
-    'tell_about': 'about',
-    'current_weather': 'weather'
+    'enable_jarvis': {'command': 'enable_jarvis', 'triggering_words': ['start', 'hi', 'jarvis']},
+    'disable_jarvis': {'command': 'disable_jarvis', 'triggering_words': ['stop', 'shut down']},
+    'open_browser': {'command': 'open_browser', 'triggering_words': ['open', 'do']},
+    'tell_time': {'command': 'tell_time', 'triggering_words': ['time']},
+    'tell_about': {'command': 'tell_about', 'triggering_words': ['about']},
+    'current_weather': {'command': 'current_weather', 'triggering_words': ['weather']},
 }
 
 # Google API Speech recognition settings

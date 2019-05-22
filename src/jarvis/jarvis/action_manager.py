@@ -12,19 +12,22 @@ from jarvis.assistant_utils import assistant_response
 class ActionManager:
 
     @classmethod
-    def open_website_in_browser(cls, words):
+    def open_website_in_browser(cls, triggered_word, words):
         """
         Opens a web page in the browser.
-        :param words: string (e.g Open the site youtube)
+        :param triggered_word: string (e.g 'open')
+        :param words: string (e.g 'open youtube')
+
+        NOTE: If in the words there are more than one commands_dict
+        e.g words='open youtube and open netflix' the application will find
+        and execute only the first one, in our case will open the youtube.
         """
-        reg_ex = re.search(TRIGGERING_WORDS['open_browser'] + ' ([a-zA-Z]+)', words)
+        reg_ex = re.search(triggered_word + ' ([a-zA-Z]+)', words)
         if reg_ex:
             domain = reg_ex.group(1)
             assistant_response('Yes sir, I will open the {0}'.format(domain))
             url = cls._create_url(domain)
             subprocess.Popen(["python", "-m",  "webbrowser",  "-t",  url], stdout=subprocess.PIPE)
-        else:
-            pass
 
     @classmethod
     def _create_url(cls, domain):
@@ -40,12 +43,13 @@ class ActionManager:
         return url
 
     @classmethod
-    def tell_the_weather(cls, words):
+    def tell_the_weather(cls,triggered_word, words):
         """
         Tells the weather of a place
-        :param words: string (e.g weather in London)
+        :param triggered_word: string (e.g 'weather')
+        :param words: string (e.g 'weather in London')
         """
-        reg_ex = re.search('weather in (.*)', words)
+        reg_ex = re.search(triggered_word + ' in ([a-zA-Z]+)', words)
         if reg_ex:
             city = reg_ex.group(1)
             owm = OWM(API_key=WEATHER_API['key'])
@@ -65,12 +69,13 @@ class ActionManager:
         assistant_response('Current time is: {0}:{1}'.format(now.hour, now.minute))
 
     @classmethod
-    def tell_me_about(cls, words):
+    def tell_me_about(cls, triggered_word, words):
         """
         Tells about something by searching in wikipedia
-        :param words: string (e.g about google)
+        :param triggered_word: string (e.g 'about')
+        :param words: string (e.g 'about google')
         """
-        reg_ex = re.search('about (.*)', words)
+        reg_ex = re.search(triggered_word + ' ([a-zA-Z]+)', words)
         try:
             if reg_ex:
                 topic = reg_ex.group(1)
