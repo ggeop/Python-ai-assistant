@@ -1,3 +1,5 @@
+from jarvis.action_manager import ActionManager
+
 LOG_SETTINGS = {
     'version': 1,
     'root': {
@@ -34,27 +36,6 @@ GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
     'response_in_speech': False,
     'response_in_text': True
-}
-
-# Trigger words
-TRIGGERING_WORDS = {
-    'enable_jarvis': {'command': 'enable_jarvis',
-                      'triggering_words': ['start', 'hi', 'jarvis']},
-
-    'disable_jarvis': {'command': 'disable_jarvis',
-                       'triggering_words': ['stop', 'shut down']},
-
-    'open_browser': {'command': 'open_browser',
-                     'triggering_words': ['open', 'do']},
-
-    'tell_time': {'command': 'tell_time',
-                  'triggering_words': ['time']},
-
-    'tell_about': {'command': 'tell_about',
-                   'triggering_words': ['about']},
-
-    'current_weather': {'command': 'current_weather',
-                        'triggering_words': ['weather']},
 }
 
 # Google API Speech recognition settings

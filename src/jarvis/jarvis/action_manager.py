@@ -1,3 +1,4 @@
+import sys
 import re
 import subprocess
 import wikipedia
@@ -5,7 +6,7 @@ import logging
 from pyowm import OWM
 from datetime import datetime
 
-from jarvis.settings import TRIGGERING_WORDS, WEATHER_API
+from jarvis.settings import WEATHER_API
 from jarvis.assistant_utils import assistant_response
 
 
@@ -84,10 +85,26 @@ class ActionManager:
         except Exception as e:
             logging.error(e)
 
+    @classmethod
+    def enable_jarvis(cls):
+        """
+        Creates the assistant respond according to the datetime hour and
+        updates the execute state.
+        """
+        now = datetime.now()
+        day_time = int(now.strftime('%H'))
 
-actions_mapping = {
-    TRIGGERING_WORDS['open_browser']['command']: ActionManager.open_website_in_browser,
-    TRIGGERING_WORDS['tell_time']['command']: ActionManager.tell_the_time,
-    TRIGGERING_WORDS['tell_about']['command']: ActionManager.tell_me_about,
-    TRIGGERING_WORDS['current_weather']['command']: ActionManager.tell_the_weather,
-}
+        if day_time < 12:
+            assistant_response('Hello Sir. Good morning')
+        elif 12 <= day_time < 18:
+            assistant_response('Hello Sir. Good afternoon')
+        else:
+            assistant_response('Hello Sir. Good evening')
+        assistant_response('What do you want to do for you sir?')
+        return  {'ready_to_execute': True, 'enable_time': now}
+
+    @classmethod
+    def disable_jarvis(cls)
+        assistant_response('Bye bye Sir. Have a nice day')
+        logging.debug('Application terminated gracefully.')
+        sys.exit()
