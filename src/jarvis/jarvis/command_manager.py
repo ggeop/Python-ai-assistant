@@ -14,6 +14,7 @@ class CommandManager:
         self.r = sr.Recognizer()
         self.commands = []
         self.latest_voice_transcript = ''
+        self.execute_state = {'ready_to_execute': False, 'enable_time': None}
 
     @log
     def run(self):
@@ -23,18 +24,18 @@ class CommandManager:
 
     def wake_up_check(self):
         """
-        Checks if there is the enable word in user recorded speech.
+        Checks if the state of the command manager (ready_to_execute)
+        and if is not enabled search for enable word in user recorded speech.
         :return: boolean
         """
-        self._get_voice_transcript()
-        triggering_words = [triggering_word for triggering_word in
-                            TRIGGERING_WORDS['enable_jarvis']['triggering_words']
-                            if triggering_word in self.latest_voice_transcript]
-        if triggering_words:
-            self._wake_up_response()
-            return True
+        if not self.execute_state['ready_to_execute']:
+            if self._ready_to_execute_check:
+                self._wake_up()
+                return True
+            else:
+                return False
         else:
-            return False
+            return self._continue_listening()
 
     @log
     def shutdown_check(self):
@@ -43,21 +44,45 @@ class CommandManager:
         and if exists the assistant service stops.
         """
         # Check if a word from the triggering list exist in user words
-        triggering_words = [triggering_word for triggering_word in
+        shutdown_tag = [triggering_word for triggering_word in
                             TRIGGERING_WORDS['disable_jarvis']['triggering_words']
                             if triggering_word in self.latest_voice_transcript]
-        if triggering_words:
+        if shutdown_tag:
             assistant_response('Bye bye Sir. Have a nice day')
             logging.debug('Application terminated gracefully.')
             sys.exit()
 
-    @staticmethod
-    def _wake_up_response():
+    def _ready_to_execute_check(self):
         """
-        Creates the assistant respond according to the datetime hour.
+        Checks for enable tag and if exists return a boolean
+        return: boolean
+        """
+        self._get_voice_transcript()
+        enable_tag = [triggering_word for triggering_word in
+                            TRIGGERING_WORDS['enable_jarvis']['triggering_words']
+                            if triggering_word in self.latest_voice_transcript]
+        return boolean(enable_tag)
+
+    def _continue_listening(self):
+        if datetime.now() > self.execute_state['enable_time'] + timedelta(seconds=10):
+            self.execute_state = {'ready_to_execute': False,
+                                  'enable_time': None}
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def _wake_up():
+        """
+        Creates the assistant respond according to the datetime hour and
+        updates the execute state.
         """
         now = datetime.now()
         day_time = int(now.strftime('%H'))
+
+        # Update command manager state, now the assistant is enabled!
+        self.execute_state = {'ready_to_execute': True, 'enable_time': now}
+
         if day_time < 12:
             assistant_response('Hello Sir. Good morning')
         elif 12 <= day_time < 18:
