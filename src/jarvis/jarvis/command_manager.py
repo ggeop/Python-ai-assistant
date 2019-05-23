@@ -17,10 +17,8 @@ class CommandManager:
         self.execute_state = {'ready_to_execute': False, 'enable_time': None}
 
     @log
-    def run(self):
-        self._get_voice_transcript()
-        self._get_user_commands()
-        self._execute_commands()
+    def execute_commands(self):
+
 
     def wake_up_check(self):
         """
@@ -115,7 +113,7 @@ class CommandManager:
                                               'command': command})
 
     @log
-    def _execute_commands(self):
+    def _execute(self):
         """
         Execute one-by-one all the user commands and empty the
         queue with the waiting commands.
