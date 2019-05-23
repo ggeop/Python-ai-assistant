@@ -1,4 +1,5 @@
 from jarvis.action_controller import ActionController
+from jarvis.assistant_utils import start_up
 
 
 class Processor:
@@ -23,4 +24,4 @@ class Processor:
 
             # If there are actions execute them
             if self.action_controller.actions:
-                self._execute()
+                self.action_controller._execute()

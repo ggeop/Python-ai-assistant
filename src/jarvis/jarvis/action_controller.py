@@ -1,11 +1,11 @@
-import sys
 import logging
 import speech_recognition as sr
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from jarvis.settings import SPEECH_RECOGNITION
+from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
 from jarvis.assistant_utils import assistant_response, user_speech_playback, log
 from jarvis.actions_registry import ACTIONS
+
 
 class ActionController:
     def __init__(self):
@@ -22,28 +22,21 @@ class ActionController:
         :return: boolean
         """
         if not self.execute_state['ready_to_execute']:
-            if self._ready_to_execute_check:
-                self.execute_state = actions_mapping['enable_jarvis']['action']
-                return True
-            else:
-                return False
+            return self._ready_to_start()
         else:
             return self._continue_listening()
 
     @log
     def shutdown_check(self):
         """
-        Checks if there is the shutdown word,
-        and if exists the assistant service stops.
+        Checks if there is the shutdown word, and if exists the assistant service stops.
         """
-        # Check if a word from the triggering list exist in user words
         shutdown_tag = [tag for tag in ACTIONS['disable_jarvis']['tags']
-                            if tag in self.latest_voice_transcript]
+                        if tag in self.latest_voice_transcript]
         if shutdown_tag:
-            actions_mapping['disable_jarvis']['action']
+            ACTIONS['disable_jarvis']['action']()
 
-
-    def _ready_to_execute_check(self):
+    def _ready_to_start(self):
         """
         Checks for enable tag and if exists return a boolean
         return: boolean
@@ -51,11 +44,13 @@ class ActionController:
         self._get_voice_transcript()
         enable_tag = [tag for tag in ACTIONS['enable_jarvis']['tags']
                           if tag in self.latest_voice_transcript]
-        return boolean(enable_tag)
+
+        if bool(enable_tag):
+            self.execute_state = ACTIONS['enable_jarvis']['action']()
+            return True
 
     def _continue_listening(self):
-        # TODO: Add to settings the waiting number of seconds
-        if datetime.now() > self.execute_state['enable_time'] + timedelta(seconds=10):
+        if datetime.now() > self.execute_state['enable_time'] + timedelta(seconds=GENERAL_SETTINGS['enable_period']):
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
             return False
@@ -67,34 +62,32 @@ class ActionController:
         """
         This method identifies the actions from the voice transcript
         and updates the actions state.
+
         e.x. latest_voice_transcript='open youtube and tell me the time'
         actions=[{'voice_transcript': 'open youtube and tell me the time',
                     'tag': {'open'},
-                    'action': open_website_in_browser},
-                  {'voice_transcript': 'open youtube and tell me the time',
-                    'tag': {time'},
-                    'action': tell_the_time},
-                    ]
+                ]
         """
-        for tags in ACTIONS.values():
-            for tag in tags['tag']:
+        for action in ACTIONS.values():
+            for tag in action['tags']:
                 if tag in self.latest_voice_transcript:
-                    self.actions.append({'voice_transcript': self.latest_voice_transcript,
-                                          'tag': tag,
-                                           'action': tag['action']})
+                    action = {'voice_transcript': self.latest_voice_transcript,
+                              'tag': tag,
+                              'action': action['action']}
 
-    @log
+                    logging.debug('Update actions queue with action: {0}'.format(action))
+                    self.actions.append(action)
+
     def _execute(self):
         """
-        Execute one-by-one all the user actions and empty the
-        queue with the waiting actions.
+        Execute one-by-one all the user actions and empty the queue with the waiting actions.
         """
         for action in self.actions:
-            try:
+            if action['tag'] in ACTIONS['enable_jarvis']['tags']:
+                assistant_response(" I don't sleep !")
+            else:
                 logging.debug('Execute the action {0}'.format(action))
-                ACTIONS[action['action']](action['tag'], action['voice_transcript'])
-            except:
-                logging.error('Error in action {0} excecution'.format(action))
+                action['action'](**action)
 
             # Remove the executed or not action from the queue
             self.actions.remove(action)
@@ -111,13 +104,11 @@ class ActionController:
         except sr.UnknownValueError:
             assistant_response('....')
             self.latest_voice_transcript = self._get_voice_transcript()
-
         return self.latest_voice_transcript
 
     def _record(self):
         """
-        Capture the user speech and transform it to audio stream
-        (speech --> audio stream).
+        Capture the user speech and transform it to audio stream (speech --> audio stream).
         """
         with self.microphone as source:
             self.r.pause_threshold = SPEECH_RECOGNITION['pause_threshold']

@@ -1,4 +1,4 @@
-from jarvis.action_manager import ActionManager
+
 
 LOG_SETTINGS = {
     'version': 1,
@@ -34,6 +34,7 @@ LOG_SETTINGS = {
 # General assistant settings
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
+    'enable_period': 30,  # In seconds
     'response_in_speech': False,
     'response_in_text': True
 }

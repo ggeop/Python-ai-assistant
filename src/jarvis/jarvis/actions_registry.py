@@ -1,12 +1,11 @@
 from jarvis.action_manager import ActionManager
+from collections import OrderedDict
 
-# All availabe assistant actions
-ACTIONS = {
+
+# All available assistant actions
+ACTIONS = OrderedDict({
     'enable_jarvis': {'action': ActionManager.enable_jarvis,
                       'tags': ['start', 'hi', 'jarvis']},
-
-    'disable_jarvis': {'action': ActionManager.disable_jarvis,
-                       'tags': ['stop', 'shut down']},
 
     'open_browser': {'action': ActionManager.open_website_in_browser,
                      'tags': ['open', 'do']},
@@ -19,4 +18,7 @@ ACTIONS = {
 
     'current_weather': {'action': ActionManager.tell_the_weather,
                         'tags': ['weather']},
-}
+
+    'disable_jarvis': {'action': ActionManager.disable_jarvis,
+                       'tags': ['stop', 'shut down']},
+})
