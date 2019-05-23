@@ -9,7 +9,6 @@ from jarvis.assistant_utils import assistant_response, user_speech_playback, log
 
 
 class CommandManager:
-
     def __init__(self):
         self.microphone = sr.Microphone()
         self.r = sr.Recognizer()
@@ -24,7 +23,7 @@ class CommandManager:
 
     def wake_up_check(self):
         """
-        Checks if there is the enable word in user speech.
+        Checks if there is the enable word in user recorded speech.
         :return: boolean
         """
         self._get_voice_transcript()
@@ -40,7 +39,8 @@ class CommandManager:
     @log
     def shutdown_check(self):
         """
-        Checks if there is the shutdown word, and if exists the assistant service stops.
+        Checks if there is the shutdown word,
+        and if exists the assistant service stops.
         """
         # Check if a word from the triggering list exist in user words
         triggering_words = [triggering_word for triggering_word in
@@ -68,6 +68,17 @@ class CommandManager:
 
     @log
     def _get_user_commands(self):
+        """
+        This method identifies the commands from the voice transcript
+        and updates the commands state.
+        e.x. latest_voice_transcript='open youtube and tell me the time'
+        commands=[{'voice_transcript': 'open youtube and tell me the time',
+                              'triggering_word': {'open'},
+                              'command': open_website_in_browser},
+                  {'voice_transcript': 'open youtube and tell me the time',
+                    'triggering_word': {time'},
+                    'command': tell_the_time},]
+        """
         for triggering_words in TRIGGERING_WORDS.values():
             for triggering_word in triggering_words['triggering_words']:
                 if triggering_word in self.latest_voice_transcript:
@@ -81,13 +92,19 @@ class CommandManager:
     @log
     def _execute_commands(self):
         """
-        Execute user commands. Checks one-by-one all the triggering _get_voice_transcript
-        and if a triggering word exist in user words then it executes the
-        corresponding command.
+        Execute one-by-one all the user commands and empty the
+        queue with the waiting commands.
         """
         for command in self.commands:
-            logging.debug('Execute the command {0}'.format(command))
-            actions_mapping[command['command']](command['triggering_word'], command['voice_transcript'])
+            try:
+                logging.debug('Execute the command {0}'.format(command))
+                actions_mapping[command['command']](command['triggering_word'],
+                command['voice_transcript'])
+            except:
+                logging.error('Error in command {0} excecution'.format(command))
+
+            # Remove the executed or not command from the queue
+            self.commands.remove(command)
 
     def _get_voice_transcript(self):
         """
@@ -106,7 +123,8 @@ class CommandManager:
 
     def _record(self):
         """
-        Capture the user speech and transform it to audio stream (speech --> audio stream).
+        Capture the user speech and transform it to audio stream
+        (speech --> audio stream).
         """
         with self.microphone as source:
             self.r.pause_threshold = SPEECH_RECOGNITION['pause_threshold']
