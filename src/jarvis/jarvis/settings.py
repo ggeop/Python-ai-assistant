@@ -58,3 +58,8 @@ WEATHER_API = {
     'unit': 'celsius',
     'key': '2e63db2f8df7cc9ebd13a441d8b2eb8a'
 }
+
+# Wolframalpha API conf settings
+WOLFRAMALPHA_API = {
+    'key': 'WW4JAY-VR7EAAPXJ5'
+}
