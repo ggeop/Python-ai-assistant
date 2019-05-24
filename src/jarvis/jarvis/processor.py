@@ -1,8 +1,5 @@
-import wolframalpha
-
 from jarvis.action_controller import ActionController
-from jarvis.assistant_utils import start_up, assistant_response
-from jarvis.settings import WOLFRAMALPHA_API
+from jarvis.assistant_utils import start_up, assistant_response, call_wolframalpha
 
 
 class Processor:
@@ -26,9 +23,10 @@ class Processor:
             # Extract actions and update the actions (state of action controller)
             self.action_controller._get_user_actions()
 
-            # If there are actions execute them
+            # Checks is ther is an action to execute them
             if self.action_controller.actions:
                 self.action_controller._execute()
             else:
-                res = self.client.query(self.action_controller.latest_voice_transcript)
-                assistant_response(next(res.results).text)
+                # If there is not an action the assistant make a request in
+                # Wolframalpha api for response
+                call_wolframalpha(self.action_controller.latest_voice_transcript)
