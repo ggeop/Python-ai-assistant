@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
 from jarvis.assistant_utils import assistant_response, user_speech_playback, log
-from jarvis.actions_registry import ACTIONS
+from jarvis.actions_registry import ACTIONS, CONTROL_ACTIONS
 
 
 class ActionController:
@@ -31,10 +31,12 @@ class ActionController:
         """
         Checks if there is the shutdown word, and if exists the assistant service stops.
         """
-        shutdown_tag = [tag for tag in ACTIONS['disable_jarvis']['tags']
-                        if tag in self.latest_voice_transcript]
-        if shutdown_tag:
-            ACTIONS['disable_jarvis']['action']()
+        transcript_words = self.latest_voice_transcript.split()
+        shutdown_tag = set(transcript_words)
+        .intersection(CONTROL_ACTIONS['disable_jarvis']['tags'])
+
+        if bool(shutdown_tag):
+            CONTROL_ACTIONS['disable_jarvis']['action']()
 
     def _ready_to_start(self):
         """
@@ -42,11 +44,13 @@ class ActionController:
         return: boolean
         """
         self._get_voice_transcript()
-        enable_tag = [tag for tag in ACTIONS['enable_jarvis']['tags']
-                          if tag in self.latest_voice_transcript]
+
+        transcript_words = self.latest_voice_transcript.split()
+        enable_tag = set(transcript_words)
+        .intersection(CONTROL_ACTIONS['enable_jarvis']['tags'])
 
         if bool(enable_tag):
-            self.execute_state = ACTIONS['enable_jarvis']['action']()
+            self.execute_state = CONTROL_ACTIONS['enable_jarvis']['action']()
             return True
 
     def _continue_listening(self):
@@ -69,14 +73,16 @@ class ActionController:
                 ]
         """
         for action in ACTIONS.values():
-            for tag in action['tags']:
-                if tag in self.latest_voice_transcript:
-                    action = {'voice_transcript': self.latest_voice_transcript,
-                              'tag': tag,
-                              'action': action['action']}
+            if action['enable']:
+                for tag in action['tags']:
+                    if tag in self.latest_voice_transcript:
+                        action = {'voice_transcript': self.latest_voice_transcript,
+                                  'tag': tag,
+                                  'action': action['action']}
 
-                    logging.debug('Update actions queue with action: {0}'.format(action))
-                    self.actions.append(action)
+                        logging.debug('Update actions queue with action: {0}'
+                        .format(action))
+                        self.actions.append(action)
 
     def _execute(self):
         """
