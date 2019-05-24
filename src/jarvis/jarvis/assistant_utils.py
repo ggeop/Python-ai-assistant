@@ -82,8 +82,9 @@ def call_wolframalpha(voice_transcript):
     """
     Make a request in wolframalpha API and prints the response.
     """
+    client = wolframalpha.Client(WOLFRAMALPHA_API['key'])
     try:
-        res = self.client.query(latest_voice_transcript)
+        res = client.query(voice_transcript)
         assistant_response(next(res.results).text)
         logging.debug('Succesfull response from Wolframalpha')
     except:

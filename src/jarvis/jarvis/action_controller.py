@@ -32,8 +32,7 @@ class ActionController:
         Checks if there is the shutdown word, and if exists the assistant service stops.
         """
         transcript_words = self.latest_voice_transcript.split()
-        shutdown_tag = set(transcript_words)
-        .intersection(CONTROL_ACTIONS['disable_jarvis']['tags'])
+        shutdown_tag = set(transcript_words).intersection(CONTROL_ACTIONS['disable_jarvis']['tags'])
 
         if bool(shutdown_tag):
             CONTROL_ACTIONS['disable_jarvis']['action']()
@@ -46,8 +45,7 @@ class ActionController:
         self._get_voice_transcript()
 
         transcript_words = self.latest_voice_transcript.split()
-        enable_tag = set(transcript_words)
-        .intersection(CONTROL_ACTIONS['enable_jarvis']['tags'])
+        enable_tag = set(transcript_words).intersection(CONTROL_ACTIONS['enable_jarvis']['tags'])
 
         if bool(enable_tag):
             self.execute_state = CONTROL_ACTIONS['enable_jarvis']['action']()
@@ -86,8 +84,7 @@ class ActionController:
                                   'tag': tag,
                                   'action': action['action']}
 
-                        logging.debug('Update actions queue with action: {0}'
-                        .format(action))
+                        logging.debug('Update actions queue with action: {0}'.format(action))
                         self.actions_to_execute.append(action)
 
     def _execute(self):
@@ -108,14 +105,15 @@ class ActionController:
         """
         Capture the words from the recorded audio (audio stream --> free text).
         """
-        audio = self._record()
-        try:
-            self.latest_voice_transcript = self.r.recognize_google(audio).lower()
-            logging.debug('Recognized words: ' + self.latest_voice_transcript)
-            user_speech_playback(self.latest_voice_transcript)
-        except sr.UnknownValueError:
-            assistant_response('....')
-            self.latest_voice_transcript = self._get_voice_transcript()
+        # audio = self._record()
+        # try:
+        #     self.latest_voice_transcript = self.r.recognize_google(audio).lower()
+        #     logging.debug('Recognized words: ' + self.latest_voice_transcript)
+        #     user_speech_playback(self.latest_voice_transcript)
+        # except sr.UnknownValueError:
+        #     assistant_response('....')
+        #     self.latest_voice_transcript = self._get_voice_transcript()
+        self.latest_voice_transcript=input('user input: ')
         return self.latest_voice_transcript
 
     def _record(self):

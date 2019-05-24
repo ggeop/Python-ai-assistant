@@ -3,6 +3,7 @@ import re
 import subprocess
 import wikipedia
 import logging
+import urllib
 from pyowm import OWM
 from datetime import datetime
 
@@ -87,6 +88,11 @@ class ActionManager:
 
     @classmethod
     def _decoded_wiki_response(cls, topic):
+        """
+        A private method for decoding the wiki response.
+        :param topic:
+        :return:
+        """
         ny = wikipedia.page(topic)
         data = ny.content[:500].encode('utf-8')
         response = ''
@@ -115,6 +121,11 @@ class ActionManager:
 
     @staticmethod
     def disable_jarvis(**args):
+        """
+        Shutdown the assistant service
+        :param args:
+        :return:
+        """
         assistant_response('Bye bye Sir. Have a nice day')
         logging.debug('Application terminated gracefully.')
         sys.exit()

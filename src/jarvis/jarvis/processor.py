@@ -5,12 +5,12 @@ from jarvis.assistant_utils import start_up, assistant_response, call_wolframalp
 class Processor:
     def __init__(self):
         self.action_controller = ActionController()
-        self.client = wolframalpha.Client(WOLFRAMALPHA_API['key'])
 
     def run(self):
         start_up()
         while True:
             self._process()
+            # Check for shutdown
             self.action_controller.shutdown_check()
 
     def _process(self):
@@ -24,9 +24,12 @@ class Processor:
             self.action_controller._get_user_actions()
 
             # Checks is ther is an action to execute them
-            if self.action_controller.actions:
+            if self.action_controller.actions_to_execute:
                 self.action_controller._execute()
             else:
+                # Check for shutdown
+                self.action_controller.shutdown_check()
+
                 # If there is not an action the assistant make a request in
                 # Wolframalpha api for response
                 call_wolframalpha(self.action_controller.latest_voice_transcript)
