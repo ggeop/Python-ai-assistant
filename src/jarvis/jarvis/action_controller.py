@@ -11,7 +11,7 @@ class ActionController:
     def __init__(self):
         self.microphone = sr.Microphone()
         self.r = sr.Recognizer()
-        self.actions = []
+        self.actions_to_execute = []
         self.latest_voice_transcript = ''
         self.execute_state = {'ready_to_execute': False, 'enable_time': None}
 
@@ -54,6 +54,10 @@ class ActionController:
             return True
 
     def _continue_listening(self):
+        """
+        Checks if the assistant enable time (triggering time + enable period) has passed.
+        return: boolean
+        """
         if datetime.now() > self.execute_state['enable_time'] + timedelta(seconds=GENERAL_SETTINGS['enable_period']):
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
@@ -64,13 +68,15 @@ class ActionController:
     @log
     def _get_user_actions(self):
         """
-        This method identifies the actions from the voice transcript
+        This method identifies the active actions from the voice transcript
         and updates the actions state.
 
-        e.x. latest_voice_transcript='open youtube and tell me the time'
-        actions=[{'voice_transcript': 'open youtube and tell me the time',
-                    'tag': {'open'},
-                ]
+        e.x. latest_voice_transcript='open youtube'
+        Then, the actions_to_execute will be the following:
+        actions_to_execute=[{voice_transcript': 'open youtube',
+                             'tag': 'open',
+                             'action': ActionManager.open_website_in_browser
+                            ]
         """
         for action in ACTIONS.values():
             if action['enable']:
@@ -82,21 +88,21 @@ class ActionController:
 
                         logging.debug('Update actions queue with action: {0}'
                         .format(action))
-                        self.actions.append(action)
+                        self.actions_to_execute.append(action)
 
     def _execute(self):
         """
         Execute one-by-one all the user actions and empty the queue with the waiting actions.
         """
-        for action in self.actions:
-            if action['tag'] in ACTIONS['enable_jarvis']['tags']:
+        for action in self.actions_to_execute:
+            if action['tag'] in CONTROL_ACTIONS['enable_jarvis']['tags']:
                 assistant_response(" I don't sleep !")
             else:
                 logging.debug('Execute the action {0}'.format(action))
                 action['action'](**action)
 
             # Remove the executed or not action from the queue
-            self.actions.remove(action)
+            self.actions_to_execute.remove(action)
 
     def _get_voice_transcript(self):
         """
