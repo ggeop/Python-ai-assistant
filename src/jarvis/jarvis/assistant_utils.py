@@ -5,9 +5,10 @@ import logging
 from logging import config
 from google_speech import Speech
 from subprocess import call
+import wolframalpha
 
 from jarvis.settings import GOOGLE_SPEECH, GENERAL_SETTINGS, LOG_SETTINGS
-
+from jarvis.settings import WOLFRAMALPHA_API
 
 Jarvis_logo = ""\
 "         _                  _      \n"\
@@ -75,3 +76,15 @@ def start_up():
     """
     _clear()
     sys.stdout.write(OutputStyler.HEADER + Jarvis_logo + OutputStyler.ENDC)
+
+
+def call_wolframalpha(voice_transcript):
+    """
+    Make a request in wolframalpha API and prints the response.
+    """
+    try:
+        res = self.client.query(latest_voice_transcript)
+        assistant_response(next(res.results).text)
+        logging.debug('Succesfull response from Wolframalpha')
+    except:
+        logging.error('Error with the call in wolframalpha')
