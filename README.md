@@ -4,12 +4,45 @@
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
-**A quick look of Jarvis console output:**
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
+## Getting Started
 
-**At the same time in the background world:**
+### Create KEYs for third party APIs
+Jarvis assistant uses third party APIs for speech recognition,web information search, weather forecasting etc.
+All the following APIs have free no-commercial API calls. Subscribe to the following APIs in order to take access KEYs.
+* [OpenWeatherMap](https://openweathermap.org/appid): Is the API for weather forecast.
+* [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/)
 
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
+### Download the code in your Ubundu/Debian system!
+* Go to home directory
+```cd ~/```
+* Download the Jarvis repo localy
+```git clone https://github.com/ggeop/Jarvis.git```
+
+### Create Virtual Env
+The first step is to setup the virtual environment with the project dependencies.
+* If you don't have installed the virtualenv package, you can install it with pip:
+```pip install virtualenv```
+* Create a virtual environment
+We create a new virtual environment inside the Jarvis directory.
+```virtualenv ~/Jarvis/py_env```
+
+### Put the Keys in settings
+Before you start running the application you have to put the free KEYs in the settings.py.
+* ``` nano Jarvis/src/jarvis/jarvis/setting.py ```
+
+### Start voice assistant
+* Activate the virtual environment
+```source ~/Jarvis/py_env/bin/activate```
+* Start the assistant service
+```python Jarvis/src/jarvis/start.py```
+* (OR) start the assistant service in the background:
+``` nohup python Jarvis/src/jarvis/start.py >/dev/null 2>&1 &```
+
+## Desicion Model
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
+
+## High-level Design
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/high-level_design.png)
 
 ---
 
@@ -30,9 +63,9 @@ pip install -r requirements.txt
 
 ---
 
-## How it works
-* Run voice assistant service:
-``` python run.py```
+**A quick look of Jarvis console output:**
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
 
-* Run Jarvis service in the background:
-``` nohup python run.py >/dev/null 2>&1 &```
+**Behind the scenes:**
+
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
