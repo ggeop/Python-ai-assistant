@@ -88,4 +88,5 @@ def call_wolframalpha(voice_transcript):
         assistant_response(next(res.results).text)
         logging.debug('Succesfull response from Wolframalpha')
     except:
-        logging.error('Error with the call in wolframalpha')
+        logging.debug('There is not answer with wolframalpha')
+        assistant_response('Sorry sir, but I can not understand what do you want')
