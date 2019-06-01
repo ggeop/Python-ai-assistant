@@ -82,7 +82,7 @@ nohup python Jarvis/src/jarvis/start.py >/dev/null 2>&1 &
 
 ---
 
-** Jarvis Screenshots
+## Jarvis Screenshots
 
 **A quick look of Jarvis console output:**
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
