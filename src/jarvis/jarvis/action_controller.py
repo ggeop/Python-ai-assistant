@@ -25,10 +25,6 @@ class ActionController:
         if not self.execute_state['ready_to_execute']:
             return self._ready_to_start()
         else:
-            # transcript_words = self.latest_voice_transcript.split()
-            # wake_up_tag = set(transcript_words).intersection(CONTROL_ACTIONS['enable_jarvis']['tags'])
-            # if bool(wake_up_tag):
-            #     assistant_response('Hi human')
             return self._continue_listening()
 
     @log
