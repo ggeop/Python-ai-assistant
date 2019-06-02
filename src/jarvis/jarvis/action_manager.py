@@ -109,12 +109,12 @@ class ActionManager:
         day_time = int(now.strftime('%H'))
 
         if day_time < 12:
-            assistant_response('Hello Sir. Good morning')
+            assistant_response('Good morning human')
         elif 12 <= day_time < 18:
-            assistant_response('Hello Sir. Good afternoon')
+            assistant_response('Good afternoon human')
         else:
-            assistant_response('Hello Sir. Good evening')
-        assistant_response('What do you want to do for you sir?')
+            assistant_response('Good evening human')
+        assistant_response('What do you want to do for you')
 
         return {'ready_to_execute': True,
                 'enable_time': now}
@@ -126,6 +126,6 @@ class ActionManager:
         :param args:
         :return:
         """
-        assistant_response('Bye bye Sir. Have a nice day')
+        assistant_response('Bye bye human')
         logging.debug('Application terminated gracefully.')
         sys.exit()
