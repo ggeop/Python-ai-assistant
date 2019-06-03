@@ -27,7 +27,7 @@ class ActionManager:
         reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
         if reg_ex:
             domain = reg_ex.group(1)
-            assistant_response('Yes sir, I will open the {0}'.format(domain))
+            assistant_response('Sure, I will open the {0}'.format(domain))
             url = cls._create_url(domain)
             subprocess.Popen(["python", "-m",  "webbrowser",  "-t",  url], stdout=subprocess.PIPE)
 
@@ -114,7 +114,7 @@ class ActionManager:
             assistant_response('Good afternoon human')
         else:
             assistant_response('Good evening human')
-        assistant_response('What do you want to do for you')
+        assistant_response('What do you want to do for you?')
 
         return {'ready_to_execute': True,
                 'enable_time': now}
@@ -126,6 +126,6 @@ class ActionManager:
         :param args:
         :return:
         """
-        assistant_response('Bye bye human')
+        assistant_response('Bye bye!!')
         logging.debug('Application terminated gracefully.')
         sys.exit()
