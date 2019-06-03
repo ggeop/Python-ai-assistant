@@ -1,5 +1,6 @@
 import sys
 import os
+import requests
 import traceback
 import logging
 from logging import config
@@ -86,7 +87,20 @@ def call_wolframalpha(voice_transcript):
     try:
         res = client.query(voice_transcript)
         assistant_response(next(res.results).text)
-        logging.debug('Succesfull response from Wolframalpha')
+        logging.debug('Successful response from Wolframalpha')
     except:
         logging.debug('There is not answer with wolframalpha')
-        assistant_response('Sorry sir, but I can not understand what do you want')
+        assistant_response('Sorry, but I can not understand what do you want')
+
+
+def internet_check(url='http://www.google.com/', timeout=2):
+    """
+    Internet connectivity check.
+    """
+    try:
+        _ = requests.get(url, timeout=timeout)
+        return True
+    except requests.ConnectionError:
+        logging.info("No internet connection.")
+        assistant_response("I inform you that I face internet connectivity problem")
+    return False
