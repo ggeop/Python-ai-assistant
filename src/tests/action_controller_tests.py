@@ -44,7 +44,7 @@ class CommandControllerTests(unittest.TestCase):
         self.action_controller.shutdown_check()
         self.assertEqual(1, mocked_disable_jarvis.call_count)
 
-    @patch('jarvis.action_controller.ActionController._get_voice_transcript')
+    @patch('jarvis.action_controller.ActionController.get_voice_transcript')
     @patch('jarvis.action_manager.ActionManager.enable_jarvis')
     def test_ready_to_start(self, mocked_get_voiced_transcript, mocked_enable_jarvis):
         self.action_controller.latest_voice_transcript = '..'
@@ -59,5 +59,5 @@ class CommandControllerTests(unittest.TestCase):
 
     def test_get_user_actions(self):
         self.action_controller.latest_voice_transcript = 'open open time'
-        self.action_controller._get_user_actions()
+        self.action_controller.get_user_actions()
         self.assertEqual(2, len(self.action_controller.actions_to_execute))
