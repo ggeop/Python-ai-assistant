@@ -1,9 +1,9 @@
 
-## About Jarvis
+# About Jarvis
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
-### Features
+## Features
 * Continues listening service, triggered by a phrase e.g ('hi', 'hello jarvis')
 * Opens a web page (e.g Jarvis open youtube)
 * Tells about something, by searching on the internet (e.g Jarvis tells me about oranges)
@@ -12,7 +12,7 @@ It can understand human speech, talk to user and execute basic commands.
 * Easy voice-command customization
 * Vocal or/and text response
 
-### Desicion Model
+## Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
 
 ---
