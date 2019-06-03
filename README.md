@@ -1,14 +1,9 @@
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_logo.png)
 
-## About Jarvis
+# About Jarvis
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
-### High-level Design
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/high-level_design.png)
-
-
-### Features
+## Features
 * Continues listening service, triggered by a phrase e.g ('hi', 'hello jarvis')
 * Opens a web page (e.g Jarvis open youtube)
 * Tells about something, by searching on the internet (e.g Jarvis tells me about oranges)
@@ -17,17 +12,15 @@ It can understand human speech, talk to user and execute basic commands.
 * Easy voice-command customization
 * Vocal or/and text response
 
-### Desicion Model
+## Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
-
----
 
 ## Getting Started
 ### Create KEYs for third party APIs
 Jarvis assistant uses third party APIs for speech recognition,web information search, weather forecasting etc.
 All the following APIs have free no-commercial API calls. Subscribe to the following APIs in order to take access KEYs.
-* [OpenWeatherMap](https://openweathermap.org/appid): Is the API for weather forecast.
-* [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): Is the API for answer questions.
+* [OpenWeatherMap](https://openweathermap.org/appid): API for weather forecast.
+* [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
 
 ### Download the code in your Ubundu/Debian system!
 * Go to home directory:
@@ -82,11 +75,7 @@ nohup python Jarvis/src/jarvis/start.py >/dev/null 2>&1 &
 
 ---
 
-## Jarvis Screenshots
+### Jarvis Screenshots
+* [A quick look of Jarvis console output](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
 
-**A quick look of Jarvis console output:**
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
-
-**Behind the scenes:**
-
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
+* [Behind the scenes](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
