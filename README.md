@@ -15,8 +15,6 @@ It can understand human speech, talk to user and execute basic commands.
 ## Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
 
----
-
 ## Getting Started
 ### Create KEYs for third party APIs
 Jarvis assistant uses third party APIs for speech recognition,web information search, weather forecasting etc.
