@@ -1,3 +1,4 @@
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_logo.png)
 
 # About Jarvis
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
@@ -18,11 +19,11 @@ It can understand human speech, talk to user and execute basic commands.
 You can easily add a new feature in two steps.
 * Create a new configuration in ACTION in **actions_registry.py**
 ```{python}
-    'new_action': {'enable': True,
-                     'action': ActionManager.new_action,
-                     'tags': {'tag1', 'tag2'},
-                     'description': 'action description..'
-                    },                
+'new_action': {'enable': True,
+                 'action': ActionManager.new_action,
+                 'tags': {'tag1', 'tag2'},
+                 'description': 'action description..'
+                },                
 ```
 * Create a new method in **action_manager.py**
 ```
