@@ -1,5 +1,5 @@
 from jarvis.action_controller import ActionController
-from jarvis.assistant_utils import start_up, assistant_response, call_wolframalpha
+from jarvis.assistant_utils import start_up, call_wolframalpha, internet_check
 
 
 class Processor:
@@ -17,19 +17,21 @@ class Processor:
         # Check if the assistant is waked up
         if self.action_controller.wake_up_check():
 
-            # Record user voice and create a voice transcipt
-            self.action_controller._get_voice_transcript()
+            if internet_check():
 
-            # Extract actions and update the actions (state of action controller)
-            self.action_controller._get_user_actions()
+                # Record user voice and create a voice transcipt
+                self.action_controller.get_voice_transcript()
 
-            # Checks is ther is an action to execute them
-            if self.action_controller.actions_to_execute:
-                self.action_controller._execute()
-            else:
-                # Check for shutdown
-                self.action_controller.shutdown_check()
+                # Extract actions and update the actions (state of action controller)
+                self.action_controller.get_user_actions()
 
-                # If there is not an action the assistant make a request in
-                # Wolframalpha api for response
-                call_wolframalpha(self.action_controller.latest_voice_transcript)
+                # Checks is there is an action to execute them
+                if self.action_controller.actions_to_execute:
+                    self.action_controller.execute()
+                else:
+                    # Check for shutdown
+                    self.action_controller.shutdown_check()
+
+                    # If there is not an action the assistant make a request in
+                    # WolframAlpha api for response
+                    call_wolframalpha(self.action_controller.latest_voice_transcript)

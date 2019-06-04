@@ -43,7 +43,7 @@ class ActionController:
         Checks for enable tag and if exists return a boolean
         return: boolean
         """
-        self._get_voice_transcript()
+        self.get_voice_transcript()
 
         transcript_words = self.latest_voice_transcript.split()
         enable_tag = set(transcript_words).intersection(CONTROL_ACTIONS['enable_jarvis']['tags'])
@@ -65,7 +65,7 @@ class ActionController:
             return True
 
     @log
-    def _get_user_actions(self):
+    def get_user_actions(self):
         """
         This method identifies the active actions from the voice transcript
         and updates the actions state.
@@ -88,7 +88,7 @@ class ActionController:
                         logging.debug('Update actions queue with action: {0}'.format(action))
                         self.actions_to_execute.append(action)
 
-    def _execute(self):
+    def execute(self):
         """
         Execute one-by-one all the user actions and empty the queue with the waiting actions.
         """
@@ -99,7 +99,7 @@ class ActionController:
             # Remove the executed or not action from the queue
             self.actions_to_execute.remove(action)
 
-    def _get_voice_transcript(self):
+    def get_voice_transcript(self):
         """
         Capture the words from the recorded audio (audio stream --> free text).
         """
@@ -111,7 +111,7 @@ class ActionController:
                 user_speech_playback(self.latest_voice_transcript)
             except sr.UnknownValueError:
                 assistant_response('....')
-                self.latest_voice_transcript = self._get_voice_transcript()
+                self.latest_voice_transcript = self.get_voice_transcript()
         else:
             self.latest_voice_transcript = input('User said: ')
 

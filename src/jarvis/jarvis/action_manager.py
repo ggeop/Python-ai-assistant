@@ -3,7 +3,6 @@ import re
 import subprocess
 import wikipedia
 import logging
-import urllib
 from pyowm import OWM
 from datetime import datetime
 
@@ -27,9 +26,10 @@ class ActionManager:
         reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
         if reg_ex:
             domain = reg_ex.group(1)
-            assistant_response('Yes sir, I will open the {0}'.format(domain))
             url = cls._create_url(domain)
+            assistant_response('Sure')
             subprocess.Popen(["python", "-m",  "webbrowser",  "-t",  url], stdout=subprocess.PIPE)
+            assistant_response('I opened the {0}'.format(domain))
 
     @classmethod
     def _create_url(cls, tag):
@@ -68,7 +68,7 @@ class ActionManager:
         Tells ths current time
         """
         now = datetime.now()
-        assistant_response('Current time is: {0}:{1}'.format(now.hour, now.minute))
+        assistant_response('The current time is: {0}:{1}'.format(now.hour, now.minute))
 
     @classmethod
     def tell_me_about(cls, tag, voice_transcript, action):
@@ -99,6 +99,38 @@ class ActionManager:
         response += data.decode()
         return response
 
+    @classmethod
+    def assistant_check(cls, **kargs):
+        """
+        Responses that assistant can hear the user.
+        """
+        assistant_response('Yes, I hear you!')
+
+    @classmethod
+    def open_libreoffice_calc(cls, **kargs):
+        """
+        Opens libreoffice calc application
+        """
+        # TODO: Refactor all libreoffice methods in one
+        subprocess.Popen(['libreoffice', '-calc'], stdout=subprocess.PIPE)
+        assistant_response('I opened a new calc document..')
+
+    @classmethod
+    def open_libreoffice_writer(cls, **kargs):
+        """
+        Opens libreoffice writer application
+        """
+        subprocess.Popen(['libreoffice', '-writer'], stdout=subprocess.PIPE)
+        assistant_response('I opened a new writer document..')
+
+    @classmethod
+    def open_libreoffice_impress(cls, **kargs):
+        """
+        Opens libreoffice impress application
+        """
+        subprocess.Popen(['libreoffice', '-impress'], stdout=subprocess.PIPE)
+        assistant_response('I opened a new impress document..')
+
     @staticmethod
     def enable_jarvis(**kwargs):
         """
@@ -114,18 +146,18 @@ class ActionManager:
             assistant_response('Good afternoon human')
         else:
             assistant_response('Good evening human')
-        assistant_response('What do you want to do for you')
+        assistant_response('What do you want to do for you?')
 
         return {'ready_to_execute': True,
                 'enable_time': now}
 
     @staticmethod
-    def disable_jarvis(**args):
+    def disable_jarvis(**kargs):
         """
         Shutdown the assistant service
         :param args:
         :return:
         """
-        assistant_response('Bye bye human')
+        assistant_response('Bye bye!!')
         logging.debug('Application terminated gracefully.')
         sys.exit()

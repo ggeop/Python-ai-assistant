@@ -1,16 +1,37 @@
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_logo.png)
 
 # About Jarvis
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
 ## Features
-* Continues listening service, triggered by a phrase e.g ('hi', 'hello jarvis')
-* Opens a web page (e.g Jarvis open youtube)
-* Tells about something, by searching on the internet (e.g Jarvis tells me about oranges)
-* Tells the weather for a place (e.g Jarvis tell me the weather in London)
-* Tells the current time (e.g Jarvis tells me time)
-* Easy voice-command customization
-* Vocal or/and text response
+* **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
+* **Opens a web page** (e.g Jarvis open youtube)
+* **Opens libreoffice suite applications** (calc, writer, impress)
+* **Tells about something**, by searching on the internet (e.g Jarvis tells me about oranges)
+* **Tells the weather** for a place (e.g Jarvis tell me the weather in London)
+* **Tells the current time** (e.g Jarvis tells me time)
+* **Uses wolfram API** for general questions
+* Easy **voice-command customization**
+* **Vocal or/and text response**
+
+### How to add a new feature
+You can easily add a new feature in two steps.
+* Create a new configuration in ACTION in **actions_registry.py**
+```{python}
+'new_action': {'enable': True,
+                 'action': ActionManager.new_action,
+                 'tags': {'tag1', 'tag2'},
+                 'description': 'action description..'
+                },                
+```
+* Create a new method in **action_manager.py**
+```
+@classmethod
+    def new_action(cls,**kargs):
+      pass
+```
+Now you can test it!
 
 ## Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
