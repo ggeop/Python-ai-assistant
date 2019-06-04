@@ -3,7 +3,6 @@ import re
 import subprocess
 import wikipedia
 import logging
-import urllib
 from pyowm import OWM
 from datetime import datetime
 
@@ -99,6 +98,13 @@ class ActionManager:
         response += data.decode()
         return response
 
+    @classmethod
+    def assistant_check(cls,**kargs):
+        """
+        Responses that assistant can hear the user.
+        """
+        assistant_response('Yes, I hear you!')
+
     @staticmethod
     def enable_jarvis(**kwargs):
         """
@@ -120,7 +126,7 @@ class ActionManager:
                 'enable_time': now}
 
     @staticmethod
-    def disable_jarvis(**args):
+    def disable_jarvis(**kargs):
         """
         Shutdown the assistant service
         :param args:
