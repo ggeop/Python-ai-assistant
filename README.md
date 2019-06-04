@@ -16,7 +16,7 @@ It can understand human speech, talk to user and execute basic commands.
 
 ### How to add a new feature
 You can easily add a new feature in two steps.
-* Create a new configuration in ACTION in actions_registry.py
+* Create a new configuration in ACTION in **actions_registry.py**
 ```{python}
     'new_action': {'enable': True,
                      'action': ActionManager.new_action,
@@ -24,13 +24,13 @@ You can easily add a new feature in two steps.
                      'description': 'action description..'
                     },                
 ```
-* Create a new method in action_manager.py
+* Create a new method in **action_manager.py**
 ```
 @classmethod
     def new_action(cls,**kargs):
       pass
 ```
-That's all!! Now you can test it!
+Now you can test it!
 
 ## Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
