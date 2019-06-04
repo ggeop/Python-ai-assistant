@@ -105,6 +105,21 @@ class ActionManager:
         """
         assistant_response('Yes, I hear you!')
 
+    @classmethod
+    def open_libreoffice_calc(cls, **kargs):
+        subprocess.Popen(['libreoffice', '-calc'], stdout=subprocess.PIPE)
+        assistant_response('I opened a new calc document..')
+
+    @classmethod
+    def open_libreoffice_writer(cls, **kargs):
+        subprocess.Popen(['libreoffice', '-writer'], stdout=subprocess.PIPE)
+        assistant_response('I opened a new writer document..')
+
+    @classmethod
+    def open_libreoffice_impress(cls, **kargs):
+        subprocess.Popen(['libreoffice', '-impress'], stdout=subprocess.PIPE)
+        assistant_response('I opened a new impress document..')
+
     @staticmethod
     def enable_jarvis(**kwargs):
         """

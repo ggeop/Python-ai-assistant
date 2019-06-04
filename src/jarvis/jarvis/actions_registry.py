@@ -39,7 +39,21 @@ ACTIONS = {
                         'tags': {'hear', 'can you hear', 'hey jarvis'},
                         'description': 'Ask me if I "hear" you, e.g. Jarvis "can you hear" me?'
                         },
-
+    'open_libreoffice_calc': {'enable': True,
+                              'action': ActionManager.open_libreoffice_calc,
+                              'tags': {'open calc', 'open excel', 'calc', 'excel'},
+                              'description': 'Ask me to "open writer", e.g. Jarvis "can you open calc"?'
+                              },
+    'open_libreoffice_writer': {'enable': True,
+                                'action': ActionManager.open_libreoffice_writer,
+                                'tags': {'open writer', 'open word', 'writer', 'word'},
+                                'description': 'Ask me to "open writer", e.g. Jarvis "can you open writer"?'
+                               },
+    'open_libreoffice_impress': {'enable': True,
+                                'action': ActionManager.open_libreoffice_impress,
+                                'tags': {'open impress', 'open power point', 'impress', 'power point'},
+                                'description': 'Ask me to "open impress", e.g. Jarvis "can you open impress"?'
+                                },
 }
 
 
