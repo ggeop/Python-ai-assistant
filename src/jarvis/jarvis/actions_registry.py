@@ -7,8 +7,20 @@ Keys description:
     - 'enable': boolean (With True are the enabled actions)
     - 'action': The action method in ActionManager
     - 'tags': The available triggering tags
-    - 'description': Method description
+    - 'description': Action description
 """
+
+
+CONTROL_ACTIONS = {
+    'enable_jarvis': {'action': ActionManager.enable_jarvis,
+                      'tags': {'start', 'hi', 'hello', 'jarvis'}
+                      },
+
+    'disable_jarvis': {'action': ActionManager.disable_jarvis,
+                       'tags': {'bye', 'stop', 'shut down'}
+                       }
+}
+
 
 ACTIONS = {
     'open_browser': {'enable': True,
@@ -56,18 +68,14 @@ ACTIONS = {
                                 },
     'tell_memory_consumption': {'enable': True,
                                 'action': ActionManager.tell_memory_consumption,
-                                'tags': {'memory', 'memory consumption', 'are you busy'},
+                                'tags': {'ram', 'ram usage', 'memory', 'memory consumption', 'are you busy'},
                                 'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
                                 },
+    'open_in_youtube': {'enable': True,
+                        'action': ActionManager.open_in_youtube,
+                         'tags': {'open in youtube', 'find in youtube', 'play in youtube'},
+                         'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
+                        },
 
 }
 
-CONTROL_ACTIONS = {
-    'enable_jarvis': {'action': ActionManager.enable_jarvis,
-                      'tags': {'start', 'hi', 'hello', 'jarvis'}
-                      },
-
-    'disable_jarvis': {'action': ActionManager.disable_jarvis,
-                       'tags': {'bye', 'stop', 'shut down'}
-                       }
-}
