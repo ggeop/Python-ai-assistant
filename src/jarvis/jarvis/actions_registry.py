@@ -68,6 +68,6 @@ CONTROL_ACTIONS = {
                       },
 
     'disable_jarvis': {'action': ActionManager.disable_jarvis,
-                       'tags': {'stop', 'shut down'}
+                       'tags': {'bye', 'stop', 'shut down'}
                        }
 }
