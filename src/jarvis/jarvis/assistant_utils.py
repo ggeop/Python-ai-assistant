@@ -11,19 +11,27 @@ import wolframalpha
 from jarvis.settings import GOOGLE_SPEECH, GENERAL_SETTINGS, LOG_SETTINGS
 from jarvis.settings import WOLFRAMALPHA_API
 
-Jarvis_logo = ""\
-"         _                  _      \n"\
-"        | |                (_)     \n"\
-"        | | __ _ _ ____   ___ ___  \n"\
-"   _    | |/ _` | '__\ \ / / / __| \n"\
-"   | |__| | (_| | |   \ V /| \__ \ \n"\
-"    \____/ \__,_|_|    \_/ |_|___/ \n\n"
+
+jarvis_logo = "\n"\
+"      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n"\
+"      ██║██╔══██╗██╔══██╗██║   ██║██║██╔════╝\n"\
+"      ██║███████║██████╔╝██║   ██║██║███████╗\n"\
+" ██   ██║██╔══██║██╔══██╗╚██╗ ██╔╝██║╚════██║\n"\
+" ╚█████╔╝██║  ██║██║  ██║ ╚████╔╝ ██║███████║\n"\
+"  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝\n"\
+
+start_text = "\n"\
+" ###############################################\n"\
+" #    Jarvis Python Voice assistant Platform   #\n"\
+" ###############################################\n"\
+"\n"
 
 
 class OutputStyler:
     HEADER = '\033[95m'
     BLUE = '\033[94m'
     GREEN = '\033[92m'
+    CYAN = '\033[36m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
@@ -55,13 +63,16 @@ def assistant_response(text):
         speech = Speech(text, GOOGLE_SPEECH['lang'])
         speech.play()
     if GENERAL_SETTINGS['response_in_text']:
-        response = GENERAL_SETTINGS['assistant_name'] + ': ' + text + '\n'
-        sys.stdout.write(OutputStyler.GREEN + response + OutputStyler.ENDC)
+        assistant_name = GENERAL_SETTINGS['assistant_name'] + ': '
+        sys.stdout.write(assistant_name + OutputStyler.CYAN + text + '\n' + OutputStyler.ENDC)
 
 
 def user_speech_playback(text):
+    """
+    Prints the user commands
+    """
     user_speech = str('You: ' + text + '\n')
-    sys.stdout.write(OutputStyler.BLUE + user_speech + OutputStyler.ENDC)
+    sys.stdout.write(OutputStyler.CYAN + user_speech + OutputStyler.ENDC)
 
 
 def _clear():
@@ -76,7 +87,8 @@ def start_up():
     Clear the console and print the assistant logo.
     """
     _clear()
-    sys.stdout.write(OutputStyler.HEADER + Jarvis_logo + OutputStyler.ENDC)
+    sys.stdout.write(OutputStyler.CYAN + jarvis_logo  + OutputStyler.ENDC)
+    sys.stdout.write(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
 
 
 def call_wolframalpha(voice_transcript):
