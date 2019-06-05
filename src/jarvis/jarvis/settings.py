@@ -59,11 +59,11 @@ GOOGLE_SPEECH = {
 # Create key: https://openweathermap.org/appid
 WEATHER_API = {
     'unit': 'celsius',
-    'key': 'create_your_own_key'
+    'key': None
 }
 
 # WolframAlpha API conf settings
 # Create key: https://developer.wolframalpha.com/portal/myapps/
 WOLFRAMALPHA_API = {
-    'key': 'create_your_own_key'
+    'key': None
 }
