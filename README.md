@@ -1,4 +1,4 @@
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_logo.png)
+![alt text](https://github.com/ggeop/Jarvis-voice-assistant/blob/development/imgs/jarvis_logo.png)
 
 # About Jarvis
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
