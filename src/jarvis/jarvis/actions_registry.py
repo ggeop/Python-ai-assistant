@@ -54,8 +54,13 @@ ACTIONS = {
                                 'tags': {'open impress', 'open power point', 'impress', 'power point'},
                                 'description': 'Ask me to "open impress", e.g. Jarvis "can you open impress"?'
                                 },
-}
+    'tell_memory_consumption': {'enable': True,
+                                'action': ActionManager.tell_memory_consumption,
+                                'tags': {'memory', 'memory consumption', 'are you busy'},
+                                'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
+                                },
 
+}
 
 CONTROL_ACTIONS = {
     'enable_jarvis': {'action': ActionManager.enable_jarvis,

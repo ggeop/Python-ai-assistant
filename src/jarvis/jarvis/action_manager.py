@@ -1,5 +1,7 @@
 import sys
 import re
+import os
+import psutil
 import subprocess
 import wikipedia
 import logging
@@ -150,6 +152,16 @@ class ActionManager:
 
         return {'ready_to_execute': True,
                 'enable_time': now}
+
+    @staticmethod
+    def tell_memory_consumption(**kwargs):
+        """
+        Responds the memory consumption of the assistant process
+        """
+        pid = os.getpid()
+        py = psutil.Process(pid)
+        memoryUse = py.memory_info()[0] / 2. ** 30  # memory use in GB...I think
+        assistant_response('I use {} GB..'.format(memoryUse))
 
     @staticmethod
     def disable_jarvis(**kargs):
