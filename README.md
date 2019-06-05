@@ -1,6 +1,5 @@
 ![alt text](https://github.com/ggeop/Jarvis-voice-assistant/blob/development/imgs/jarvis_logo.png)
 
-# About Jarvis
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
