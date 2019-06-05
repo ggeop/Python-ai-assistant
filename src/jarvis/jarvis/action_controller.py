@@ -113,8 +113,7 @@ class ActionController:
                 assistant_response('....')
                 self.latest_voice_transcript = self.get_voice_transcript()
         else:
-            self.latest_voice_transcript = input('User said: ')
-
+            self.latest_voice_transcript = input('You: ')
         return self.latest_voice_transcript
 
     def _record(self):
