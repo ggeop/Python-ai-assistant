@@ -1,19 +1,43 @@
 import logging
+import sys
 import speech_recognition as sr
 from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
-from jarvis.assistant_utils import assistant_response, user_speech_playback, log
+from jarvis.assistant_utils import assistant_response, user_speech_playback, log, _clear
 from jarvis.actions_registry import ACTIONS, CONTROL_ACTIONS
 
 
 class ActionController:
     def __init__(self):
-        self.microphone = sr.Microphone()
+        self.microphone = self._set_microphone()
         self.r = sr.Recognizer()
         self.actions_to_execute = []
         self.latest_voice_transcript = ''
         self.execute_state = {'ready_to_execute': False, 'enable_time': None}
+
+    def _set_microphone(self):
+        """
+        Setup the assistant microphone.
+        """
+        microphone_list = sr.Microphone.list_microphone_names()
+
+        _clear()
+        sys.stdout.write("="*48 + '\n')
+        sys.stdout.write("Microphone Setup\n")
+        sys.stdout.write("Which microphone do you want to use a assistant mic:\n")
+
+        for index, name in enumerate(microphone_list):
+            sys.stdout.write("{0}) Microphone: {1}".format(index, name))
+
+        choices = "Choice[1-{0}]: ".format(len(microphone_list))
+        index = input(choices)
+
+        while not index.isnumeric():
+            index = input('Please select a number between choices[1-{0}]: '.format(len(microphone_list)))
+
+        return sr.Microphone(device_index=int(index))
+
 
     def wake_up_check(self):
         """
@@ -43,7 +67,7 @@ class ActionController:
         Checks for enable tag and if exists return a boolean
         return: boolean
         """
-        self.get_voice_transcript()
+        self.get_transcript()
 
         transcript_words = self.latest_voice_transcript.split()
         enable_tag = set(transcript_words).intersection(CONTROL_ACTIONS['enable_jarvis']['tags'])
@@ -60,6 +84,8 @@ class ActionController:
         if datetime.now() > self.execute_state['enable_time'] + timedelta(seconds=GENERAL_SETTINGS['enable_period']):
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
+
+            assistant_response("Time passed.. I go to sleep..")
             return False
         else:
             return True
@@ -99,7 +125,7 @@ class ActionController:
             # Remove the executed or not action from the queue
             self.actions_to_execute.remove(action)
 
-    def get_voice_transcript(self):
+    def get_transcript(self):
         """
         Capture the words from the recorded audio (audio stream --> free text).
         """
@@ -111,7 +137,7 @@ class ActionController:
                 user_speech_playback(self.latest_voice_transcript)
             except sr.UnknownValueError:
                 assistant_response('....')
-                self.latest_voice_transcript = self.get_voice_transcript()
+                self.latest_voice_transcript = self.get_transcript()
         else:
             self.latest_voice_transcript = input('You: ')
         return self.latest_voice_transcript

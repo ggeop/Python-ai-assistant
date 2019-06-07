@@ -20,7 +20,7 @@ class Processor:
             if internet_check():
 
                 # Record user voice and create a voice transcipt
-                self.action_controller.get_voice_transcript()
+                self.action_controller.get_transcript()
 
                 # Extract actions and update the actions (state of action controller)
                 self.action_controller.get_user_actions()
