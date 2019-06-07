@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/ggeop/jarvis-voice-assistant/badge)](https://www.codefactor.io/repository/github/ggeop/jarvis-voice-assistant)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # About
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
@@ -9,11 +11,13 @@ It can understand human speech, talk to user and execute basic commands.
 
 ## Features
 * **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
-* **Opens a web page** (e.g Jarvis open youtube)
+* **Execute multiple commands at once**, (e.g 'open youtube and tell me the time')
+* **Opens a web page** (e.g 'Jarvis open youtube')
+* **Play a video in Youtube** (e.g 'find in you tdex in youtube')
 * **Opens libreoffice suite applications** (calc, writer, impress)
-* **Tells about something**, by searching on the internet (e.g Jarvis tells me about oranges)
-* **Tells the weather** for a place (e.g Jarvis tell me the weather in London)
-* **Tells the current time** (e.g Jarvis tells me time)
+* **Tells about something**, by searching on the internet (e.g 'Jarvis tells me about oranges')
+* **Tells the weather** for a place (e.g 'Jarvis tell me the weather in London')
+* **Tells the current time** (e.g 'Jarvis tells me time')
 * **Uses wolfram API** for general questions
 * Easy **voice-command customization**
 * **Vocal or/and text response**
@@ -71,6 +75,12 @@ virtualenv ~/Jarvis/py_env
 ```
 
 ### Install Python Dependencies
+* Install python-dev package and pyaudio packages if they are not already installed:
+```
+sudo apt-get install python-dev
+sudo apt-get install portaudio19-dev python-pyaudio python3-pyaudio
+sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev sox
+```
 * Activate the virtual environment:
 ```
 source ~/Jarvis/py_env/bin/activate
@@ -84,6 +94,11 @@ pip install -r requirements.txt
 * Before you start running the application you have to put the free KEYs in the settings.py:
 ```
 nano Jarvis/src/jarvis/jarvis/setting.py
+```
+
+### Give access to produce logs in log directory
+```bash
+sudo chown user:usergroup /var/log
 ```
 
 ### Start voice assistant
