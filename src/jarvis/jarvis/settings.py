@@ -34,7 +34,7 @@ LOG_SETTINGS = {
 # General assistant settings
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
-    'enable_period': 30,  # In seconds
+    'enable_period': 90,  # In seconds
     'user_voice_input': True,  # True: The assistant responds in voice commands,
                                 # False: The assistant waiting for text input
     'response_in_speech': False,
