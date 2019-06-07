@@ -64,16 +64,18 @@ def assistant_response(text):
         speech.play()
     if GENERAL_SETTINGS['response_in_text']:
         assistant_name = GENERAL_SETTINGS['assistant_name'] + ': '
+        sys.stdout.write('-'*48 + '\n')
         sys.stdout.write(assistant_name + OutputStyler.CYAN + text + '\n' + OutputStyler.ENDC)
-
+        sys.stdout.write('-'*48 + '\n\n')
 
 def user_speech_playback(text):
     """
     Prints the user commands
     """
     user_speech = str('You: ' + text + '\n')
+    sys.stdout.write('+' * 48 + '\n')
     sys.stdout.write(OutputStyler.CYAN + user_speech + OutputStyler.ENDC)
-
+    sys.stdout.write('+'*48 + '\n\n')
 
 def _clear():
     """
