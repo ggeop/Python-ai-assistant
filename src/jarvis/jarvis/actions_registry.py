@@ -48,7 +48,7 @@ ACTIONS = {
                         },
     'assistant_check': {'enable': True,
                         'action': ActionManager.assistant_check,
-                        'tags': {'hear', 'can you hear', 'hey jarvis'},
+                        'tags': {'hi', 'jarvis', 'hear', 'can you hear', 'hey jarvis'},
                         'description': 'Ask me if I "hear" you, e.g. Jarvis "can you hear" me?'
                         },
     'open_libreoffice_calc': {'enable': True,
