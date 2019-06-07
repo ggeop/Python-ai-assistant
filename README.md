@@ -4,12 +4,7 @@
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
-## Jarvis in action console output
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
-
-*[Behind the scenes](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
-
-## Features
+### Features
 * **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
 * **Execute multiple commands at once**, (e.g 'open youtube and tell me the time')
 * **Opens a web page** (e.g 'Jarvis open youtube')
@@ -21,6 +16,11 @@ It can understand human speech, talk to user and execute basic commands.
 * **Uses wolfram API** for general questions
 * Easy **voice-command customization**
 * **Vocal or/and text response**
+
+### Jarvis in action console output
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
+
+*[Behind the scenes](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
 
 ### How to add a new feature
 You can easily add a new feature in two steps.
