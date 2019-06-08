@@ -23,21 +23,23 @@ class ActionController:
         microphone_list = sr.Microphone.list_microphone_names()
 
         _clear()
-        sys.stdout.write("="*48 + '\n')
-        sys.stdout.write("Microphone Setup\n")
-        sys.stdout.write("Which microphone do you want to use a assistant mic:\n")
+        print("="*48)
+        print("Microphone Setup")
+        print("=" * 48)
+        print("Which microphone do you want to use a assistant mic:")
 
         for index, name in enumerate(microphone_list):
-            sys.stdout.write("{0}) Microphone: {1}".format(index, name))
+            print("{0}) Microphone: {1}".format(index, name))
 
         choices = "Choice[1-{0}]: ".format(len(microphone_list))
+        print("WARNING: In case of error of 'Invalid number of channels' try again with different micrphone choice")
         index = input(choices)
 
         while not index.isnumeric():
             index = input('Please select a number between choices[1-{0}]: '.format(len(microphone_list)))
 
-        return sr.Microphone(device_index=int(index))
-
+        with sr.Microphone(device_index=int(index), chunk_size=512) as source:
+            return source
 
     def wake_up_check(self):
         """
