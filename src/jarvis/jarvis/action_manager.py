@@ -96,12 +96,15 @@ class ActionManager:
                 if WEATHER_API['key']:
                     city = reg_ex.group(1)
                     owm = OWM(API_key=WEATHER_API['key'])
-                    obs = owm.weather_at_place(city)
-                    w = obs.get_weather()
-                    k = w.get_status()
-                    x = w.get_temperature(WEATHER_API['unit'])
-                    assistant_response('Current weather in %s is %s. The maximum temperature is %0.2f and the minimum '
+                    if owm.is_API_online():
+                        obs = owm.weather_at_place(city)
+                        w = obs.get_weather()
+                        k = w.get_status()
+                        x = w.get_temperature(WEATHER_API['unit'])
+                        assistant_response('Current weather in %s is %s. The maximum temperature is %0.2f and the minimum '
                                        'temperature is %0.2f degree celcius' % (city, k, x['temp_max'], x['temp_min']))
+                    else:
+                        assistant_response("Sorry the weather API is not available now..")
                 else:
                     assistant_response("Weather forecast is not working.\n"
                                        "You can get an Weather API key from: https://openweathermap.org/appid")

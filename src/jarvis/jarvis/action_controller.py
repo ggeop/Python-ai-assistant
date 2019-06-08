@@ -16,7 +16,8 @@ class ActionController:
         self.latest_voice_transcript = ''
         self.execute_state = {'ready_to_execute': False, 'enable_time': None}
 
-    def _set_microphone(self):
+    @staticmethod
+    def _set_microphone():
         """
         Setup the assistant microphone.
         """

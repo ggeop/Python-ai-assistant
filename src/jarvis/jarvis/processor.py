@@ -1,5 +1,5 @@
 from jarvis.action_controller import ActionController
-from jarvis.assistant_utils import start_up, call_wolframalpha, internet_check
+from jarvis.assistant_utils import start_up, call_wolframalpha, internet_connectivity_check
 
 
 class Processor:
@@ -17,7 +17,7 @@ class Processor:
         # Check if the assistant is waked up
         if self.action_controller.wake_up_check():
 
-            if internet_check():
+            if internet_connectivity_check():
 
                 # Record user voice and create a voice transcipt
                 self.action_controller.get_transcript()

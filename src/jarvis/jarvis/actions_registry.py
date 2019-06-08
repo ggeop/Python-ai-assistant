@@ -69,12 +69,13 @@ ACTIONS = {
     'tell_memory_consumption': {'enable': True,
                                 'action': ActionManager.tell_memory_consumption,
                                 'tags': {'ram', 'ram usage', 'memory', 'memory consumption', 'are you busy'},
-                                'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
+                                'description': 'Ask for the memory consumption, '
+                                               'e.g. Jarvis how much "memory" are you using?'
                                 },
     'open_in_youtube': {'enable': True,
                         'action': ActionManager.open_in_youtube,
-                         'tags': {'open in youtube', 'find in youtube', 'play in youtube'},
-                         'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
+                        'tags': {'open in youtube', 'find in youtube', 'play in youtube'},
+                        'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
                         },
 
 }

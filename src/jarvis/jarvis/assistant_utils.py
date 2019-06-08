@@ -78,7 +78,7 @@ def user_speech_playback(text):
     Prints the user commands
     """
     print('-' * 48)
-    print('You: ' + OutputStyler.CYAN + text +'\n' + OutputStyler.ENDC)
+    print('You: ' + OutputStyler.CYAN + text + OutputStyler.ENDC)
     print('-'*48 + '\n')
 
 
@@ -116,9 +116,9 @@ def call_wolframalpha(voice_transcript):
         assistant_response('Sorry, but I can not understand what do you want')
 
 
-def internet_check(url='http://www.google.com/', timeout=2):
+def internet_connectivity_check(url='http://www.google.com/', timeout=2):
     """
-    Internet connectivity check.
+    Checks for internet connection availability based on google page.
     """
     try:
         _ = requests.get(url, timeout=timeout)
