@@ -7,7 +7,6 @@ from subprocess import call
 from logging import config
 
 from jarvis.settings import LOG_SETTINGS
-from jarvis.utils.response_utils import assistant_response
 
 jarvis_logo = "\n"\
 "      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n"\
@@ -80,5 +79,4 @@ def internet_connectivity_check(url='http://www.google.com/', timeout=2):
         return True
     except requests.ConnectionError:
         logging.info("No internet connection.")
-        assistant_response("I inform you that I face internet connectivity problem")
     return False

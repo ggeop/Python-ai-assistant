@@ -1,7 +1,7 @@
 from jarvis.actions import Actions
 from jarvis.utils.application_utils import start_up, internet_connectivity_check
 from jarvis.utils.wolframalpha_util import call_wolframalpha
-
+from jarvis.utils.response_utils import stdout_print
 
 class Processor:
     def __init__(self):
@@ -36,3 +36,5 @@ class Processor:
                     # If there is not an action the assistant make a request in
                     # WolframAlpha api for response
                     call_wolframalpha(self.action_controller.latest_voice_transcript)
+            else:
+                stdout_print("WARNING: No internet connection, a lot of skills will not work.")

@@ -6,7 +6,7 @@ from jarvis.settings import GOOGLE_SPEECH, GENERAL_SETTINGS
 
 def assistant_response(text):
     """
-    Assistant response in voice or/and in text
+    Assistant response in voice or/and in text.
     :param text: string
     """
     if GENERAL_SETTINGS['response_in_speech']:
@@ -21,9 +21,22 @@ def assistant_response(text):
 
 def user_speech_playback(text):
     """
-    Prints the user commands
+    Prints the user commands in voice or/and in text.
+    :param text: string
     """
-    print('-' * 48)
-    print('You: ' + OutputStyler.CYAN + text + OutputStyler.ENDC)
-    print('-'*48 + '\n')
+    if GENERAL_SETTINGS['response_in_speech']:
+        speech = Speech(text, GOOGLE_SPEECH['lang'])
+        speech.play()
+    if GENERAL_SETTINGS['response_in_text']:
+        print('-' * 48)
+        print('You: ' + OutputStyler.CYAN + text + OutputStyler.ENDC)
+        print('-'*48 + '\n')
 
+
+def stdout_print(text):
+    """
+    Application stdout with format.
+    :param text: string
+    """
+    if GENERAL_SETTINGS['response_in_text']:
+        print(OutputStyler.CYAN + text + OutputStyler.ENDC)
