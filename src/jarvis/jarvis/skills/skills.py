@@ -18,8 +18,8 @@ from jarvis.utils.response_utils import assistant_response
 
 class Skills:
 
-    @staticmethod
-    def enable_jarvis(**kwargs):
+    @classmethod
+    def enable_jarvis(cls, **kwargs):
         """
         Creates the assistant respond according to the datetime hour and
         updates the execute state.
@@ -38,8 +38,8 @@ class Skills:
         return {'ready_to_execute': True,
                 'enable_time': now}
 
-    @staticmethod
-    def disable_jarvis(**kargs):
+    @classmethod
+    def disable_jarvis(cls, **kargs):
         """
         Shutdown the assistant service
         :param args:
@@ -70,7 +70,7 @@ class Skills:
                 assistant_response('I opened the {0}'.format(domain))
         except Exception as e:
             logging.debug(e)
-            assistant_response("I can't find this domain '{0}'".format(domain))
+            assistant_response("I can't find this domain..")
 
     @classmethod
     def _create_url(cls, tag):
@@ -114,8 +114,8 @@ class Skills:
             print(e)
             assistant_response("I faced an issue with the weather site..")
 
-    @staticmethod
-    def _get_weather_status_and_temperature(city):
+    @classmethod
+    def _get_weather_status_and_temperature(cls, city):
         owm = OWM(API_key=WEATHER_API['key'])
         if owm.is_API_online():
             obs = owm.weather_at_place(city)
@@ -126,8 +126,8 @@ class Skills:
         else:
             return None, None
 
-    @staticmethod
-    def tell_the_time(**kwargs):
+    @classmethod
+    def tell_the_time(cls,**kwargs):
         """
         Tells ths current time
         """
@@ -196,7 +196,7 @@ class Skills:
         subprocess.Popen(['libreoffice', '-impress'], stdout=subprocess.PIPE)
         assistant_response('I opened a new impress document..')
 
-    @staticmethod
+    @classmethod
     def tell_memory_consumption(**kwargs):
         """
         Responds the memory consumption of the assistant process
@@ -206,8 +206,8 @@ class Skills:
         memoryUse = py.memory_info()[0] / 2. ** 30  # memory use in GB...I think
         assistant_response('I use {} GB..'.format(memoryUse))
 
-    @staticmethod
-    def open_in_youtube(tag, voice_transcript, **kwargs):
+    @classmethod
+    def open_in_youtube(cls, tag, voice_transcript, **kwargs):
         """
         Open a video in youtube.
         :param tag: string (e.g 'tdex')
@@ -254,8 +254,8 @@ class Skills:
         else:
             assistant_response("I coudn't run a speedtest")
 
-    @staticmethod
-    def _decode_json(response_bytes):
+    @classmethod
+    def _decode_json(cls, response_bytes):
         json_response = response_bytes.decode('utf8').replace("'", '"')
         return json.loads(json_response)
 
