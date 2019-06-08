@@ -18,13 +18,13 @@ jarvis_logo = "\n"\
 "      ██║███████║██████╔╝██║   ██║██║███████╗\n"\
 " ██   ██║██╔══██║██╔══██╗╚██╗ ██╔╝██║╚════██║\n"\
 " ╚█████╔╝██║  ██║██║  ██║ ╚████╔╝ ██║███████║\n"\
-"  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝\n"\
+"  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝\n"
+
 
 start_text = "\n"\
 " ###############################################\n"\
 " #    Jarvis Python Voice Assistant Platform   #\n"\
-" ###############################################\n"\
-"\n"
+" ###############################################\n"
 
 
 class OutputStyler:
@@ -44,6 +44,10 @@ config.dictConfig(LOG_SETTINGS)
 
 
 def log(func):
+    """
+    Logging wrapper
+    :param func: function object
+    """
     def wrapper(*args, **kwargs):
         try:
             logging.debug(func.__name__)
@@ -64,18 +68,19 @@ def assistant_response(text):
         speech.play()
     if GENERAL_SETTINGS['response_in_text']:
         assistant_name = GENERAL_SETTINGS['assistant_name'] + ': '
-        sys.stdout.write('-'*48 + '\n')
-        sys.stdout.write(assistant_name + OutputStyler.CYAN + text + '\n' + OutputStyler.ENDC)
-        sys.stdout.write('-'*48 + '\n\n')
+        print('-'*48)
+        print(assistant_name + OutputStyler.CYAN + text + OutputStyler.ENDC)
+        print('-'*48 + '\n')
+
 
 def user_speech_playback(text):
     """
     Prints the user commands
     """
-    user_speech = str('You: ' + text + '\n')
-    sys.stdout.write('+' * 48 + '\n')
-    sys.stdout.write(OutputStyler.CYAN + user_speech + OutputStyler.ENDC)
-    sys.stdout.write('+'*48 + '\n\n')
+    print('-' * 48)
+    print('You: ' + OutputStyler.CYAN + text +'\n' + OutputStyler.ENDC)
+    print('-'*48 + '\n')
+
 
 def _clear():
     """
@@ -89,8 +94,8 @@ def start_up():
     Clear the console and print the assistant logo.
     """
     _clear()
-    sys.stdout.write(OutputStyler.CYAN + jarvis_logo  + OutputStyler.ENDC)
-    sys.stdout.write(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
+    print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
+    print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
 
 
 def call_wolframalpha(voice_transcript):
