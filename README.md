@@ -13,6 +13,8 @@ It can understand human speech, talk to user and execute basic commands.
 * **Tells about something**, by searching on the internet (e.g 'Jarvis tells me about oranges')
 * **Tells the weather** for a place (e.g 'Jarvis tell me the weather in London')
 * **Tells the current time** (e.g 'Jarvis tells me time')
+* **Tells the internet speed (ping, uplink and downling)** (e.g 'Jarvis tell me the internet speed')
+* **Spell a word** (e.g 'Jarvis spell me the word animal')
 * **Uses wolfram API** for general questions
 * Easy **voice-command customization**
 * **Vocal or/and text response**

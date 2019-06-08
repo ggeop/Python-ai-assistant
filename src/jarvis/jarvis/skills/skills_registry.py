@@ -48,7 +48,7 @@ BASIC_SKILLS = {
                         },
     'assistant_check': {'enable': True,
                         'skill': Skills.assistant_check,
-                        'tags': {'hi', 'jarvis', 'hear', 'can you hear', 'hey jarvis'},
+                        'tags': {'hi', 'hear', 'can you hear', 'hey jarvis', 'are you there'},
                         'description': 'Ask me if I "hear" you, e.g. Jarvis "can you hear" me?'
                         },
     'open_libreoffice_calc': {'enable': True,
@@ -80,8 +80,13 @@ BASIC_SKILLS = {
     'run_speedtest': {'enable': True,
                       'skill': Skills.run_speedtest,
                       'tags': {'speedtest', 'internet speed', 'ping'},
-                      'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
+                      'description': 'Ask for internet speedtest, e.g. Jarvis tell me the "internet speed"?'
                       },
+    'spell_a_word': {'enable': True,
+                     'skill': Skills.spell_a_word,
+                     'tags': {'spell', 'spell the word'},
+                     'description': 'Ask to spell a word, e.g. Jarvis can you spell the word "animal"?'
+                     },
 
 }
 

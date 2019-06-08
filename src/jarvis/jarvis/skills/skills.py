@@ -2,6 +2,7 @@ import sys
 import re
 import os
 import json
+import time
 import psutil
 import subprocess
 import wikipedia
@@ -257,3 +258,16 @@ class Skills:
     def _decode_json(response_bytes):
         json_response = response_bytes.decode('utf8').replace("'", '"')
         return json.loads(json_response)
+
+    @classmethod
+    def spell_a_word(cls, tag, voice_transcript, **kwargs):
+        reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
+        try:
+            if reg_ex:
+                search_text = reg_ex.group(1)
+                for letter in search_text:
+                    assistant_response(letter)
+                    time.sleep(2)
+        except Exception as e:
+            logging.debug(e)
+            assistant_response("I can't spell the word")
