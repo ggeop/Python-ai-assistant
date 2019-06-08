@@ -14,7 +14,7 @@ from jarvis.settings import WEATHER_API
 from jarvis.assistant_utils import assistant_response
 
 
-class ActionManager:
+class SkillManager:
 
     @staticmethod
     def enable_jarvis(**kwargs):
@@ -48,7 +48,7 @@ class ActionManager:
         sys.exit()
 
     @classmethod
-    def open_website_in_browser(cls, tag, voice_transcript, action):
+    def open_website_in_browser(cls, tag, voice_transcript, skill):
         """
         Opens a web page in the browser.
         :param tag: string (e.g 'open')
@@ -84,7 +84,7 @@ class ActionManager:
         return url
 
     @classmethod
-    def tell_the_weather(cls, tag, voice_transcript, action):
+    def tell_the_weather(cls, tag, voice_transcript, skill):
         """
         Tells the weather of a place
         :param tag: string (e.g 'weather')
@@ -121,7 +121,7 @@ class ActionManager:
         assistant_response('The current time is: {0}:{1}'.format(now.hour, now.minute))
 
     @classmethod
-    def tell_me_about(cls, tag, voice_transcript, action):
+    def tell_me_about(cls, tag, voice_transcript, skill):
         """
         Tells about something by searching in wikipedia
         :param tag: string (e.g 'about')

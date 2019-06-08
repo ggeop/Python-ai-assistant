@@ -1,10 +1,10 @@
-from jarvis.action_controller import ActionController
+from jarvis.actions import Actions
 from jarvis.assistant_utils import start_up, call_wolframalpha, internet_connectivity_check
 
 
 class Processor:
     def __init__(self):
-        self.action_controller = ActionController()
+        self.action_controller = Actions()
 
     def run(self):
         start_up()
@@ -23,10 +23,10 @@ class Processor:
                 self.action_controller.get_transcript()
 
                 # Extract actions and update the actions (state of action controller)
-                self.action_controller.get_user_actions()
+                self.action_controller.get_skills()
 
                 # Checks is there is an action to execute them
-                if self.action_controller.actions_to_execute:
+                if self.action_controller.skills_to_execute:
                     self.action_controller.execute()
                 else:
                     # Check for shutdown

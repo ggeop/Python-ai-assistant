@@ -1,20 +1,91 @@
 import logging
-import sys
 import speech_recognition as sr
 from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
 from jarvis.assistant_utils import assistant_response, user_speech_playback, log, _clear
-from jarvis.actions_registry import ACTIONS, CONTROL_ACTIONS
+from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 
 
-class ActionController:
+class Actions:
     def __init__(self):
         self.microphone = self._set_microphone()
         self.r = sr.Recognizer()
-        self.actions_to_execute = []
+        self.skills_to_execute = []
         self.latest_voice_transcript = ''
         self.execute_state = {'ready_to_execute': False, 'enable_time': None}
+
+    def wake_up_check(self):
+        """
+        Checks if the state of the skill manager (ready_to_execute)
+        and if is not enabled search for enable word in user recorded speech.
+        :return: boolean
+        """
+
+        if not self.execute_state['ready_to_execute']:
+            return self._ready_to_start()
+        else:
+            return self._continue_listening()
+
+    @log
+    def shutdown_check(self):
+        """
+        Checks if there is the shutdown word, and if exists the assistant service stops.
+        """
+        transcript_words = self.latest_voice_transcript.split()
+        shutdown_tag = set(transcript_words).intersection(CONTROL_SKILLS['disable_jarvis']['tags'])
+
+        if bool(shutdown_tag):
+            CONTROL_SKILLS['disable_jarvis']['skill']()
+
+    @log
+    def get_skills(self):
+        """
+        This method identifies the active skills from the voice transcript
+        and updates the skills state.
+
+        e.x. latest_voice_transcript='open youtube'
+        Then, the skills_to_execute will be the following:
+        skills_to_execute=[{voice_transcript': 'open youtube',
+                             'tag': 'open',
+                             'skill': SkillManager.open_website_in_browser
+                            ]
+        """
+        for skill in BASIC_SKILLS.values():
+            if skill['enable']:
+                for tag in skill['tags']:
+                    if tag in self.latest_voice_transcript:
+                        skill = {'voice_transcript': self.latest_voice_transcript,
+                                  'tag': tag,
+                                  'skill': skill['skill']}
+
+                        logging.debug('Update skills queue with skill: {0}'.format(skill))
+                        self.skills_to_execute.append(skill)
+
+    def execute(self):
+        """
+        Execute one-by-one all the user skills and empty the queue with the waiting skills.
+        """
+        for skill in self.skills_to_execute:
+            logging.debug('Execute the skill {0}'.format(skill))
+            skill['skill'](**skill)
+
+            # Remove the executed or not skill from the queue
+            self.skills_to_execute.remove(skill)
+
+    def get_transcript(self):
+        """
+        Capture the words from the recorded audio (audio stream --> free text).
+        """
+        if GENERAL_SETTINGS['user_voice_input']:
+            audio = self._record()
+            self._recognize_voice(audio)
+        else:
+            self.latest_voice_transcript = input('You: ')
+        return self.latest_voice_transcript
+
+    # Private methods
+    ###################################################################################################################
 
     @staticmethod
     def _set_microphone():
@@ -24,7 +95,7 @@ class ActionController:
         microphone_list = sr.Microphone.list_microphone_names()
 
         _clear()
-        print("="*48)
+        print("=" * 48)
         print("Microphone Setup")
         print("=" * 48)
         print("Which microphone do you want to use a assistant mic:")
@@ -42,29 +113,6 @@ class ActionController:
         with sr.Microphone(device_index=int(index), chunk_size=512) as source:
             return source
 
-    def wake_up_check(self):
-        """
-        Checks if the state of the action manager (ready_to_execute)
-        and if is not enabled search for enable word in user recorded speech.
-        :return: boolean
-        """
-
-        if not self.execute_state['ready_to_execute']:
-            return self._ready_to_start()
-        else:
-            return self._continue_listening()
-
-    @log
-    def shutdown_check(self):
-        """
-        Checks if there is the shutdown word, and if exists the assistant service stops.
-        """
-        transcript_words = self.latest_voice_transcript.split()
-        shutdown_tag = set(transcript_words).intersection(CONTROL_ACTIONS['disable_jarvis']['tags'])
-
-        if bool(shutdown_tag):
-            CONTROL_ACTIONS['disable_jarvis']['action']()
-
     def _ready_to_start(self):
         """
         Checks for enable tag and if exists return a boolean
@@ -73,10 +121,10 @@ class ActionController:
         self.get_transcript()
 
         transcript_words = self.latest_voice_transcript.split()
-        enable_tag = set(transcript_words).intersection(CONTROL_ACTIONS['enable_jarvis']['tags'])
+        enable_tag = set(transcript_words).intersection(CONTROL_SKILLS['enable_jarvis']['tags'])
 
         if bool(enable_tag):
-            self.execute_state = CONTROL_ACTIONS['enable_jarvis']['action']()
+            self.execute_state = CONTROL_SKILLS['enable_jarvis']['skill']()
             return True
 
     def _continue_listening(self):
@@ -92,52 +140,6 @@ class ActionController:
             return False
         else:
             return True
-
-    @log
-    def get_user_actions(self):
-        """
-        This method identifies the active actions from the voice transcript
-        and updates the actions state.
-
-        e.x. latest_voice_transcript='open youtube'
-        Then, the actions_to_execute will be the following:
-        actions_to_execute=[{voice_transcript': 'open youtube',
-                             'tag': 'open',
-                             'action': ActionManager.open_website_in_browser
-                            ]
-        """
-        for action in ACTIONS.values():
-            if action['enable']:
-                for tag in action['tags']:
-                    if tag in self.latest_voice_transcript:
-                        action = {'voice_transcript': self.latest_voice_transcript,
-                                  'tag': tag,
-                                  'action': action['action']}
-
-                        logging.debug('Update actions queue with action: {0}'.format(action))
-                        self.actions_to_execute.append(action)
-
-    def execute(self):
-        """
-        Execute one-by-one all the user actions and empty the queue with the waiting actions.
-        """
-        for action in self.actions_to_execute:
-            logging.debug('Execute the action {0}'.format(action))
-            action['action'](**action)
-
-            # Remove the executed or not action from the queue
-            self.actions_to_execute.remove(action)
-
-    def get_transcript(self):
-        """
-        Capture the words from the recorded audio (audio stream --> free text).
-        """
-        if GENERAL_SETTINGS['user_voice_input']:
-            audio = self._record()
-            self._recognize_voice(audio)
-        else:
-            self.latest_voice_transcript = input('You: ')
-        return self.latest_voice_transcript
 
     def _recognize_voice(self, audio):
         try:
