@@ -133,16 +133,20 @@ class ActionController:
         """
         if GENERAL_SETTINGS['user_voice_input']:
             audio = self._record()
-            try:
-                self.latest_voice_transcript = self.r.recognize_google(audio).lower()
-                logging.debug('Recognized words: ' + self.latest_voice_transcript)
-                user_speech_playback(self.latest_voice_transcript)
-            except sr.UnknownValueError:
-                assistant_response('....')
-                self.latest_voice_transcript = self.get_transcript()
+            self._recognize_voice(audio)
         else:
             self.latest_voice_transcript = input('You: ')
         return self.latest_voice_transcript
+
+    def _recognize_voice(self, audio):
+        try:
+            self.latest_voice_transcript = self.r.recognize_google(audio).lower()
+            logging.debug('Recognized words: ' + self.latest_voice_transcript)
+            user_speech_playback(self.latest_voice_transcript)
+        except sr.UnknownValueError:
+            assistant_response('....')
+        except sr.RequestError:
+            assistant_response("Try later.. (Google API was unreachable..)")
 
     def _record(self):
         """
