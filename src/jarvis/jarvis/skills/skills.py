@@ -1,6 +1,8 @@
 import sys
 import re
 import os
+import json
+import time
 import psutil
 import subprocess
 import wikipedia
@@ -11,13 +13,13 @@ from datetime import datetime
 from bs4 import BeautifulSoup as bs
 
 from jarvis.settings import WEATHER_API
-from jarvis.assistant_utils import assistant_response
+from jarvis.utils.response_utils import assistant_response
 
 
-class ActionManager:
+class Skills:
 
-    @staticmethod
-    def enable_jarvis(**kwargs):
+    @classmethod
+    def enable_jarvis(cls, **kwargs):
         """
         Creates the assistant respond according to the datetime hour and
         updates the execute state.
@@ -36,8 +38,8 @@ class ActionManager:
         return {'ready_to_execute': True,
                 'enable_time': now}
 
-    @staticmethod
-    def disable_jarvis(**kargs):
+    @classmethod
+    def disable_jarvis(cls, **kargs):
         """
         Shutdown the assistant service
         :param args:
@@ -48,7 +50,7 @@ class ActionManager:
         sys.exit()
 
     @classmethod
-    def open_website_in_browser(cls, tag, voice_transcript, action):
+    def open_website_in_browser(cls, tag, voice_transcript, skill):
         """
         Opens a web page in the browser.
         :param tag: string (e.g 'open')
@@ -68,7 +70,7 @@ class ActionManager:
                 assistant_response('I opened the {0}'.format(domain))
         except Exception as e:
             logging.debug(e)
-            assistant_response("I can't find this domain '{0}'".format(domain))
+            assistant_response("I can't find this domain..")
 
     @classmethod
     def _create_url(cls, tag):
@@ -84,7 +86,7 @@ class ActionManager:
         return url
 
     @classmethod
-    def tell_the_weather(cls, tag, voice_transcript, action):
+    def tell_the_weather(cls, tag, voice_transcript, skill):
         """
         Tells the weather of a place
         :param tag: string (e.g 'weather')
@@ -95,22 +97,37 @@ class ActionManager:
             if reg_ex:
                 if WEATHER_API['key']:
                     city = reg_ex.group(1)
-                    owm = OWM(API_key=WEATHER_API['key'])
-                    obs = owm.weather_at_place(city)
-                    w = obs.get_weather()
-                    k = w.get_status()
-                    x = w.get_temperature(WEATHER_API['unit'])
-                    assistant_response('Current weather in %s is %s. The maximum temperature is %0.2f and the minimum '
-                                       'temperature is %0.2f degree celcius' % (city, k, x['temp_max'], x['temp_min']))
+                    status, temperature = cls._get_weather_status_and_temperature(city)
+                    if status and temperature:
+                        assistant_response('Current weather in %s is %s.\n'
+                                       'The maximum temperature is %0.2f degree celcius. \n'
+                                       'The minimum temperature is %0.2f degree celcius.'
+                                       % (city, status, temperature['temp_max'], temperature['temp_min'])
+                                       )
+                    else:
+                        assistant_response("Sorry the weather API is not available now..")
                 else:
                     assistant_response("Weather forecast is not working.\n"
                                        "You can get an Weather API key from: https://openweathermap.org/appid")
         except Exception as e:
             logging.debug(e)
+            print(e)
             assistant_response("I faced an issue with the weather site..")
 
-    @staticmethod
-    def tell_the_time(**kwargs):
+    @classmethod
+    def _get_weather_status_and_temperature(cls, city):
+        owm = OWM(API_key=WEATHER_API['key'])
+        if owm.is_API_online():
+            obs = owm.weather_at_place(city)
+            weather = obs.get_weather()
+            status = weather.get_status()
+            temperature = weather.get_temperature(WEATHER_API['unit'])
+            return status, temperature
+        else:
+            return None, None
+
+    @classmethod
+    def tell_the_time(cls,**kwargs):
         """
         Tells ths current time
         """
@@ -118,7 +135,7 @@ class ActionManager:
         assistant_response('The current time is: {0}:{1}'.format(now.hour, now.minute))
 
     @classmethod
-    def tell_me_about(cls, tag, voice_transcript, action):
+    def tell_me_about(cls, tag, voice_transcript, skill):
         """
         Tells about something by searching in wikipedia
         :param tag: string (e.g 'about')
@@ -179,7 +196,7 @@ class ActionManager:
         subprocess.Popen(['libreoffice', '-impress'], stdout=subprocess.PIPE)
         assistant_response('I opened a new impress document..')
 
-    @staticmethod
+    @classmethod
     def tell_memory_consumption(**kwargs):
         """
         Responds the memory consumption of the assistant process
@@ -189,8 +206,8 @@ class ActionManager:
         memoryUse = py.memory_info()[0] / 2. ** 30  # memory use in GB...I think
         assistant_response('I use {} GB..'.format(memoryUse))
 
-    @staticmethod
-    def open_in_youtube(tag, voice_transcript, **kwargs):
+    @classmethod
+    def open_in_youtube(cls, tag, voice_transcript, **kwargs):
         """
         Open a video in youtube.
         :param tag: string (e.g 'tdex')
@@ -212,3 +229,45 @@ class ActionManager:
             logging.debug(e)
             assistant_response("I can't find what do you want in Youtube..")
 
+    @classmethod
+    def run_speedtest(cls,**kwargs):
+        """
+        Run an internet speed test.
+        :param kwargs:
+        :return:
+        """
+        process = subprocess.Popen(["speedtest-cli", "--json"], stdout=subprocess.PIPE)
+        out, err = process.communicate()
+        if process.returncode:
+
+            decoded_json = cls._decode_json(out)
+
+            ping = decoded_json['ping']
+            up_mbps = float(decoded_json['upload']) / 1000000
+            down_mbps = float(decoded_json['download']) / 1000000
+
+            assistant_response("Speedtest results:\n"  
+                               "The ping is %s ms \n"
+                               "The upling is %0.2f Mbps \n"
+                               "The downling is %0.2f Mbps" % (ping, up_mbps, down_mbps)
+                               )
+        else:
+            assistant_response("I coudn't run a speedtest")
+
+    @classmethod
+    def _decode_json(cls, response_bytes):
+        json_response = response_bytes.decode('utf8').replace("'", '"')
+        return json.loads(json_response)
+
+    @classmethod
+    def spell_a_word(cls, tag, voice_transcript, **kwargs):
+        reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
+        try:
+            if reg_ex:
+                search_text = reg_ex.group(1)
+                for letter in search_text:
+                    assistant_response(letter)
+                    time.sleep(2)
+        except Exception as e:
+            logging.debug(e)
+            assistant_response("I can't spell the word")

@@ -13,6 +13,8 @@ It can understand human speech, talk to user and execute basic commands.
 * **Tells about something**, by searching on the internet (e.g 'Jarvis tells me about oranges')
 * **Tells the weather** for a place (e.g 'Jarvis tell me the weather in London')
 * **Tells the current time** (e.g 'Jarvis tells me time')
+* **Tells the internet speed (ping, uplink and downling)** (e.g 'Jarvis tell me the internet speed')
+* **Spell a word** (e.g 'Jarvis spell me the word animal')
 * **Uses wolfram API** for general questions
 * Easy **voice-command customization**
 * **Vocal or/and text response**
@@ -22,20 +24,20 @@ It can understand human speech, talk to user and execute basic commands.
 
 *[Behind the scenes](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
 
-### How to add a new feature
+### How to add a new feature(skill)
 You can easily add a new feature in two steps.
-* Create a new configuration in ACTION in **actions_registry.py**
+* Create a new configuration in SKILLS in **skills_registry.py**
 ```{python}
-'new_action': {'enable': True,
-                 'action': ActionManager.new_action,
+'new_skill': {'enable': True,
+                 'skill': Skills.new_skill,
                  'tags': {'tag1', 'tag2'},
-                 'description': 'action description..'
+                 'description': 'skill description..'
                 },                
 ```
-* Create a new method in **action_manager.py**
+* Create a new method in **skill_manager.py**
 ```
 @classmethod
-    def new_action(cls,**kargs):
+    def new_skill(cls,**kargs):
       pass
 ```
 Now you can test it!
