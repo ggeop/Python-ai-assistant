@@ -27,7 +27,7 @@ You can easily add a new feature in two steps.
 * Create a new configuration in SKILLS in **skills_registry.py**
 ```{python}
 'new_skill': {'enable': True,
-                 'skill': SkillManager.new_skill,
+                 'skill': Skills.new_skill,
                  'tags': {'tag1', 'tag2'},
                  'description': 'skill description..'
                 },                

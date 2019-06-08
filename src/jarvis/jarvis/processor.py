@@ -1,5 +1,6 @@
 from jarvis.actions import Actions
-from jarvis.assistant_utils import start_up, call_wolframalpha, internet_connectivity_check
+from jarvis.utils.application_utils import start_up, internet_connectivity_check
+from jarvis.utils.wolframalpha_util import call_wolframalpha
 
 
 class Processor:

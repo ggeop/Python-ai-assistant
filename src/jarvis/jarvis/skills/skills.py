@@ -11,10 +11,10 @@ from datetime import datetime
 from bs4 import BeautifulSoup as bs
 
 from jarvis.settings import WEATHER_API
-from jarvis.assistant_utils import assistant_response
+from jarvis.utils.response_utils import assistant_response
 
 
-class SkillManager:
+class Skills:
 
     @staticmethod
     def enable_jarvis(**kwargs):

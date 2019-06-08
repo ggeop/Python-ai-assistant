@@ -3,7 +3,8 @@ import speech_recognition as sr
 from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
-from jarvis.assistant_utils import assistant_response, user_speech_playback, log, _clear
+from jarvis.utils.response_utils import assistant_response, user_speech_playback
+from jarvis.utils.application_utils import log, clear
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 
 
@@ -48,7 +49,7 @@ class Actions:
         Then, the skills_to_execute will be the following:
         skills_to_execute=[{voice_transcript': 'open youtube',
                              'tag': 'open',
-                             'skill': SkillManager.open_website_in_browser
+                             'skill': Skills.open_website_in_browser
                             ]
         """
         for skill in BASIC_SKILLS.values():
@@ -94,7 +95,7 @@ class Actions:
         """
         microphone_list = sr.Microphone.list_microphone_names()
 
-        _clear()
+        clear()
         print("=" * 48)
         print("Microphone Setup")
         print("=" * 48)
