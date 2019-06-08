@@ -77,6 +77,11 @@ BASIC_SKILLS = {
                         'tags': {'open in youtube', 'find in youtube', 'play in youtube'},
                         'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
                         },
+    'run_speedtest': {'enable': True,
+                      'skill': Skills.run_speedtest,
+                      'tags': {'speedtest', 'internet speed', 'ping'},
+                      'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
+                      },
 
 }
 

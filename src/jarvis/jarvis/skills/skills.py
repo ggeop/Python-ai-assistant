@@ -1,6 +1,7 @@
 import sys
 import re
 import os
+import json
 import psutil
 import subprocess
 import wikipedia
@@ -124,7 +125,6 @@ class Skills:
         else:
             return None, None
 
-
     @staticmethod
     def tell_the_time(**kwargs):
         """
@@ -228,3 +228,32 @@ class Skills:
             logging.debug(e)
             assistant_response("I can't find what do you want in Youtube..")
 
+    @classmethod
+    def run_speedtest(cls,**kwargs):
+        """
+        Run an internet speed test.
+        :param kwargs:
+        :return:
+        """
+        process = subprocess.Popen(["speedtest-cli", "--json"], stdout=subprocess.PIPE)
+        out, err = process.communicate()
+        if process.returncode:
+
+            decoded_json = cls._decode_json(out)
+
+            ping = decoded_json['ping']
+            up_mbps = float(decoded_json['upload']) / 1000000
+            down_mbps = float(decoded_json['download']) / 1000000
+
+            assistant_response("Speedtest results:\n"  
+                               "The ping is %s ms \n"
+                               "The upling is %0.2f Mbps \n"
+                               "The downling is %0.2f Mbps" % (ping, up_mbps, down_mbps)
+                               )
+        else:
+            assistant_response("I coudn't run a speedtest")
+
+    @staticmethod
+    def _decode_json(response_bytes):
+        json_response = response_bytes.decode('utf8').replace("'", '"')
+        return json.loads(json_response)
