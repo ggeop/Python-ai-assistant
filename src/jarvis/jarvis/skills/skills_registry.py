@@ -62,9 +62,9 @@ BASIC_SKILLS = {
                                 'description': 'Ask me to "open writer", e.g. Jarvis "can you open writer"?'
                                },
     'open_libreoffice_impress': {'enable': True,
-                                'skill': Skills.open_libreoffice_impress,
-                                'tags': {'open impress', 'open power point', 'impress', 'power point'},
-                                'description': 'Ask me to "open impress", e.g. Jarvis "can you open impress"?'
+                                 'skill': Skills.open_libreoffice_impress,
+                                 'tags': {'open impress', 'open power point', 'impress', 'power point'},
+                                 'description': 'Ask me to "open impress", e.g. Jarvis "can you open impress"?'
                                 },
     'tell_memory_consumption': {'enable': True,
                                 'skill': Skills.tell_memory_consumption,
@@ -86,6 +86,11 @@ BASIC_SKILLS = {
                      'skill': Skills.spell_a_word,
                      'tags': {'spell', 'spell the word'},
                      'description': 'Ask to spell a word, e.g. Jarvis can you spell the word "animal"?'
+                     },
+    'create_reminder': {'enable': True,
+                        'skill': Skills.create_reminder,
+                        'tags': {'remind', 'remind me'},
+                        'description': 'Ask to remind you something e.g. "Jarvis create a 5 minute reminder"?'
                      },
 
 }
