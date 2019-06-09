@@ -29,7 +29,7 @@ It can understand human speech, talk to user and execute basic commands.
 
 ### How to add a new Skill
 You can easily add a new skill in two steps.
-* Create a new configuration in SKILLS in **skills_registry.py**
+* Create a new configurationin SKILLS in **skills_registry.py**
 ```{python}
 'new_skill': {'enable': True,
                  'skill': Skills.new_skill,
@@ -37,13 +37,8 @@ You can easily add a new skill in two steps.
                  'description': 'skill description..'
                 },                
 ```
-* Create a new method in **skill_manager.py**
-```
-@classmethod
-def new_skill(cls,**kargs):
-      pass
-```
-Now you can test it!
+* Create a new skill package in **skills**
+
 
 ## Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
