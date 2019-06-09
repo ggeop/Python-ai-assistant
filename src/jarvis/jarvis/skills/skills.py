@@ -11,6 +11,7 @@ import requests
 from pyowm import OWM
 from datetime import datetime
 from bs4 import BeautifulSoup as bs
+from apscheduler.schedulers.background import BackgroundScheduler
 
 from jarvis.settings import WEATHER_API
 from jarvis.utils.response_utils import assistant_response
@@ -67,6 +68,7 @@ class Skills:
                 url = cls._create_url(domain)
                 assistant_response('Sure')
                 subprocess.Popen(["python", "-m",  "webbrowser",  "-t",  url], stdout=subprocess.PIPE)
+                time.sleep(1)
                 assistant_response('I opened the {0}'.format(domain))
         except Exception as e:
             logging.debug(e)
@@ -210,7 +212,7 @@ class Skills:
     def open_in_youtube(cls, tag, voice_transcript, **kwargs):
         """
         Open a video in youtube.
-        :param tag: string (e.g 'tdex')
+        :param tag: string (e.g 'open')
         :param voice_transcript: string (e.g 'open in youtube tdex')
         """
         # TODO:  Replace with YOUTUBE API
@@ -233,8 +235,6 @@ class Skills:
     def run_speedtest(cls,**kwargs):
         """
         Run an internet speed test.
-        :param kwargs:
-        :return:
         """
         process = subprocess.Popen(["speedtest-cli", "--json"], stdout=subprocess.PIPE)
         out, err = process.communicate()
@@ -261,6 +261,11 @@ class Skills:
 
     @classmethod
     def spell_a_word(cls, tag, voice_transcript, **kwargs):
+        """
+        Spell a words letter by letter.
+        :param tag: string (e.g 'spell the word')
+        :param voice_transcript: string (e.g 'spell the word animal')
+        """
         reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
         try:
             if reg_ex:
@@ -271,3 +276,62 @@ class Skills:
         except Exception as e:
             logging.debug(e)
             assistant_response("I can't spell the word")
+
+    @classmethod
+    def create_reminder(cls, voice_transcript, **kwargs):
+        """
+        Creates a simple reminder for the given time interval (seconds or minutes or hours..)
+        :param voice_transcript: string (e.g 'Make a reminder in 10 minutes')
+        """
+        reminder_duration, scheduler_interval = cls._get_reminder_duration_and_time_interval(voice_transcript)
+
+        def reminder():
+            assistant_response("Hey, I remind you that now the {0} {1} passed!"
+                               .format(reminder_duration, scheduler_interval))
+            job.remove()
+
+        try:
+            if reminder_duration:
+                scheduler = BackgroundScheduler()
+                interval = {scheduler_interval: int(reminder_duration)}
+                job = scheduler.add_job(reminder, 'interval', **interval)
+                assistant_response("I have created a reminder in {0} {1}".format(reminder_duration, scheduler_interval))
+                scheduler.start()
+
+        except Exception as e:
+            logging.debug(e)
+            assistant_response("I can't create a reminder")
+
+    @staticmethod
+    def _get_reminder_duration_and_time_interval(voice_transcript):
+        """
+        Extracts the duration and the time interval from the voice transcript.
+
+        NOTE:
+            If there are multiple time intervals, it will extract the first one.
+        """
+        time_intervals = {
+            'seconds': {'variations': ['sec', 'second', 'seconds'],
+                        'scheduler_interval': 'seconds'
+                        },
+            'minutes': {'variations': ['minute', 'minutes'],
+                        'scheduler_interval': 'minutes'
+                        },
+            'hours': {'variations': ['hour', 'hours'],
+                      'scheduler_interval': 'hours'
+                      },
+            'months': {'variations': ['month', 'months'],
+                       'scheduler_interval': 'months'
+                       },
+            'years': {'variations': ['year', 'years'],
+                      'scheduler_interval': 'years'
+                      },
+         }
+
+        for time_interval in time_intervals.values():
+            for variation in time_interval['variations']:
+                if variation in voice_transcript:
+                    print(variation, voice_transcript)
+                    reg_ex = re.search('[0-9]', voice_transcript)
+                    duration = reg_ex.group(1)
+                    return duration, time_interval['scheduler_interval']
