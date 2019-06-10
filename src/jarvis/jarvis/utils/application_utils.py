@@ -6,6 +6,7 @@ import logging
 from subprocess import call
 from logging import config
 
+from jarvis.utils import response_utils
 from jarvis.settings import LOG_SETTINGS
 
 jarvis_logo = "\n"\
@@ -61,15 +62,6 @@ def clear():
     _ = call('clear' if os.name == 'posix' else 'cls')  # check and make call for specific operating system
 
 
-def start_up():
-    """
-    Clear the console and print the assistant logo.
-    """
-    clear()
-    print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
-    print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
-
-
 def internet_connectivity_check(url='http://www.google.com/', timeout=2):
     """
     Checks for internet connection availability based on google page.
@@ -79,4 +71,16 @@ def internet_connectivity_check(url='http://www.google.com/', timeout=2):
         return True
     except requests.ConnectionError:
         logging.info("No internet connection.")
-    return False
+        return False
+
+
+def start_up():
+    """
+    Clear the console and print the assistant logo.
+    """
+    clear()
+    print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
+    print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
+
+    if not internet_connectivity_check():
+        response_utils.stdout_print("WARNING: No internet connection, skills with internet connection will not work")
