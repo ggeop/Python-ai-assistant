@@ -109,6 +109,12 @@ BASIC_SKILLS = {
                       'description': 'Ask for internet speedtest, e.g. Jarvis tell_the_skills me the "internet speed"?'
                       },
 
+    'internet_availability': {'enable': True,
+                              'skill': internet_skills.internet_availability,
+                              'tags': {'internet conection', 'internet is ok', 'do we have internet'},
+                              'description': 'Ask for "internet connection", e.g. "Jarvis do we have internet"?'
+                              },
+
     'spell_a_word': {'enable': True,
                      'skill': word_skills.spell_a_word,
                      'tags': {'spell', 'spell the word'},
