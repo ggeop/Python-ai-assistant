@@ -12,7 +12,8 @@ from jarvis.skills import \
     tell_me_about,\
     tell_memory_consumption,\
     tell_the_time,\
-    tell_the_weather
+    tell_the_weather,\
+    tell_the_skills
 
 
 """
@@ -52,12 +53,12 @@ BASIC_SKILLS = {
     'tell_about': {'enable': True,
                    'skill': tell_me_about.tell_me_about,
                    'tags': {'about'},
-                   'description': 'Ask me "about" something, e.g. tell me about google'
+                   'description': 'Ask me "about" something, e.g. tell_the_skills me about google'
                    },
 
     'current_weather': {'enable': True,
                         'skill': tell_the_weather.tell_the_weather,
-                        'tags': {'weather', 'tell me the weather'},
+                        'tags': {'weather', 'tell_the_skills me the weather'},
                         'description': 'Ask for the "weather in" somewhere, e.g. weather in London'
                         },
     'assistant_check': {'enable': True,
@@ -94,7 +95,7 @@ BASIC_SKILLS = {
     'run_speedtest': {'enable': True,
                       'skill': run_speedtest.run_speedtest,
                       'tags': {'speedtest', 'internet speed', 'ping'},
-                      'description': 'Ask for internet speedtest, e.g. Jarvis tell me the "internet speed"?'
+                      'description': 'Ask for internet speedtest, e.g. Jarvis tell_the_skills me the "internet speed"?'
                       },
     'spell_a_word': {'enable': True,
                      'skill': spell_a_word.spell_a_word,
@@ -105,7 +106,12 @@ BASIC_SKILLS = {
                         'skill': create_reminder.create_reminder,
                         'tags': {'remind', 'remind me'},
                         'description': 'Ask to remind you something e.g. "Jarvis create a 5 minute reminder"?'
-                     },
+                       },
+    'tell_the_skills': {'enable': True,
+                        'skill': tell_the_skills.tell_the_skills,
+                        'tags': {'skills', 'your skills', 'what can you do', 'what are your skills'},
+                        'description': 'Ask to remind you something e.g. "Jarvis create a 5 minute reminder"?'
+                       },
 
 }
 
