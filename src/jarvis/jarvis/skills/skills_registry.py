@@ -36,6 +36,12 @@ BASIC_SKILLS = {
                              'description': 'Ask me to "open" a domain in the browser e.x open facebook'
                              },
 
+    'tell_daily_news': {'enable': True,
+                        'skill': browser_skills.tell_me_today_news,
+                        'tags': {'news', 'today news'},
+                        'description': 'Ask me to tell the daily news e.x "Tell me the news today"'
+                        },
+
     'tell_time': {'enable': True,
                   'skill': datetime_skills.tell_the_time,
                   'tags': {'time', 'hour'},
