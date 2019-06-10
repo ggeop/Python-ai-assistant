@@ -57,8 +57,8 @@ class Actions:
                 for tag in skill['tags']:
                     if tag in self.latest_voice_transcript:
                         skill = {'voice_transcript': self.latest_voice_transcript,
-                                  'tag': tag,
-                                  'skill': skill['skill']}
+                                 'tag': tag,
+                                 'skill': skill['skill']}
 
                         logging.debug('Update skills queue with skill: {0}'.format(skill))
                         self.skills_to_execute.append(skill)
@@ -83,6 +83,9 @@ class Actions:
             self._recognize_voice(audio)
         else:
             self.latest_voice_transcript = input('You: ')
+            while self.latest_voice_transcript == '':
+                assistant_response("Say something..")
+                self.latest_voice_transcript = input('You: ')
         return self.latest_voice_transcript
 
     # Private methods

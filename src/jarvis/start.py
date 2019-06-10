@@ -1,4 +1,4 @@
-from jarvis.processor import Processor
+from jarvis.core.processor import Processor
 
 
 def main():
