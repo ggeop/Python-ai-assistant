@@ -10,10 +10,12 @@ It can understand human speech, talk to user and execute basic commands.
 * **Opens libreoffice suite applications (calc, writer, impress)** (e.g 'Jarvis open calc')
 * **Tells about something**, by searching on the internet (e.g 'Jarvis tells me about oranges')
 * **Tells the weather** for a place (e.g 'Jarvis tell_the_skills me the weather in London')
-* **Tells the current time and/or date** (e.g 'Jarvis tells me time')
+* **Tells the current time and/or date** (e.g 'Jarvis tells me time or date')
 * **Tells the internet speed (ping, uplink and downling)** (e.g 'Jarvis tell_the_skills me the internet speed')
 * **Spell a word** (e.g 'Jarvis spell me the word animal')
 * **Create a reminder** (e.g 'Jarvis create a 10 minutes reminder')
+* **Tell everything it can do** (e.g 'Jarvis tell me your skills or tell me what can you do')
+
 
 ### Assistant Features
 * **Execute multiple commands at once**, (e.g 'Jarvis open youtube and tell_the_skills me the time')
@@ -21,6 +23,7 @@ It can understand human speech, talk to user and execute basic commands.
 * **Uses wolfram API** for general questions
 * Easy **voice-command customization**
 * **Vocal or/and text response**
+* **SOON!** Natural Language Processing (NLP) components for higher quality experience.
 
 ### Jarvis in action console output
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
