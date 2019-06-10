@@ -23,7 +23,7 @@ It can understand human speech, talk to user and execute basic commands.
 * **Uses wolfram API** for general questions
 * Easy **voice-command customization**
 * **Vocal or/and text response**
-* **SOON!** Natural Language Processing (NLP) components for higher quality experience.
+* **SOON!** Natural Language Processing (NLP) components for more friendly user experience.
 
 ### Jarvis in action console output
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
