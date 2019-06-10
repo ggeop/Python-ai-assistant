@@ -3,6 +3,7 @@ from jarvis.utils.application_utils import start_up, internet_connectivity_check
 from jarvis.utils.wolframalpha_util import call_wolframalpha
 from jarvis.utils.response_utils import stdout_print
 
+
 class Processor:
     def __init__(self):
         self.action_controller = Actions()
