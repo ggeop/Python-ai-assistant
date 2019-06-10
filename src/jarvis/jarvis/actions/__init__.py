@@ -83,6 +83,9 @@ class Actions:
             self._recognize_voice(audio)
         else:
             self.latest_voice_transcript = input('You: ')
+            while self.latest_voice_transcript == '':
+                assistant_response("Say something..")
+                self.latest_voice_transcript = input('You: ')
         return self.latest_voice_transcript
 
     # Private methods
