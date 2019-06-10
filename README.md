@@ -14,7 +14,7 @@ It can understand human speech, talk to user and execute basic commands.
 * **Tells the internet speed (ping, uplink and downling)** (e.g 'Jarvis tell_the_skills me the internet speed')
 * **Spell a word** (e.g 'Jarvis spell me the word animal')
 * **Create a reminder** (e.g 'Jarvis create a 10 minutes reminder')
-* **Tell everything it can do** (e.g 'Jarvis tell me your skills or tell me what can you do')
+* **Tells everything it can do** (e.g 'Jarvis tell me your skills or tell me what can you do')
 
 
 ### Assistant Features
