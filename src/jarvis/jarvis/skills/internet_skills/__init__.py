@@ -1,5 +1,7 @@
 import subprocess
 import json
+import requests
+import logging
 
 from jarvis.utils.response_utils import assistant_response
 
@@ -30,3 +32,14 @@ def run_speedtest(**kwargs):
                            )
     else:
         assistant_response("I coudn't run a speedtest")
+
+
+def internet_availability(**kwargs):
+    """
+    Tells to the user is the internet is available or not
+    """
+    try:
+        _ = requests.get('http://www.google.com/', timeout=1)
+        assistant_response("Yes, the internet connection is ok")
+    except requests.ConnectionError:
+        assistant_response("No the internet is down for now")

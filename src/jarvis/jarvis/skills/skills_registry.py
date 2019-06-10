@@ -36,6 +36,12 @@ BASIC_SKILLS = {
                              'description': 'Ask me to "open" a domain in the browser e.x open facebook'
                              },
 
+    'tell_daily_news': {'enable': True,
+                        'skill': browser_skills.tell_me_today_news,
+                        'tags': {'news', 'today news'},
+                        'description': 'Ask me to tell the daily news e.x "Tell me the news today"'
+                        },
+
     'tell_time': {'enable': True,
                   'skill': datetime_skills.tell_the_time,
                   'tags': {'time', 'hour'},
@@ -108,6 +114,12 @@ BASIC_SKILLS = {
                       'tags': {'speedtest', 'internet speed', 'ping'},
                       'description': 'Ask for internet speedtest, e.g. Jarvis tell_the_skills me the "internet speed"?'
                       },
+
+    'internet_availability': {'enable': True,
+                              'skill': internet_skills.internet_availability,
+                              'tags': {'internet conection', 'internet is ok', 'do we have internet'},
+                              'description': 'Ask for "internet connection", e.g. "Jarvis do we have internet"?'
+                              },
 
     'spell_a_word': {'enable': True,
                      'skill': word_skills.spell_a_word,

@@ -3,6 +3,7 @@ import requests
 import logging
 import time
 import re
+import urllib.request
 import subprocess
 from bs4 import BeautifulSoup as bs
 
@@ -97,3 +98,21 @@ def open_website_in_browser(tag, voice_transcript, **kwargs):
     except Exception as e:
         logging.debug(e)
         assistant_response("I can't find this domain..")
+
+
+def tell_me_today_news(**kwargs):
+    try:
+        news_url = "https://news.google.com/news/rss"
+        Client = urllib.request.urlopen(news_url)
+        xml_page = Client.read()
+        Client.close()
+        soup = bs(xml_page, "xml")
+        news_list = soup.findAll("item")
+        for news in news_list[:5]:
+            response = ""
+            data = news.title.text.encode('utf-8')
+            response += data.decode()
+            assistant_response(response)
+    except Exception as e:
+        print(e)
+        logging.debug(e)
