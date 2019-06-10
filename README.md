@@ -12,8 +12,10 @@ It can understand human speech, talk to user and execute basic commands.
 * **Tells the weather** for a place (e.g 'Jarvis tell_the_skills me the weather in London')
 * **Tells the current time and/or date** (e.g 'Jarvis tells me time or date')
 * **Tells the internet speed (ping, uplink and downling)** (e.g 'Jarvis tell_the_skills me the internet speed')
-* **Spell a word** (e.g 'Jarvis spell me the word animal')
-* **Create a reminder** (e.g 'Jarvis create a 10 minutes reminder')
+* **Tells the internet availability** (e.g 'Jarvis is the internet connection ok?')
+* **Tells the daily news** (e.g 'Jarvis tell me today news')
+* **Spells a word** (e.g 'Jarvis spell me the word animal')
+* **Creates a reminder** (e.g 'Jarvis create a 10 minutes reminder')
 * **Tells everything it can do** (e.g 'Jarvis tell me your skills or tell me what can you do')
 
 
@@ -22,6 +24,7 @@ It can understand human speech, talk to user and execute basic commands.
 * **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
 * **Uses wolfram API** for general questions
 * Easy **voice-command customization**
+* Configurable **assistant name** (e.g 'Jarvis', 'Sofia', 'John' etc.)
 * **Vocal or/and text response**
 * **SOON!** Natural Language Processing (NLP) components for more friendly user experience.
 
