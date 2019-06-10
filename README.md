@@ -4,18 +4,20 @@
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
-### Features
-* **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
-* **Execute multiple commands at once**, (e.g 'open youtube and tell me the time')
+### Assistant Skills
 * **Opens a web page** (e.g 'Jarvis open youtube')
 * **Play a video in Youtube** (e.g 'find in you tdex in youtube')
-* **Opens libreoffice suite applications** (calc, writer, impress)
+* **Opens libreoffice suite applications (calc, writer, impress)** (e.g 'Jarvis open calc')
 * **Tells about something**, by searching on the internet (e.g 'Jarvis tells me about oranges')
 * **Tells the weather** for a place (e.g 'Jarvis tell me the weather in London')
 * **Tells the current time** (e.g 'Jarvis tells me time')
 * **Tells the internet speed (ping, uplink and downling)** (e.g 'Jarvis tell me the internet speed')
 * **Spell a word** (e.g 'Jarvis spell me the word animal')
 * **Create a reminder** (e.g 'Jarvis create a 10 minutes reminder')
+
+### Assistant Features
+* **Execute multiple commands at once**, (e.g 'Jarvis open youtube and tell me the time')
+* **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
 * **Uses wolfram API** for general questions
 * Easy **voice-command customization**
 * **Vocal or/and text response**
@@ -25,9 +27,9 @@ It can understand human speech, talk to user and execute basic commands.
 
 *[Behind the scenes](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
 
-### How to add a new feature(skill)
-You can easily add a new feature in two steps.
-* Create a new configuration in SKILLS in **skills_registry.py**
+### How to add a new Skill
+You can easily add a new skill in two steps.
+* Create a new configurationin SKILLS in **skills_registry.py**
 ```{python}
 'new_skill': {'enable': True,
                  'skill': Skills.new_skill,
@@ -35,13 +37,8 @@ You can easily add a new feature in two steps.
                  'description': 'skill description..'
                 },                
 ```
-* Create a new method in **skill_manager.py**
-```
-@classmethod
-    def new_skill(cls,**kargs):
-      pass
-```
-Now you can test it!
+* Create a new skill package in **skills**
+
 
 ## Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
