@@ -10,7 +10,7 @@ It can understand human speech, talk to user and execute basic commands.
 * **Opens libreoffice suite applications (calc, writer, impress)** (e.g 'Jarvis open calc')
 * **Tells about something**, by searching on the internet (e.g 'Jarvis tells me about oranges')
 * **Tells the weather** for a place (e.g 'Jarvis tell_the_skills me the weather in London')
-* **Tells the current time** (e.g 'Jarvis tells me time')
+* **Tells the current time and/or date** (e.g 'Jarvis tells me time')
 * **Tells the internet speed (ping, uplink and downling)** (e.g 'Jarvis tell_the_skills me the internet speed')
 * **Spell a word** (e.g 'Jarvis spell me the word animal')
 * **Create a reminder** (e.g 'Jarvis create a 10 minutes reminder')
