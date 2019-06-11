@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 import requests
 import traceback
 import logging
@@ -74,13 +75,26 @@ def internet_connectivity_check(url='http://www.google.com/', timeout=2):
         return False
 
 
+def startup_ckecks():
+    """
+    Initial checks
+    """
+
+    print("=" * 48)
+    print("Startup ckeck")
+    print("=" * 48)
+
+    print("INFO: Internet connection check..")
+    if not internet_connectivity_check():
+        response_utils.stdout_print("WARNING: No internet connection, skills with internet connection will not work")
+        time.sleep(3)
+
+
 def start_up():
     """
-    Clear the console and print the assistant logo.
+    Do initial checks, clear the console and print the assistant logo.
     """
+    startup_ckecks()
     clear()
     print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
-
-    if not internet_connectivity_check():
-        response_utils.stdout_print("WARNING: No internet connection, skills with internet connection will not work")

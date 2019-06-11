@@ -44,14 +44,16 @@ class ControllerUtils:
         Capture the words from the recorded audio (audio stream --> free text).
         """
         if GENERAL_SETTINGS['user_voice_input']:
-            audio = self._record()
-            self._recognize_voice(audio)
+            self._recognize_voice()
         else:
+            self._recognize_text()
+
+    def _recognize_text(self):
+        self.latest_voice_transcript = input('You: ')
+        while self.latest_voice_transcript == '':
+            assistant_response("Say something..")
             self.latest_voice_transcript = input('You: ')
-            while self.latest_voice_transcript == '':
-                assistant_response("Say something..")
-                self.latest_voice_transcript = input('You: ')
-        return self.latest_voice_transcript
+
 
     @staticmethod
     def _set_microphone():
@@ -107,7 +109,8 @@ class ControllerUtils:
         else:
             return True
 
-    def _recognize_voice(self, audio):
+    def _recognize_voice(self):
+        audio = self._record()
         try:
             self.latest_voice_transcript = self.r.recognize_google(audio).lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
