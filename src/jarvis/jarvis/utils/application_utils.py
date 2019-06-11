@@ -16,7 +16,7 @@ jarvis_logo = "\n"\
 "      ██║███████║██████╔╝██║   ██║██║███████╗\n"\
 " ██   ██║██╔══██║██╔══██╗╚██╗ ██╔╝██║╚════██║\n"\
 " ╚█████╔╝██║  ██║██║  ██║ ╚████╔╝ ██║███████║\n"\
-"  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝\n"
+"  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝"
 
 
 start_text = "\n"\
@@ -36,6 +36,8 @@ class OutputStyler:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
+user_input = OutputStyler.CYAN + '>> ' + OutputStyler.ENDC
 
 # Create a Console & Rotating file logger
 config.dictConfig(LOG_SETTINGS)

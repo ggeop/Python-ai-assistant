@@ -1,8 +1,9 @@
 import sys
+import time
 import logging
 from datetime import datetime
 
-
+from jarvis.utils.application_utils import clear
 from jarvis.utils.response_utils import assistant_response
 
 
@@ -33,5 +34,7 @@ def disable_jarvis(**kargs):
     :return:
     """
     assistant_response('Bye bye!!')
+    time.sleep(1)
+    clear()
     logging.debug('Application terminated gracefully.')
     sys.exit()
