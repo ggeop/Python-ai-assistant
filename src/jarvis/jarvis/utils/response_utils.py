@@ -14,13 +14,15 @@ def assistant_response(text):
         speech = Speech(text, GOOGLE_SPEECH['lang'])
         speech.play()
     if GENERAL_SETTINGS['response_in_text']:
-        application_utils.clear()
-        stdout_print(application_utils.jarvis_logo)
-        stdout_print("  NOTE: CTRL + C If you want to Quit.")
+        if GENERAL_SETTINGS['keep_only_last_response']:
+            application_utils.clear()
+            stdout_print(application_utils.jarvis_logo)
+            stdout_print("  NOTE: CTRL + C If you want to Quit.")
+
         assistant_name = GENERAL_SETTINGS['assistant_name'] + ': '
         print(OutputStyler.HEADER + '='*48 + OutputStyler.ENDC)
         print(OutputStyler.HEADER + assistant_name + text + OutputStyler.ENDC)
-        print(OutputStyler.HEADER + '=' * 48 + OutputStyler.ENDC)
+        print(OutputStyler.HEADER + '='*48 + OutputStyler.ENDC)
 
 
 def user_speech_playback(text):
