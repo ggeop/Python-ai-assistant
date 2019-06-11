@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
 from jarvis.utils.response_utils import assistant_response, user_speech_playback
-from jarvis.utils.application_utils import log, clear
+from jarvis.utils.application_utils import log, clear, user_input
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 
 
@@ -49,11 +49,10 @@ class ControllerUtils:
             self._recognize_text()
 
     def _recognize_text(self):
-        self.latest_voice_transcript = input('You: ')
+        self.latest_voice_transcript = input(user_input)
         while self.latest_voice_transcript == '':
             assistant_response("Say something..")
-            self.latest_voice_transcript = input('You: ')
-
+            self.latest_voice_transcript = input(user_input)
 
     @staticmethod
     def _set_microphone():
