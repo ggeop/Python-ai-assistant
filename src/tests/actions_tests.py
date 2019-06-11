@@ -10,8 +10,8 @@ class ActionsTests(unittest.TestCase):
     def setUpClass(self):
         self.actions = Actions()
 
-    @patch('jarvis.actions.Actions._ready_to_start')
-    @patch('jarvis.actions.Actions._continue_listening')
+    @patch('jarvis.actions.SkillsController._ready_to_start')
+    @patch('jarvis.actions.SkillsController._continue_listening')
     def test_wake_up(self, mocked_ready_to_start, mocked_continue_listening):
 
         self.actions.execute_state = {'ready_to_execute': False, 'enable_time': None}
@@ -44,7 +44,7 @@ class ActionsTests(unittest.TestCase):
         self.actions.shutdown_check()
         self.assertEqual(1, mocked_disable_jarvis.call_count)
 
-    @patch('jarvis.actions.Actions.get_transcript')
+    @patch('jarvis.actions.SkillsController.get_transcript')
     @patch('jarvis.action_manager.Skills.enable_jarvis')
     def test_ready_to_start(self, mocked_get_voiced_transcript, mocked_enable_jarvis):
         self.actions.latest_voice_transcript = '..'
