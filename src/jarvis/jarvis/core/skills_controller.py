@@ -4,11 +4,11 @@ from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
 from jarvis.utils.response_utils import assistant_response, user_speech_playback
-from jarvis.utils.application_utils import log, clear
+from jarvis.utils.application_utils import log, clear, user_input
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 
 
-class Actions:
+class ControllerUtils:
     def __init__(self):
         self.microphone = self._set_microphone()
         self.r = sr.Recognizer()
@@ -39,57 +39,20 @@ class Actions:
         if bool(shutdown_tag):
             CONTROL_SKILLS['disable_jarvis']['skill']()
 
-    @log
-    def get_skills(self):
-        """
-        This method identifies the active skills from the voice transcript
-        and updates the skills state.
-
-        e.x. latest_voice_transcript='open youtube'
-        Then, the skills_to_execute will be the following:
-        skills_to_execute=[{voice_transcript': 'open youtube',
-                             'tag': 'open',
-                             'skill': Skills.open_website_in_browser
-                            ]
-        """
-        for skill in BASIC_SKILLS.values():
-            if skill['enable']:
-                for tag in skill['tags']:
-                    if tag in self.latest_voice_transcript:
-                        skill = {'voice_transcript': self.latest_voice_transcript,
-                                 'tag': tag,
-                                 'skill': skill['skill']}
-
-                        logging.debug('Update skills queue with skill: {0}'.format(skill))
-                        self.skills_to_execute.append(skill)
-
-    def execute(self):
-        """
-        Execute one-by-one all the user skills and empty the queue with the waiting skills.
-        """
-        for skill in self.skills_to_execute:
-            logging.debug('Execute the skill {0}'.format(skill))
-            skill['skill'](**skill)
-
-            # Remove the executed or not skill from the queue
-            self.skills_to_execute.remove(skill)
-
     def get_transcript(self):
         """
         Capture the words from the recorded audio (audio stream --> free text).
         """
         if GENERAL_SETTINGS['user_voice_input']:
-            audio = self._record()
-            self._recognize_voice(audio)
+            self._recognize_voice()
         else:
-            self.latest_voice_transcript = input('You: ')
-            while self.latest_voice_transcript == '':
-                assistant_response("Say something..")
-                self.latest_voice_transcript = input('You: ')
-        return self.latest_voice_transcript
+            self._recognize_text()
 
-    # Private methods
-    ###################################################################################################################
+    def _recognize_text(self):
+        self.latest_voice_transcript = input(user_input)
+        while self.latest_voice_transcript == '':
+            assistant_response("Say something..")
+            self.latest_voice_transcript = input(user_input)
 
     @staticmethod
     def _set_microphone():
@@ -145,7 +108,8 @@ class Actions:
         else:
             return True
 
-    def _recognize_voice(self, audio):
+    def _recognize_voice(self):
+        audio = self._record()
         try:
             self.latest_voice_transcript = self.r.recognize_google(audio).lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
@@ -165,3 +129,41 @@ class Actions:
             audio_text = self.r.listen(source)
 
         return audio_text
+
+
+class SkillsController(ControllerUtils):
+
+    @log
+    def get_skills(self):
+        """
+        This method identifies the active skills from the voice transcript
+        and updates the skills state.
+
+        e.x. latest_voice_transcript='open youtube'
+        Then, the skills_to_execute will be the following:
+        skills_to_execute=[{voice_transcript': 'open youtube',
+                             'tag': 'open',
+                             'skill': Skills.open_website_in_browser
+                            ]
+        """
+        for skill in BASIC_SKILLS.values():
+            if skill['enable']:
+                for tag in skill['tags']:
+                    if tag in self.latest_voice_transcript:
+                        skill = {'voice_transcript': self.latest_voice_transcript,
+                                 'tag': tag,
+                                 'skill': skill['skill']}
+
+                        logging.debug('Update skills queue with skill: {0}'.format(skill))
+                        self.skills_to_execute.append(skill)
+
+    def execute(self):
+        """
+        Execute one-by-one all the user skills and empty the queue with the waiting skills.
+        """
+        for skill in self.skills_to_execute:
+            logging.debug('Execute the skill {0}'.format(skill))
+            skill['skill'](**skill)
+
+            # Remove the executed or not skill from the queue
+            self.skills_to_execute.remove(skill)

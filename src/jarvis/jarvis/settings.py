@@ -1,5 +1,3 @@
-
-
 LOG_SETTINGS = {
     'version': 1,
     'root': {
@@ -9,9 +7,8 @@ LOG_SETTINGS = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'level': 'INFO',
+            'level': 'ERROR',
             'formatter': 'detailed',
-            'stream': 'sys.stdout',
         },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
@@ -30,7 +27,6 @@ LOG_SETTINGS = {
     }
 }
 
-
 # General assistant settings
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
@@ -38,7 +34,9 @@ GENERAL_SETTINGS = {
     'user_voice_input': True,  # True: The assistant responds in voice commands,
                                 # False: The assistant waiting for text input
     'response_in_speech': False,
-    'response_in_text': True
+    'response_in_text': True,
+    'keep_only_last_response': True  # True: keeps only the last assistant response in console stdout.
+                                     # False: Keeps all the conversation.
 }
 
 # Google API Speech recognition settings

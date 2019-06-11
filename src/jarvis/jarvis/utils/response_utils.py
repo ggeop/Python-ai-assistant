@@ -2,6 +2,7 @@ from google_speech import Speech
 
 from jarvis.utils.application_utils import OutputStyler
 from jarvis.settings import GOOGLE_SPEECH, GENERAL_SETTINGS
+from jarvis.utils import application_utils
 
 
 def assistant_response(text):
@@ -13,10 +14,15 @@ def assistant_response(text):
         speech = Speech(text, GOOGLE_SPEECH['lang'])
         speech.play()
     if GENERAL_SETTINGS['response_in_text']:
+        if GENERAL_SETTINGS['keep_only_last_response']:
+            application_utils.clear()
+            stdout_print(application_utils.jarvis_logo)
+            stdout_print("  NOTE: CTRL + C If you want to Quit.")
+
         assistant_name = GENERAL_SETTINGS['assistant_name'] + ': '
-        print('-'*48)
-        print(assistant_name + OutputStyler.CYAN + text + OutputStyler.ENDC)
-        print('-'*48 + '\n')
+        print(OutputStyler.HEADER + '='*48 + OutputStyler.ENDC)
+        print(OutputStyler.HEADER + assistant_name + text + OutputStyler.ENDC)
+        print(OutputStyler.HEADER + '='*48 + OutputStyler.ENDC)
 
 
 def user_speech_playback(text):
@@ -28,9 +34,7 @@ def user_speech_playback(text):
         speech = Speech(text, GOOGLE_SPEECH['lang'])
         speech.play()
     if GENERAL_SETTINGS['response_in_text']:
-        print('-' * 48)
-        print('You: ' + OutputStyler.CYAN + text + OutputStyler.ENDC)
-        print('-'*48 + '\n')
+        print(application_utils.user_input)
 
 
 def stdout_print(text):

@@ -7,7 +7,7 @@ from jarvis.settings import WEATHER_API
 from jarvis.utils.response_utils import assistant_response
 
 
-def tell_the_weather(cls, tag, voice_transcript, **kwargs):
+def tell_the_weather(tag, voice_transcript, **kwargs):
     """
     Tells the weather of a place
     :param tag: string (e.g 'weather')
