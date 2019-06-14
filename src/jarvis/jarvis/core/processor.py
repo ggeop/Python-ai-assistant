@@ -1,4 +1,4 @@
-from jarvis.core.skills_controller import SkillsController
+from jarvis.core.controller import SkillsController
 from jarvis.utils.application_utils import start_up
 from jarvis.skills.wolframalpha_skill.__init__ import call_wolframalpha
 
