@@ -10,7 +10,8 @@ from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 
 class ControllerUtils:
     def __init__(self):
-        self.microphone = self._set_microphone()
+        if GENERAL_SETTINGS['user_voice_input']:
+            self.microphone = self._set_microphone()
         self.r = sr.Recognizer()
         self.skills_to_execute = []
         self.latest_voice_transcript = ''
@@ -22,11 +23,13 @@ class ControllerUtils:
         and if is not enabled search for enable word in user recorded speech.
         :return: boolean
         """
-
-        if not self.execute_state['ready_to_execute']:
-            return self._ready_to_start()
+        if GENERAL_SETTINGS['user_voice_input']:
+            if not self.execute_state['ready_to_execute']:
+                return self._ready_to_start()
+            else:
+                return self._continue_listening()
         else:
-            return self._continue_listening()
+            return True
 
     @log
     def shutdown_check(self):

@@ -8,7 +8,8 @@ from jarvis.skills import \
     browser_skills, \
     system_health_skills, \
     datetime_skills, \
-    weather_skills
+    weather_skills,\
+    linux_app_skills
 
 """
 All available assistant skills
@@ -68,7 +69,7 @@ BASIC_SKILLS = {
 
     'tells_the_weather': {'enable': True,
                           'skill': weather_skills.tell_the_weather,
-                          'tags': {'weather', 'tell_the_skills me the weather'},
+                          'tags': {'weather', 'tell me the weather'},
                           'description': 'Ask for the "weather in" somewhere, e.g. weather in London'
                           },
 
@@ -138,6 +139,21 @@ BASIC_SKILLS = {
                         'tags': {'skills', 'your skills', 'what can you do', 'what are your skills'},
                         'description': 'Ask to tell you what he can do e.g. "Jarvis what can you do"?'
                         },
+    'take_a_note': {'enable': True,
+                    'skill': linux_app_skills.open_note_app,
+                    'tags': {'note', 'create a note'},
+                    'description': 'Ask to create a note e.g. "Jarvis can you open a note"?'
+                    },
+    'open_new_browser_window': {'enable': True,
+                                'skill': linux_app_skills.open_new_browser_window,
+                                'tags': {'firefox', 'open firefox'},
+                                'description': 'Ask to open new browser window e.g. "Jarvis can you open a firefox"?'
+                                },
+    'open_new_bash': {'enable': True,
+                      'skill': linux_app_skills.open_new_bash,
+                      'tags': {'bash'},
+                      'description': 'Ask to open new bash e.g. "Jarvis can you open bash"?'
+                      },
 
 }
 
