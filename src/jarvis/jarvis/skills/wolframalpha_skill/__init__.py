@@ -7,7 +7,7 @@ from jarvis.settings import WOLFRAMALPHA_API
 
 def call_wolframalpha(voice_transcript):
     """
-    Make a request in wolframalpha API and prints the response.
+    Make a request in wolfram Alpha API and prints the response.
     """
     client = wolframalpha.Client(WOLFRAMALPHA_API['key'])
     try:
