@@ -9,6 +9,7 @@ from logging import config
 
 from jarvis.utils import response_utils
 from jarvis.settings import LOG_SETTINGS
+from jarvis._version import __version__
 
 jarvis_logo = "\n"\
 "      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n"\
@@ -19,10 +20,10 @@ jarvis_logo = "\n"\
 "  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝"
 
 
-start_text = "\n"\
-" ###############################################\n"\
-" #    Jarvis Python Voice Assistant Platform   #\n"\
-" ###############################################\n"
+start_text = "" \
+" -----------------------------------------------\n"\
+" -  Voice Assistant Platform  " + "v" +  __version__ + "   -\n"\
+" -----------------------------------------------\n"
 
 
 class OutputStyler:
