@@ -144,6 +144,16 @@ BASIC_SKILLS = {
                     'tags': {'note', 'create a note'},
                     'description': 'Ask to create a note e.g. "Jarvis can you open a note"?'
                     },
+    'open_new_browser_window': {'enable': True,
+                                'skill': linux_app_skills.open_new_browser_window,
+                                'tags': {'firefox', 'open firefox'},
+                                'description': 'Ask to open new browser window e.g. "Jarvis can you open a firefox"?'
+                                },
+    'open_new_bash': {'enable': True,
+                      'skill': linux_app_skills.open_new_bash,
+                      'tags': {'bash'},
+                      'description': 'Ask to open new bash e.g. "Jarvis can you open bash"?'
+                      },
 
 }
 

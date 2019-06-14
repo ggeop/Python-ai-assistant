@@ -16,6 +16,7 @@ It can understand human speech, talk to user and execute basic commands.
 * **Tells the daily news** (e.g 'Jarvis tell me today news')
 * **Spells a word** (e.g 'Jarvis spell me the word animal')
 * **Creates a reminder** (e.g 'Jarvis create a 10 minutes reminder')
+* **Opens linux applications** (e.g 'Jarvis open bash/firefox')
 * **Tells everything it can do** (e.g 'Jarvis tell me your skills or tell me what can you do')
 
 
