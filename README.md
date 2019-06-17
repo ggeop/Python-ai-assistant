@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b848807e59c34d14a3589e39bd1b414e)](https://app.codacy.com/app/ggeop/Python-AI-voice-assistant?utm_source=github.com&utm_medium=referral&utm_content=ggeop/Python-AI-voice-assistant&utm_campaign=Badge_Grade_Dashboard)
 [![CodeFactor](https://www.codefactor.io/repository/github/ggeop/jarvis-voice-assistant/badge)](https://www.codefactor.io/repository/github/ggeop/jarvis-voice-assistant)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # About
