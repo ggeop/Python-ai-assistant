@@ -57,7 +57,7 @@ def log(func):
         try:
             logging.debug(func.__name__)
             func(*args, **kwargs)
-        except Exception as e:
+        except Exception:
             logging.error(func.__name__)
             traceback.print_exc(file=sys.stdout)
     return wrapper
