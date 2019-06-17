@@ -4,6 +4,8 @@ import time
 import requests
 import traceback
 import logging
+
+from datetime import datetime
 from pydub import AudioSegment
 from pydub.playback import play
 from subprocess import call
@@ -103,6 +105,8 @@ def start_up():
     clear()
     print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
+
+    logging.info('\n' + '#'*50 + '\n' + 'APPLICATION STARTS - ' + str(datetime.now()) + '\n' + '#'*50)
 
 
 def play_activation_sound():
