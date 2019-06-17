@@ -20,7 +20,6 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Opens linux applications** (e.g 'Jarvis open bash/firefox')
 *   **Tells everything it can do** (e.g 'Jarvis tell me your skills or tell me what can you do')
 
-
 ### Assistant Features
 *   **Execute multiple commands at once**, (e.g 'Jarvis open youtube and tell_the_skills me the time')
 *   **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
@@ -36,7 +35,7 @@ It can understand human speech, talk to user and execute basic commands.
 
 ### How to add a new Skill
 You can easily add a new skill in two steps.
-*  Create a new configurationin SKILLS in **skills_registry.py**
+*   Create a new configurationin SKILLS in **skills_registry.py**
 ```{python}
 'new_skill': {'enable': True,
                  'skill': Skills.new_skill,
@@ -45,7 +44,6 @@ You can easily add a new skill in two steps.
                 },                
 ```
 *   Create a new skill package in **skills**
-
 
 ## Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
@@ -57,7 +55,7 @@ All the following APIs have free no-commercial API calls. Subscribe to the follo
 *   [OpenWeatherMap](https://openweathermap.org/appid): API for weather forecast.
 *   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
 
-### Download the code in your Ubundu/Debian system!
+### Download the code in your Ubundu/Debian system
 *   Go to home directory:
 
 ```{bash}
