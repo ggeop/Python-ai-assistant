@@ -172,7 +172,7 @@ class SkillsController(ControllerUtils):
                 logging.debug('Execute skill {0}'.format(skill))
                 skill['skill'](**skill)
             except Exception as e:
-                logging.debug("Error with the execution of skill {0}".format(skill['skill']))
+                logging.debug("Error with the execution of skill {0} with message {1}".format(skill['skill'], e))
 
         # Clear the skills queue
         self.skills_to_execute = []
