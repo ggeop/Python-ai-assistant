@@ -11,14 +11,13 @@ from jarvis.skills import \
     weather_skills,\
     linux_app_skills
 
-"""
-All available assistant skills
-Keys description:
-    - 'enable': boolean (With True are the enabled skills)
-    - 'skill': The skill method in Skills
-    - 'tags': The available triggering tags
-    - 'description': skill description
-"""
+
+# All available assistant skills
+# Keys description:
+#    - 'enable': boolean (With True are the enabled skills)
+#    - 'skill': The skill method in Skills
+#    - 'tags': The available triggering tags
+#    - 'description': skill description
 
 CONTROL_SKILLS = {
     'enable_jarvis': {'skill': assistant_activation.enable_jarvis,

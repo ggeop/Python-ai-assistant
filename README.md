@@ -36,7 +36,7 @@ It can understand human speech, talk to user and execute basic commands.
 
 ### How to add a new Skill
 You can easily add a new skill in two steps.
-* Create a new configurationin SKILLS in **skills_registry.py**
+*  Create a new configurationin SKILLS in **skills_registry.py**
 ```{python}
 'new_skill': {'enable': True,
                  'skill': Skills.new_skill,
@@ -44,7 +44,7 @@ You can easily add a new skill in two steps.
                  'description': 'skill description..'
                 },                
 ```
-* Create a new skill package in **skills**
+*  Create a new skill package in **skills**
 
 
 ## Desicion Model
@@ -54,16 +54,16 @@ You can easily add a new skill in two steps.
 ### Create KEYs for third party APIs
 Jarvis assistant uses third party APIs for speech recognition,web information search, weather forecasting etc.
 All the following APIs have free no-commercial API calls. Subscribe to the following APIs in order to take access KEYs.
-* [OpenWeatherMap](https://openweathermap.org/appid): API for weather forecast.
-* [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
+*  [OpenWeatherMap](https://openweathermap.org/appid): API for weather forecast.
+*  [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
 
 ### Download the code in your Ubundu/Debian system!
-* Go to home directory:
+*  Go to home directory:
 
 ```{bash}
 cd ~/
 ```
-* Download the Jarvis repo localy:
+*  Download the Jarvis repo localy:
 
 ```{bash}
 git clone https://github.com/ggeop/Jarvis.git
@@ -71,34 +71,34 @@ git clone https://github.com/ggeop/Jarvis.git
 
 ### Create Virtual Env
 The first step is to setup the virtual environment with the project dependencies.
-* If you don't have installed the virtualenv package, you can install it with pip:
+*  If you don't have installed the virtualenv package, you can install it with pip:
 ```{bash}
 pip install virtualenv
 ```
-* Create a virtual environment
-* We create a new virtual environment inside the Jarvis directory:
+*  Create a virtual environment
+*  We create a new virtual environment inside the Jarvis directory:
 ```{bash}
 virtualenv ~/Jarvis/py_env
 ```
 
 ### Install Python Dependencies
-* Install python-dev package and pyaudio packages if they are not already installed:
+*  Install python-dev package and pyaudio packages if they are not already installed:
 ```{bash}
 sudo apt-get install python-dev
 sudo apt-get install portaudio19-dev python-pyaudio python3-pyaudio
 sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev sox ffmpeg
 ```
-* Activate the virtual environment:
+*  Activate the virtual environment:
 ```{bash}
 source ~/Jarvis/py_env/bin/activate
 ```
-* Install all the Python packages in your:
+*  Install all the Python packages in your:
 ```{bash}
 pip install -r requirements.txt
 ```
 
 ### Put the Keys in settings
-* Before you start running the application you have to put the free KEYs in the settings.py:
+*  Before you start running the application you have to put the free KEYs in the settings.py:
 ```{bash}
 nano Jarvis/src/jarvis/jarvis/setting.py
 ```
@@ -109,12 +109,12 @@ sudo chown user:usergroup /var/log
 ```
 
 ### Start voice assistant
-* Start the assistant service:
+*  Start the assistant service:
 ```{bash}
 python Jarvis/src/jarvis/start.py
 ```
 
-* (OR) start the assistant service in the background:
+*  (OR) start the assistant service in the background:
 ```{bash}
 nohup python Jarvis/src/jarvis/start.py >/dev/null 2>&1 &
 ```

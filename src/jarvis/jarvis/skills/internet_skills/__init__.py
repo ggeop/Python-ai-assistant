@@ -32,6 +32,7 @@ def run_speedtest(**kwargs):
                            )
     else:
         assistant_response("I coudn't run a speedtest")
+        logging.error("Speedtest error with message: {0}".format(err))
 
 
 def internet_availability(**kwargs):
@@ -41,5 +42,6 @@ def internet_availability(**kwargs):
     try:
         _ = requests.get('http://www.google.com/', timeout=1)
         assistant_response("Yes, the internet connection is ok")
-    except requests.ConnectionError:
+    except requests.ConnectionError as e:
         assistant_response("No the internet is down for now")
+        logging.error("No internet connection with message: {0}".format(e))

@@ -18,6 +18,6 @@ def call_wolframalpha(voice_transcript):
         else:
             assistant_response("WolframAlpha API is not working.\n"
                                "You can get an API key from: https://developer.wolframalpha.com/portal/myapps/ ")
-    except:
-        logging.debug('There is not answer with wolframalpha')
+    except Exception as e:
+        logging.debug('There is not answer with wolframalpha with error: {0}'.format(e))
         assistant_response('Sorry, but I can not understand what do you want')

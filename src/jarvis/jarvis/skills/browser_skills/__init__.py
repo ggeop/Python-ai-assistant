@@ -114,5 +114,4 @@ def tell_me_today_news(**kwargs):
             response += data.decode()
             assistant_response(response)
     except Exception as e:
-        print(e)
         logging.debug(e)
