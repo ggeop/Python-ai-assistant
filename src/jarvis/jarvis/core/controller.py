@@ -1,5 +1,6 @@
 import logging
 import speech_recognition as sr
+
 from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
@@ -52,6 +53,7 @@ class ControllerUtils:
             self._recognize_text()
 
     def _recognize_text(self):
+        logging.info("Waiting for user input..")
         self.latest_voice_transcript = input(user_input)
         while self.latest_voice_transcript == '':
             assistant_response("Say something..")
@@ -157,16 +159,20 @@ class SkillsController(ControllerUtils):
                                  'tag': tag,
                                  'skill': skill['skill']}
 
-                        logging.debug('Update skills queue with skill: {0}'.format(skill))
+                        logging.info('Add new skill: {0}'.format(skill['skill']))
                         self.skills_to_execute.append(skill)
+                        logging.debug('skills_to_execute : {0}'.format(self.skills_to_execute))
 
     def execute(self):
         """
         Execute one-by-one all the user skills and empty the queue with the waiting skills.
         """
         for skill in self.skills_to_execute:
-            logging.debug('Execute the skill {0}'.format(skill))
-            skill['skill'](**skill)
+            try:
+                logging.debug('Execute skill {0}'.format(skill))
+                skill['skill'](**skill)
+            except Exception as e:
+                logging.debug("Error with the execution of skill {0}".format(skill['skill']))
 
-            # Remove the executed or not skill from the queue
-            self.skills_to_execute.remove(skill)
+        # Clear the skills queue
+        self.skills_to_execute = []

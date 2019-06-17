@@ -5,6 +5,7 @@ from datetime import datetime
 
 from jarvis.utils.application_utils import clear
 from jarvis.utils.response_utils import assistant_response
+from jarvis.utils.application_utils import play_activation_sound
 
 
 def enable_jarvis(**kwargs):
@@ -12,6 +13,8 @@ def enable_jarvis(**kwargs):
     Creates the assistant respond according to the datetime hour and
     updates the execute state.
     """
+    play_activation_sound()
+
     now = datetime.now()
     day_time = int(now.strftime('%H'))
 

@@ -4,6 +4,10 @@ import time
 import requests
 import traceback
 import logging
+
+from datetime import datetime
+from pydub import AudioSegment
+from pydub.playback import play
 from subprocess import call
 from logging import config
 
@@ -101,3 +105,15 @@ def start_up():
     clear()
     print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
+
+    logging.info('\n' + '#'*50 + '\n' + 'APPLICATION STARTS - ' + str(datetime.now()) + '\n' + '#'*50)
+
+
+def play_activation_sound():
+    """
+    Plays a sound when the assistant enables.
+    """
+    utils_dir = os.path.dirname(__file__)
+    enable_sound = os.path.join(utils_dir, '..', 'files', 'enable_sound.wav')
+    song = AudioSegment.from_wav(enable_sound)
+    play(song)
