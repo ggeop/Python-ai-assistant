@@ -44,5 +44,4 @@ def tell_the_weather(tag, voice_transcript, **kwargs):
                                    "You can get an Weather API key from: https://openweathermap.org/appid")
     except Exception as e:
         logging.debug(e)
-        print(e)
         assistant_response("I faced an issue with the weather site..")
