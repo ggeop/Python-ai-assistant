@@ -1,8 +1,23 @@
-from google_speech import Speech
+import pyttsx3
 
 from jarvis.utils.application_utils import OutputStyler
-from jarvis.settings import GOOGLE_SPEECH, GENERAL_SETTINGS
+from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils import application_utils
+
+
+def set_voice_voice_engine():
+    engine = pyttsx3.init()
+
+    # Setting up new voice rate
+    engine.setProperty('rate', 180)
+
+    # Setting up volume level  between 0 and 1
+    engine.setProperty('volume', 1.0)
+
+    return engine
+
+
+voice_engine = set_voice_voice_engine()
 
 
 def assistant_response(text):
@@ -11,8 +26,10 @@ def assistant_response(text):
     :param text: string
     """
     if GENERAL_SETTINGS['response_in_speech']:
-        speech = Speech(text, GOOGLE_SPEECH['lang'])
-        speech.play()
+        voice_engine.say(text)
+        voice_engine.runAndWait()
+        voice_engine.stop()
+
     if GENERAL_SETTINGS['response_in_text']:
         if GENERAL_SETTINGS['keep_only_last_response']:
             application_utils.clear()
@@ -27,12 +44,9 @@ def assistant_response(text):
 
 def user_speech_playback(text):
     """
-    Prints the user commands in voice or/and in text.
+    Prints the user commands in text.
     :param text: string
     """
-    if GENERAL_SETTINGS['response_in_speech']:
-        speech = Speech(text, GOOGLE_SPEECH['lang'])
-        speech.play()
     if GENERAL_SETTINGS['response_in_text']:
         print(application_utils.user_input)
 
