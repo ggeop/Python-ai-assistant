@@ -1,23 +1,9 @@
-import pyttsx3
-
 from jarvis.utils.application_utils import OutputStyler
 from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils import application_utils
+from jarvis.setup import set_voice_engine
 
-
-def set_voice_voice_engine():
-    engine = pyttsx3.init()
-
-    # Setting up new voice rate
-    engine.setProperty('rate', 180)
-
-    # Setting up volume level  between 0 and 1
-    engine.setProperty('volume', 1.0)
-
-    return engine
-
-
-voice_engine = set_voice_voice_engine()
+voice_engine = set_voice_engine()
 
 
 def assistant_response(text):

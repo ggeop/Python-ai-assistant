@@ -7,12 +7,13 @@ from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
 from jarvis.utils.response_utils import assistant_response, user_speech_playback
 from jarvis.utils.application_utils import log, clear, user_input
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
+from jarvis.setup import set_microphone
 
 
 class ControllerUtils:
     def __init__(self):
         if GENERAL_SETTINGS['user_voice_input']:
-            self.microphone = self._set_microphone()
+            self.microphone = set_microphone()
         self.r = sr.Recognizer()
         self.skills_to_execute = []
         self.latest_voice_transcript = ''
@@ -58,32 +59,6 @@ class ControllerUtils:
         while self.latest_voice_transcript == '':
             assistant_response("Say something..")
             self.latest_voice_transcript = input(user_input)
-
-    @staticmethod
-    def _set_microphone():
-        """
-        Setup the assistant microphone.
-        """
-        microphone_list = sr.Microphone.list_microphone_names()
-
-        clear()
-        print("=" * 48)
-        print("Microphone Setup")
-        print("=" * 48)
-        print("Which microphone do you want to use a assistant mic:")
-
-        for index, name in enumerate(microphone_list):
-            print("{0}) Microphone: {1}".format(index, name))
-
-        choices = "Choice[1-{0}]: ".format(len(microphone_list))
-        print("WARNING: In case of error of 'Invalid number of channels' try again with different micrphone choice")
-        index = input(choices)
-
-        while not index.isnumeric():
-            index = input('Please select a number between choices[1-{0}]: '.format(len(microphone_list)))
-
-        with sr.Microphone(device_index=int(index), chunk_size=512) as source:
-            return source
 
     def _ready_to_start(self):
         """
