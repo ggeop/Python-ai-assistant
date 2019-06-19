@@ -1,8 +1,9 @@
-from google_speech import Speech
-
 from jarvis.utils.application_utils import OutputStyler
-from jarvis.settings import GOOGLE_SPEECH, GENERAL_SETTINGS
+from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils import application_utils
+from jarvis.setup import set_voice_engine
+
+voice_engine = set_voice_engine()
 
 
 def assistant_response(text):
@@ -11,8 +12,10 @@ def assistant_response(text):
     :param text: string
     """
     if GENERAL_SETTINGS['response_in_speech']:
-        speech = Speech(text, GOOGLE_SPEECH['lang'])
-        speech.play()
+        voice_engine.say(text)
+        voice_engine.runAndWait()
+        voice_engine.stop()
+
     if GENERAL_SETTINGS['response_in_text']:
         if GENERAL_SETTINGS['keep_only_last_response']:
             application_utils.clear()
@@ -27,12 +30,9 @@ def assistant_response(text):
 
 def user_speech_playback(text):
     """
-    Prints the user commands in voice or/and in text.
+    Prints the user commands in text.
     :param text: string
     """
-    if GENERAL_SETTINGS['response_in_speech']:
-        speech = Speech(text, GOOGLE_SPEECH['lang'])
-        speech.play()
     if GENERAL_SETTINGS['response_in_text']:
         print(application_utils.user_input)
 
