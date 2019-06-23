@@ -36,7 +36,7 @@ def disable_jarvis(**kargs):
     :param args:
     :return:
     """
-    assistant_response('Bye bye!!')
+    assistant_response('Bye')
     time.sleep(1)
     clear()
     logging.debug('Application terminated gracefully.')

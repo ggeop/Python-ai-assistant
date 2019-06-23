@@ -1,9 +1,29 @@
+import threading
+
 from jarvis.utils.application_utils import OutputStyler
 from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils import application_utils
 from jarvis.setup import set_voice_engine
 
-voice_engine = set_voice_engine()
+
+engine = set_voice_engine()
+
+
+def speech(text):
+    words = text.split()
+    for word in words:
+        engine.say(word)
+        engine.runAndWait()
+        global stop_speaking
+        if stop_speaking:
+            break
+
+
+def interrupt_speech(thread):
+    input('termination!!!!!')
+    global stop_speaking
+    stop_speaking = True
+    print('thread killed')
 
 
 def assistant_response(text):
@@ -12,9 +32,12 @@ def assistant_response(text):
     :param text: string
     """
     if GENERAL_SETTINGS['response_in_speech']:
-        voice_engine.say(text)
-        voice_engine.runAndWait()
-        voice_engine.stop()
+
+        global stop_speaking
+        stop_speaking = False
+        t1 = threading.Thread(target=speech, args=[text])
+        t1.start()
+        interrupt_speech(t1)
 
     if GENERAL_SETTINGS['response_in_text']:
         if GENERAL_SETTINGS['keep_only_last_response']:

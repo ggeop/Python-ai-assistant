@@ -25,7 +25,7 @@ CONTROL_SKILLS = {
                       },
 
     'disable_jarvis': {'skill': assistant_activation.disable_jarvis,
-                       'tags': {'bye', 'stop', 'shut down'}
+                       'tags': {'bye', 'shut down'}
                        }
 }
 
