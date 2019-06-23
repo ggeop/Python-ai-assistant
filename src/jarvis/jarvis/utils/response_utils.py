@@ -13,7 +13,10 @@ def speech(text):
     words = text.split()
     for word in words:
         engine.say(word)
-        engine.runAndWait()
+        try:
+            engine.runAndWait()
+        except RuntimeError:
+            pass
         global stop_speaking
         if stop_speaking:
             break
@@ -35,9 +38,12 @@ def assistant_response(text):
 
         global stop_speaking
         stop_speaking = False
-        t1 = threading.Thread(target=speech, args=[text])
-        t1.start()
-        interrupt_speech(t1)
+        try:
+            t1 = threading.Thread(target=speech, args=[text])
+            t1.start()
+        except RuntimeError:
+            pass
+        #interrupt_speech(t1)
 
     if GENERAL_SETTINGS['response_in_text']:
         if GENERAL_SETTINGS['keep_only_last_response']:
