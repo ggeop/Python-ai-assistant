@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
 from jarvis.utils.response_utils import assistant_response, user_speech_playback
-from jarvis.utils.application_utils import log, clear, user_input
+from jarvis.utils.application_utils import log, clear, user_input, speech_interruption
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
 
@@ -55,10 +55,13 @@ class ControllerUtils:
 
     def _recognize_text(self):
         logging.info("Waiting for user input..")
-        self.latest_voice_transcript = input(user_input)
+        self.latest_voice_transcript = input(user_input).lower()
         while self.latest_voice_transcript == '':
             assistant_response("Say something..")
-            self.latest_voice_transcript = input(user_input)
+            self.latest_voice_transcript = input(user_input).lower()
+        if speech_interruption(self.latest_voice_transcript):
+            self.latest_voice_transcript = ''
+            logging.debug('Speech interruption')
 
     def _ready_to_start(self):
         """
@@ -93,6 +96,9 @@ class ControllerUtils:
         try:
             self.latest_voice_transcript = self.r.recognize_google(audio).lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
+            if speech_interruption(self.latest_voice_transcript):
+                self.latest_voice_transcript = ''
+                logging.debug('Speech interruption')
             user_speech_playback(self.latest_voice_transcript)
         except sr.UnknownValueError:
             assistant_response('....')

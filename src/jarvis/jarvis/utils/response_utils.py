@@ -17,16 +17,8 @@ def speech(text):
             engine.runAndWait()
         except RuntimeError:
             pass
-        global stop_speaking
-        if stop_speaking:
+        if application_utils.stop_speaking:
             break
-
-
-def interrupt_speech(thread):
-    input('termination!!!!!')
-    global stop_speaking
-    stop_speaking = True
-    print('thread killed')
 
 
 def assistant_response(text):
@@ -36,14 +28,12 @@ def assistant_response(text):
     """
     if GENERAL_SETTINGS['response_in_speech']:
 
-        global stop_speaking
-        stop_speaking = False
+        application_utils.stop_speaking = False
         try:
             t1 = threading.Thread(target=speech, args=[text])
             t1.start()
         except RuntimeError:
             pass
-        #interrupt_speech(t1)
 
     if GENERAL_SETTINGS['response_in_text']:
         if GENERAL_SETTINGS['keep_only_last_response']:
