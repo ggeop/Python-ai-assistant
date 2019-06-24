@@ -22,6 +22,7 @@ It can understand human speech, talk to user and execute basic commands.
 
 ### Assistant Features
 *   **Execute multiple commands at once**, (e.g 'Jarvis open youtube and tell_the_skills me the time')
+*   **Asynchronous command execution & speech interruption** 
 *   **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
 *   **Uses wolfram API** for general questions
 *   Easy **voice-command customization**
