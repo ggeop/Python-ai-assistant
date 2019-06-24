@@ -3,18 +3,18 @@ import speech_recognition as sr
 
 from datetime import datetime, timedelta
 
-from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
+from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils.response_utils import assistant_response, user_speech_playback
-from jarvis.utils.application_utils import log, clear, user_input, speech_interruption
+from jarvis.utils.application_utils import log, user_input, speech_interruption
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
 
 
 class ControllerUtils:
     def __init__(self):
-        if GENERAL_SETTINGS['user_voice_input']:
-            self.microphone = set_microphone()
         self.r = sr.Recognizer()
+        if GENERAL_SETTINGS['user_voice_input']:
+            self.microphone = set_microphone(self.r)
         self.skills_to_execute = []
         self.latest_voice_transcript = ''
         self.execute_state = {'ready_to_execute': False, 'enable_time': None}
@@ -110,8 +110,6 @@ class ControllerUtils:
         Capture the user speech and transform it to audio stream (speech --> audio stream).
         """
         with self.microphone as source:
-            self.r.pause_threshold = SPEECH_RECOGNITION['pause_threshold']
-            self.r.adjust_for_ambient_noise(source, duration=SPEECH_RECOGNITION['ambient_duration'])
             audio_text = self.r.listen(source)
 
         return audio_text
