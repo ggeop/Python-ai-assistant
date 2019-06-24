@@ -9,10 +9,41 @@ from jarvis.setup import set_voice_engine
 engine = set_voice_engine()
 
 
+def create_text_batches(raw_text, number_of_words_per_batch = 10):
+    """
+    Splits the user speech into batches and return a list with the split batches
+    :param raw_text: string
+    :param number_of_words_per_batch: int
+    :return: list
+    """
+
+    raw_text = raw_text + ' '
+    list_of_batches = []
+    total_words = raw_text.count(' ')
+    letter_id = 0
+
+    for split in range(0, int(total_words / number_of_words_per_batch)):
+        batch = ''
+        words_count = 0
+        while words_count < number_of_words_per_batch:
+            batch += raw_text[letter_id]
+            if raw_text[letter_id] == ' ':
+                words_count += 1
+            letter_id += 1
+        list_of_batches.append(batch)
+
+    # Add the rest of word in a batch
+    if letter_id < len(raw_text):
+        list_of_batches.append(raw_text[letter_id:])
+    return list_of_batches
+
+
 def speech(text):
-    words = text.split()
-    for word in words:
-        engine.say(word)
+
+    batches = create_text_batches(raw_text=text)
+
+    for batch in batches:
+        engine.say(batch)
         try:
             engine.runAndWait()
         except RuntimeError:
