@@ -30,8 +30,8 @@ LOG_SETTINGS = {
 # General assistant settings
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
-    'enable_period': 90,  # In seconds
-    'user_voice_input': False,  # True: The assistant responds in voice commands,
+    'enable_period': 190,  # In seconds
+    'user_voice_input': True,  # True: The assistant responds in voice commands,
                                 # False: The assistant waiting for text input
     'response_in_speech': True,
 }
@@ -39,10 +39,10 @@ GENERAL_SETTINGS = {
 # Google API Speech recognition settings
 # SpeechRecognition: https://pypi.org/project/SpeechRecognition/2.1.3
 SPEECH_RECOGNITION = {
-    'ambient_duration': 0.1,
+    'ambient_duration': 4,  # Time for auto microphone calibration
     'pause_threshold': 1,  # minimum length silence (in seconds) at the end of a sentence
-    'energy_threshold': 4000,  # microphone sensitivity, for loud places, the energy level should be up to 4000
-    'dynamic_energy_threshold': False  # For unpredictable noise levels
+    'energy_threshold': 3000,  # microphone sensitivity, for loud places, the energy level should be up to 4000
+    'dynamic_energy_threshold': True  # For unpredictable noise levels (Suggested to be TRUE)
 }
 
 # Google text to speech API settings
