@@ -28,7 +28,7 @@ def enable_jarvis(**kwargs):
     else:
         assistant_response('Good evening human')
         time.sleep(2)
-    assistant_response('What do you want to do for you?')
+    assistant_response('What do you want?')
 
     return {'ready_to_execute': True,
             'enable_time': now}
