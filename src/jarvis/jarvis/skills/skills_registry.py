@@ -74,7 +74,7 @@ BASIC_SKILLS = {
 
     'assistant_check': {'enable': True,
                         'skill': assistant_info_skills.assistant_check,
-                        'tags': {'hi', 'hear', 'can you hear', 'hey jarvis', 'are you there'},
+                        'tags': {'can you hear', 'hey jarvis', 'are you there'},
                         'description': 'Ask me if I "hear" you, e.g. Jarvis "can you hear" me?'
                         },
 
