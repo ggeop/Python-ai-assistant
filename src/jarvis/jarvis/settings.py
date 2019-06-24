@@ -31,12 +31,9 @@ LOG_SETTINGS = {
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
     'enable_period': 90,  # In seconds
-    'user_voice_input': True,  # True: The assistant responds in voice commands,
+    'user_voice_input': False,  # True: The assistant responds in voice commands,
                                 # False: The assistant waiting for text input
-    'response_in_speech': False,
-    'response_in_text': True,
-    'keep_only_last_response': True  # True: keeps only the last assistant response in console stdout.
-                                     # False: Keeps all the conversation.
+    'response_in_speech': True,
 }
 
 # Google API Speech recognition settings
