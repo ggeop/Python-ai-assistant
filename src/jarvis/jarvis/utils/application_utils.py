@@ -28,6 +28,11 @@ start_text = "" \
 " -  Voice Assistant Platform  " + "v" +  __version__ + "   -\n"\
 " -----------------------------------------------\n"
 
+# GLOBAL Variables
+global stop_speaking  # Initialize global variables for multithreading processing
+global dynamic_energy_ratio
+global energy_threshold
+
 
 class OutputStyler:
     HEADER = '\033[95m'
@@ -116,9 +121,6 @@ def play_activation_sound():
     enable_sound = os.path.join(utils_dir, '..', 'files', 'enable_sound.wav')
     fnull = open(os.devnull, 'w')
     subprocess.Popen(['play', enable_sound], stdout=fnull)
-
-
-global stop_speaking  # Initialize global variables for multithreading processing
 
 
 def speech_interruption(latest_voice_transcript):

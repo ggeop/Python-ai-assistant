@@ -63,6 +63,9 @@ def print_assistant_response(text):
     application_utils.clear()
     stdout_print(application_utils.jarvis_logo)
     stdout_print("  NOTE: CTRL + C If you want to Quit.")
+    print(OutputStyler.BOLD +
+          '  MIC INFO: ENERGY THRESHOLD LEVEL: ' + '|'*int(application_utils.energy_threshold) + '\n'
+          '              DYNAMIC ENERGY LEVEL: ' + '|'*int(application_utils.dynamic_energy_ratio) + OutputStyler.ENDC)
     assistant_name = GENERAL_SETTINGS['assistant_name'] + ': '
     print(OutputStyler.HEADER + '=' * 48 + OutputStyler.ENDC)
     print(OutputStyler.HEADER + assistant_name + text + '\r' + OutputStyler.ENDC)

@@ -8,9 +8,9 @@ from jarvis.utils.response_utils import assistant_response, user_speech_playback
 from jarvis.utils.application_utils import log, user_input, speech_interruption
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
+from jarvis.utils import application_utils
 
-
-class ControllerUtils:
+class Controller:
     def __init__(self):
         self.r = sr.Recognizer()
         if GENERAL_SETTINGS['user_voice_input']:
@@ -109,13 +109,18 @@ class ControllerUtils:
         """
         Capture the user speech and transform it to audio stream (speech --> audio stream).
         """
+        # Update microphone variables (Create these two global variables for user system printing)
+        application_utils.dynamic_energy_ratio = self.r.dynamic_energy_ratio
+        logging.debug('Dynamic energy ration value is: {0}'.format(application_utils.dynamic_energy_ratio))
+        application_utils.energy_threshold = self.r.energy_threshold
+        logging.debug('Energy threshold is: {0}'.format(application_utils.energy_threshold))
+
         with self.microphone as source:
             audio_text = self.r.listen(source)
-
         return audio_text
 
 
-class SkillsController(ControllerUtils):
+class SkillsController(Controller):
 
     @log
     def get_skills(self):
