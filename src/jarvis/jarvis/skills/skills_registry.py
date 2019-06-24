@@ -129,7 +129,7 @@ BASIC_SKILLS = {
 
     'create_reminder': {'enable': True,
                         'skill': reminder_skill.create_reminder,
-                        'tags': {'remind', 'remind me'},
+                        'tags': {'reminder', 'remind me'},
                         'description': 'Ask to remind you something e.g. "Jarvis create a 5 minute reminder"?'
                         },
 
