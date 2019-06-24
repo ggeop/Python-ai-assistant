@@ -118,7 +118,6 @@ def play_activation_sound():
     subprocess.Popen(['play', enable_sound], stdout=fnull)
 
 
-
 global stop_speaking  # Initialize global variables for multithreading processing
 
 
