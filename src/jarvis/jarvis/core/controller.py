@@ -3,18 +3,18 @@ import speech_recognition as sr
 
 from datetime import datetime, timedelta
 
-from jarvis.settings import GENERAL_SETTINGS, SPEECH_RECOGNITION
+from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils.response_utils import assistant_response, user_speech_playback
-from jarvis.utils.application_utils import log, clear, user_input
+from jarvis.utils.application_utils import log, user_input, speech_interruption
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
+from jarvis.utils import application_utils
 
-
-class ControllerUtils:
+class Controller:
     def __init__(self):
-        if GENERAL_SETTINGS['user_voice_input']:
-            self.microphone = set_microphone()
         self.r = sr.Recognizer()
+        if GENERAL_SETTINGS['user_voice_input']:
+            self.microphone = set_microphone(self.r)
         self.skills_to_execute = []
         self.latest_voice_transcript = ''
         self.execute_state = {'ready_to_execute': False, 'enable_time': None}
@@ -55,10 +55,13 @@ class ControllerUtils:
 
     def _recognize_text(self):
         logging.info("Waiting for user input..")
-        self.latest_voice_transcript = input(user_input)
+        self.latest_voice_transcript = input(user_input).lower()
         while self.latest_voice_transcript == '':
             assistant_response("Say something..")
-            self.latest_voice_transcript = input(user_input)
+            self.latest_voice_transcript = input(user_input).lower()
+        if speech_interruption(self.latest_voice_transcript):
+            self.latest_voice_transcript = ''
+            logging.debug('Speech interruption')
 
     def _ready_to_start(self):
         """
@@ -93,6 +96,9 @@ class ControllerUtils:
         try:
             self.latest_voice_transcript = self.r.recognize_google(audio).lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
+            if speech_interruption(self.latest_voice_transcript):
+                self.latest_voice_transcript = ''
+                logging.debug('Speech interruption')
             user_speech_playback(self.latest_voice_transcript)
         except sr.UnknownValueError:
             assistant_response('....')
@@ -103,15 +109,18 @@ class ControllerUtils:
         """
         Capture the user speech and transform it to audio stream (speech --> audio stream).
         """
-        with self.microphone as source:
-            self.r.pause_threshold = SPEECH_RECOGNITION['pause_threshold']
-            self.r.adjust_for_ambient_noise(source, duration=SPEECH_RECOGNITION['ambient_duration'])
-            audio_text = self.r.listen(source)
+        # Update microphone variables (Create these two global variables for user system printing)
+        application_utils.dynamic_energy_ratio = self.r.dynamic_energy_ratio
+        logging.debug('Dynamic energy ration value is: {0}'.format(application_utils.dynamic_energy_ratio))
+        application_utils.energy_threshold = self.r.energy_threshold
+        logging.debug('Energy threshold is: {0}'.format(application_utils.energy_threshold))
 
+        with self.microphone as source:
+            audio_text = self.r.listen(source)
         return audio_text
 
 
-class SkillsController(ControllerUtils):
+class SkillsController(Controller):
 
     @log
     def get_skills(self):

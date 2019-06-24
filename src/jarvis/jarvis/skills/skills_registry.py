@@ -25,7 +25,7 @@ CONTROL_SKILLS = {
                       },
 
     'disable_jarvis': {'skill': assistant_activation.disable_jarvis,
-                       'tags': {'bye', 'stop', 'shut down'}
+                       'tags': {'bye', 'shut down'}
                        }
 }
 
@@ -74,7 +74,7 @@ BASIC_SKILLS = {
 
     'assistant_check': {'enable': True,
                         'skill': assistant_info_skills.assistant_check,
-                        'tags': {'hi', 'hear', 'can you hear', 'hey jarvis', 'are you there'},
+                        'tags': {'can you hear', 'hey jarvis', 'are you there'},
                         'description': 'Ask me if I "hear" you, e.g. Jarvis "can you hear" me?'
                         },
 
@@ -129,7 +129,7 @@ BASIC_SKILLS = {
 
     'create_reminder': {'enable': True,
                         'skill': reminder_skill.create_reminder,
-                        'tags': {'remind', 'remind me'},
+                        'tags': {'reminder', 'remind me'},
                         'description': 'Ask to remind you something e.g. "Jarvis create a 5 minute reminder"?'
                         },
 
