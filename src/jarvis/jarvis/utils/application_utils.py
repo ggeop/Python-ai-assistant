@@ -4,10 +4,9 @@ import time
 import requests
 import traceback
 import logging
+import subprocess
 
 from datetime import datetime
-from pydub import AudioSegment
-from pydub.playback import play
 from subprocess import call
 from logging import config
 
@@ -115,8 +114,9 @@ def play_activation_sound():
     """
     utils_dir = os.path.dirname(__file__)
     enable_sound = os.path.join(utils_dir, '..', 'files', 'enable_sound.wav')
-    song = AudioSegment.from_wav(enable_sound)
-    play(song)
+    fnull = open(os.devnull, 'w')
+    subprocess.Popen(['play', enable_sound], stdout=fnull)
+
 
 
 global stop_speaking  # Initialize global variables for multithreading processing
