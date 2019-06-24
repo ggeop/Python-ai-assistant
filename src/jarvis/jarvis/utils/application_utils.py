@@ -117,3 +117,13 @@ def play_activation_sound():
     enable_sound = os.path.join(utils_dir, '..', 'files', 'enable_sound.wav')
     song = AudioSegment.from_wav(enable_sound)
     play(song)
+
+
+global stop_speaking  # Initialize global variables for multithreading processing
+
+
+def speech_interruption(latest_voice_transcript):
+    if 'stop' in latest_voice_transcript:
+        global stop_speaking
+        stop_speaking = True
+        return True

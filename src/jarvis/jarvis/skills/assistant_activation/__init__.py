@@ -13,17 +13,19 @@ def enable_jarvis(**kwargs):
     Creates the assistant respond according to the datetime hour and
     updates the execute state.
     """
-    play_activation_sound()
 
     now = datetime.now()
     day_time = int(now.strftime('%H'))
 
     if day_time < 12:
         assistant_response('Good morning human')
+        time.sleep(2)
     elif 12 <= day_time < 18:
         assistant_response('Good afternoon human')
+        time.sleep(2)
     else:
         assistant_response('Good evening human')
+        time.sleep(2)
     assistant_response('What do you want to do for you?')
 
     return {'ready_to_execute': True,
@@ -36,7 +38,7 @@ def disable_jarvis(**kargs):
     :param args:
     :return:
     """
-    assistant_response('Bye bye!!')
+    assistant_response('Bye')
     time.sleep(1)
     clear()
     logging.debug('Application terminated gracefully.')
