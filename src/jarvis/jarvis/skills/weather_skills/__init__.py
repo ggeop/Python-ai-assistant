@@ -1,10 +1,11 @@
 import re
 import logging
+import time
 from pyowm import OWM
-
 
 from jarvis.settings import WEATHER_API
 from jarvis.utils.response_utils import assistant_response
+from jarvis.skills.location_skill import get_location
 
 
 def _get_weather_status_and_temperature(city):
@@ -25,23 +26,33 @@ def tell_the_weather(tag, voice_transcript, **kwargs):
     :param tag: string (e.g 'weather')
     :param voice_transcript: string (e.g 'weather in London')
     """
-    reg_ex = re.search(tag + ' in ([a-zA-Z]+)', voice_transcript)
+    reg_ex = re.search(tag + ' [a-zA-Z][a-zA-Z] ([a-zA-Z]+)', voice_transcript)
     try:
-        if reg_ex:
-            if WEATHER_API['key']:
-                city = reg_ex.group(1)
-                status, temperature = _get_weather_status_and_temperature(city)
-                if status and temperature:
-                    assistant_response('Current weather in %s is %s.\n'
-                                       'The maximum temperature is %0.2f degree celcius. \n'
-                                       'The minimum temperature is %0.2f degree celcius.'
-                                       % (city, status, temperature['temp_max'], temperature['temp_min'])
-                                       )
-                else:
-                    assistant_response("Sorry the weather API is not available now..")
+        if WEATHER_API['key']:
+            city = _get_city(reg_ex)
+            status, temperature = _get_weather_status_and_temperature(city)
+            if status and temperature:
+                assistant_response('Current weather in %s is %s.\n'
+                                   'The maximum temperature is %0.2f degree celcius. \n'
+                                   'The minimum temperature is %0.2f degree celcius.'
+                                   % (city, status, temperature['temp_max'], temperature['temp_min'])
+                                   )
             else:
-                assistant_response("Weather forecast is not working.\n"
-                                   "You can get an Weather API key from: https://openweathermap.org/appid")
+                assistant_response("Sorry the weather API is not available now..")
+        else:
+            assistant_response("Weather forecast is not working.\n"
+                               "You can get an Weather API key from: https://openweathermap.org/appid")
+
     except Exception as e:
         logging.debug(e)
         assistant_response("I faced an issue with the weather site..")
+
+
+def _get_city(reg_ex):
+    if not reg_ex:
+        city, latitude, longitude = get_location()
+        assistant_response("You are in {0}".format(city))
+        time.sleep(1)
+    else:
+        city = reg_ex.group(1)
+    return city
