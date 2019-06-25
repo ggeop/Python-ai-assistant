@@ -52,10 +52,10 @@ You can easily add a new skill in two steps.
 ## Getting Started
 ### Create KEYs for third party APIs
 Jarvis assistant uses third party APIs for speech recognition,web information search, weather forecasting etc.
-All the following APIs have free no-commercial API calls. Subscribe to the following APIs in order to take access KEYs.
+All the following APIs have free no-commercial API calls. Subscribe to the following APIs in order to take FREE access KEYs.
 *   [OpenWeatherMap](https://openweathermap.org/appid): API for weather forecast.
 *   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
-
+*   [IPSTACK](https://ipstack.com/signup/free): API for current location.
 ### Download the code in your Ubundu/Debian system
 *   Go to home directory:
 
