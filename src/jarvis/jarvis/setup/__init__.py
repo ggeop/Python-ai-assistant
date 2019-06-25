@@ -30,15 +30,25 @@ def set_microphone(r):
     with sr.Microphone(device_index=int(index), chunk_size=512) as source:
         r.pause_threshold = SPEECH_RECOGNITION['pause_threshold']
         r.energy_threshold = SPEECH_RECOGNITION['energy_threshold']
+
+        clear()
+        print("-" * 48)
+        print("Microphone Calibration")
+        print("-" * 48)
+
         print("Please wait.. for {} seconds ".format(SPEECH_RECOGNITION['ambient_duration']))
-        print("Calibrating microphone...")
         r.adjust_for_ambient_noise(source, duration=SPEECH_RECOGNITION['ambient_duration'])
         r.dynamic_energy_threshold = SPEECH_RECOGNITION['dynamic_energy_threshold']
+        print("Microphone calibrated successfully!")
 
         return source
 
 
 def set_voice_engine():
+    """
+    Setup text to speech engine
+    :return: gtts engine object
+    """
     engine = pyttsx3.init()
 
     # Setting up new voice rate
