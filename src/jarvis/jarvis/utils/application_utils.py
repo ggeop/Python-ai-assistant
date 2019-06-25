@@ -120,7 +120,7 @@ def play_activation_sound():
     utils_dir = os.path.dirname(__file__)
     enable_sound = os.path.join(utils_dir, '..', 'files', 'enable_sound.wav')
     fnull = open(os.devnull, 'w')
-    subprocess.Popen(['play', enable_sound], stdout=fnull)
+    subprocess.Popen(['play', enable_sound], stdout=fnull, stderr=fnull).communicate()
 
 
 def speech_interruption(latest_voice_transcript):
