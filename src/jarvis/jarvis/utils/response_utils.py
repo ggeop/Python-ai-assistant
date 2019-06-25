@@ -80,8 +80,8 @@ def assistant_response(text):
     if GENERAL_SETTINGS['response_in_speech']:
         application_utils.stop_speaking = False
         try:
-            t1 = threading.Thread(target=speech, args=[text])
-            t1.start()
+            speech_tread = threading.Thread(target=speech, args=[text])
+            speech_tread.start()
         except RuntimeError:
             pass
     else:
