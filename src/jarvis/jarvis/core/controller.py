@@ -99,7 +99,6 @@ class Controller:
             if speech_interruption(self.latest_voice_transcript):
                 self.latest_voice_transcript = ''
                 logging.debug('Speech interruption')
-            user_speech_playback(self.latest_voice_transcript)
         except sr.UnknownValueError:
             assistant_response('....')
         except sr.RequestError:

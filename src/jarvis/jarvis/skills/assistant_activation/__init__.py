@@ -14,7 +14,6 @@ def enable_jarvis(**kwargs):
     updates the execute state.
     """
     play_activation_sound()
-    time.sleep(2)
 
     now = datetime.now()
     day_time = int(now.strftime('%H'))

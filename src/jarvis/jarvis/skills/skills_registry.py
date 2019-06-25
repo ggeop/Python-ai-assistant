@@ -8,8 +8,9 @@ from jarvis.skills import \
     browser_skills, \
     system_health_skills, \
     datetime_skills, \
-    weather_skills,\
-    linux_app_skills
+    weather_skills, \
+    linux_app_skills, \
+    location_skill
 
 
 # All available assistant skills
@@ -153,6 +154,11 @@ BASIC_SKILLS = {
                       'tags': {'bash'},
                       'description': 'Ask to open new bash e.g. "Jarvis can you open bash"?'
                       },
+    'get_current_location': {'enable': True,
+                             'skill': location_skill.get_current_location,
+                             'tags': {'my location', 'current location', 'where am I'},
+                             'description': 'Ask to tell you your current location e.g. "Jarvis tell me my location"?'
+                             },
 
 }
 
