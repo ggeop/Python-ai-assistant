@@ -94,7 +94,7 @@ class Controller:
     def _recognize_voice(self):
         audio = self._record()
         try:
-            self.latest_voice_transcript = audio.lower()
+            self.latest_voice_transcript = self.r.recognize_google(audio).lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
             if speech_interruption(self.latest_voice_transcript):
                 self.latest_voice_transcript = ''
@@ -116,7 +116,6 @@ class Controller:
 
         with self.microphone as source:
             audio_text = self.r.listen(source)
-            audio_text = input('here: ')
         return audio_text
 
 
