@@ -10,6 +10,7 @@ from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
 from jarvis.utils import application_utils
 
+
 class Controller:
     def __init__(self):
         self.r = sr.Recognizer()
