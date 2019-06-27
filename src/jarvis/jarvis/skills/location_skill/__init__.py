@@ -3,7 +3,7 @@ import json
 import logging
 
 from jarvis.settings import IPSTACK_API
-from jarvis.utils.response_utils import assistant_response
+from jarvis.core.response import assistant_response
 
 
 def get_current_location(**kwargs):

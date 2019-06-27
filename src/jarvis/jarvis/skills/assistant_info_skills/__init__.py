@@ -1,8 +1,6 @@
-import time
-
 from jarvis.skills import skills_registry
-from jarvis.utils import response_utils
-from jarvis.utils.response_utils import assistant_response
+from jarvis.core import response
+from jarvis.core.response import assistant_response
 
 
 def assistant_check(**kargs):
@@ -24,7 +22,7 @@ def tell_the_skills(**kwargs):
     """
     response_base = 'I can do the following: \n\n'
     response = _create_skill_response(response_base)
-    response_utils.assistant_response(response)
+    response.assistant_response(response)
 
 
 def assistant_help(**kwargs):

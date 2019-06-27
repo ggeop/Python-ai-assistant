@@ -2,7 +2,7 @@ import re
 import time
 import logging
 
-from jarvis.utils.response_utils import assistant_response
+from jarvis.core.response import assistant_response
 
 
 def spell_a_word(tag, voice_transcript, **kwargs):

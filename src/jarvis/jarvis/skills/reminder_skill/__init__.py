@@ -2,7 +2,7 @@ import re
 import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from jarvis.utils.response_utils import assistant_response
+from jarvis.core.response import assistant_response
 
 
 def _get_reminder_duration_and_time_interval(voice_transcript):

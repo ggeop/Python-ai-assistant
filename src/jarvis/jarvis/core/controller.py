@@ -4,11 +4,16 @@ import speech_recognition as sr
 from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS
-from jarvis.utils.response_utils import assistant_response, user_speech_playback
+from jarvis.core.response import assistant_response
 from jarvis.utils.application_utils import log, user_input, speech_interruption
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
-from jarvis.utils import application_utils
+
+
+class State:
+    stop_speaking = False
+    dynamic_energy_ratio =0
+    energy_threshold = 0
 
 
 class Controller:
@@ -95,7 +100,7 @@ class Controller:
     def _recognize_voice(self):
         audio = self._record()
         try:
-            self.latest_voice_transcript = self.r.recognize_google(audio).lower()
+            self.latest_voice_transcript = audio.lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
             if speech_interruption(self.latest_voice_transcript):
                 self.latest_voice_transcript = ''
@@ -110,13 +115,14 @@ class Controller:
         Capture the user speech and transform it to audio stream (speech --> audio stream).
         """
         # Update microphone variables (Create these two global variables for user system printing)
-        application_utils.dynamic_energy_ratio = self.r.dynamic_energy_ratio
-        logging.debug('Dynamic energy ration value is: {0}'.format(application_utils.dynamic_energy_ratio))
-        application_utils.energy_threshold = self.r.energy_threshold
-        logging.debug('Energy threshold is: {0}'.format(application_utils.energy_threshold))
+        State.dynamic_energy_ratio = self.r.dynamic_energy_ratio
+        logging.debug('Dynamic energy ration value is: {0}'.format(State.dynamic_energy_ratio))
+        State.energy_threshold = self.r.energy_threshold
+        logging.debug('Energy threshold is: {0}'.format(State.energy_threshold))
 
         with self.microphone as source:
             audio_text = self.r.listen(source)
+            audio_text = input('trtrtr: ')
         return audio_text
 
 

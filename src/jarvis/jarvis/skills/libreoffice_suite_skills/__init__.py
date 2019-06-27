@@ -1,6 +1,6 @@
 import subprocess
 
-from jarvis.utils.response_utils import assistant_response
+from jarvis.core.response import assistant_response
 
 
 def _open_libreoffice_app(app):

@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from jarvis.utils.response_utils import assistant_response
+from jarvis.core.response import assistant_response
 
 
 def tell_the_time(**kwargs):

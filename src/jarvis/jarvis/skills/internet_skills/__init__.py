@@ -3,7 +3,7 @@ import json
 import requests
 import logging
 
-from jarvis.utils.response_utils import assistant_response
+from jarvis.core.response import assistant_response
 
 
 def _decode_json(response_bytes):

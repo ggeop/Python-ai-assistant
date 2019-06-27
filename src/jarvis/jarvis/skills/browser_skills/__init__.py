@@ -7,7 +7,7 @@ import urllib.request
 import subprocess
 from bs4 import BeautifulSoup as bs
 
-from jarvis.utils.response_utils import assistant_response
+from jarvis.core.response import assistant_response
 
 
 def _decoded_wiki_response(topic):

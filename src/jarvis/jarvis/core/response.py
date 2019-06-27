@@ -1,11 +1,12 @@
 import threading
+import subprocess
 
 from jarvis.utils.application_utils import OutputStyler
 from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils import application_utils
 from jarvis.setup import set_voice_engine
-
-
+from jarvis.core import controller
+from jarvis.skills import system_health_skills
 engine = set_voice_engine()
 
 
@@ -55,21 +56,35 @@ def speech(text):
             engine.runAndWait()
         except RuntimeError:
             pass
-        if application_utils.stop_speaking:
+        if controller.State.stop_speaking:
+            controller.State.stop_speaking = False
             break
-
 
 def print_assistant_response(text):
     application_utils.clear()
+
     stdout_print(application_utils.jarvis_logo)
+
     stdout_print("  NOTE: CTRL + C If you want to Quit.")
+
+    print(OutputStyler.HEADER + '-------------- INFO --------------' + OutputStyler.ENDC)
+
+    print(OutputStyler.HEADER + 'SYSTEM ---------------------------' + OutputStyler.ENDC)
     print(OutputStyler.BOLD +
-          '  MIC INFO: ENERGY THRESHOLD LEVEL: ' + '|'*int(application_utils.energy_threshold) + '\n'
-          '              DYNAMIC ENERGY LEVEL: ' + '|'*int(application_utils.dynamic_energy_ratio) + OutputStyler.ENDC)
-    assistant_name = GENERAL_SETTINGS['assistant_name'] + ': '
-    print(OutputStyler.HEADER + '=' * 48 + OutputStyler.ENDC)
-    print(OutputStyler.HEADER + assistant_name + text + '\r' + OutputStyler.ENDC)
-    print(OutputStyler.HEADER + '=' * 48 + OutputStyler.ENDC)
+          'RAM USAGE: {0:.2f} GB'.format(system_health_skills.get_memory_consumption()) + OutputStyler.ENDC)
+
+    print(OutputStyler.HEADER + 'MIC ------------------------------' + OutputStyler.ENDC)
+    print(OutputStyler.BOLD +
+          'ENERGY THRESHOLD LEVEL: ' + '|'*int(controller.State.energy_threshold) + '\n'
+          'DYNAMIC ENERGY LEVEL: ' + '|'*int(controller.State.dynamic_energy_ratio) + OutputStyler.ENDC)
+    print(' ')
+
+    print(OutputStyler.HEADER + '-------------- LOG --------------' + OutputStyler.ENDC)
+    lines = subprocess.check_output(['tail', '-10', '/var/log/jarvis.log']).decode("utf-8")
+    print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
+
+    print(OutputStyler.HEADER + '-------------- ASSISTANT --------------' + OutputStyler.ENDC)
+    print(OutputStyler.BOLD + '  > ' + text + '\r' + OutputStyler.ENDC)
 
 
 def assistant_response(text):

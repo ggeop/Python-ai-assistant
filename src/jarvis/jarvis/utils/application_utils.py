@@ -10,9 +10,9 @@ from datetime import datetime
 from subprocess import call
 from logging import config
 
-from jarvis.utils import response_utils
 from jarvis.settings import LOG_SETTINGS
 from jarvis._version import __version__
+from jarvis.core import controller, response
 
 jarvis_logo = "\n" \
               "      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n" \
@@ -23,14 +23,9 @@ jarvis_logo = "\n" \
               "  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝"
 
 start_text = "" \
-" -----------------------------------------------\n"\
-" -  Voice Assistant Platform  " + "v" +  __version__ + "   -\n"\
-" -----------------------------------------------\n"
-
-# GLOBAL Variables
-global stop_speaking  # Initialize global variables for multithreading processing
-global dynamic_energy_ratio
-global energy_threshold
+             " -----------------------------------------------\n" \
+             " -  Voice Assistant Platform  " + "v" + __version__ + "-\n" \
+             " -----------------------------------------------\n"
 
 
 class OutputStyler:
@@ -96,7 +91,7 @@ def startup_ckecks():
 
     print("INFO: Internet connection check..")
     if not internet_connectivity_check():
-        response_utils.stdout_print("WARNING: No internet connection, skills with internet connection will not work")
+        response.stdout_print("WARNING: No internet connection, skills with internet connection will not work")
         time.sleep(3)
 
 
@@ -108,6 +103,7 @@ def start_up():
     clear()
     print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
+    print(OutputStyler.HEADER + 'Waiting..' + OutputStyler.ENDC)
 
     logging.info('\n' + '#'*50 + '\n' + 'APPLICATION STARTS - ' + str(datetime.now()) + '\n' + '#'*50)
 
@@ -124,6 +120,5 @@ def play_activation_sound():
 
 def speech_interruption(latest_voice_transcript):
     if 'stop' in latest_voice_transcript:
-        global stop_speaking
-        stop_speaking = True
+        controller.State.stop_speaking = True
         return True

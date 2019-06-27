@@ -4,7 +4,7 @@ import time
 from pyowm import OWM
 
 from jarvis.settings import WEATHER_API
-from jarvis.utils.response_utils import assistant_response
+from jarvis.core.response import assistant_response
 from jarvis.skills.location_skill import get_location
 
 
