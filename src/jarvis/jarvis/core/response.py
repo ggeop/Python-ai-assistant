@@ -51,8 +51,8 @@ def speech(text):
             engine.runAndWait()
         except RuntimeError:
             pass
-        if controller.RunningState.stop_speaking:
-            controller.RunningState.stop_speaking = False
+        if controller.ControllingState.stop_speaking:
+            controller.ControllingState.stop_speaking = False
             break
 
 

@@ -105,7 +105,7 @@ def start_up():
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
     print(OutputStyler.HEADER + 'Waiting..' + OutputStyler.ENDC)
 
-    if controller.RunningState.first_activation:
+    if controller.ControllingState.first_activation:
         logging.info('APPLICATION STARTED..')
 
 
@@ -121,7 +121,7 @@ def play_activation_sound():
 
 def speech_interruption(latest_voice_transcript):
     if 'stop' in latest_voice_transcript:
-        controller.RunningState.stop_speaking = True
+        controller.ControllingState.stop_speaking = True
         return True
 
 
@@ -141,8 +141,8 @@ def console_output(text):
 
     print(OutputStyler.HEADER + 'MIC ------------------------------' + OutputStyler.ENDC)
     print(OutputStyler.BOLD +
-          'ENERGY THRESHOLD LEVEL: ' + '|' * int(controller.RunningState.energy_threshold) + '\n'
-          'DYNAMIC ENERGY LEVEL: ' + '|' * int(controller.RunningState.dynamic_energy_ratio) + OutputStyler.ENDC)
+          'ENERGY THRESHOLD LEVEL: ' + '|' * int(controller.ControllingState.energy_threshold) + '\n'
+          'DYNAMIC ENERGY LEVEL: ' + '|' * int(controller.ControllingState.dynamic_energy_ratio) + OutputStyler.ENDC)
     print(' ')
 
     print(OutputStyler.HEADER + '-------------- LOG --------------' + OutputStyler.ENDC)

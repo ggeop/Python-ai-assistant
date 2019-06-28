@@ -19,7 +19,7 @@ def enable_jarvis(**kwargs):
     now = datetime.now()
     day_time = int(now.strftime('%H'))
 
-    if controller.RunningState.first_activation:
+    if controller.ControllingState.first_activation:
         if day_time < 12:
             assistant_response('Good morning human')
             time.sleep(2)
@@ -30,7 +30,7 @@ def enable_jarvis(**kwargs):
             assistant_response('Good evening human')
             time.sleep(2)
         assistant_response('What do you want?')
-        controller.RunningState.first_activation = False
+        controller.ControllingState.first_activation = False
 
     return {'ready_to_execute': True,
             'enable_time': now}
