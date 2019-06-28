@@ -10,7 +10,7 @@ from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
 
 
-class State:
+class RunningState:
     stop_speaking = False
     dynamic_energy_ratio = 0
     energy_threshold = 0
@@ -94,10 +94,10 @@ class Controller:
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
 
-            State.is_assistant_enabled = False
+            RunningState.is_assistant_enabled = False
             return False
         else:
-            State.is_assistant_enabled = True
+            RunningState.is_assistant_enabled = True
             return True
 
     def _recognize_voice(self):
@@ -118,11 +118,10 @@ class Controller:
         Capture the user speech and transform it to audio stream (speech --> audio stream).
         """
         # Update microphone variables (Create these two global variables for user system printing)
-        State.dynamic_energy_ratio = self.r.dynamic_energy_ratio
-        logging.debug('Dynamic energy ration value is: {0}'.format(State.dynamic_energy_ratio))
-        State.energy_threshold = self.r.energy_threshold
-        logging.debug('Energy threshold is: {0}'.format(State.energy_threshold))
-        print('waiting to hear')
+        RunningState.dynamic_energy_ratio = self.r.dynamic_energy_ratio
+        logging.debug('Dynamic energy ration value is: {0}'.format(RunningState.dynamic_energy_ratio))
+        RunningState.energy_threshold = self.r.energy_threshold
+        logging.debug('Energy threshold is: {0}'.format(RunningState.energy_threshold))
         with self.microphone as source:
             audio_text = self.r.listen(source)
         return audio_text

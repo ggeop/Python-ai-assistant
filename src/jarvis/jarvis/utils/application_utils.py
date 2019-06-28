@@ -12,6 +12,7 @@ from logging import config
 from jarvis.settings import LOG_SETTINGS
 from jarvis._version import __version__
 from jarvis.core import controller, response
+from jarvis.skills import system_health_skills
 
 jarvis_logo = "\n" \
               "      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n" \
@@ -104,7 +105,7 @@ def start_up():
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
     print(OutputStyler.HEADER + 'Waiting..' + OutputStyler.ENDC)
 
-    if controller.State.first_activation:
+    if controller.RunningState.first_activation:
         logging.info('APPLICATION STARTED..')
 
 
@@ -120,5 +121,33 @@ def play_activation_sound():
 
 def speech_interruption(latest_voice_transcript):
     if 'stop' in latest_voice_transcript:
-        controller.State.stop_speaking = True
+        controller.RunningState.stop_speaking = True
         return True
+
+
+def console_output(text):
+
+    clear()
+
+    response.stdout_print(jarvis_logo)
+
+    response.stdout_print("  NOTE: CTRL + C If you want to Quit.")
+
+    print(OutputStyler.HEADER + '-------------- INFO --------------' + OutputStyler.ENDC)
+
+    print(OutputStyler.HEADER + 'SYSTEM ---------------------------' + OutputStyler.ENDC)
+    print(OutputStyler.BOLD +
+          'RAM USAGE: {0:.2f} GB'.format(system_health_skills.get_memory_consumption()) + OutputStyler.ENDC)
+
+    print(OutputStyler.HEADER + 'MIC ------------------------------' + OutputStyler.ENDC)
+    print(OutputStyler.BOLD +
+          'ENERGY THRESHOLD LEVEL: ' + '|' * int(controller.RunningState.energy_threshold) + '\n'
+          'DYNAMIC ENERGY LEVEL: ' + '|' * int(controller.RunningState.dynamic_energy_ratio) + OutputStyler.ENDC)
+    print(' ')
+
+    print(OutputStyler.HEADER + '-------------- LOG --------------' + OutputStyler.ENDC)
+    lines = subprocess.check_output(['tail', '-10', LOG_SETTINGS['handlers']['file']['filename']]).decode("utf-8")
+    print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
+
+    print(OutputStyler.HEADER + '-------------- ASSISTANT --------------' + OutputStyler.ENDC)
+    print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)

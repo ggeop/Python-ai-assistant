@@ -58,3 +58,6 @@ def set_voice_engine():
     engine.setProperty('volume', 1.0)
 
     return engine
+
+
+engine = set_voice_engine()
