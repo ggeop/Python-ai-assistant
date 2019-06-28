@@ -12,8 +12,10 @@ from jarvis.setup import set_microphone
 
 class State:
     stop_speaking = False
-    dynamic_energy_ratio =0
+    dynamic_energy_ratio = 0
     energy_threshold = 0
+    first_activation = True
+    is_assistant_enabled = False
 
 
 class Controller:
@@ -92,15 +94,16 @@ class Controller:
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
 
-            assistant_response("Time passed.. I go to sleep..")
+            State.is_assistant_enabled = False
             return False
         else:
+            State.is_assistant_enabled = True
             return True
 
     def _recognize_voice(self):
         audio = self._record()
         try:
-            self.latest_voice_transcript = audio.lower()
+            self.latest_voice_transcript = self.r.recognize_google(audio).lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
             if speech_interruption(self.latest_voice_transcript):
                 self.latest_voice_transcript = ''
@@ -119,10 +122,9 @@ class Controller:
         logging.debug('Dynamic energy ration value is: {0}'.format(State.dynamic_energy_ratio))
         State.energy_threshold = self.r.energy_threshold
         logging.debug('Energy threshold is: {0}'.format(State.energy_threshold))
-
+        print('waiting to hear')
         with self.microphone as source:
             audio_text = self.r.listen(source)
-            audio_text = input('trtrtr: ')
         return audio_text
 
 
