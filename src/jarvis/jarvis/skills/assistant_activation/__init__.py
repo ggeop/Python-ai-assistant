@@ -6,6 +6,7 @@ from datetime import datetime
 from jarvis.utils.application_utils import clear
 from jarvis.core.response import assistant_response
 from jarvis.utils.application_utils import play_activation_sound
+from jarvis.core import controller
 
 
 def enable_jarvis(**kwargs):
@@ -18,16 +19,18 @@ def enable_jarvis(**kwargs):
     now = datetime.now()
     day_time = int(now.strftime('%H'))
 
-    if day_time < 12:
-        assistant_response('Good morning human')
-        time.sleep(2)
-    elif 12 <= day_time < 18:
-        assistant_response('Good afternoon human')
-        time.sleep(2)
-    else:
-        assistant_response('Good evening human')
-        time.sleep(2)
-    assistant_response('What do you want?')
+    if controller.State.first_activation:
+        if day_time < 12:
+            assistant_response('Good morning human')
+            time.sleep(2)
+        elif 12 <= day_time < 18:
+            assistant_response('Good afternoon human')
+            time.sleep(2)
+        else:
+            assistant_response('Good evening human')
+            time.sleep(2)
+        assistant_response('What do you want?')
+        controller.State.first_activation = False
 
     return {'ready_to_execute': True,
             'enable_time': now}

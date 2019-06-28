@@ -1,7 +1,7 @@
 LOG_SETTINGS = {
     'version': 1,
     'root': {
-        'level': 'DEBUG',
+        'level': 'INFO',
         'handlers': ['console', 'file'],
     },
     'handlers': {
@@ -12,7 +12,7 @@ LOG_SETTINGS = {
         },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'level': 'DEBUG',
+            'level': 'INFO',
             'formatter': 'detailed',
             'filename': '/var/log/jarvis.log',
             'mode': 'a',

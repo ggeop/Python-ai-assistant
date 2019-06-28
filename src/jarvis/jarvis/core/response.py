@@ -7,6 +7,7 @@ from jarvis.utils import application_utils
 from jarvis.setup import set_voice_engine
 from jarvis.core import controller
 from jarvis.skills import system_health_skills
+from jarvis.settings import LOG_SETTINGS
 engine = set_voice_engine()
 
 
@@ -60,7 +61,9 @@ def speech(text):
             controller.State.stop_speaking = False
             break
 
+
 def print_assistant_response(text):
+
     application_utils.clear()
 
     stdout_print(application_utils.jarvis_logo)
@@ -71,20 +74,20 @@ def print_assistant_response(text):
 
     print(OutputStyler.HEADER + 'SYSTEM ---------------------------' + OutputStyler.ENDC)
     print(OutputStyler.BOLD +
-          'RAM USAGE: {0:.2f} GB'.format(system_health_skills.get_memory_consumption()) + OutputStyler.ENDC)
+          '-RAM USAGE: {0:.2f} GB'.format(system_health_skills.get_memory_consumption()) + OutputStyler.ENDC)
 
     print(OutputStyler.HEADER + 'MIC ------------------------------' + OutputStyler.ENDC)
     print(OutputStyler.BOLD +
-          'ENERGY THRESHOLD LEVEL: ' + '|'*int(controller.State.energy_threshold) + '\n'
-          'DYNAMIC ENERGY LEVEL: ' + '|'*int(controller.State.dynamic_energy_ratio) + OutputStyler.ENDC)
+          '-ENERGY THRESHOLD LEVEL: ' + '|'*int(controller.State.energy_threshold) + '\n'
+          '-DYNAMIC ENERGY LEVEL: ' + '|'*int(controller.State.dynamic_energy_ratio) + OutputStyler.ENDC)
     print(' ')
 
     print(OutputStyler.HEADER + '-------------- LOG --------------' + OutputStyler.ENDC)
-    lines = subprocess.check_output(['tail', '-10', '/var/log/jarvis.log']).decode("utf-8")
+    lines = subprocess.check_output(['tail', '-10', LOG_SETTINGS['handlers']['file']['filename']]).decode("utf-8")
     print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
 
     print(OutputStyler.HEADER + '-------------- ASSISTANT --------------' + OutputStyler.ENDC)
-    print(OutputStyler.BOLD + '  > ' + text + '\r' + OutputStyler.ENDC)
+    print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
 
 
 def assistant_response(text):

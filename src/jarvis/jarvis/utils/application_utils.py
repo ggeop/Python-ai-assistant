@@ -6,7 +6,6 @@ import traceback
 import logging
 import subprocess
 
-from datetime import datetime
 from subprocess import call
 from logging import config
 
@@ -105,7 +104,8 @@ def start_up():
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
     print(OutputStyler.HEADER + 'Waiting..' + OutputStyler.ENDC)
 
-    logging.info('\n' + '#'*50 + '\n' + 'APPLICATION STARTS - ' + str(datetime.now()) + '\n' + '#'*50)
+    if controller.State.first_activation:
+        logging.info('APPLICATION STARTED..')
 
 
 def play_activation_sound():
