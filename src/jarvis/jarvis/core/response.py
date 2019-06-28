@@ -1,15 +1,35 @@
+# MIT License
+
+# Copyright (c) 2019 Georgios Papachristou
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import threading
 
-from jarvis.utils.application_utils import OutputStyler
+from jarvis.utils.application_utils import OutputStyler, console_output
 from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils import application_utils
-from jarvis.setup import set_voice_engine
+from jarvis.setup import engine
+from jarvis.core import controller
 
 
-engine = set_voice_engine()
-
-
-def create_text_batches(raw_text, number_of_words_per_batch=5):
+def _create_text_batches(raw_text, number_of_words_per_batch=5):
     """
     Splits the user speech into batches and return a list with the split batches
     :param raw_text: string
@@ -44,32 +64,18 @@ def speech(text):
     :param text: string (e.g 'tell me about google')
     """
 
-    batches = create_text_batches(raw_text=text)
-
     cumulative_batch = ''
-    for batch in batches:
+    for batch in _create_text_batches(raw_text=text):
         engine.say(batch)
         cumulative_batch += batch
-        print_assistant_response(cumulative_batch)
+        console_output(cumulative_batch)
         try:
             engine.runAndWait()
         except RuntimeError:
             pass
-        if application_utils.stop_speaking:
+        if controller.ControllingState.stop_speaking:
+            controller.ControllingState.stop_speaking = False
             break
-
-
-def print_assistant_response(text):
-    application_utils.clear()
-    stdout_print(application_utils.jarvis_logo)
-    stdout_print("  NOTE: CTRL + C If you want to Quit.")
-    print(OutputStyler.BOLD +
-          '  MIC INFO: ENERGY THRESHOLD LEVEL: ' + '|'*int(application_utils.energy_threshold) + '\n'
-          '              DYNAMIC ENERGY LEVEL: ' + '|'*int(application_utils.dynamic_energy_ratio) + OutputStyler.ENDC)
-    assistant_name = GENERAL_SETTINGS['assistant_name'] + ': '
-    print(OutputStyler.HEADER + '=' * 48 + OutputStyler.ENDC)
-    print(OutputStyler.HEADER + assistant_name + text + '\r' + OutputStyler.ENDC)
-    print(OutputStyler.HEADER + '=' * 48 + OutputStyler.ENDC)
 
 
 def assistant_response(text):
@@ -85,7 +91,7 @@ def assistant_response(text):
         except RuntimeError:
             pass
     else:
-        print_assistant_response(text)
+        console_output(text)
 
 
 def user_speech_playback(text):

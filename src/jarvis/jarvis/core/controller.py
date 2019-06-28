@@ -1,14 +1,53 @@
+# MIT License
+
+# Copyright (c) 2019 Georgios Papachristou
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import logging
 import speech_recognition as sr
 
 from datetime import datetime, timedelta
 
 from jarvis.settings import GENERAL_SETTINGS
-from jarvis.utils.response_utils import assistant_response, user_speech_playback
+from jarvis.core.response import assistant_response
 from jarvis.utils.application_utils import log, user_input, speech_interruption
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
-from jarvis.utils import application_utils
+
+
+class ControllingState:
+    """
+    ControllerState encloses general application variables
+    """
+
+    # Response state
+    stop_speaking = False
+
+    # Microphone state
+    dynamic_energy_ratio = 0
+    energy_threshold = 0
+
+    # Assistant state
+    first_activation = True
+    is_assistant_enabled = False
+
 
 class Controller:
     def __init__(self):
@@ -28,10 +67,8 @@ class Controller:
         if GENERAL_SETTINGS['user_voice_input']:
             if not self.execute_state['ready_to_execute']:
                 return self._ready_to_start()
-            else:
-                return self._continue_listening()
-        else:
-            return True
+            return self._continue_listening()
+        return True
 
     @log
     def shutdown_check(self):
@@ -52,6 +89,10 @@ class Controller:
             self._recognize_voice()
         else:
             self._recognize_text()
+
+    # ----------------------------------------------------------------------------
+    # PRIVATE METHODS
+    # ----------------------------------------------------------------------------
 
     def _recognize_text(self):
         logging.info("Waiting for user input..")
@@ -86,19 +127,23 @@ class Controller:
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
 
-            assistant_response("Time passed.. I go to sleep..")
+            ControllingState.is_assistant_enabled = False
             return False
-        else:
-            return True
+
+        ControllingState.is_assistant_enabled = True
+        return True
 
     def _recognize_voice(self):
-        audio = self._record()
+        """
+        Records voice and update latest_voice_transcript with the latest user speech.
+        """
+        audio_text = self._record()
         try:
-            self.latest_voice_transcript = self.r.recognize_google(audio).lower()
+            self.latest_voice_transcript = self.r.recognize_google(audio_text).lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
             if speech_interruption(self.latest_voice_transcript):
                 self.latest_voice_transcript = ''
-                logging.debug('Speech interruption')
+                logging.debug('User Speech interruption')
         except sr.UnknownValueError:
             assistant_response('....')
         except sr.RequestError:
@@ -106,17 +151,26 @@ class Controller:
 
     def _record(self):
         """
-        Capture the user speech and transform it to audio stream (speech --> audio stream).
+        Capture the user speech and transform it to audio stream (speech --> audio stream --> text).
         """
-        # Update microphone variables (Create these two global variables for user system printing)
-        application_utils.dynamic_energy_ratio = self.r.dynamic_energy_ratio
-        logging.debug('Dynamic energy ration value is: {0}'.format(application_utils.dynamic_energy_ratio))
-        application_utils.energy_threshold = self.r.energy_threshold
-        logging.debug('Energy threshold is: {0}'.format(application_utils.energy_threshold))
+
+        self._update_microphone_noise_level()
 
         with self.microphone as source:
             audio_text = self.r.listen(source)
         return audio_text
+
+    def _update_microphone_noise_level(self):
+        """
+        Update microphone variables in assistant state.
+        """
+        #  Update dynamic energy ratio
+        ControllingState.dynamic_energy_ratio = self.r.dynamic_energy_ratio
+        logging.debug('Dynamic energy ration value is: {0}'.format(ControllingState.dynamic_energy_ratio))
+
+        #  Update microphone energy threshold
+        ControllingState.energy_threshold = self.r.energy_threshold
+        logging.debug('Energy threshold is: {0}'.format(ControllingState.energy_threshold))
 
 
 class SkillsController(Controller):

@@ -19,15 +19,19 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Creates a reminder** (e.g 'Jarvis create a 10 minutes reminder')
 *   **Opens linux applications** (e.g 'Jarvis open bash/firefox')
 *   **Tells everything it can do** (e.g 'Jarvis tell me your skills or tell me what can you do')
+*   **Tells the current location** (e.g 'Jarvis tell me your current location')
+*   **Tells how much memory consumes** (e.g 'Jarvis tell me your memory consumption)
 
 ### Assistant Features
 *   **Execute multiple commands at once**, (e.g 'Jarvis open youtube and tell_the_skills me the time')
-*   **Asynchronous command execution & speech interruption** 
+*   **Asynchronous command execution & speech interruption**
+*   **Custom wake words**, can be triggered with any word or phrase e.g ('hi', 'hi Jarvis', 'wake up') 
 *   **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
-*   **Uses wolfram API** for general questions
 *   Easy **voice-command customization**
 *   Configurable **assistant name** (e.g 'Jarvis', 'Sofia', 'John' etc.)
+*   **Log preview** in console
 *   **Vocal or/and text response**
+*   **Uses wolfram API** for general questions
 
 ### Jarvis in action console output
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)

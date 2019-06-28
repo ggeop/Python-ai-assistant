@@ -1,3 +1,25 @@
+# MIT License
+
+# Copyright (c) 2019 Georgios Papachristou
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import sys
 import os
 import time
@@ -6,32 +28,26 @@ import traceback
 import logging
 import subprocess
 
-from datetime import datetime
 from subprocess import call
 from logging import config
 
-from jarvis.utils import response_utils
 from jarvis.settings import LOG_SETTINGS
 from jarvis._version import __version__
+from jarvis.core import controller, response
+from jarvis.skills import system_health_skills
 
-jarvis_logo = "\n"\
-"      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n"\
-"      ██║██╔══██╗██╔══██╗██║   ██║██║██╔════╝\n"\
-"      ██║███████║██████╔╝██║   ██║██║███████╗\n"\
-" ██   ██║██╔══██║██╔══██╗╚██╗ ██╔╝██║╚════██║\n"\
-" ╚█████╔╝██║  ██║██║  ██║ ╚████╔╝ ██║███████║\n"\
-"  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝"
-
+jarvis_logo = "\n" \
+              "      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n" \
+              "      ██║██╔══██╗██╔══██╗██║   ██║██║██╔════╝\n" \
+              "      ██║███████║██████╔╝██║   ██║██║███████╗\n" \
+              " ██   ██║██╔══██║██╔══██╗╚██╗ ██╔╝██║╚════██║\n" \
+              " ╚█████╔╝██║  ██║██║  ██║ ╚████╔╝ ██║███████║\n" \
+              "  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝"
 
 start_text = "" \
-" -----------------------------------------------\n"\
-" -  Voice Assistant Platform  " + "v" +  __version__ + "   -\n"\
-" -----------------------------------------------\n"
-
-# GLOBAL Variables
-global stop_speaking  # Initialize global variables for multithreading processing
-global dynamic_energy_ratio
-global energy_threshold
+             " -----------------------------------------------\n" \
+             " -  Voice Assistant Platform  " + "v" + __version__ + "-\n" \
+             " -----------------------------------------------\n"
 
 
 class OutputStyler:
@@ -97,7 +113,7 @@ def startup_ckecks():
 
     print("INFO: Internet connection check..")
     if not internet_connectivity_check():
-        response_utils.stdout_print("WARNING: No internet connection, skills with internet connection will not work")
+        response.stdout_print("WARNING: No internet connection, skills with internet connection will not work")
         time.sleep(3)
 
 
@@ -109,8 +125,10 @@ def start_up():
     clear()
     print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
+    print(OutputStyler.HEADER + 'Waiting..' + OutputStyler.ENDC)
 
-    logging.info('\n' + '#'*50 + '\n' + 'APPLICATION STARTS - ' + str(datetime.now()) + '\n' + '#'*50)
+    if controller.ControllingState.first_activation:
+        logging.info('APPLICATION STARTED..')
 
 
 def play_activation_sound():
@@ -125,6 +143,33 @@ def play_activation_sound():
 
 def speech_interruption(latest_voice_transcript):
     if 'stop' in latest_voice_transcript:
-        global stop_speaking
-        stop_speaking = True
+        controller.ControllingState.stop_speaking = True
         return True
+
+
+def console_output(text):
+
+    clear()
+
+    response.stdout_print(jarvis_logo)
+
+    response.stdout_print("  NOTE: CTRL + C If you want to Quit.")
+
+    print(OutputStyler.HEADER + '-------------- INFO --------------' + OutputStyler.ENDC)
+
+    print(OutputStyler.HEADER + 'SYSTEM ---------------------------' + OutputStyler.ENDC)
+    print(OutputStyler.BOLD +
+          'RAM USAGE: {0:.2f} GB'.format(system_health_skills.get_memory_consumption()) + OutputStyler.ENDC)
+
+    print(OutputStyler.HEADER + 'MIC ------------------------------' + OutputStyler.ENDC)
+    print(OutputStyler.BOLD +
+          'ENERGY THRESHOLD LEVEL: ' + '|' * int(controller.ControllingState.energy_threshold) + '\n'
+          'DYNAMIC ENERGY LEVEL: ' + '|' * int(controller.ControllingState.dynamic_energy_ratio) + OutputStyler.ENDC)
+    print(' ')
+
+    print(OutputStyler.HEADER + '-------------- LOG --------------' + OutputStyler.ENDC)
+    lines = subprocess.check_output(['tail', '-10', LOG_SETTINGS['handlers']['file']['filename']]).decode("utf-8")
+    print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
+
+    print(OutputStyler.HEADER + '-------------- ASSISTANT --------------' + OutputStyler.ENDC)
+    print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
