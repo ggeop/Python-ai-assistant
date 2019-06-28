@@ -74,10 +74,10 @@ def set_voice_engine():
     tts_engine = pyttsx3.init()
 
     # Setting up new voice rate
-    engine.setProperty('rate', 160)
+    tts_engine.setProperty('rate', 160)
 
     # Setting up volume level  between 0 and 1
-    engine.setProperty('volume', 1.0)
+    tts_engine.setProperty('volume', 1.0)
 
     return tts_engine
 
