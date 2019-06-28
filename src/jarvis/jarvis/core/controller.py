@@ -10,10 +10,19 @@ from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
 
 
-class RunningState:
+class ControllingState:
+    """
+    ControllerState encloses general application variables
+    """
+
+    # Response state
     stop_speaking = False
+
+    # Microphone state
     dynamic_energy_ratio = 0
     energy_threshold = 0
+
+    # Assistant state
     first_activation = True
     is_assistant_enabled = False
 
@@ -36,10 +45,8 @@ class Controller:
         if GENERAL_SETTINGS['user_voice_input']:
             if not self.execute_state['ready_to_execute']:
                 return self._ready_to_start()
-            else:
-                return self._continue_listening()
-        else:
-            return True
+            return self._continue_listening()
+        return True
 
     @log
     def shutdown_check(self):
@@ -60,6 +67,10 @@ class Controller:
             self._recognize_voice()
         else:
             self._recognize_text()
+
+    # ----------------------------------------------------------------------------
+    # PRIVATE METHODS
+    # ----------------------------------------------------------------------------
 
     def _recognize_text(self):
         logging.info("Waiting for user input..")
@@ -94,20 +105,23 @@ class Controller:
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
 
-            RunningState.is_assistant_enabled = False
+            ControllingState.is_assistant_enabled = False
             return False
-        else:
-            RunningState.is_assistant_enabled = True
-            return True
+
+        ControllingState.is_assistant_enabled = True
+        return True
 
     def _recognize_voice(self):
-        audio = self._record()
+        """
+        Records voice and update latest_voice_transcript with the latest user speech.
+        """
+        audio_text = self._record()
         try:
-            self.latest_voice_transcript = self.r.recognize_google(audio).lower()
+            self.latest_voice_transcript = self.r.recognize_google(audio_text).lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
             if speech_interruption(self.latest_voice_transcript):
                 self.latest_voice_transcript = ''
-                logging.debug('Speech interruption')
+                logging.debug('User Speech interruption')
         except sr.UnknownValueError:
             assistant_response('....')
         except sr.RequestError:
@@ -115,16 +129,26 @@ class Controller:
 
     def _record(self):
         """
-        Capture the user speech and transform it to audio stream (speech --> audio stream).
+        Capture the user speech and transform it to audio stream (speech --> audio stream --> text).
         """
-        # Update microphone variables (Create these two global variables for user system printing)
-        RunningState.dynamic_energy_ratio = self.r.dynamic_energy_ratio
-        logging.debug('Dynamic energy ration value is: {0}'.format(RunningState.dynamic_energy_ratio))
-        RunningState.energy_threshold = self.r.energy_threshold
-        logging.debug('Energy threshold is: {0}'.format(RunningState.energy_threshold))
+
+        self._update_microphone_noise_level()
+
         with self.microphone as source:
             audio_text = self.r.listen(source)
         return audio_text
+
+    def _update_microphone_noise_level(self):
+        """
+        Update microphone variables in assistant state.
+        """
+        #  Update dynamic energy ratio
+        ControllingState.dynamic_energy_ratio = self.r.dynamic_energy_ratio
+        logging.debug('Dynamic energy ration value is: {0}'.format(ControllingState.dynamic_energy_ratio))
+
+        #  Update microphone energy threshold
+        ControllingState.energy_threshold = self.r.energy_threshold
+        logging.debug('Energy threshold is: {0}'.format(ControllingState.energy_threshold))
 
 
 class SkillsController(Controller):
