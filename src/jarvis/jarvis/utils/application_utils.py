@@ -128,6 +128,11 @@ def start_up():
     print(OutputStyler.HEADER + 'Waiting..' + OutputStyler.ENDC)
 
     if controller.ControllingState.first_activation:
+
+        # Clear log file in each assistant fresh start
+        with open(LOG_SETTINGS['handlers']['file']['filename'], 'r+') as f:
+            f.truncate(0)
+
         logging.info('APPLICATION STARTED..')
 
 
