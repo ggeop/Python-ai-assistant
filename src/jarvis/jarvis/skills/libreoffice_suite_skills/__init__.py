@@ -27,7 +27,7 @@ from jarvis.core.response import assistant_response
 
 def _open_libreoffice_app(app):
     app_arg = '-' + app
-    subprocess.Popen(['libreoffice', app_arg], stdout=subprocess.PIPE)
+    subprocess.Popen(['libreoffice', app_arg], stdout=subprocess.PIPE, shell=False)
     assistant_response('I opened a new' + app + ' document..')
 
 

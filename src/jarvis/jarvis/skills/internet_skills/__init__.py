@@ -37,7 +37,7 @@ def run_speedtest(**kwargs):
     """
     Run an internet speed test.
     """
-    process = subprocess.Popen(["speedtest-cli", "--json"], stdout=subprocess.PIPE)
+    process = subprocess.Popen(["speedtest-cli", "--json"], stdout=subprocess.PIPE, shell=False)
     out, err = process.communicate()
     if process.returncode:
 

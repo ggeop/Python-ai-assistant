@@ -79,7 +79,7 @@ def open_in_youtube(tag, voice_transcript, **kwargs):
             soup = bs(page, 'html.parser')
             vids = soup.findAll('a', attrs={'class': 'yt-uix-tile-link'})
             video = 'https://www.youtube.com' + vids[0]['href']
-            subprocess.Popen(["python", "-m", "webbrowser", "-t", video], stdout=subprocess.PIPE)
+            subprocess.Popen(["python", "-m", "webbrowser", "-t", video], stdout=subprocess.PIPE, shell=False)
     except Exception as e:
         logging.debug(e)
         assistant_response("I can't find what do you want in Youtube..")
