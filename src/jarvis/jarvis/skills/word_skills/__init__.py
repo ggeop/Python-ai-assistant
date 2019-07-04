@@ -24,7 +24,7 @@ import re
 import time
 import logging
 
-from jarvis.core.response import assistant_response
+
 
 
 def spell_a_word(tag, voice_transcript, **kwargs):
@@ -38,8 +38,8 @@ def spell_a_word(tag, voice_transcript, **kwargs):
         if reg_ex:
             search_text = reg_ex.group(1)
             for letter in search_text:
-                assistant_response(letter)
+                print(letter)
                 time.sleep(2)
     except Exception as e:
         logging.debug(e)
-        assistant_response("I can't spell the word")
+        print("I can't spell the word")

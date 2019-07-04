@@ -31,9 +31,9 @@ import subprocess
 from subprocess import call
 from logging import config
 
+import jarvis.core.memory
 from jarvis.settings import LOG_SETTINGS
 from jarvis._version import __version__
-from jarvis.core import controller, response
 from jarvis.skills import system_health_skills
 
 jarvis_logo = "\n" \
@@ -113,7 +113,7 @@ def startup_ckecks():
 
     print("INFO: Internet connection check..")
     if not internet_connectivity_check():
-        response.stdout_print("WARNING: No internet connection, skills with internet connection will not work")
+        stdout_print("WARNING: No internet connection, skills with internet connection will not work")
         time.sleep(3)
 
 
@@ -127,7 +127,7 @@ def start_up():
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
     print(OutputStyler.HEADER + 'Waiting..' + OutputStyler.ENDC)
 
-    if controller.ControllingState.first_activation:
+    if jarvis.core.memory.State.first_activation:
 
         # Clear log file in each assistant fresh start
         with open(LOG_SETTINGS['handlers']['file']['filename'], 'r+') as f:
@@ -148,7 +148,7 @@ def play_activation_sound():
 
 def speech_interruption(latest_voice_transcript):
     if 'stop' in latest_voice_transcript:
-        controller.ControllingState.stop_speaking = True
+        jarvis.core.memory.State.stop_speaking = True
         return True
 
 
@@ -156,9 +156,9 @@ def console_output(text):
 
     clear()
 
-    response.stdout_print(jarvis_logo)
+    stdout_print(jarvis_logo)
 
-    response.stdout_print("  NOTE: CTRL + C If you want to Quit.")
+    stdout_print("  NOTE: CTRL + C If you want to Quit.")
 
     print(OutputStyler.HEADER + '-------------- INFO --------------' + OutputStyler.ENDC)
 
@@ -168,8 +168,9 @@ def console_output(text):
 
     print(OutputStyler.HEADER + 'MIC ------------------------------' + OutputStyler.ENDC)
     print(OutputStyler.BOLD +
-          'ENERGY THRESHOLD LEVEL: ' + '|' * int(controller.ControllingState.energy_threshold) + '\n'
-          'DYNAMIC ENERGY LEVEL: ' + '|' * int(controller.ControllingState.dynamic_energy_ratio) + OutputStyler.ENDC)
+          'ENERGY THRESHOLD LEVEL: ' + '|' * int(jarvis.core.memory.State.energy_threshold) + '\n'
+          'DYNAMIC ENERGY LEVEL: ' + '|' * int(
+        jarvis.core.memory.State.dynamic_energy_ratio) + OutputStyler.ENDC)
     print(' ')
 
     print(OutputStyler.HEADER + '-------------- LOG --------------' + OutputStyler.ENDC)
@@ -178,3 +179,19 @@ def console_output(text):
 
     print(OutputStyler.HEADER + '-------------- ASSISTANT --------------' + OutputStyler.ENDC)
     print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
+
+
+def user_speech_playback(text):
+    """
+    Prints the user commands in text.
+    :param text: string
+    """
+    print(user_input)
+
+
+def stdout_print(text):
+    """
+    Application stdout with format.
+    :param text: string
+    """
+    print(OutputStyler.CYAN + text + OutputStyler.ENDC)

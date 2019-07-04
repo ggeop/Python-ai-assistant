@@ -24,7 +24,7 @@ import os
 import psutil
 
 
-from jarvis.core import response
+
 
 
 def get_memory_consumption():
@@ -39,4 +39,4 @@ def tell_memory_consumption(**kwargs):
     Responds the memory consumption of the assistant process
     """
     memory = get_memory_consumption()
-    response.assistant_response('I use {0:.2f} GB..'.format(memory))
+    print('I use {0:.2f} GB..'.format(memory))

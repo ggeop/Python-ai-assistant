@@ -30,7 +30,6 @@ import subprocess
 
 from bs4 import BeautifulSoup as bs
 
-from jarvis.core.response import assistant_response
 
 
 def _decoded_wiki_response(topic):
@@ -57,10 +56,10 @@ def tell_me_about(tag, voice_transcript, **kargs):
         if reg_ex:
             topic = reg_ex.group(1)
             response = _decoded_wiki_response(topic)
-            assistant_response(response)
+            print(response)
     except Exception as e:
         logging.debug(e)
-        assistant_response(" I can't find on the internet what you want")
+        print(" I can't find on the internet what you want")
 
 
 def open_in_youtube(tag, voice_transcript, **kwargs):
@@ -82,7 +81,7 @@ def open_in_youtube(tag, voice_transcript, **kwargs):
             subprocess.Popen(["python", "-m", "webbrowser", "-t", video], stdout=subprocess.PIPE, shell=False)
     except Exception as e:
         logging.debug(e)
-        assistant_response("I can't find what do you want in Youtube..")
+        print("I can't find what do you want in Youtube..")
 
 
 def _create_url(tag):
@@ -113,13 +112,13 @@ def open_website_in_browser(tag, voice_transcript, **kwargs):
         if reg_ex:
             domain = reg_ex.group(1)
             url = _create_url(domain)
-            assistant_response('Sure')
+            print('Sure')
             subprocess.Popen(["python", "-m", "webbrowser", "-t", url], stdout=subprocess.PIPE)
             time.sleep(1)
-            assistant_response('I opened the {0}'.format(domain))
+            print('I opened the {0}'.format(domain))
     except Exception as e:
         logging.debug(e)
-        assistant_response("I can't find this domain..")
+        print("I can't find this domain..")
 
 
 def tell_me_today_news(**kwargs):
@@ -134,6 +133,6 @@ def tell_me_today_news(**kwargs):
             response = ""
             data = news.title.text.encode('utf-8')
             response += data.decode()
-            assistant_response(response)
+            print(response)
     except Exception as e:
         logging.debug(e)

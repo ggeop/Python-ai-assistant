@@ -25,7 +25,7 @@ import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from jarvis.core.response import assistant_response
+
 
 
 def _get_reminder_duration_and_time_interval(voice_transcript):
@@ -70,7 +70,7 @@ def create_reminder(voice_transcript, **kwargs):
     reminder_duration, scheduler_interval = _get_reminder_duration_and_time_interval(voice_transcript)
 
     def reminder():
-        assistant_response("Hey, I remind you that now the {0} {1} passed!"
+        print("Hey, I remind you that now the {0} {1} passed!"
                            .format(reminder_duration, scheduler_interval))
         job.remove()
 
@@ -79,9 +79,9 @@ def create_reminder(voice_transcript, **kwargs):
             scheduler = BackgroundScheduler()
             interval = {scheduler_interval: int(reminder_duration)}
             job = scheduler.add_job(reminder, 'interval', **interval)
-            assistant_response("I have created a reminder in {0} {1}".format(reminder_duration, scheduler_interval))
+            print("I have created a reminder in {0} {1}".format(reminder_duration, scheduler_interval))
             scheduler.start()
 
     except Exception as e:
         logging.debug(e)
-        assistant_response("I can't create a reminder")
+        print("I can't create a reminder")

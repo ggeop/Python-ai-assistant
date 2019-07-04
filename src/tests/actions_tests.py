@@ -55,7 +55,7 @@ class ActionsTests(unittest.TestCase):
         self.assertEqual(False, self.actions.wake_up_check())
 
     @patch('jarvis.action_manager.sys.exit')
-    @patch('jarvis.action_manager.Skills.disable_jarvis')
+    @patch('jarvis.action_manager.Skills.disable_assistant')
     def test_execute_commands(self, mocked_exit, mocked_disable_jarvis):
 
         self.actions.latest_voice_transcript = ' '
@@ -67,7 +67,7 @@ class ActionsTests(unittest.TestCase):
         self.assertEqual(1, mocked_disable_jarvis.call_count)
 
     @patch('jarvis.actions.SkillsController.get_transcript')
-    @patch('jarvis.action_manager.Skills.enable_jarvis')
+    @patch('jarvis.action_manager.Skills.enable_assistant')
     def test_ready_to_start(self, mocked_get_voiced_transcript, mocked_enable_jarvis):
         self.actions.latest_voice_transcript = '..'
         self.assertEqual(None, self.actions._ready_to_start())

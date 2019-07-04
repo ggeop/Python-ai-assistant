@@ -25,28 +25,11 @@ import speech_recognition as sr
 
 from datetime import datetime, timedelta
 
+from jarvis.core.memory import State
 from jarvis.settings import GENERAL_SETTINGS
-from jarvis.core.response import assistant_response
 from jarvis.utils.application_utils import log, user_input, speech_interruption
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import set_microphone
-
-
-class ControllingState:
-    """
-    ControllerState encloses general application variables
-    """
-
-    # Response state
-    stop_speaking = False
-
-    # Microphone state
-    dynamic_energy_ratio = 0
-    energy_threshold = 0
-
-    # Assistant state
-    first_activation = True
-    is_assistant_enabled = False
 
 
 class Controller:
@@ -76,10 +59,10 @@ class Controller:
         Checks if there is the shutdown word, and if exists the assistant service stops.
         """
         transcript_words = self.latest_voice_transcript.split()
-        shutdown_tag = set(transcript_words).intersection(CONTROL_SKILLS['disable_jarvis']['tags'])
+        shutdown_tag = set(transcript_words).intersection(CONTROL_SKILLS['disable_assistant']['tags'])
 
         if bool(shutdown_tag):
-            CONTROL_SKILLS['disable_jarvis']['skill']()
+            CONTROL_SKILLS['disable_assistant']['skill']()
 
     def get_transcript(self):
         """
@@ -98,7 +81,7 @@ class Controller:
         logging.info("Waiting for user input..")
         self.latest_voice_transcript = input(user_input).lower()
         while self.latest_voice_transcript == '':
-            assistant_response("Say something..")
+            print("Say something..")
             self.latest_voice_transcript = input(user_input).lower()
         if speech_interruption(self.latest_voice_transcript):
             self.latest_voice_transcript = ''
@@ -112,10 +95,10 @@ class Controller:
         self.get_transcript()
 
         transcript_words = self.latest_voice_transcript.split()
-        enable_tag = set(transcript_words).intersection(CONTROL_SKILLS['enable_jarvis']['tags'])
+        enable_tag = set(transcript_words).intersection(CONTROL_SKILLS['enable_assistant']['tags'])
 
         if bool(enable_tag):
-            self.execute_state = CONTROL_SKILLS['enable_jarvis']['skill']()
+            self.execute_state = CONTROL_SKILLS['enable_assistant']['skill']()
             return True
 
     def _continue_listening(self):
@@ -127,10 +110,10 @@ class Controller:
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
 
-            ControllingState.is_assistant_enabled = False
+            State.is_assistant_enabled = False
             return False
 
-        ControllingState.is_assistant_enabled = True
+        State.is_assistant_enabled = True
         return True
 
     def _recognize_voice(self):
@@ -139,15 +122,16 @@ class Controller:
         """
         audio_text = self._record()
         try:
-            self.latest_voice_transcript = self.r.recognize_google(audio_text).lower()
+            #self.latest_voice_transcript = self.r.recognize_google(audio_text).lower()
+            self.latest_voice_transcript = audio_text.lower()
             logging.debug('Recognized words: ' + self.latest_voice_transcript)
             if speech_interruption(self.latest_voice_transcript):
                 self.latest_voice_transcript = ''
                 logging.debug('User Speech interruption')
         except sr.UnknownValueError:
-            assistant_response('....')
+            print('....')
         except sr.RequestError:
-            assistant_response("Try later.. (Google API was unreachable..)")
+            print("Try later.. (Google API was unreachable..)")
 
     def _record(self):
         """
@@ -158,6 +142,7 @@ class Controller:
 
         with self.microphone as source:
             audio_text = self.r.listen(source)
+            audio_text = input("input: ")
         return audio_text
 
     def _update_microphone_noise_level(self):
@@ -165,12 +150,12 @@ class Controller:
         Update microphone variables in assistant state.
         """
         #  Update dynamic energy ratio
-        ControllingState.dynamic_energy_ratio = self.r.dynamic_energy_ratio
-        logging.debug('Dynamic energy ration value is: {0}'.format(ControllingState.dynamic_energy_ratio))
+        State.dynamic_energy_ratio = self.r.dynamic_energy_ratio
+        logging.debug('Dynamic energy ration value is: {0}'.format(State.dynamic_energy_ratio))
 
         #  Update microphone energy threshold
-        ControllingState.energy_threshold = self.r.energy_threshold
-        logging.debug('Energy threshold is: {0}'.format(ControllingState.energy_threshold))
+        State.energy_threshold = self.r.energy_threshold
+        logging.debug('Energy threshold is: {0}'.format(State.energy_threshold))
 
 
 class SkillsController(Controller):

@@ -23,7 +23,7 @@
 import subprocess
 import logging
 import time
-from jarvis.core.response import assistant_response
+
 
 
 def open_new_bash(**kargs):
@@ -33,7 +33,7 @@ def open_new_bash(**kargs):
     try:
         subprocess.Popen(['gnome-terminal'], stderr=subprocess.PIPE, shell=False).communicate()
     except Exception as e:
-        assistant_response("An error occurred, I can't open new bash terminal")
+        print("An error occurred, I can't open new bash terminal")
         logging.debug(e)
 
 
@@ -44,9 +44,9 @@ def open_note_app(**kargs):
     try:
         subprocess.Popen(['gedit'], stderr=subprocess.PIPE, shell=False).communicate()
     except FileNotFoundError:
-        assistant_response("You don't have installed the gedit")
+        print("You don't have installed the gedit")
         time.sleep(2)
-        assistant_response("Install gedit with the following command: 'sudo apt-get install gedit'")
+        print("Install gedit with the following command: 'sudo apt-get install gedit'")
 
 
 def open_new_browser_window(**kargs):
@@ -56,5 +56,5 @@ def open_new_browser_window(**kargs):
     try:
         subprocess.Popen(['firefox'], stderr=subprocess.PIPE, shell=False).communicate()
     except Exception as e:
-        assistant_response("An error occurred, I can't open firefox")
+        print("An error occurred, I can't open firefox")
         logging.debug(e)

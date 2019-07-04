@@ -25,14 +25,14 @@ import json
 import logging
 
 from jarvis.settings import IPSTACK_API
-from jarvis.core.response import assistant_response
+
 
 
 def get_current_location(**kwargs):
     location_results = get_location()
     if location_results:
         city, latitude, longitude = location_results
-        assistant_response('You are in {0}'.format(city))
+        print('You are in {0}'.format(city))
 
 
 def get_location():

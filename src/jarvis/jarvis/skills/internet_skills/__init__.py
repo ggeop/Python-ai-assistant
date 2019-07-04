@@ -25,7 +25,7 @@ import json
 import requests
 import logging
 
-from jarvis.core.response import assistant_response
+
 
 
 def _decode_json(response_bytes):
@@ -47,13 +47,13 @@ def run_speedtest(**kwargs):
         up_mbps = float(decoded_json['upload']) / 1000000
         down_mbps = float(decoded_json['download']) / 1000000
 
-        assistant_response("Speedtest results:\n"
+        print("Speedtest results:\n"
                            "The ping is %s ms \n"
                            "The upling is %0.2f Mbps \n"
                            "The downling is %0.2f Mbps" % (ping, up_mbps, down_mbps)
                            )
     else:
-        assistant_response("I coudn't run a speedtest")
+        print("I coudn't run a speedtest")
         logging.error("Speedtest error with message: {0}".format(err))
 
 
@@ -63,7 +63,7 @@ def internet_availability(**kwargs):
     """
     try:
         _ = requests.get('http://www.google.com/', timeout=1)
-        assistant_response("Yes, the internet connection is ok")
+        print("Yes, the internet connection is ok")
     except requests.ConnectionError as e:
-        assistant_response("No the internet is down for now")
+        print("No the internet is down for now")
         logging.error("No internet connection with message: {0}".format(e))
