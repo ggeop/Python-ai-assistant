@@ -25,8 +25,8 @@ import pyttsx3
 
 from jarvis.utils.application_utils import clear
 from jarvis.settings import SPEECH_RECOGNITION
-from jarvis.core.tts import TTSEngine
-from jarvis.core.stt import STTEngine
+from jarvis.engines.tts import TTSEngine
+from jarvis.engines.stt import STTEngine
 from jarvis.settings import GENERAL_SETTINGS
 
 

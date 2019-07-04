@@ -60,6 +60,7 @@ class TTSEngine:
             try:
                 self.engine_.runAndWait()
             except RuntimeError:
+                # TODO: Add log
                 pass
             if self.stop_speaking:
                 self.stop_speaking = False
