@@ -41,7 +41,7 @@ class Processor:
             self.controller.get_transcript()
             self.controller.get_skills()
 
-            if self.controller.skills_to_execute:
+            if self.controller.to_execute:
                 self.controller.execute()
             else:
                 self.controller.shutdown_check()

@@ -33,7 +33,7 @@ from jarvis.setup import stt_engine
 
 class Controller:
     def __init__(self):
-        self.skills_to_execute = []
+        self.to_execute = []
         self.latest_voice_transcript = ''
         self.execute_state = {'ready_to_execute': False, 'enable_time': None}
         #TODO: add stt_engine in processor initilization
@@ -112,8 +112,8 @@ class SkillsController(Controller):
         and updates the skills state.
 
         e.x. latest_voice_transcript='open youtube'
-        Then, the skills_to_execute will be the following:
-        skills_to_execute=[{voice_transcript': 'open youtube',
+        Then, the to_execute will be the following:
+        to_execute=[{voice_transcript': 'open youtube',
                              'tag': 'open',
                              'skill': Skills.open_website_in_browser
                             ]
@@ -128,7 +128,7 @@ class SkillsController(Controller):
 
                         logging.info('Add new skill: {0}'.format(skill['skill']))
                         self.skills_to_execute.append(skill)
-                        logging.debug('skills_to_execute : {0}'.format(self.skills_to_execute))
+                        logging.debug('to_execute : {0}'.format(self.skills_to_execute))
 
     def execute(self):
         """
