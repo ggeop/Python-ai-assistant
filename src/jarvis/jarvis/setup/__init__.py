@@ -26,6 +26,7 @@ import pyttsx3
 from jarvis.utils.application_utils import clear
 from jarvis.settings import SPEECH_RECOGNITION
 from jarvis.core.tts import TTSEngine
+from jarvis.core.stt import STTEngine
 from jarvis.settings import GENERAL_SETTINGS
 
 
@@ -68,6 +69,8 @@ def set_microphone(r):
         return source
 
 
+
+
 def set_voice_engine():
     """
     Setup text to speech engine
@@ -83,9 +86,19 @@ def set_voice_engine():
 
     return tts_engine
 
-
 engine = set_voice_engine()
-
 tts_engine = TTSEngine(engine_=engine,
                        speech_response_enabled=GENERAL_SETTINGS['response_in_speech']
                        )
+
+
+
+
+if GENERAL_SETTINGS['user_voice_input']:
+    recognizer = sr.Recognizer()
+    microphone = set_microphone(recognizer)
+else:
+    recognizer = None
+    microphone = None
+stt_engine = STTEngine(speech_recognizer=recognizer,
+                       microphone=microphone)

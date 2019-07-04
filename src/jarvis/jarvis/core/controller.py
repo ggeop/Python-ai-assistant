@@ -21,25 +21,23 @@
 # SOFTWARE.
 
 import logging
-import speech_recognition as sr
 
 from datetime import datetime, timedelta
 
 from jarvis.core.memory import State
 from jarvis.settings import GENERAL_SETTINGS
-from jarvis.utils.application_utils import log, user_input, speech_interruption
+from jarvis.utils.application_utils import log
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
-from jarvis.setup import set_microphone
+from jarvis.setup import stt_engine
 
 
 class Controller:
     def __init__(self):
-        self.r = sr.Recognizer()
-        if GENERAL_SETTINGS['user_voice_input']:
-            self.microphone = set_microphone(self.r)
         self.skills_to_execute = []
         self.latest_voice_transcript = ''
         self.execute_state = {'ready_to_execute': False, 'enable_time': None}
+        #TODO: add stt_engine in processor initilization
+        self.stt_engine = stt_engine
 
     def wake_up_check(self):
         """
@@ -69,23 +67,9 @@ class Controller:
         Capture the words from the recorded audio (audio stream --> free text).
         """
         if GENERAL_SETTINGS['user_voice_input']:
-            self._recognize_voice()
+            self.latest_voice_transcript = self.stt_engine.recognize_voice()
         else:
-            self._recognize_text()
-
-    # ----------------------------------------------------------------------------
-    # PRIVATE METHODS
-    # ----------------------------------------------------------------------------
-
-    def _recognize_text(self):
-        logging.info("Waiting for user input..")
-        self.latest_voice_transcript = input(user_input).lower()
-        while self.latest_voice_transcript == '':
-            print("Say something..")
-            self.latest_voice_transcript = input(user_input).lower()
-        if speech_interruption(self.latest_voice_transcript):
-            self.latest_voice_transcript = ''
-            logging.debug('Speech interruption')
+            self.latest_voice_transcript = self.stt_engine.recognize_text()
 
     def _ready_to_start(self):
         """
@@ -116,46 +100,7 @@ class Controller:
         State.is_assistant_enabled = True
         return True
 
-    def _recognize_voice(self):
-        """
-        Records voice and update latest_voice_transcript with the latest user speech.
-        """
-        audio_text = self._record()
-        try:
-            #self.latest_voice_transcript = self.r.recognize_google(audio_text).lower()
-            self.latest_voice_transcript = audio_text.lower()
-            logging.debug('Recognized words: ' + self.latest_voice_transcript)
-            if speech_interruption(self.latest_voice_transcript):
-                self.latest_voice_transcript = ''
-                logging.debug('User Speech interruption')
-        except sr.UnknownValueError:
-            print('....')
-        except sr.RequestError:
-            print("Try later.. (Google API was unreachable..)")
 
-    def _record(self):
-        """
-        Capture the user speech and transform it to audio stream (speech --> audio stream --> text).
-        """
-
-        self._update_microphone_noise_level()
-
-        with self.microphone as source:
-            audio_text = self.r.listen(source)
-            audio_text = input("input: ")
-        return audio_text
-
-    def _update_microphone_noise_level(self):
-        """
-        Update microphone variables in assistant state.
-        """
-        #  Update dynamic energy ratio
-        State.dynamic_energy_ratio = self.r.dynamic_energy_ratio
-        logging.debug('Dynamic energy ration value is: {0}'.format(State.dynamic_energy_ratio))
-
-        #  Update microphone energy threshold
-        State.energy_threshold = self.r.energy_threshold
-        logging.debug('Energy threshold is: {0}'.format(State.energy_threshold))
 
 
 class SkillsController(Controller):
