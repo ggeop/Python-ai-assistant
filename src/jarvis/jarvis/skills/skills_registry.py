@@ -186,5 +186,6 @@ BASIC_SKILLS = {
 }
 
 
+ENABLED_BASIC_SKILLS = {key: value for (key, value) in BASIC_SKILLS.items() if value['enable']}
 
-ADVANCE_SKILLS = {}
+SKILLS = {**CONTROL_SKILLS, **ENABLED_BASIC_SKILLS}

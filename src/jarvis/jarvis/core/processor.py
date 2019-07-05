@@ -20,14 +20,46 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import speech_recognition as sr
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 from jarvis.core.controller import SkillsController
 from jarvis.utils.application_utils import start_up
-from jarvis.skills.wolframalpha_skill import call_wolframalpha
+from jarvis.settings import GENERAL_SETTINGS
+from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
+from jarvis.core.analyzer import Analyzer
+from jarvis.settings import SPEECH_RECOGNITION
+from jarvis.engines.stt import STTEngine
+
+
+args = {
+    "stop_words": "english",
+    "lowercase": True,
+    "norm": 'l1',
+    "use_idf": True,
+}
 
 
 class Processor:
     def __init__(self):
-        self.controller = SkillsController()
+        self.analyzer = Analyzer(weight_measure=TfidfVectorizer,
+                                 similarity_measure=cosine_similarity,
+                                 args=args,
+                                 skills_=SKILLS
+                                 )
+        self.stt_engine = STTEngine(pause_threshold=SPEECH_RECOGNITION['pause_threshold'],
+                                    energy_theshold=SPEECH_RECOGNITION['energy_threshold'],
+                                    ambient_duration=SPEECH_RECOGNITION['ambient_duration'],
+                                    dynamic_energy_threshold=SPEECH_RECOGNITION['dynamic_energy_threshold'],
+                                    speech_recognizer=sr)
+
+        self.controller = SkillsController(settings_=GENERAL_SETTINGS,
+                                           stt_engine=self.stt_engine,
+                                           analyzer=self.analyzer,
+                                           control_skills=CONTROL_SKILLS
+                                           )
 
     def run(self):
         start_up()
@@ -43,10 +75,3 @@ class Processor:
 
             if self.controller.to_execute:
                 self.controller.execute()
-            else:
-                self.controller.shutdown_check()
-
-                # If there is not an action the assistant make a request in WolframAlpha API
-                call_wolframalpha(self.controller.latest_voice_transcript)
-
-        self.controller.shutdown_check()

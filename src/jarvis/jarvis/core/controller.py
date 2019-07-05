@@ -25,20 +25,20 @@ import logging
 from datetime import datetime, timedelta
 
 from jarvis.core.memory import State
-from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils.application_utils import log
-from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
-from jarvis.setup import stt_engine
-from jarvis.core.analyzer import Analyzer
 
 
 class Controller:
-    def __init__(self):
-        self.to_execute = []
+    def __init__(self,settings_, stt_engine, analyzer, control_skills):
+        self.settings_ = settings_
         self.latest_voice_transcript = ''
-        self.execute_state = {'ready_to_execute': False, 'enable_time': None}
-        #TODO: add stt_engine in processor initilization
         self.stt_engine = stt_engine
+        self.analyzer = analyzer
+        self.control_skills = control_skills
+        self.to_execute = []
+        self.execute_state = {'ready_to_execute': False,
+                              'enable_time': None
+                              }
 
     def wake_up_check(self):
         """
@@ -46,28 +46,17 @@ class Controller:
         and if is not enabled search for enable word in user recorded speech.
         :return: boolean
         """
-        if GENERAL_SETTINGS['user_voice_input']:
+        if self.settings_['user_voice_input']:
             if not self.execute_state['ready_to_execute']:
                 return self._ready_to_start()
             return self._continue_listening()
         return True
 
-    @log
-    def shutdown_check(self):
-        """
-        Checks if there is the shutdown word, and if exists the assistant service stops.
-        """
-        transcript_words = self.latest_voice_transcript.split()
-        shutdown_tag = set(transcript_words).intersection(CONTROL_SKILLS['disable_assistant']['tags'])
-
-        if bool(shutdown_tag):
-            CONTROL_SKILLS['disable_assistant']['skill']()
-
     def get_transcript(self):
         """
         Capture the words from the recorded audio (audio stream --> free text).
         """
-        if GENERAL_SETTINGS['user_voice_input']:
+        if self.settings_['user_voice_input']:
             self.latest_voice_transcript = self.stt_engine.recognize_voice()
         else:
             self.latest_voice_transcript = self.stt_engine.recognize_text()
@@ -80,10 +69,10 @@ class Controller:
         self.get_transcript()
 
         transcript_words = self.latest_voice_transcript.split()
-        enable_tag = set(transcript_words).intersection(CONTROL_SKILLS['enable_assistant']['tags'])
+        enable_tag = set(transcript_words).intersection(self.control_skills['enable_assistant']['tags'])
 
         if bool(enable_tag):
-            self.execute_state = CONTROL_SKILLS['enable_assistant']['skill']()
+            self.execute_state = self.control_skills['enable_assistant']['skill']()
             return True
 
     def _continue_listening(self):
@@ -91,7 +80,7 @@ class Controller:
         Checks if the assistant enable time (triggering time + enable period) has passed.
         return: boolean
         """
-        if datetime.now() > self.execute_state['enable_time'] + timedelta(seconds=GENERAL_SETTINGS['enable_period']):
+        if datetime.now() > self.execute_state['enable_time'] + timedelta(seconds=self.settings_['enable_period']):
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
 
@@ -102,7 +91,7 @@ class Controller:
         return True
 
 
-
+class SkillsController(Controller):
     @log
     def get_skills(self):
         """
@@ -126,15 +115,11 @@ class Controller:
         """
         try:
             if self.to_execute:
-                resp = language_processing.create_positive_response(self.latest_voice_transcript)
-                TTSEngine.assistant_response(resp)
                 logging.debug('Execute skill {0}'.format(self.to_execute.keys()))
                 self.to_execute['skill'](**self.to_execute)
             else:
-                resp = language_processing.create_negative_response(self.latest_voice_transcript)
-                TTSEngine.assistant_response(resp)
                 # If there is not an action the assistant make a request in WolframAlpha API
-                call_wolframalpha(self.latest_voice_transcript)
+                logging.debug("Not matched skills to execute")
         except Exception as e:
             print(e)
             logging.debug("Error with the execution of skill {0} with message {1}".format(self.to_execute.keys(), e))

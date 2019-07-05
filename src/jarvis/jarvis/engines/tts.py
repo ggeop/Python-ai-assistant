@@ -22,15 +22,17 @@
 
 import threading
 import logging
+import pyttsx3
+
 from jarvis.utils.application_utils import console_output
 
 
 class TTSEngine:
-    def __init__(self, engine_, speech_response_enabled, stop_speaking=False):
+    def __init__(self, speech_response_enabled, stop_speaking=False):
         self.logger = logging
-        self.engine_ = engine_
         self.speech_response_enabled = speech_response_enabled
         self.stop_speaking = stop_speaking
+        self.engine_ = self.set_voice_engine()
 
     def assistant_response(self, text):
         """
@@ -94,3 +96,18 @@ class TTSEngine:
         if letter_id < len(raw_text):
             list_of_batches.append(raw_text[letter_id:])
         return list_of_batches
+
+    def set_voice_engine(self):
+        """
+        Setup text to speech engine
+        :return: gtts engine object
+        """
+        tts_engine = pyttsx3.init()
+
+        # Setting up new voice rate
+        tts_engine.setProperty('rate', 160)
+
+        # Setting up volume level  between 0 and 1
+        tts_engine.setProperty('volume', 1.0)
+
+        return tts_engine

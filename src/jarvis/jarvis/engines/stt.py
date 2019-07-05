@@ -22,17 +22,21 @@
 
 import logging
 
-import speech_recognition as sr
-
+from jarvis.utils.application_utils import clear
 from jarvis.core.memory import State
 from jarvis.utils.application_utils import user_input, speech_interruption
 
 
 class STTEngine:
-    def __init__(self, speech_recognizer=None, microphone=None):
+    def __init__(self, pause_threshold, energy_theshold, ambient_duration, dynamic_energy_threshold, speech_recognizer=None):
         self.logger = logging
         self.speech_recognizer = speech_recognizer
-        self.microphone = microphone
+        self.microphone = self.set_microphone(
+                                              pause_threshold=pause_threshold,
+                                              energy_threshold=energy_theshold,
+                                              ambient_duration=ambient_duration,
+                                              dynamic_energy_threshold=dynamic_energy_threshold
+                                              )
 
     def recognize_text(self):
         self.logger.info("Waiting for user input..")
@@ -58,9 +62,9 @@ class STTEngine:
             #     voice_transcript = ''
             #     self.logger.debug('User Speech interruption')
             return voice_transcript
-        except sr.UnknownValueError:
+        except self.speech_recognizer.UnknownValueError:
             print('....')
-        except sr.RequestError:
+        except self.speech_recognizer.RequestError:
             print("Try later.. (Google API was unreachable..)")
 
     def _record(self):
@@ -86,3 +90,41 @@ class STTEngine:
         #  Update microphone energy threshold
         State.energy_threshold = self.speech_recognizer.energy_threshold
         self.logger.debug('Energy threshold is: {0}'.format(State.energy_threshold))
+
+    def set_microphone(self, pause_threshold, energy_threshold, ambient_duration, dynamic_energy_threshold):
+        """
+        Setup the assistant microphone.
+        """
+        microphone_list = self.speech_recognizer.Microphone.list_microphone_names()
+
+        clear()
+        print("=" * 48)
+        print("Microphone Setup")
+        print("=" * 48)
+        print("Which microphone do you want to use a assistant mic:")
+
+        for index, name in enumerate(microphone_list):
+            print("{0}) Microphone: {1}".format(index, name))
+
+        choices = "Choice[1-{0}]: ".format(len(microphone_list))
+        print("WARNING: In case of error of 'Invalid number of channels' try again with different micrphone choice")
+        index = input(choices)
+
+        while not index.isnumeric():
+            index = input('Please select a number between choices[1-{0}]: '.format(len(microphone_list)))
+
+        with self.speech_recognizer.Microphone(device_index=int(index), chunk_size=512) as source:
+            self.speech_recognizer.pause_threshold = pause_threshold
+            self.speech_recognizer.energy_threshold = energy_threshold
+
+            clear()
+            print("-" * 48)
+            print("Microphone Calibration")
+            print("-" * 48)
+
+            print("Please wait.. for {} seconds ".format(ambient_duration))
+            self.speech_recognizer.adjust_for_ambient_noise(source, duration=ambient_duration)
+            self.speech_recognizer.dynamic_energy_threshold = dynamic_energy_threshold
+            print("Microphone calibrated successfully!")
+
+            return source

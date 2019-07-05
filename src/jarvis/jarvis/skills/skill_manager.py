@@ -20,15 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import logging
-
-from jarvis.setup import tts_engine
+from jarvis.engines.tts import TTSEngine
+from jarvis.settings import GENERAL_SETTINGS
 
 
 class AssistantSkill:
 
+    tts_engine = TTSEngine(speech_response_enabled=GENERAL_SETTINGS['response_in_speech'])
+
     @classmethod
     def response(cls, text):
-        tts_engine.assistant_response(text)
+        cls.tts_engine.assistant_response(text)
 
 
