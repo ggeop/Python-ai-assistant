@@ -27,6 +27,7 @@ from jarvis.utils.application_utils import clear
 from jarvis.settings import SPEECH_RECOGNITION
 from jarvis.engines.tts import TTSEngine
 from jarvis.engines.stt import STTEngine
+from jarvis.core.analyzer import Analyzer
 from jarvis.settings import GENERAL_SETTINGS
 
 
@@ -102,3 +103,5 @@ else:
     microphone = None
 stt_engine = STTEngine(speech_recognizer=recognizer,
                        microphone=microphone)
+
+Analyzer()

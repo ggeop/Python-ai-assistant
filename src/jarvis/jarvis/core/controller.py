@@ -29,6 +29,7 @@ from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils.application_utils import log
 from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 from jarvis.setup import stt_engine
+from jarvis.core.analyzer import Analyzer
 
 
 class Controller:
@@ -102,44 +103,41 @@ class Controller:
 
 
 
-
-class SkillsController(Controller):
-
     @log
     def get_skills(self):
         """
         This method identifies the active skills from the voice transcript
         and updates the skills state.
-
         e.x. latest_voice_transcript='open youtube'
         Then, the to_execute will be the following:
-        to_execute=[{voice_transcript': 'open youtube',
+        to_execute={voice_transcript': 'open youtube',
                              'tag': 'open',
                              'skill': Skills.open_website_in_browser
-                            ]
+                    }
         """
-        for skill in BASIC_SKILLS.values():
-            if skill['enable']:
-                for tag in skill['tags']:
-                    if tag in self.latest_voice_transcript:
-                        skill = {'voice_transcript': self.latest_voice_transcript,
-                                 'tag': tag,
-                                 'skill': skill['skill']}
-
-                        logging.info('Add new skill: {0}'.format(skill['skill']))
-                        self.skills_to_execute.append(skill)
-                        logging.debug('to_execute : {0}'.format(self.skills_to_execute))
+        skill = self.analyzer.extract(self.latest_voice_transcript)
+        self.to_execute = {'voice_transcript': self.latest_voice_transcript,
+                           'skill': skill['skill']}
+        logging.debug('to_execute : {0}'.format(self.to_execute))
 
     def execute(self):
         """
-        Execute one-by-one all the user skills and empty the queue with the waiting skills.
+        Execute the user skill and empty skill for execution.
         """
-        for skill in self.skills_to_execute:
-            try:
-                logging.debug('Execute skill {0}'.format(skill))
-                skill['skill'](**skill)
-            except Exception as e:
-                logging.debug("Error with the execution of skill {0} with message {1}".format(skill['skill'], e))
-
+        try:
+            if self.to_execute:
+                resp = language_processing.create_positive_response(self.latest_voice_transcript)
+                TTSEngine.assistant_response(resp)
+                logging.debug('Execute skill {0}'.format(self.to_execute.keys()))
+                self.to_execute['skill'](**self.to_execute)
+            else:
+                resp = language_processing.create_negative_response(self.latest_voice_transcript)
+                TTSEngine.assistant_response(resp)
+                # If there is not an action the assistant make a request in WolframAlpha API
+                call_wolframalpha(self.latest_voice_transcript)
+        except Exception as e:
+            print(e)
+            logging.debug("Error with the execution of skill {0} with message {1}".format(self.to_execute.keys(), e))
         # Clear the skills queue
-        self.skills_to_execute = []
+        self.to_execute = {}
+
