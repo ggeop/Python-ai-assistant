@@ -143,10 +143,7 @@ def play_activation_sound():
     subprocess.Popen(['play', enable_sound], stdout=fnull, stderr=fnull).communicate()
 
 
-def speech_interruption(latest_voice_transcript):
-    if 'stop' in latest_voice_transcript:
-        jarvis.core.memory.State.stop_speaking = True
-        return True
+
 
 
 def user_speech_playback(text):

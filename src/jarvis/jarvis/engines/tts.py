@@ -26,12 +26,12 @@ import pyttsx3
 
 
 class TTSEngine:
-    def __init__(self, console_manager, speech_response_enabled, stop_speaking=False):
+    def __init__(self, console_manager, speech_response_enabled):
         self.logger = logging
         self.console_manager = console_manager
         self.speech_response_enabled = speech_response_enabled
-        self.stop_speaking = stop_speaking
-        self.engine_ = self.set_voice_engine()
+        self.stop_speaking = False
+        self.engine_ = self._set_voice_engine()
 
     def assistant_response(self, text):
         """
@@ -50,7 +50,6 @@ class TTSEngine:
         Speech method translate text batches to speech and print them in the console.
         :param text: string (e.g 'tell me about google')
         """
-
         cumulative_batch = ''
         for batch in self._create_text_batches(raw_text=text):
             self.engine_.say(batch)
@@ -73,7 +72,6 @@ class TTSEngine:
         :param number_of_words_per_batch: int
         :return: list
         """
-
         raw_text = raw_text + ' '
         list_of_batches = []
         total_words = raw_text.count(' ')
@@ -89,22 +87,17 @@ class TTSEngine:
                 letter_id += 1
             list_of_batches.append(batch)
 
-        # Add the rest of word in a batch
-        if letter_id < len(raw_text):
+        if letter_id < len(raw_text):  # Add the rest of word in a batch
             list_of_batches.append(raw_text[letter_id:])
         return list_of_batches
 
-    def set_voice_engine(self):
+    @staticmethod
+    def _set_voice_engine():
         """
         Setup text to speech engine
         :return: gtts engine object
         """
         tts_engine = pyttsx3.init()
-
-        # Setting up new voice rate
-        tts_engine.setProperty('rate', 160)
-
-        # Setting up volume level  between 0 and 1
-        tts_engine.setProperty('volume', 1.0)
-
+        tts_engine.setProperty('rate', 160)  # Setting up new voice rate
+        tts_engine.setProperty('volume', 1.0)  # Setting up volume level  between 0 and 1
         return tts_engine
