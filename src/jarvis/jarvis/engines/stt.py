@@ -23,8 +23,7 @@
 import logging
 
 from jarvis.utils.application_utils import clear
-from jarvis.core.memory import State
-from jarvis.utils.application_utils import user_input, speech_interruption
+from jarvis.utils.application_utils import user_input
 
 
 class STTEngine:
@@ -34,7 +33,7 @@ class STTEngine:
         self.speech_recognizer = sr.Recognizer()
         self.dynamic_energy_ratio = self.speech_recognizer.dynamic_energy_ratio
         self.dynamic_energy_threshold = self.speech_recognizer.energy_threshold
-        self.microphone = self.set_microphone(
+        self.microphone = self._set_microphone(
                                               pause_threshold=pause_threshold,
                                               energy_threshold=energy_theshold,
                                               ambient_duration=ambient_duration,
@@ -47,9 +46,9 @@ class STTEngine:
         while voice_transcript == '':
             print("Say something..")
             voice_transcript = input(user_input).lower()
-        # if speech_interruption(self.latest_voice_transcript):
-        #     self.latest_voice_transcript = ''
-        #     self.logger.debug('Speech interruption')
+        if self._speech_interruption(voice_transcript):
+            voice_transcript = ''
+            self.logger.debug('Speech interruption')
         return voice_transcript
 
     def recognize_voice(self):
@@ -61,9 +60,9 @@ class STTEngine:
             # self.voice_transcript = self.speech_recognizer.recognize_google(audio_text).lower()
             voice_transcript = audio_text.lower()
             self.logger.debug('Recognized words: ' + voice_transcript)
-            # if speech_interruption(self.latest_voice_transcript):
-            #     voice_transcript = ''
-            #     self.logger.debug('User Speech interruption')
+            if self._speech_interruption(voice_transcript):
+                voice_transcript = ''
+                self.logger.debug('User Speech interruption')
             return voice_transcript
         except self.speech_recognizer.UnknownValueError:
             print('....')
@@ -82,6 +81,10 @@ class STTEngine:
             audio_text = input("input: ")
         return audio_text
 
+    @staticmethod
+    def _speech_interruption(latest_voice_transcript):
+        return 'stop' in latest_voice_transcript
+
     def _update_microphone_noise_level(self):
         """
         Update microphone variables in assistant state.
@@ -92,7 +95,7 @@ class STTEngine:
         self.logger.debug('Dynamic energy ration value is: {0}'.format(self.dynamic_energy_ratio))
         self.logger.debug('Energy threshold is: {0}'.format(self.energy_threshold))
 
-    def set_microphone(self, pause_threshold, energy_threshold, ambient_duration, dynamic_energy_threshold):
+    def _set_microphone(self, pause_threshold, energy_threshold, ambient_duration, dynamic_energy_threshold):
         """
         Setup the assistant microphone.
         """

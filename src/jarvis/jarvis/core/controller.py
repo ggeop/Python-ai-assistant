@@ -87,9 +87,6 @@ class Controller:
             self.is_assistant_enabled = False
         self.is_assistant_enabled = True
 
-    @staticmethod
-    def _speech_interruption(latest_voice_transcript):
-        return 'stop' in latest_voice_transcript
 
 
 class SkillController(Controller):
