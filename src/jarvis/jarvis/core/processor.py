@@ -53,7 +53,7 @@ class Processor:
                                     energy_theshold=SPEECH_RECOGNITION['energy_threshold'],
                                     ambient_duration=SPEECH_RECOGNITION['ambient_duration'],
                                     dynamic_energy_threshold=SPEECH_RECOGNITION['dynamic_energy_threshold'],
-                                    speech_recognizer=sr)
+                                    sr=sr)
 
         self.controller = SkillsController(settings_=GENERAL_SETTINGS,
                                            stt_engine=self.stt_engine,

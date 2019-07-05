@@ -28,9 +28,10 @@ from jarvis.utils.application_utils import user_input, speech_interruption
 
 
 class STTEngine:
-    def __init__(self, pause_threshold, energy_theshold, ambient_duration, dynamic_energy_threshold, speech_recognizer=None):
+    def __init__(self, pause_threshold, energy_theshold, ambient_duration, dynamic_energy_threshold, sr):
         self.logger = logging
-        self.speech_recognizer = speech_recognizer
+        self.sr = sr
+        self.speech_recognizer = sr.Recognizer()
         self.microphone = self.set_microphone(
                                               pause_threshold=pause_threshold,
                                               energy_threshold=energy_theshold,
@@ -95,7 +96,7 @@ class STTEngine:
         """
         Setup the assistant microphone.
         """
-        microphone_list = self.speech_recognizer.Microphone.list_microphone_names()
+        microphone_list = self.sr.Microphone.list_microphone_names()
 
         clear()
         print("=" * 48)
@@ -113,7 +114,7 @@ class STTEngine:
         while not index.isnumeric():
             index = input('Please select a number between choices[1-{0}]: '.format(len(microphone_list)))
 
-        with self.speech_recognizer.Microphone(device_index=int(index), chunk_size=512) as source:
+        with self.sr.Microphone(device_index=int(index), chunk_size=512) as source:
             self.speech_recognizer.pause_threshold = pause_threshold
             self.speech_recognizer.energy_threshold = energy_threshold
 

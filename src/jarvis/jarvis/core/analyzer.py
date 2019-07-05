@@ -4,6 +4,7 @@ class Analyzer:
         self.similarity_measure = similarity_measure
         self.args = args
         self.skills = skills_
+        self.vectorizer = self.create_vectorizer()
 
     @property
     def tags(self):
@@ -12,18 +13,18 @@ class Analyzer:
             tags_list.append(list(skill['tags']))
         return [' '.join(tag) for tag in tags_list]
 
-    @property
-    def vectorizer(self):
+    def create_vectorizer(self):
         return self.weight_measure(**self.args)
 
     @property
     def train_tdm(self):
-        return self.vectorizer.fit_transform(self.tags)
+        return
 
     def extract(self, user_transcript):
         test_tdm = self.vectorizer.transform([user_transcript])
+        train_tdm = self.vectorizer.fit_transform(self.tags)
         # Calculate similarities
-        similarities = self.similarity_measure(self.train_tdm, test_tdm)
+        similarities = self.similarity_measure(train_tdm, test_tdm)
         # Extract the most similar skill
         skill_index = similarities.argsort(axis=None)[-1]
         if similarities[skill_index] > 0:
