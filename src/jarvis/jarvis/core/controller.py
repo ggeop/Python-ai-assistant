@@ -24,7 +24,7 @@ import logging
 
 from datetime import datetime, timedelta
 
-from jarvis.utils.application_utils import log
+from jarvis.utils.general_utils import log
 
 
 class Controller:
@@ -93,18 +93,14 @@ class SkillController(Controller):
     @log
     def get_skills(self):
         """
-        This method identifies the active skills from the voice transcript
-        and updates the skills state.
+        This method identifies the active skills from the voice transcript and updates the skills state.
         e.x. latest_voice_transcript='open youtube'
         Then, the to_execute will be the following:
-        to_execute={
-                    'voice_transcript': 'open youtube',
-                    'tag': 'open',
-                     'skill': Skills.open_website_in_browser
-                    }
+        to_execute={'voice_transcript': 'open youtube', 'tag': 'open', 'skill': Skills.open_website_in_browser}
         """
         skill = self.skill_analyzer.extract(self.latest_voice_transcript)
-        self.to_execute = {'voice_transcript': self.latest_voice_transcript,
+        self.to_execute = {
+                           'voice_transcript': self.latest_voice_transcript,
                            'skill': skill['skill'],
                            }
         logging.debug('to_execute : {0}'.format(self.to_execute))

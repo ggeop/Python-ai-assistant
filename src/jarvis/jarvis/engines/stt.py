@@ -22,8 +22,7 @@
 
 import logging
 
-from jarvis.utils.application_utils import clear
-from jarvis.utils.application_utils import user_input
+from jarvis.utils.general_utils import clear, user_input
 
 
 class STTEngine:
@@ -73,7 +72,6 @@ class STTEngine:
         """
         Capture the user speech and transform it to audio stream (speech --> audio stream --> text).
         """
-
         self._update_microphone_noise_level()
 
         with self.microphone as source:
