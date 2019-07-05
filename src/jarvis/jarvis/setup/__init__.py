@@ -23,6 +23,9 @@
 import speech_recognition as sr
 import pyttsx3
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 from jarvis.utils.application_utils import clear
 from jarvis.settings import SPEECH_RECOGNITION
 from jarvis.engines.tts import TTSEngine
@@ -104,4 +107,16 @@ else:
 stt_engine = STTEngine(speech_recognizer=recognizer,
                        microphone=microphone)
 
-Analyzer()
+
+args = {
+    "stop_words": "english",
+    "lowercase": True,
+    "norm": 'l1',
+    "use_idf": True,
+}
+
+analyzer = Analyzer(weight_measure=TfidfVectorizer,
+                         similarity_measure=cosine_similarity,
+                         args=args,
+                         skills_=SKILLS
+                         )
