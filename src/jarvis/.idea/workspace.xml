@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5f217b6c-a39f-4c52-8f0e-9503c5f80456" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jarvis/core/analyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/core/analyzer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarvis/core/processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/core/processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarvis/engines/stt.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/engines/stt.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

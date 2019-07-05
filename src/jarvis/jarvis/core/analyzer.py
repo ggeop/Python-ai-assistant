@@ -1,10 +1,32 @@
+# MIT License
+
+# Copyright (c) 2019 Georgios Papachristou
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 class Analyzer:
     def __init__(self, weight_measure, similarity_measure, args, skills_):
         self.weight_measure = weight_measure
         self.similarity_measure = similarity_measure
         self.args = args
-        self.skills = skills_
         self.vectorizer = self.create_vectorizer()
+        self.skills = skills_
 
     @property
     def tags(self):
@@ -16,15 +38,18 @@ class Analyzer:
     def create_vectorizer(self):
         return self.weight_measure(**self.args)
 
-    @property
-    def train_tdm(self):
-        return
+    # Create/train the model
+    def _train_model(self):
+        return self.vectorizer.fit_transform(self.tags)
 
     def extract(self, user_transcript):
+
+        train_tdm = self._train_model()
         test_tdm = self.vectorizer.transform([user_transcript])
-        train_tdm = self.vectorizer.fit_transform(self.tags)
+
         # Calculate similarities
         similarities = self.similarity_measure(train_tdm, test_tdm)
+
         # Extract the most similar skill
         skill_index = similarities.argsort(axis=None)[-1]
         if similarities[skill_index] > 0:
