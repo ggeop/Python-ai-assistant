@@ -69,9 +69,7 @@ class Processor:
     def _process(self):
         # Check if the assistant is waked up
         if self.controller.wake_up_check():
-
             self.controller.get_transcript()
             self.controller.get_skills()
 
-            if self.controller.to_execute:
-                self.controller.execute()
+            self.controller.execute()
