@@ -37,7 +37,7 @@ class Controller:
         self.is_assistant_enabled = False
         self.to_execute = []
         self.execute_state = {'ready_to_execute': False,
-                              'enable_time': None
+                              'enable_time': None,
                               }
 
     def get_transcript(self):
@@ -81,7 +81,8 @@ class Controller:
         """
         if datetime.now() > self.execute_state['enable_time'] + timedelta(seconds=self.settings_['enable_period']):
             self.execute_state = {'ready_to_execute': False,
-                                  'enable_time': None}
+                                  'enable_time': None,
+                                  }
 
             self.is_assistant_enabled = False
         self.is_assistant_enabled = True
@@ -103,7 +104,8 @@ class SkillController(Controller):
         """
         skill = self.skill_analyzer.extract(self.latest_voice_transcript)
         self.to_execute = {'voice_transcript': self.latest_voice_transcript,
-                           'skill': skill['skill']}
+                           'skill': skill['skill'],
+                           }
         logging.debug('to_execute : {0}'.format(self.to_execute))
 
     def execute(self):

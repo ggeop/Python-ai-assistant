@@ -32,6 +32,8 @@ class STTEngine:
         self.logger = logging
         self.sr = sr
         self.speech_recognizer = sr.Recognizer()
+        self.dynamic_energy_ratio = self.speech_recognizer.dynamic_energy_ratio
+        self.dynamic_energy_threshold = self.speech_recognizer.energy_threshold
         self.microphone = self.set_microphone(
                                               pause_threshold=pause_threshold,
                                               energy_threshold=energy_theshold,
@@ -84,13 +86,11 @@ class STTEngine:
         """
         Update microphone variables in assistant state.
         """
-        #  Update dynamic energy ratio
-        State.dynamic_energy_ratio = self.speech_recognizer.dynamic_energy_ratio
-        self.logger.debug('Dynamic energy ration value is: {0}'.format(State.dynamic_energy_ratio))
+        self.dynamic_energy_ratio = self.speech_recognizer.dynamic_energy_ratio  # Update dynamic energy ratio
+        self.energy_threshold = self.speech_recognizer.dynamic_energy_threshold  # Update microphone energy threshold
 
-        #  Update microphone energy threshold
-        State.energy_threshold = self.speech_recognizer.energy_threshold
-        self.logger.debug('Energy threshold is: {0}'.format(State.energy_threshold))
+        self.logger.debug('Dynamic energy ration value is: {0}'.format(self.dynamic_energy_ratio))
+        self.logger.debug('Energy threshold is: {0}'.format(self.energy_threshold))
 
     def set_microphone(self, pause_threshold, energy_threshold, ambient_duration, dynamic_energy_threshold):
         """

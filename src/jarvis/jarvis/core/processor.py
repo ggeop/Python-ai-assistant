@@ -33,7 +33,6 @@ from jarvis.skills.skill_analyzer import SkillAnalyzer
 from jarvis.settings import SPEECH_RECOGNITION
 from jarvis.engines.stt import STTEngine
 
-
 args = {
     "stop_words": "english",
     "lowercase": True,
@@ -44,21 +43,26 @@ args = {
 
 class Processor:
     def __init__(self):
-        self.skill_analyzer = SkillAnalyzer(weight_measure=TfidfVectorizer,
+        self.skill_analyzer = SkillAnalyzer(
+                                            weight_measure=TfidfVectorizer,
                                             similarity_measure=cosine_similarity,
                                             args=args,
-                                            skills_=SKILLS
+                                            skills_=SKILLS,
                                             )
-        self.stt_engine = STTEngine(pause_threshold=SPEECH_RECOGNITION['pause_threshold'],
+
+        self.stt_engine = STTEngine(
+                                    pause_threshold=SPEECH_RECOGNITION['pause_threshold'],
                                     energy_theshold=SPEECH_RECOGNITION['energy_threshold'],
                                     ambient_duration=SPEECH_RECOGNITION['ambient_duration'],
                                     dynamic_energy_threshold=SPEECH_RECOGNITION['dynamic_energy_threshold'],
-                                    sr=sr)
+                                    sr=sr
+                                    )
 
-        self.skill_controller = SkillController(settings_=GENERAL_SETTINGS,
+        self.skill_controller = SkillController(
+                                                settings_=GENERAL_SETTINGS,
                                                 stt_engine=self.stt_engine,
                                                 analyzer=self.skill_analyzer,
-                                                control_skills=CONTROL_SKILLS
+                                                control_skills=CONTROL_SKILLS,
                                                 )
 
     def run(self):

@@ -24,12 +24,11 @@ import threading
 import logging
 import pyttsx3
 
-from jarvis.utils.application_utils import console_output
-
 
 class TTSEngine:
-    def __init__(self, speech_response_enabled, stop_speaking=False):
+    def __init__(self, console_manager, speech_response_enabled, stop_speaking=False):
         self.logger = logging
+        self.console_manager = console_manager
         self.speech_response_enabled = speech_response_enabled
         self.stop_speaking = stop_speaking
         self.engine_ = self.set_voice_engine()
@@ -41,16 +40,14 @@ class TTSEngine:
         """
         if self.speech_response_enabled:
             try:
-                speech_tread = threading.Thread(target=self._speech, args=[text])
+                speech_tread = threading.Thread(target=self._speech_and_console, args=[text])
                 speech_tread.start()
             except RuntimeError as e:
                 self.logger.error('Error in assistant response thread with message {0}'.format(e))
-        else:
-            console_output(text)
 
-    def _speech(self, text):
+    def _speech_and_console(self, text):
         """
-        Speech method translate text batches to speech
+        Speech method translate text batches to speech and print them in the console.
         :param text: string (e.g 'tell me about google')
         """
 
@@ -58,7 +55,7 @@ class TTSEngine:
         for batch in self._create_text_batches(raw_text=text):
             self.engine_.say(batch)
             cumulative_batch += batch
-            console_output(cumulative_batch)
+            self.console_manager.console_output(cumulative_batch)
             try:
                 self.engine_.runAndWait()
             except RuntimeError:

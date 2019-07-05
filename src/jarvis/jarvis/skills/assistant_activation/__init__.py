@@ -26,7 +26,6 @@ import logging
 
 from datetime import datetime
 
-import jarvis.core.memory
 from jarvis.utils.application_utils import play_activation_sound, clear
 from jarvis.skills.skill_manager import AssistantSkill
 
@@ -44,7 +43,7 @@ class ActivationSkills(AssistantSkill):
         now = datetime.now()
         day_time = int(now.strftime('%H'))
 
-        if jarvis.core.memory.State.first_activation:
+        if AssistantSkill.first_activation:
             if day_time < 12:
                 cls.response('Good morning human')
                 time.sleep(2)
@@ -55,7 +54,7 @@ class ActivationSkills(AssistantSkill):
                 cls.response('Good evening human')
                 time.sleep(2)
             cls.response('What do you want?')
-            jarvis.core.memory.State.first_activation = False
+            AssistantSkill.first_activation = False
 
         return {'ready_to_execute': True,
                 'enable_time': now}

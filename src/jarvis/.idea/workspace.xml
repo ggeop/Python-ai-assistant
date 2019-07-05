@@ -2,12 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5f217b6c-a39f-4c52-8f0e-9503c5f80456" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/jarvis/core/console_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarvis/core/analyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/core/skill_analyzer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jarvis/core/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/core/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jarvis/core/memory.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/core/memory.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jarvis/core/processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/core/processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../tests/actions_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/../tests/actions_tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarvis/engines/stt.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/engines/stt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarvis/engines/tts.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/engines/tts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarvis/skills/assistant_activation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/skills/assistant_activation/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarvis/skills/skill_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/skills/skill_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarvis/utils/application_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/jarvis/utils/application_utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +25,7 @@
         <entry file="file://$PROJECT_DIR$/jarvis/core/controller.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="427">
-              <caret line="122" selection-start-line="122" selection-end-line="122" />
+              <caret line="124" selection-start-line="124" selection-end-line="124" />
               <folding>
                 <element signature="e#1113#1127#0" expanded="true" />
               </folding>
@@ -134,7 +138,7 @@
     <entry file="file://$PROJECT_DIR$/jarvis/core/controller.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="427">
-          <caret line="122" selection-start-line="122" selection-end-line="122" />
+          <caret line="124" selection-start-line="124" selection-end-line="124" />
           <folding>
             <element signature="e#1113#1127#0" expanded="true" />
           </folding>
