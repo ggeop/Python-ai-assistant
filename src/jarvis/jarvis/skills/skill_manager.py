@@ -25,7 +25,6 @@ from jarvis.settings import GENERAL_SETTINGS
 
 
 class AssistantSkill:
-
     tts_engine = TTSEngine(speech_response_enabled=GENERAL_SETTINGS['response_in_speech'])
 
     @classmethod

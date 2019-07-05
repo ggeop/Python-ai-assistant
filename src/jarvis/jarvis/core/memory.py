@@ -12,4 +12,3 @@ class State:
 
     # Assistant state
     first_activation = True
-    is_assistant_enabled = False

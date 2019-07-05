@@ -20,12 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-class Analyzer:
+
+class SkillAnalyzer:
     def __init__(self, weight_measure, similarity_measure, args, skills_):
         self.weight_measure = weight_measure
         self.similarity_measure = similarity_measure
         self.args = args
-        self.vectorizer = self.create_vectorizer()
+        self.vectorizer = self._create_vectorizer()
         self.skills = skills_
 
     @property
@@ -35,23 +36,28 @@ class Analyzer:
             tags_list.append(list(skill['tags']))
         return [' '.join(tag) for tag in tags_list]
 
-    def create_vectorizer(self):
-        return self.weight_measure(**self.args)
-
-    # Create/train the model
-    def _train_model(self):
-        return self.vectorizer.fit_transform(self.tags)
-
     def extract(self, user_transcript):
 
         train_tdm = self._train_model()
         test_tdm = self.vectorizer.transform([user_transcript])
 
-        # Calculate similarities
-        similarities = self.similarity_measure(train_tdm, test_tdm)
+        similarities = self.similarity_measure(train_tdm, test_tdm)  # Calculate similarities
 
-        # Extract the most similar skill
-        skill_index = similarities.argsort(axis=None)[-1]
+        skill_index = similarities.argsort(axis=None)[-1] # Extract the most similar skill
         if similarities[skill_index] > 0:
             skill_key = [skill for skill in enumerate(self.skills) if skill[0] == skill_index][0][1]
             return self.skills[skill_key]
+
+    def _create_vectorizer(self):
+        """
+        Create vectorizer.
+        """
+        return self.weight_measure(**self.args)
+
+    def _train_model(self):
+        """
+        Create/train the model.
+        """
+        return self.vectorizer.fit_transform(self.tags)
+
+

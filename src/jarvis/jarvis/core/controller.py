@@ -24,33 +24,21 @@ import logging
 
 from datetime import datetime, timedelta
 
-from jarvis.core.memory import State
 from jarvis.utils.application_utils import log
 
 
 class Controller:
-    def __init__(self,settings_, stt_engine, analyzer, control_skills):
+    def __init__(self, settings_, stt_engine, analyzer, control_skills):
         self.settings_ = settings_
-        self.latest_voice_transcript = ''
         self.stt_engine = stt_engine
-        self.analyzer = analyzer
+        self.skill_analyzer = analyzer
         self.control_skills = control_skills
+        self.latest_voice_transcript = ''
+        self.is_assistant_enabled = False
         self.to_execute = []
         self.execute_state = {'ready_to_execute': False,
                               'enable_time': None
                               }
-
-    def wake_up_check(self):
-        """
-        Checks if the state of the skill manager (ready_to_execute)
-        and if is not enabled search for enable word in user recorded speech.
-        :return: boolean
-        """
-        if self.settings_['user_voice_input']:
-            if not self.execute_state['ready_to_execute']:
-                return self._ready_to_start()
-            return self._continue_listening()
-        return True
 
     def get_transcript(self):
         """
@@ -61,19 +49,30 @@ class Controller:
         else:
             self.latest_voice_transcript = self.stt_engine.recognize_text()
 
+    def wake_up_check(self):
+        """
+        Checks if the state of the skill manager (ready_to_execute)
+        and if is not enabled search for enable word in user recorded speech.
+        :return: boolean
+        """
+        if self.settings_['user_voice_input']:
+            if not self.execute_state['ready_to_execute']:
+                self._ready_to_start()
+            self._continue_listening()
+        self.is_assistant_enabled = True
+
     def _ready_to_start(self):
         """
         Checks for enable tag and if exists return a boolean
         return: boolean
         """
         self.get_transcript()
-
         transcript_words = self.latest_voice_transcript.split()
         enable_tag = set(transcript_words).intersection(self.control_skills['enable_assistant']['tags'])
 
         if bool(enable_tag):
             self.execute_state = self.control_skills['enable_assistant']['skill']()
-            return True
+            self.is_assistant_enabled = True
 
     def _continue_listening(self):
         """
@@ -84,14 +83,11 @@ class Controller:
             self.execute_state = {'ready_to_execute': False,
                                   'enable_time': None}
 
-            State.is_assistant_enabled = False
-            return False
-
-        State.is_assistant_enabled = True
-        return True
+            self.is_assistant_enabled = False
+        self.is_assistant_enabled = True
 
 
-class SkillsController(Controller):
+class SkillController(Controller):
     @log
     def get_skills(self):
         """
@@ -99,12 +95,13 @@ class SkillsController(Controller):
         and updates the skills state.
         e.x. latest_voice_transcript='open youtube'
         Then, the to_execute will be the following:
-        to_execute={voice_transcript': 'open youtube',
-                             'tag': 'open',
-                             'skill': Skills.open_website_in_browser
+        to_execute={
+                    'voice_transcript': 'open youtube',
+                    'tag': 'open',
+                     'skill': Skills.open_website_in_browser
                     }
         """
-        skill = self.analyzer.extract(self.latest_voice_transcript)
+        skill = self.skill_analyzer.extract(self.latest_voice_transcript)
         self.to_execute = {'voice_transcript': self.latest_voice_transcript,
                            'skill': skill['skill']}
         logging.debug('to_execute : {0}'.format(self.to_execute))
@@ -121,8 +118,6 @@ class SkillsController(Controller):
                 # If there is not an action the assistant make a request in WolframAlpha API
                 logging.debug("Not matched skills to execute")
         except Exception as e:
-            print(e)
             logging.debug("Error with the execution of skill {0} with message {1}".format(self.to_execute.keys(), e))
-        # Clear the skills queue
-        self.to_execute = {}
+        self.to_execute = {}  # Clear the skills queue
 

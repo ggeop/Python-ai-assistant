@@ -32,27 +32,27 @@ class ActionsTests(unittest.TestCase):
     def setUpClass(self):
         self.actions = Actions()
 
-    @patch('jarvis.actions.SkillsController._ready_to_start')
-    @patch('jarvis.actions.SkillsController._continue_listening')
+    @patch('jarvis.actions.SkillController._ready_to_start')
+    @patch('jarvis.actions.SkillController._continue_listening')
     def test_wake_up(self, mocked_ready_to_start, mocked_continue_listening):
 
         self.actions.execute_state = {'ready_to_execute': False, 'enable_time': None}
         mocked_ready_to_start.return_value = False
         mocked_continue_listening.return_value = False
-        self.assertEqual(False, self.actions.wake_up_check())
+        self.assertEqual(False, self.actions._wake_up_check())
 
         self.actions.execute_state = {'ready_to_execute': False, 'enable_time': None}
         mocked_ready_to_start.return_value = False
         mocked_continue_listening.return_value = True
-        self.assertEqual(True, self.actions.wake_up_check())
+        self.assertEqual(True, self.actions._wake_up_check())
 
         self.actions.execute_state = {'ready_to_execute': True, 'enable_time': None}
         mocked_ready_to_start.return_value = True
-        self.assertEqual(True, self.actions.wake_up_check())
+        self.assertEqual(True, self.actions._wake_up_check())
 
         self.actions.execute_state = {'ready_to_execute': True, 'enable_time': None}
         mocked_ready_to_start.return_value = False
-        self.assertEqual(False, self.actions.wake_up_check())
+        self.assertEqual(False, self.actions._wake_up_check())
 
     @patch('jarvis.action_manager.sys.exit')
     @patch('jarvis.action_manager.Skills.disable_assistant')
@@ -66,7 +66,7 @@ class ActionsTests(unittest.TestCase):
         self.actions.shutdown_check()
         self.assertEqual(1, mocked_disable_jarvis.call_count)
 
-    @patch('jarvis.actions.SkillsController.get_transcript')
+    @patch('jarvis.actions.SkillController.get_transcript')
     @patch('jarvis.action_manager.Skills.enable_assistant')
     def test_ready_to_start(self, mocked_get_voiced_transcript, mocked_enable_jarvis):
         self.actions.latest_voice_transcript = '..'

@@ -25,11 +25,11 @@ import speech_recognition as sr
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from jarvis.core.controller import SkillsController
+from jarvis.core.controller import SkillController
 from jarvis.utils.application_utils import start_up
 from jarvis.settings import GENERAL_SETTINGS
 from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
-from jarvis.core.analyzer import Analyzer
+from jarvis.skills.skill_analyzer import SkillAnalyzer
 from jarvis.settings import SPEECH_RECOGNITION
 from jarvis.engines.stt import STTEngine
 
@@ -44,22 +44,22 @@ args = {
 
 class Processor:
     def __init__(self):
-        self.analyzer = Analyzer(weight_measure=TfidfVectorizer,
-                                 similarity_measure=cosine_similarity,
-                                 args=args,
-                                 skills_=SKILLS
-                                 )
+        self.skill_analyzer = SkillAnalyzer(weight_measure=TfidfVectorizer,
+                                            similarity_measure=cosine_similarity,
+                                            args=args,
+                                            skills_=SKILLS
+                                            )
         self.stt_engine = STTEngine(pause_threshold=SPEECH_RECOGNITION['pause_threshold'],
                                     energy_theshold=SPEECH_RECOGNITION['energy_threshold'],
                                     ambient_duration=SPEECH_RECOGNITION['ambient_duration'],
                                     dynamic_energy_threshold=SPEECH_RECOGNITION['dynamic_energy_threshold'],
                                     sr=sr)
 
-        self.controller = SkillsController(settings_=GENERAL_SETTINGS,
-                                           stt_engine=self.stt_engine,
-                                           analyzer=self.analyzer,
-                                           control_skills=CONTROL_SKILLS
-                                           )
+        self.skill_controller = SkillController(settings_=GENERAL_SETTINGS,
+                                                stt_engine=self.stt_engine,
+                                                analyzer=self.skill_analyzer,
+                                                control_skills=CONTROL_SKILLS
+                                                )
 
     def run(self):
         start_up()
@@ -67,9 +67,8 @@ class Processor:
             self._process()
 
     def _process(self):
-        # Check if the assistant is waked up
-        if self.controller.wake_up_check():
-            self.controller.get_transcript()
-            self.controller.get_skills()
-
-            self.controller.execute()
+        self.skill_controller.wake_up_check()
+        if self.skill_controller.is_assistant_enabled:  # Check if the assistant is waked up
+            self.skill_controller.get_transcript()
+            self.skill_controller.get_skills()
+            self.skill_controller.execute()
