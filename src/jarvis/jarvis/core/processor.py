@@ -27,19 +27,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from jarvis.core.controller import SkillController
 from jarvis.utils.general_utils import start_up
-from jarvis.settings import GENERAL_SETTINGS
+from jarvis.settings import GENERAL_SETTINGS, ANALYZER_CONF
 from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
 from jarvis.skills.skill_analyzer import SkillAnalyzer
 from jarvis.settings import SPEECH_RECOGNITION
 from jarvis.engines.stt import STTEngine
 from jarvis.engines.ttt import TTTEngine
-
-args = {
-    # "stop_words": "english",
-    "lowercase": True,
-    "norm": 'l1',
-    "use_idf": False,
-}
 
 
 class Processor:
@@ -47,7 +40,7 @@ class Processor:
         self.skill_analyzer = SkillAnalyzer(
                                             weight_measure=TfidfVectorizer,
                                             similarity_measure=cosine_similarity,
-                                            args=args,
+                                            args=ANALYZER_CONF,
                                             skills_=SKILLS,
                                             )
 

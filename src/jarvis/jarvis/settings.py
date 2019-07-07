@@ -67,6 +67,14 @@ SPEECH_RECOGNITION = {
     'dynamic_energy_threshold': True  # For unpredictable noise levels (Suggested to be TRUE)
 }
 
+# SKill analyzer (TfidfVectorizer args)
+ANALYZER_CONF = {
+    "stop_words": None,
+    "lowercase": True,
+    "norm": 'l1',
+    "use_idf": False,
+}
+
 # Google text to speech API settings
 GOOGLE_SPEECH = {
     'lang': "en"

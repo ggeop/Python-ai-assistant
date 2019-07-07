@@ -31,7 +31,6 @@ import subprocess
 from subprocess import call
 from logging import config
 
-import jarvis.core.memory
 from jarvis.settings import ROOT_LOG_CONF
 from jarvis._version import __version__
 
