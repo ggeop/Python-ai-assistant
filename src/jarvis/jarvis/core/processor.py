@@ -38,6 +38,7 @@ from jarvis.engines.ttt import TTTEngine
 from jarvis.core.nlp_processor import ResponseCreator
 from jarvis.core.console_manager import ConsoleManager
 
+
 class Processor:
     def __init__(self):
         self.input_engine = STTEngine(
