@@ -26,7 +26,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from jarvis.core.controller import SkillController
-from jarvis.utils.general_utils import start_up
+from jarvis.utils.startup_utils import start_up
 from jarvis.settings import GENERAL_SETTINGS, ANALYZER_CONF
 from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
 from jarvis.skills.skill_analyzer import SkillAnalyzer

@@ -28,43 +28,13 @@ import traceback
 import logging
 import subprocess
 
-from subprocess import call
 from logging import config
 
 from jarvis.settings import ROOT_LOG_CONF
-from jarvis._version import __version__
-
-jarvis_logo = "\n" \
-              "      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n" \
-              "      ██║██╔══██╗██╔══██╗██║   ██║██║██╔════╝\n" \
-              "      ██║███████║██████╔╝██║   ██║██║███████╗\n" \
-              " ██   ██║██╔══██║██╔══██╗╚██╗ ██╔╝██║╚════██║\n" \
-              " ╚█████╔╝██║  ██║██║  ██║ ╚████╔╝ ██║███████║\n" \
-              "  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝"
-
-start_text = "" \
-             " -----------------------------------------------\n" \
-             " -  Voice Assistant Platform  " + "v" + __version__ + "-\n" \
-             " -----------------------------------------------\n"
-
-
-class OutputStyler:
-    HEADER = '\033[95m'
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    CYAN = '\033[36m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-
-user_input = OutputStyler.CYAN + '>> ' + OutputStyler.ENDC
+from jarvis.utils.console_utils import jarvis_logo, start_text, OutputStyler, user_input, clear, stdout_print
 
 # Create a Console & Rotating file logger
 config.dictConfig(ROOT_LOG_CONF)
-
 
 def log(func):
     """
@@ -79,13 +49,6 @@ def log(func):
             logging.error(func.__name__)
             traceback.print_exc(file=sys.stdout)
     return wrapper
-
-
-def clear():
-    """
-    Clear stdout
-    """
-    _ = call('clear' if os.name == 'posix' else 'cls')  # check and make call for specific operating system
 
 
 def internet_connectivity_check(url='http://www.google.com/', timeout=2):
@@ -141,18 +104,3 @@ def play_activation_sound():
     fnull = open(os.devnull, 'w')
     subprocess.Popen(['play', enable_sound], stdout=fnull, stderr=fnull).communicate()
 
-
-def user_speech_playback(text):
-    """
-    Prints the user commands in text.
-    :param text: string
-    """
-    print(user_input)
-
-
-def stdout_print(text):
-    """
-    Application stdout with format.
-    :param text: string
-    """
-    print(OutputStyler.CYAN + text + OutputStyler.ENDC)

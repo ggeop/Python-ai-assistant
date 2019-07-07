@@ -24,7 +24,7 @@ import subprocess
 import os
 import psutil
 
-from jarvis.utils.general_utils import clear, stdout_print, jarvis_logo, OutputStyler
+from jarvis.utils.console_utils import jarvis_logo, OutputStyler, clear, stdout_print
 
 
 class ConsoleManager:

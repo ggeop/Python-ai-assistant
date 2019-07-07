@@ -26,7 +26,8 @@ import logging
 
 from datetime import datetime
 
-from jarvis.utils.general_utils import play_activation_sound, clear
+from jarvis.utils.startup_utils import play_activation_sound
+from jarvis.utils.console_utils import clear
 from jarvis.skills.skill_manager import AssistantSkill
 
 

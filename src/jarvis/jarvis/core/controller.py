@@ -24,7 +24,7 @@ import logging
 
 from datetime import datetime, timedelta
 
-from jarvis.utils.general_utils import log
+from jarvis.utils.startup_utils import log
 
 
 class Controller:
