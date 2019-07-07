@@ -1,0 +1,6 @@
+# Exclude python executables and cached folders
+*.pyc
+ __pycache__/
+
+# Exclude pycharm metadata
+ .idea/
