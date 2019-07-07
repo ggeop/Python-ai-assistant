@@ -96,37 +96,37 @@ BASIC_SKILLS = {
 
     'tells_the_weather': {'enable': True,
                           'skill': WeatherSkills.tell_the_weather,
-                          'tags': {'weather', 'tell me the weather'},
+                          'tags': {'weather', 'temperature', 'weather prediction'},
                           'description': 'Ask for the "weather in" somewhere, e.g. weather in London'
                           },
 
     'assistant_check': {'enable': True,
                         'skill': AssistantInfoSkills.assistant_check,
-                        'tags': {'can you hear', 'hey jarvis', 'are you there'},
+                        'tags': {'hear', 'hey jarvis', 'are you there'},
                         'description': 'Ask me if I "hear" you, e.g. Jarvis "can you hear" me?'
                         },
 
     'libreoffice_calc': {'enable': True,
                          'skill': LibreofficeSkills.open_libreoffice_calc,
-                         'tags': {'open calc', 'open excel', 'calc', 'excel'},
+                         'tags': {'calc', 'excel'},
                          'description': 'Ask me to "open writer", e.g. Jarvis "can you open calc"?'
                          },
 
     'open_libreoffice_writer': {'enable': True,
                                 'skill': LibreofficeSkills.open_libreoffice_writer,
-                                'tags': {'open writer', 'open word', 'writer', 'word'},
+                                'tags': {'writer', 'word'},
                                 'description': 'Ask me to "open writer", e.g. Jarvis "can you open writer"?'
                                 },
 
     'open_libreoffice_impress': {'enable': True,
                                  'skill': LibreofficeSkills.open_libreoffice_impress,
-                                 'tags': {'open impress', 'open power point', 'impress', 'power point'},
+                                 'tags': {'impress', 'power point'},
                                  'description': 'Ask me to "open impress", e.g. Jarvis "can you open impress"?'
                                  },
 
     'tell_memory_consumption': {'enable': True,
                                 'skill': SystemHealthSkills.tell_memory_consumption,
-                                'tags': {'ram', 'ram usage', 'memory', 'memory consumption', 'are you busy'},
+                                'tags': {'ram', 'ram usage', 'memory', 'memory consumption'},
                                 'description': 'Ask for the memory consumption, '
                                                'e.g. Jarvis how much "memory" are you using?'
                                 },
@@ -145,7 +145,7 @@ BASIC_SKILLS = {
 
     'internet_availability': {'enable': True,
                               'skill': InternetSkills.internet_availability,
-                              'tags': {'internet conection', 'internet is ok', 'do we have internet'},
+                              'tags': {'internet conection', 'internet'},
                               'description': 'Ask for "internet connection", e.g. "Jarvis do we have internet"?'
                               },
 
@@ -163,12 +163,12 @@ BASIC_SKILLS = {
 
     'tell_the_skills': {'enable': True,
                         'skill': AssistantInfoSkills.tell_the_skills,
-                        'tags': {'skills', 'your skills', 'what can you do', 'what are your skills'},
+                        'tags': {'skills', 'your skills', 'what are your skills'},
                         'description': 'Ask to tell you what he can do e.g. "Jarvis what can you do"?'
                         },
     'take_a_note': {'enable': True,
                     'skill': LinuxAppSkills.open_note_app,
-                    'tags': {'note', 'create a note'},
+                    'tags': {'note'},
                     'description': 'Ask to create a note e.g. "Jarvis can you open a note"?'
                     },
     'open_new_browser_window': {'enable': True,
@@ -183,7 +183,7 @@ BASIC_SKILLS = {
                       },
     'get_current_location': {'enable': True,
                              'skill': LocationSkill.get_current_location,
-                             'tags': {'my location', 'current location', 'where am I'},
+                             'tags': {'my location', 'current location'},
                              'description': 'Ask to tell you your current location e.g. "Jarvis tell me my location"?'
                              },
 
