@@ -85,17 +85,17 @@ GOOGLE_SPEECH = {
 # Create key: https://openweathermap.org/appid
 WEATHER_API = {
     'unit': 'celsius',
-    'key': '2e63db2f8df7cc9ebd13a441d8b2eb8a'
+    'key': None
 }
 
 # WolframAlpha API settings
 # Create key: https://developer.wolframalpha.com/portal/myapps/
 WOLFRAMALPHA_API = {
-    'key': 'WW4JAY-VR7EAAPXJ5'
+    'key': None
 }
 
 # IPSTACK API settings
 #Create key: https://ipstack.com/signup/free
 IPSTACK_API = {
-    'key': 'bff2692443af80b42129323e2101fa60'
+    'key': None
 }
