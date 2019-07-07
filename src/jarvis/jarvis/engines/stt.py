@@ -45,9 +45,6 @@ class STTEngine:
         while voice_transcript == '':
             print("Say something..")
             voice_transcript = input(user_input).lower()
-        if self._speech_interruption(voice_transcript):
-            voice_transcript = ''
-            self.logger.debug('Speech interruption')
         return voice_transcript
 
     def recognize_voice(self):
@@ -59,9 +56,6 @@ class STTEngine:
             # self.voice_transcript = self.speech_recognizer.recognize_google(audio_text).lower()
             voice_transcript = audio_text.lower()
             self.logger.debug('Recognized words: ' + voice_transcript)
-            if self._speech_interruption(voice_transcript):
-                voice_transcript = ''
-                self.logger.debug('User Speech interruption')
             return voice_transcript
         except self.speech_recognizer.UnknownValueError:
             print('....')
@@ -78,10 +72,6 @@ class STTEngine:
             audio_text = self.speech_recognizer.listen(source)
             audio_text = input("input: ")
         return audio_text
-
-    @staticmethod
-    def _speech_interruption(latest_voice_transcript):
-        return 'stop' in latest_voice_transcript
 
     def _update_microphone_noise_level(self):
         """

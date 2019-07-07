@@ -43,7 +43,7 @@ class SkillAnalyzer:
 
         similarities = self.similarity_measure(train_tdm, test_tdm)  # Calculate similarities
 
-        skill_index = similarities.argsort(axis=None)[-1] # Extract the most similar skill
+        skill_index = similarities.argsort(axis=None)[-1]  # Extract the most similar skill
         if similarities[skill_index] > 0:
             skill_key = [skill for skill in enumerate(self.skills) if skill[0] == skill_index][0][1]
             return self.skills[skill_key]
@@ -59,5 +59,3 @@ class SkillAnalyzer:
         Create/train the model.
         """
         return self.vectorizer.fit_transform(self.tags)
-
-

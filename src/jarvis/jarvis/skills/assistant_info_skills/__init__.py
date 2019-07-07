@@ -22,37 +22,40 @@
 
 from jarvis.skills import skills_registry
 
+from jarvis.skills.skill_manager import AssistantSkill
 
 
-def assistant_check(**kargs):
-    """
-    Responses that assistant can hear the user.
-    """
-    print('Yes, I hear you!')
+class AssistantInfoSkills(AssistantSkill):
 
+    @classmethod
+    def assistant_check(cls, **kwargs):
+        """
+        Responses that assistant can hear the user.
+        """
+        print('Yes, I hear you!')
 
-def _create_skill_response(response):
-    for skill_id, skill in enumerate(skills_registry.BASIC_SKILLS.values()):
-        response = response + '{0}) '.format(skill_id + 1) + skill['description'] + '\n'
-    return response
+    @classmethod
+    def _create_skill_response(cls, response):
+        for skill_id, skill in enumerate(skills_registry.BASIC_SKILLS.values()):
+            response = response + '{0}) '.format(skill_id + 1) + skill['description'] + '\n'
+        return response
 
+    @classmethod
+    def tell_the_skills(cls, **kwargs):
+        """
+        Tells what he can do as assistant.
+        """
+        response_base = 'I can do the following: \n\n'
+        response = cls._create_skill_response(response_base)
+        response.assistant_response(response)
 
-def tell_the_skills(**kwargs):
-    """
-    Tells what he can do as assistant.
-    """
-    response_base = 'I can do the following: \n\n'
-    response = _create_skill_response(response_base)
-    response.assistant_response(response)
-
-
-def assistant_help(**kwargs):
-    """
-    Assistant help prints valuable information about the application.
-    """
-
-    print("---- Help ----")
-    print("Assistant skills: ")
-    response_base = ''
-    response = _create_skill_response(response_base)
-    print(response)
+    @classmethod
+    def assistant_help(cls, **kwargs):
+        """
+        Assistant help prints valuable information about the application.
+        """
+        print("---- Help ----")
+        print("Assistant skills: ")
+        response_base = ''
+        response = cls._create_skill_response(response_base)
+        print(response)

@@ -60,11 +60,9 @@ class ActivationSkills(AssistantSkill):
                 'enable_time': now}
 
     @classmethod
-    def disable_assistant(cls, **kargs):
+    def disable_assistant(cls, **kwargs):
         """
         Shutdown the assistant service
-        :param args:
-        :return:
         """
         cls.response('Bye')
         time.sleep(1)

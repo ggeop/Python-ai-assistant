@@ -25,45 +25,48 @@ import json
 import requests
 import logging
 
+from jarvis.skills.skill_manager import AssistantSkill
 
 
+class InternetSkills(AssistantSkill):
 
-def _decode_json(response_bytes):
-    json_response = response_bytes.decode('utf8').replace("'", '"')
-    return json.loads(json_response)
+    @classmethod
+    def run_speedtest(cls, **kwargs):
+        """
+        Run an internet speed test.
+        """
+        process = subprocess.Popen(["speedtest-cli", "--json"], stdout=subprocess.PIPE, shell=False)
+        out, err = process.communicate()
+        if process.returncode:
 
+            decoded_json = cls._decode_json(out)
 
-def run_speedtest(**kwargs):
-    """
-    Run an internet speed test.
-    """
-    process = subprocess.Popen(["speedtest-cli", "--json"], stdout=subprocess.PIPE, shell=False)
-    out, err = process.communicate()
-    if process.returncode:
+            ping = decoded_json['ping']
+            up_mbps = float(decoded_json['upload']) / 1000000
+            down_mbps = float(decoded_json['download']) / 1000000
 
-        decoded_json = _decode_json(out)
+            cls.response("Speedtest results:\n"
+                         "The ping is %s ms \n"
+                         "The upling is %0.2f Mbps \n"
+                         "The downling is %0.2f Mbps" % (ping, up_mbps, down_mbps)
+                         )
+        else:
+            cls.response("I coudn't run a speedtest")
+            logging.error("Speedtest error with message: {0}".format(err))
 
-        ping = decoded_json['ping']
-        up_mbps = float(decoded_json['upload']) / 1000000
-        down_mbps = float(decoded_json['download']) / 1000000
+    @classmethod
+    def _decode_json(cls, response_bytes):
+        json_response = response_bytes.decode('utf8').replace("'", '"')
+        return json.loads(json_response)
 
-        print("Speedtest results:\n"
-                           "The ping is %s ms \n"
-                           "The upling is %0.2f Mbps \n"
-                           "The downling is %0.2f Mbps" % (ping, up_mbps, down_mbps)
-                           )
-    else:
-        print("I coudn't run a speedtest")
-        logging.error("Speedtest error with message: {0}".format(err))
-
-
-def internet_availability(**kwargs):
-    """
-    Tells to the user is the internet is available or not
-    """
-    try:
-        _ = requests.get('http://www.google.com/', timeout=1)
-        print("Yes, the internet connection is ok")
-    except requests.ConnectionError as e:
-        print("No the internet is down for now")
-        logging.error("No internet connection with message: {0}".format(e))
+    @classmethod
+    def internet_availability(cls, **kwargs):
+        """
+        Tells to the user is the internet is available or not.
+        """
+        try:
+            _ = requests.get('http://www.google.com/', timeout=1)
+            cls.response("Yes, the internet connection is ok")
+        except requests.ConnectionError as e:
+            cls.response("No the internet is down for now")
+            logging.error("No internet connection with message: {0}".format(e))

@@ -34,10 +34,10 @@ from jarvis.settings import SPEECH_RECOGNITION
 from jarvis.engines.stt import STTEngine
 
 args = {
-    "stop_words": "english",
+    # "stop_words": "english",
     "lowercase": True,
     "norm": 'l1',
-    "use_idf": True,
+    "use_idf": False,
 }
 
 

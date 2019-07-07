@@ -88,7 +88,6 @@ class Controller:
         self.is_assistant_enabled = True
 
 
-
 class SkillController(Controller):
     @log
     def get_skills(self):
@@ -101,7 +100,7 @@ class SkillController(Controller):
         skill = self.skill_analyzer.extract(self.latest_voice_transcript)
         self.to_execute = {
                            'voice_transcript': self.latest_voice_transcript,
-                           'skill': skill['skill'],
+                           'skill': skill,
                            }
         logging.debug('to_execute : {0}'.format(self.to_execute))
 
@@ -110,9 +109,9 @@ class SkillController(Controller):
         Execute the user skill and empty skill for execution.
         """
         try:
-            if self.to_execute:
+            if self.to_execute['skill']['skill']:
                 logging.debug('Execute skill {0}'.format(self.to_execute.keys()))
-                self.to_execute['skill'](**self.to_execute)
+                self.to_execute['skill']['skill'](**self.to_execute)
             else:
                 # If there is not an action the assistant make a request in WolframAlpha API
                 logging.debug("Not matched skills to execute")

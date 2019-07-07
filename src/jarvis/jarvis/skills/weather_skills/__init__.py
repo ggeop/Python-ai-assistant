@@ -27,54 +27,59 @@ import time
 from pyowm import OWM
 
 from jarvis.settings import WEATHER_API
-from jarvis.skills.location_skill import get_location
+from jarvis.skills.location_skill import  LocationSkill
+
+from jarvis.skills.skill_manager import AssistantSkill
 
 
-def _get_weather_status_and_temperature(city):
-    owm = OWM(API_key=WEATHER_API['key'])
-    if owm.is_API_online():
-        obs = owm.weather_at_place(city)
-        weather = obs.get_weather()
-        status = weather.get_status()
-        temperature = weather.get_temperature(WEATHER_API['unit'])
-        return status, temperature
-    else:
-        return None, None
-
-
-def tell_the_weather(tag, voice_transcript, **kwargs):
-    """
-    Tells the weather of a place
-    :param tag: string (e.g 'weather')
-    :param voice_transcript: string (e.g 'weather in London')
-    """
-    reg_ex = re.search(tag + ' [a-zA-Z][a-zA-Z] ([a-zA-Z]+)', voice_transcript)
-    try:
-        if WEATHER_API['key']:
-            city = _get_city(reg_ex)
-            status, temperature = _get_weather_status_and_temperature(city)
-            if status and temperature:
-                print('Current weather in %s is %s.\n'
-                                   'The maximum temperature is %0.2f degree celcius. \n'
-                                   'The minimum temperature is %0.2f degree celcius.'
-                                   % (city, status, temperature['temp_max'], temperature['temp_min'])
-                                   )
+class WeatherSkills(AssistantSkill):
+    
+    @classmethod
+    def tell_the_weather(cls, tag, voice_transcript, **kwargs):
+        """
+        Tells the weather of a place
+        :param tag: string (e.g 'weather')
+        :param voice_transcript: string (e.g 'weather in London')
+        """
+        reg_ex = re.search(tag + ' [a-zA-Z][a-zA-Z] ([a-zA-Z]+)', voice_transcript)
+        try:
+            if WEATHER_API['key']:
+                city = cls._get_city(reg_ex)
+                status, temperature = cls._get_weather_status_and_temperature(city)
+                if status and temperature:
+                    cls.response("Current weather in %s is %s.\n"
+                                 "The maximum temperature is %0.2f degree celcius. \n"
+                                 "The minimum temperature is %0.2f degree celcius."
+                                 % (city, status, temperature['temp_max'], temperature['temp_min'])
+                                 )
+                else:
+                    cls.response("Sorry the weather API is not available now..")
             else:
-                print("Sorry the weather API is not available now..")
+                cls.response("Weather forecast is not working.\n"
+                             "You can get an Weather API key from: https://openweathermap.org/appid")
+
+        except Exception as e:
+            logging.debug(e)
+            cls.response("I faced an issue with the weather site..")
+
+    @classmethod
+    def _get_weather_status_and_temperature(cls, city):
+        owm = OWM(API_key=WEATHER_API['key'])
+        if owm.is_API_online():
+            obs = owm.weather_at_place(city)
+            weather = obs.get_weather()
+            status = weather.get_status()
+            temperature = weather.get_temperature(WEATHER_API['unit'])
+            return status, temperature
         else:
-            print("Weather forecast is not working.\n"
-                               "You can get an Weather API key from: https://openweathermap.org/appid")
+            return None, None
 
-    except Exception as e:
-        logging.debug(e)
-        print("I faced an issue with the weather site..")
-
-
-def _get_city(reg_ex):
-    if not reg_ex:
-        city, latitude, longitude = get_location()
-        print("You are in {0}".format(city))
-        time.sleep(1)
-    else:
-        city = reg_ex.group(1)
-    return city
+    @classmethod
+    def _get_city(cls, reg_ex):
+        if not reg_ex:
+            city, latitude, longitude = LocationSkill.get_location()
+            cls.response("You are in {0}".format(city))
+            time.sleep(1)
+        else:
+            city = reg_ex.group(1)
+        return city

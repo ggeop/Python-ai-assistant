@@ -23,7 +23,7 @@
 LOG_SETTINGS = {
     'version': 1,
     'root': {
-        'level': 'INFO',
+        'level': 'DEBUG',
         'handlers': ['console', 'file'],
     },
     'handlers': {
@@ -34,7 +34,7 @@ LOG_SETTINGS = {
         },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'level': 'INFO',
+            'level': 'DEBUG',
             'formatter': 'detailed',
             'filename': '/var/log/jarvis.log',
             'mode': 'a',
@@ -53,7 +53,7 @@ LOG_SETTINGS = {
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
     'enable_period': 300,  # In seconds
-    'user_voice_input': True,  # True: The assistant responds in voice commands,
+    'user_voice_input': False,  # True: The assistant responds in voice commands,
                                 # False: The assistant waiting for text input
     'response_in_speech': True,
 }
@@ -61,7 +61,7 @@ GENERAL_SETTINGS = {
 # Google API Speech recognition settings
 # SpeechRecognition: https://pypi.org/project/SpeechRecognition/2.1.3
 SPEECH_RECOGNITION = {
-    'ambient_duration': 4,  # Time for auto microphone calibration
+    'ambient_duration': 1,  # Time for auto microphone calibration
     'pause_threshold': 1,  # minimum length silence (in seconds) at the end of a sentence
     'energy_threshold': 3000,  # microphone sensitivity, for loud places, the energy level should be up to 4000
     'dynamic_energy_threshold': True  # For unpredictable noise levels (Suggested to be TRUE)

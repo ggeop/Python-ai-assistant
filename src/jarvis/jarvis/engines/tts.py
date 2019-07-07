@@ -58,9 +58,9 @@ class TTSEngine:
             try:
                 self.engine_.runAndWait()
             except RuntimeError:
-                # TODO: Add log
                 pass
             if self.stop_speaking:
+                self.logger.debug('Speech interruption triggered')
                 self.stop_speaking = False
                 break
 
