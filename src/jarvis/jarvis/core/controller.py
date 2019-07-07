@@ -28,9 +28,9 @@ from jarvis.utils.general_utils import log
 
 
 class Controller:
-    def __init__(self, settings_, stt_engine, analyzer, control_skills):
+    def __init__(self, settings_, input_engine, analyzer, control_skills):
         self.settings_ = settings_
-        self.stt_engine = stt_engine
+        self.input_engine = input_engine
         self.skill_analyzer = analyzer
         self.control_skills = control_skills
         self.latest_voice_transcript = ''
@@ -42,12 +42,9 @@ class Controller:
 
     def get_transcript(self):
         """
-        Capture the words from the recorded audio (audio stream --> free text).
+        Updates the latest_voice_transcript with the latest user input.
         """
-        if self.settings_['user_voice_input']:
-            self.latest_voice_transcript = self.stt_engine.recognize_voice()
-        else:
-            self.latest_voice_transcript = self.stt_engine.recognize_text()
+        self.latest_voice_transcript = self.input_engine.recognize_input()
 
     def wake_up_check(self):
         """

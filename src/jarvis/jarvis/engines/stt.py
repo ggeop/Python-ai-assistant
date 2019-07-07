@@ -26,6 +26,9 @@ from jarvis.utils.general_utils import clear, user_input
 
 
 class STTEngine:
+    """
+    Speech To Text Engine (STT)
+    """
     def __init__(self, pause_threshold, energy_theshold, ambient_duration, dynamic_energy_threshold, sr):
         self.logger = logging
         self.sr = sr
@@ -39,17 +42,9 @@ class STTEngine:
                                               dynamic_energy_threshold=dynamic_energy_threshold
                                               )
 
-    def recognize_text(self):
-        self.logger.info("Waiting for user input..")
-        voice_transcript = input(user_input).lower()
-        while voice_transcript == '':
-            print("Say something..")
-            voice_transcript = input(user_input).lower()
-        return voice_transcript
-
-    def recognize_voice(self):
+    def recognize_input(self):
         """
-        Records voice and update latest_voice_transcript with the latest user speech.
+        Capture the words from the recorded audio (audio stream --> free text).
         """
         audio_text = self._record()
         try:
@@ -58,9 +53,9 @@ class STTEngine:
             self.logger.debug('Recognized words: ' + voice_transcript)
             return voice_transcript
         except self.speech_recognizer.UnknownValueError:
-            print('....')
+            self.logger.info('Not recognized text')
         except self.speech_recognizer.RequestError:
-            print("Try later.. (Google API was unreachable..)")
+            self.logger.info("Google API was unreachable.")
 
     def _record(self):
         """
@@ -80,8 +75,8 @@ class STTEngine:
         self.dynamic_energy_ratio = self.speech_recognizer.dynamic_energy_ratio  # Update dynamic energy ratio
         self.energy_threshold = self.speech_recognizer.dynamic_energy_threshold  # Update microphone energy threshold
 
-        self.logger.debug('Dynamic energy ration value is: {0}'.format(self.dynamic_energy_ratio))
-        self.logger.debug('Energy threshold is: {0}'.format(self.energy_threshold))
+        self.logger.debug("Dynamic energy ration value is: {0}".format(self.dynamic_energy_ratio))
+        self.logger.debug("Energy threshold is: {0}".format(self.energy_threshold))
 
     def _set_microphone(self, pause_threshold, energy_threshold, ambient_duration, dynamic_energy_threshold):
         """
@@ -90,16 +85,17 @@ class STTEngine:
         microphone_list = self.sr.Microphone.list_microphone_names()
 
         clear()
-        print("=" * 48)
-        print("Microphone Setup")
-        print("=" * 48)
-        print("Which microphone do you want to use a assistant mic:")
+        self.logger.info("=" * 48)
+        self.logger.info("Microphone Setup")
+        self.logger.info("=" * 48)
+        self.logger.info("Which microphone do you want to use a assistant mic:")
 
         for index, name in enumerate(microphone_list):
-            print("{0}) Microphone: {1}".format(index, name))
+            self.logger.info("{0}) Microphone: {1}".format(index, name))
 
         choices = "Choice[1-{0}]: ".format(len(microphone_list))
-        print("WARNING: In case of error of 'Invalid number of channels' try again with different micrphone choice")
+        self.logger.info("WARNING: "
+                         "In case of error of 'Invalid number of channels' try again with different micrphone choice")
         index = input(choices)
 
         while not index.isnumeric():
@@ -110,13 +106,13 @@ class STTEngine:
             self.speech_recognizer.energy_threshold = energy_threshold
 
             clear()
-            print("-" * 48)
-            print("Microphone Calibration")
-            print("-" * 48)
+            self.logger.info("-" * 48)
+            self.logger.info("Microphone Calibration")
+            self.logger.info("-" * 48)
 
-            print("Please wait.. for {} seconds ".format(ambient_duration))
+            self.logger.info("Please wait.. for {} seconds ".format(ambient_duration))
             self.speech_recognizer.adjust_for_ambient_noise(source, duration=ambient_duration)
             self.speech_recognizer.dynamic_energy_threshold = dynamic_energy_threshold
-            print("Microphone calibrated successfully!")
+            self.logger.info("Microphone calibrated successfully!")
 
             return source

@@ -26,6 +26,9 @@ import pyttsx3
 
 
 class TTSEngine:
+    """
+    Text To Speech Engine (TTS)
+    """
     def __init__(self, console_manager, speech_response_enabled):
         self.logger = logging
         self.console_manager = console_manager

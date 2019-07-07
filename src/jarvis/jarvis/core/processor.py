@@ -32,6 +32,7 @@ from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
 from jarvis.skills.skill_analyzer import SkillAnalyzer
 from jarvis.settings import SPEECH_RECOGNITION
 from jarvis.engines.stt import STTEngine
+from jarvis.engines.ttt import TTTEngine
 
 args = {
     # "stop_words": "english",
@@ -50,17 +51,17 @@ class Processor:
                                             skills_=SKILLS,
                                             )
 
-        self.stt_engine = STTEngine(
-                                    pause_threshold=SPEECH_RECOGNITION['pause_threshold'],
-                                    energy_theshold=SPEECH_RECOGNITION['energy_threshold'],
-                                    ambient_duration=SPEECH_RECOGNITION['ambient_duration'],
-                                    dynamic_energy_threshold=SPEECH_RECOGNITION['dynamic_energy_threshold'],
-                                    sr=sr
-                                    )
+        self.input_engine = STTEngine(
+                                        pause_threshold=SPEECH_RECOGNITION['pause_threshold'],
+                                        energy_theshold=SPEECH_RECOGNITION['energy_threshold'],
+                                        ambient_duration=SPEECH_RECOGNITION['ambient_duration'],
+                                        dynamic_energy_threshold=SPEECH_RECOGNITION['dynamic_energy_threshold'],
+                                        sr=sr
+                                        ) if GENERAL_SETTINGS['user_voice_input'] else TTTEngine()
 
         self.skill_controller = SkillController(
                                                 settings_=GENERAL_SETTINGS,
-                                                stt_engine=self.stt_engine,
+                                                input_engine=self.input_engine,
                                                 analyzer=self.skill_analyzer,
                                                 control_skills=CONTROL_SKILLS,
                                                 )
