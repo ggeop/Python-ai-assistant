@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LOG_SETTINGS = {
+ROOT_LOG_CONF = {
     'version': 1,
     'root': {
         'level': 'DEBUG',
@@ -53,8 +53,8 @@ LOG_SETTINGS = {
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
     'enable_period': 300,  # In seconds
-    'user_voice_input': False,  # True: The assistant responds in voice commands,
-                                # False: The assistant waiting for text input
+    'user_voice_input': True,  # True: The assistant responds in voice commands,
+                               # False: The assistant waiting for text input
     'response_in_speech': True,
 }
 

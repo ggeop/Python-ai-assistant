@@ -85,34 +85,34 @@ class STTEngine:
         microphone_list = self.sr.Microphone.list_microphone_names()
 
         clear()
-        self.logger.info("=" * 48)
-        self.logger.info("Microphone Setup")
-        self.logger.info("=" * 48)
-        self.logger.info("Which microphone do you want to use a assistant mic:")
+        print("=" * 48)
+        print("Microphone Setup")
+        print("=" * 48)
+        print("Which microphone do you want to use a assistant mic:")
 
         for index, name in enumerate(microphone_list):
-            self.logger.info("{0}) Microphone: {1}".format(index, name))
+            print("{0}) Microphone: {1}".format(index, name))
 
         choices = "Choice[1-{0}]: ".format(len(microphone_list))
-        self.logger.info("WARNING: "
-                         "In case of error of 'Invalid number of channels' try again with different micrphone choice")
+        print("WARNING: "
+              "In case of error of 'Invalid number of channels' try again with different micrphone choice")
         index = input(choices)
 
         while not index.isnumeric():
-            index = input('Please select a number between choices[1-{0}]: '.format(len(microphone_list)))
+            index = input("Please select a number between choices[1-{0}]: ".format(len(microphone_list)))
 
         with self.sr.Microphone(device_index=int(index), chunk_size=512) as source:
             self.speech_recognizer.pause_threshold = pause_threshold
             self.speech_recognizer.energy_threshold = energy_threshold
 
             clear()
-            self.logger.info("-" * 48)
-            self.logger.info("Microphone Calibration")
-            self.logger.info("-" * 48)
+            print("-" * 48)
+            print("Microphone Calibration")
+            print("-" * 48)
 
-            self.logger.info("Please wait.. for {} seconds ".format(ambient_duration))
+            print("Please wait.. for {} seconds ".format(ambient_duration))
             self.speech_recognizer.adjust_for_ambient_noise(source, duration=ambient_duration)
             self.speech_recognizer.dynamic_energy_threshold = dynamic_energy_threshold
-            self.logger.info("Microphone calibrated successfully!")
+            print("Microphone calibrated successfully!")
 
             return source

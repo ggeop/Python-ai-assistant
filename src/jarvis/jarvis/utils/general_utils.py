@@ -32,7 +32,7 @@ from subprocess import call
 from logging import config
 
 import jarvis.core.memory
-from jarvis.settings import LOG_SETTINGS
+from jarvis.settings import ROOT_LOG_CONF
 from jarvis._version import __version__
 
 jarvis_logo = "\n" \
@@ -64,7 +64,7 @@ class OutputStyler:
 user_input = OutputStyler.CYAN + '>> ' + OutputStyler.ENDC
 
 # Create a Console & Rotating file logger
-config.dictConfig(LOG_SETTINGS)
+config.dictConfig(ROOT_LOG_CONF)
 
 
 def log(func):
@@ -127,7 +127,7 @@ def start_up():
     print(OutputStyler.HEADER + 'Waiting..' + OutputStyler.ENDC)
 
     # Clear log file in each assistant fresh start
-    with open(LOG_SETTINGS['handlers']['file']['filename'], 'r+') as f:
+    with open(ROOT_LOG_CONF['handlers']['file']['filename'], 'r+') as f:
         f.truncate(0)
 
     logging.info('APPLICATION STARTED..')
@@ -141,9 +141,6 @@ def play_activation_sound():
     enable_sound = os.path.join(utils_dir, '..', 'files', 'enable_sound.wav')
     fnull = open(os.devnull, 'w')
     subprocess.Popen(['play', enable_sound], stdout=fnull, stderr=fnull).communicate()
-
-
-
 
 
 def user_speech_playback(text):

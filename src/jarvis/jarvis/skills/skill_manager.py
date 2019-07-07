@@ -21,14 +21,14 @@
 # SOFTWARE.
 
 from jarvis.engines.tts import TTSEngine
-from jarvis.settings import GENERAL_SETTINGS, LOG_SETTINGS
+from jarvis.settings import GENERAL_SETTINGS, ROOT_LOG_CONF
 from jarvis.core.console_manager import ConsoleManager
 
 
 class AssistantSkill:
     first_activation = True
     console_manager = ConsoleManager(
-                                     log_settings=LOG_SETTINGS,
+                                     log_settings=ROOT_LOG_CONF,
                                     )
     tts_engine = TTSEngine(
                            console_manager=console_manager,
