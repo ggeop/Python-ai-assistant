@@ -97,7 +97,7 @@ class BrowserSkills(AssistantSkill):
                     domain = reg_ex.group(1)
                     url = cls._create_url(domain)
                     cls.response('Sure')
-                    subprocess.Popen(["python", "-m", "webbrowser", "-t", url], stdout=subprocess.PIPE)
+                    subprocess.Popen(["python", "-m", "webbrowser", "-t", url], stdout=subprocess.PIPE, shell=False)
                     time.sleep(1)
                     cls.response('I opened the {0}'.format(domain))
             except Exception as e:
