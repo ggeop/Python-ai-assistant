@@ -48,8 +48,7 @@ class STTEngine:
         """
         audio_text = self._record()
         try:
-            # self.voice_transcript = self.speech_recognizer.recognize_google(audio_text).lower()
-            voice_transcript = audio_text.lower()
+            voice_transcript = self.speech_recognizer.recognize_google(audio_text).lower()
             self.logger.debug('Recognized words: ' + voice_transcript)
             return voice_transcript
         except self.speech_recognizer.UnknownValueError:
@@ -65,7 +64,6 @@ class STTEngine:
 
         with self.microphone as source:
             audio_text = self.speech_recognizer.listen(source)
-            audio_text = input("input: ")
         return audio_text
 
     def _update_microphone_noise_level(self):
