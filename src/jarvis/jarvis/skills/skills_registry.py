@@ -20,19 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.skills import \
-    word_skills, \
-    assistant_activation, \
-    assistant_info_skills, \
-    reminder_skill, \
-    libreoffice_suite_skills, \
-    internet_skills, \
-    browser_skills, \
-    system_health_skills, \
-    datetime_skills, \
-    weather_skills, \
-    linux_app_skills, \
-    location_skill
+from jarvis.skills.assistant_activation import ActivationSkills
+from jarvis.skills.assistant_info_skills import AssistantInfoSkills
+from jarvis.skills.datetime_skills import DatetimeSkills
+from jarvis.skills.browser_skills import BrowserSkills
+from jarvis.skills.util_skills import UtilSkills
+from jarvis.skills.internet_skills import InternetSkills
+from jarvis.skills.libreoffice_suite_skills import LibreofficeSkills
+from jarvis.skills.linux_app_skills import LinuxAppSkills
+from jarvis.skills.location_skill import LocationSkill
+from jarvis.skills.reminder_skill import ReminderSkill
+from jarvis.skills.system_health_skills import SystemHealthSkills
+from jarvis.skills.weather_skills import WeatherSkills
+from jarvis.skills.word_skills import WordSkills
 
 
 # All available assistant skills
@@ -43,145 +43,153 @@ from jarvis.skills import \
 #    - 'description': skill description
 
 CONTROL_SKILLS = {
-    'enable_jarvis': {'skill': assistant_activation.enable_jarvis,
+    'enable_assistant': {'skill': ActivationSkills.enable_assistant,
                       'tags': {'start', 'hi', 'hello', 'jarvis'}
                       },
 
-    'disable_jarvis': {'skill': assistant_activation.disable_jarvis,
+    'disable_assistant': {'skill': ActivationSkills.disable_assistant,
                        'tags': {'bye', 'shut down'}
                        }
 }
 
 BASIC_SKILLS = {
     'open_site_in_browser': {'enable': True,
-                             'skill': browser_skills.open_website_in_browser,
+                             'skill': BrowserSkills.open_website_in_browser,
                              'tags': {'open'},
                              'description': 'Ask me to "open" a domain in the browser e.x open facebook'
                              },
 
     'tell_daily_news': {'enable': True,
-                        'skill': browser_skills.tell_me_today_news,
+                        'skill': BrowserSkills.tell_me_today_news,
                         'tags': {'news', 'today news'},
                         'description': 'Ask me to tell the daily news e.x "Tell me the news today"'
                         },
 
     'tell_time': {'enable': True,
-                  'skill': datetime_skills.tell_the_time,
+                  'skill': DatetimeSkills.tell_the_time,
                   'tags': {'time', 'hour'},
                   'description': 'Ask me for the current "time"'
                   },
 
     'tell_date': {'enable': True,
-                  'skill': datetime_skills.tell_the_date,
+                  'skill': DatetimeSkills.tell_the_date,
                   'tags': {'date'},
                   'description': 'Ask me for the current "date"'
                   },
 
     'tell_about': {'enable': True,
-                   'skill': browser_skills.tell_me_about,
+                   'skill': BrowserSkills.tell_me_about,
                    'tags': {'about'},
                    'description': 'Ask me "about" something, e.g. tell_the_skills me about google'
                    },
+    'speech_interruption': {'enable': True,
+                            'skill': UtilSkills.speech_interruption,
+                            'tags': {'stop'},
+                            'description': 'Tell "stop", to interrupt assistant speech'
+                            },
 
     'assistant_help': {'enable': True,
-                       'skill': assistant_info_skills.assistant_help,
+                       'skill': AssistantInfoSkills.assistant_help,
                        'tags': {'help'},
                        'description': 'Ask me for "help", e.g. Jarvis help me'
                        },
 
     'tells_the_weather': {'enable': True,
-                          'skill': weather_skills.tell_the_weather,
-                          'tags': {'weather', 'tell me the weather'},
+                          'skill': WeatherSkills.tell_the_weather,
+                          'tags': {'weather', 'temperature', 'weather prediction'},
                           'description': 'Ask for the "weather in" somewhere, e.g. weather in London'
                           },
 
     'assistant_check': {'enable': True,
-                        'skill': assistant_info_skills.assistant_check,
-                        'tags': {'can you hear', 'hey jarvis', 'are you there'},
+                        'skill': AssistantInfoSkills.assistant_check,
+                        'tags': {'hear', 'hey jarvis', 'are you there'},
                         'description': 'Ask me if I "hear" you, e.g. Jarvis "can you hear" me?'
                         },
 
     'libreoffice_calc': {'enable': True,
-                         'skill': libreoffice_suite_skills.open_libreoffice_calc,
-                         'tags': {'open calc', 'open excel', 'calc', 'excel'},
+                         'skill': LibreofficeSkills.open_libreoffice_calc,
+                         'tags': {'calc', 'excel'},
                          'description': 'Ask me to "open writer", e.g. Jarvis "can you open calc"?'
                          },
 
     'open_libreoffice_writer': {'enable': True,
-                                'skill': libreoffice_suite_skills.open_libreoffice_writer,
-                                'tags': {'open writer', 'open word', 'writer', 'word'},
+                                'skill': LibreofficeSkills.open_libreoffice_writer,
+                                'tags': {'writer', 'word'},
                                 'description': 'Ask me to "open writer", e.g. Jarvis "can you open writer"?'
                                 },
 
     'open_libreoffice_impress': {'enable': True,
-                                 'skill': libreoffice_suite_skills.open_libreoffice_impress,
-                                 'tags': {'open impress', 'open power point', 'impress', 'power point'},
+                                 'skill': LibreofficeSkills.open_libreoffice_impress,
+                                 'tags': {'impress', 'power point'},
                                  'description': 'Ask me to "open impress", e.g. Jarvis "can you open impress"?'
                                  },
 
     'tell_memory_consumption': {'enable': True,
-                                'skill': system_health_skills.tell_memory_consumption,
-                                'tags': {'ram', 'ram usage', 'memory', 'memory consumption', 'are you busy'},
+                                'skill': SystemHealthSkills.tell_memory_consumption,
+                                'tags': {'ram', 'ram usage', 'memory', 'memory consumption'},
                                 'description': 'Ask for the memory consumption, '
                                                'e.g. Jarvis how much "memory" are you using?'
                                 },
 
     'open_in_youtube': {'enable': True,
-                        'skill': browser_skills.open_in_youtube,
+                        'skill': BrowserSkills.open_in_youtube,
                         'tags': {'open in youtube', 'find in youtube', 'play in youtube'},
                         'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
                         },
 
     'run_speedtest': {'enable': True,
-                      'skill': internet_skills.run_speedtest,
+                      'skill': InternetSkills.run_speedtest,
                       'tags': {'speedtest', 'internet speed', 'ping'},
                       'description': 'Ask for internet speedtest, e.g. Jarvis tell_the_skills me the "internet speed"?'
                       },
 
     'internet_availability': {'enable': True,
-                              'skill': internet_skills.internet_availability,
-                              'tags': {'internet conection', 'internet is ok', 'do we have internet'},
+                              'skill': InternetSkills.internet_availability,
+                              'tags': {'internet conection', 'internet'},
                               'description': 'Ask for "internet connection", e.g. "Jarvis do we have internet"?'
                               },
 
     'spell_a_word': {'enable': True,
-                     'skill': word_skills.spell_a_word,
+                     'skill': WordSkills.spell_a_word,
                      'tags': {'spell', 'spell the word'},
                      'description': 'Ask to spell a word, e.g. Jarvis can you spell the word "animal"?'
                      },
 
     'create_reminder': {'enable': True,
-                        'skill': reminder_skill.create_reminder,
+                        'skill': ReminderSkill.create_reminder,
                         'tags': {'reminder', 'remind me'},
                         'description': 'Ask to remind you something e.g. "Jarvis create a 5 minute reminder"?'
                         },
 
     'tell_the_skills': {'enable': True,
-                        'skill': assistant_info_skills.tell_the_skills,
-                        'tags': {'skills', 'your skills', 'what can you do', 'what are your skills'},
+                        'skill': AssistantInfoSkills.tell_the_skills,
+                        'tags': {'skills', 'your skills', 'what are your skills'},
                         'description': 'Ask to tell you what he can do e.g. "Jarvis what can you do"?'
                         },
     'take_a_note': {'enable': True,
-                    'skill': linux_app_skills.open_note_app,
-                    'tags': {'note', 'create a note'},
+                    'skill': LinuxAppSkills.open_note_app,
+                    'tags': {'note'},
                     'description': 'Ask to create a note e.g. "Jarvis can you open a note"?'
                     },
     'open_new_browser_window': {'enable': True,
-                                'skill': linux_app_skills.open_new_browser_window,
+                                'skill': LinuxAppSkills.open_new_browser_window,
                                 'tags': {'firefox', 'open firefox'},
                                 'description': 'Ask to open new browser window e.g. "Jarvis can you open a firefox"?'
                                 },
     'open_new_bash': {'enable': True,
-                      'skill': linux_app_skills.open_new_bash,
+                      'skill': LinuxAppSkills.open_new_bash,
                       'tags': {'bash'},
                       'description': 'Ask to open new bash e.g. "Jarvis can you open bash"?'
                       },
     'get_current_location': {'enable': True,
-                             'skill': location_skill.get_current_location,
-                             'tags': {'my location', 'current location', 'where am I'},
+                             'skill': LocationSkill.get_current_location,
+                             'tags': {'my location', 'current location'},
                              'description': 'Ask to tell you your current location e.g. "Jarvis tell me my location"?'
                              },
 
 }
 
-ADVANCE_SKILLS = {}
+
+ENABLED_BASIC_SKILLS = {key: value for (key, value) in BASIC_SKILLS.items() if value['enable']}
+
+SKILLS = {**CONTROL_SKILLS, **ENABLED_BASIC_SKILLS}

@@ -20,10 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-def is_positive_answer(answer):
-    return answer in ['yes', 'y', 'oui', 'true']
+import logging
 
 
-def is_negative_answer(answer):
-    return answer in ['no', 'n']
+class TTTEngine:
+    """
+    Text To Text Engine (TTT)
+    """
+    def __init__(self):
+        self.logger = logging
+
+    def recognize_input(self):
+        self.logger.info("Waiting for user input.")
+        voice_transcript = input('>> ').lower()
+        while voice_transcript == '':
+            self.logger.info("User didn't said something")
+            voice_transcript = input('>> ').lower()
+        return voice_transcript

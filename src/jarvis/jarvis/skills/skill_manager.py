@@ -20,31 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import re
-import time
-import logging
-
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.engines.tts import TTSEngine
+from jarvis.settings import GENERAL_SETTINGS, ROOT_LOG_CONF
+from jarvis.core.console_manager import ConsoleManager
 
 
-class WordSkills(AssistantSkill):
-    
+class AssistantSkill:
+    first_activation = True
+    console_manager = ConsoleManager(
+                                     log_settings=ROOT_LOG_CONF,
+                                    )
+    tts_engine = TTSEngine(
+                           console_manager=console_manager,
+                           speech_response_enabled=GENERAL_SETTINGS['response_in_speech']
+                           )
+
     @classmethod
-    def spell_a_word(cls, voice_transcript, skill, **kwargs):
-        """
-        Spell a words letter by letter.
-        :param voice_transcript: string (e.g 'spell word animal')
-        :param skill: dict (e.g
-        """
-        tags = cls._extract_tags(voice_transcript, skill['tags'])
-        for tag in tags:
-            reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
-            try:
-                if reg_ex:
-                    search_text = reg_ex.group(1)
-                    for letter in search_text:
-                        cls.response(letter)
-                        time.sleep(2)
-            except Exception as e:
-                logging.debug(e)
-                cls.response("I can't spell the word")
+    def response(cls, text):
+        cls.tts_engine.assistant_response(text)
+
+    @classmethod
+    def _extract_tags(cls, voice_transcript, skill_tags):
+        transcript_words = voice_transcript.split()
+        return set(transcript_words).intersection(skill_tags)

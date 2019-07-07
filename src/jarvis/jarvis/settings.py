@@ -20,10 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LOG_SETTINGS = {
+ROOT_LOG_CONF = {
     'version': 1,
     'root': {
-        'level': 'INFO',
+        'level': 'DEBUG',
         'handlers': ['console', 'file'],
     },
     'handlers': {
@@ -34,7 +34,7 @@ LOG_SETTINGS = {
         },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'level': 'INFO',
+            'level': 'DEBUG',
             'formatter': 'detailed',
             'filename': '/var/log/jarvis.log',
             'mode': 'a',
@@ -52,25 +52,34 @@ LOG_SETTINGS = {
 # General assistant settings
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
-    'enable_period': 190,  # In seconds
+    'enable_period': 300,  # In seconds
     'user_voice_input': True,  # True: The assistant responds in voice commands,
-                                # False: The assistant waiting for text input
+                               # False: The assistant waiting for text input
     'response_in_speech': True,
 }
 
 # Google API Speech recognition settings
 # SpeechRecognition: https://pypi.org/project/SpeechRecognition/2.1.3
 SPEECH_RECOGNITION = {
-    'ambient_duration': 4,  # Time for auto microphone calibration
+    'ambient_duration': 1,  # Time for auto microphone calibration
     'pause_threshold': 1,  # minimum length silence (in seconds) at the end of a sentence
     'energy_threshold': 3000,  # microphone sensitivity, for loud places, the energy level should be up to 4000
     'dynamic_energy_threshold': True  # For unpredictable noise levels (Suggested to be TRUE)
+}
+
+# SKill analyzer (TfidfVectorizer args)
+ANALYZER_CONF = {
+    "stop_words": None,
+    "lowercase": True,
+    "norm": 'l1',
+    "use_idf": False,
 }
 
 # Google text to speech API settings
 GOOGLE_SPEECH = {
     'lang': "en"
 }
+
 
 # Open weather map API settings
 # Create key: https://openweathermap.org/appid

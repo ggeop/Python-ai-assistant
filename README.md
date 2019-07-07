@@ -1,4 +1,4 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/ggeop/python-ai-voice-assistant/badge)](https://www.codefactor.io/repository/github/ggeop/python-ai-voice-assistant)
+[![CodeFactor](https://www.codefactor.io/repository/github/ggeop/ai-voice-assistant/badge)](https://www.codefactor.io/repository/github/ggeop/ai-voice-assistant)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c90305e22186cc2c9d5/maintainability)](https://codeclimate.com/github/ggeop/Python-AI-voice-assistant/maintainability)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # About
@@ -23,7 +23,6 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Tells how much memory consumes** (e.g 'Jarvis tell me your memory consumption)
 
 ### Assistant Features
-*   **Execute multiple commands at once**, (e.g 'Jarvis open youtube and tell_the_skills me the time')
 *   **Asynchronous command execution & speech interruption**
 *   **Custom wake words**, can be triggered with any word or phrase e.g ('hi', 'hi Jarvis', 'wake up') 
 *   **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
@@ -31,7 +30,6 @@ It can understand human speech, talk to user and execute basic commands.
 *   Configurable **assistant name** (e.g 'Jarvis', 'Sofia', 'John' etc.)
 *   **Log preview** in console
 *   **Vocal or/and text response**
-*   **Uses wolfram API** for general questions
 
 ### Jarvis in action console output
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)

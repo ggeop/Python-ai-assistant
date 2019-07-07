@@ -20,14 +20,56 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.core.controller import SkillsController
-from jarvis.utils.application_utils import start_up
-from jarvis.skills.wolframalpha_skill import call_wolframalpha
+import speech_recognition as sr
+import time
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+from jarvis.core.controller import SkillController
+from jarvis.utils.startup_utils import start_up
+from jarvis.settings import GENERAL_SETTINGS, ANALYZER_CONF, ROOT_LOG_CONF
+from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
+from jarvis.skills.skill_analyzer import SkillAnalyzer
+from jarvis.settings import SPEECH_RECOGNITION
+from jarvis.engines.stt import STTEngine
+from jarvis.engines.tts import TTSEngine
+from jarvis.engines.ttt import TTTEngine
+from jarvis.core.nlp_processor import ResponseCreator
+from jarvis.core.console_manager import ConsoleManager
 
 class Processor:
     def __init__(self):
-        self.controller = SkillsController()
+        self.input_engine = STTEngine(
+                                        pause_threshold=SPEECH_RECOGNITION['pause_threshold'],
+                                        energy_theshold=SPEECH_RECOGNITION['energy_threshold'],
+                                        ambient_duration=SPEECH_RECOGNITION['ambient_duration'],
+                                        dynamic_energy_threshold=SPEECH_RECOGNITION['dynamic_energy_threshold'],
+                                        sr=sr
+                                        ) if GENERAL_SETTINGS['user_voice_input'] else TTTEngine()
+
+        self.console_manager = ConsoleManager(
+                                              log_settings=ROOT_LOG_CONF,
+                                             )
+        self.output_engine = TTSEngine(
+                                        console_manager=self.console_manager,
+                                        speech_response_enabled=GENERAL_SETTINGS['response_in_speech']
+                                       )
+        self.response_creator = ResponseCreator()
+
+        self.skill_analyzer = SkillAnalyzer(
+                                            weight_measure=TfidfVectorizer,
+                                            similarity_measure=cosine_similarity,
+                                            args=ANALYZER_CONF,
+                                            skills_=SKILLS,
+                                            )
+
+        self.skill_controller = SkillController(
+                                                settings_=GENERAL_SETTINGS,
+                                                input_engine=self.input_engine,
+                                                analyzer=self.skill_analyzer,
+                                                control_skills=CONTROL_SKILLS,
+                                                )
 
     def run(self):
         start_up()
@@ -35,18 +77,16 @@ class Processor:
             self._process()
 
     def _process(self):
-        # Check if the assistant is waked up
-        if self.controller.wake_up_check():
-
-            self.controller.get_transcript()
-            self.controller.get_skills()
-
-            if self.controller.skills_to_execute:
-                self.controller.execute()
+        self.skill_controller.wake_up_check()
+        if self.skill_controller.is_assistant_enabled:  # Check if the assistant is waked up
+            self.skill_controller.get_transcript()
+            self.skill_controller.get_skills()
+            if self.skill_controller.to_execute:
+                response = self.response_creator.create_positive_response(
+                    self.skill_controller.to_execute['voice_transcript'])
             else:
-                self.controller.shutdown_check()
-
-                # If there is not an action the assistant make a request in WolframAlpha API
-                call_wolframalpha(self.controller.latest_voice_transcript)
-
-        self.controller.shutdown_check()
+                response = self.response_creator.create_negative_response(
+                    self.skill_controller.to_execute['voice_transcript'])
+            self.output_engine.assistant_response(response)
+            time.sleep(2)
+            self.skill_controller.execute()
