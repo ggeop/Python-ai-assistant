@@ -53,7 +53,7 @@ ROOT_LOG_CONF = {
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
     'enable_period': 300,  # In seconds
-    'user_voice_input': True,  # True: The assistant responds in voice commands,
+    'user_voice_input': False,  # True: The assistant responds in voice commands,
                                # False: The assistant waiting for text input
     'response_in_speech': True,
 }
@@ -67,12 +67,17 @@ SPEECH_RECOGNITION = {
     'dynamic_energy_threshold': True  # For unpredictable noise levels (Suggested to be TRUE)
 }
 
-# SKill analyzer (TfidfVectorizer args)
-ANALYZER_CONF = {
-    "stop_words": None,
-    "lowercase": True,
-    "norm": 'l1',
-    "use_idf": False,
+# SKill analyzer settings
+ANALYZER = {
+    # SKill analyzer (TfidfVectorizer args)
+    'args': {
+            "stop_words": None,
+            "lowercase": True,
+            "norm": 'l1',
+            "use_idf": False,
+            },
+    'sensitivity': 0.3,
+
 }
 
 # Google text to speech API settings

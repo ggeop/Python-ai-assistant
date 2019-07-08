@@ -22,12 +22,13 @@
 
 
 class SkillAnalyzer:
-    def __init__(self, weight_measure, similarity_measure, args, skills_):
+    def __init__(self, weight_measure, similarity_measure, args, skills_, sensitivity):
         self.weight_measure = weight_measure
         self.similarity_measure = similarity_measure
         self.args = args
         self.vectorizer = self._create_vectorizer()
         self.skills = skills_
+        self.analyzer_sensitivity = sensitivity
 
     @property
     def tags(self):
@@ -44,7 +45,7 @@ class SkillAnalyzer:
         similarities = self.similarity_measure(train_tdm, test_tdm)  # Calculate similarities
 
         skill_index = similarities.argsort(axis=None)[-1]  # Extract the most similar skill
-        if similarities[skill_index] > 0:
+        if similarities[skill_index] > self.analyzer_sensitivity:
             skill_key = [skill for skill in enumerate(self.skills) if skill[0] == skill_index][0][1]
             return self.skills[skill_key]
 
