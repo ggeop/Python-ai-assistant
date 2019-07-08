@@ -23,6 +23,22 @@
 from datetime import datetime, date
 from jarvis.skills.skill_manager import AssistantSkill
 
+hour_mapping = {'0': 'twelve',
+                '1': 'one',
+                '2': 'two',
+                '3': 'three',
+                '4': 'four',
+                '5': 'five',
+                '6': 'six',
+                '7': 'seven',
+                '8': 'eight',
+                '9': 'nine',
+                '10': 'ten',
+                '11': 'eleven',
+                '12': 'twelve',
+
+                }
+
 
 class DatetimeSkills(AssistantSkill):
 
@@ -32,7 +48,9 @@ class DatetimeSkills(AssistantSkill):
         Tells ths current time
         """
         now = datetime.now()
-        cls.response('The current time is: {0}:{1}'.format(now.hour, now.minute))
+        hour, minute = now.hour, now.minute
+        converted_time = cls.time_in_text(hour, minute)
+        cls.response('The current time is: {0}'.format(converted_time))
 
     @classmethod
     def tell_the_date(cls, **kwargs):
@@ -41,3 +59,30 @@ class DatetimeSkills(AssistantSkill):
         """
         today = date.today()
         cls.response('The current date is: {0}'.format(today))
+
+    @classmethod
+    def get_12_hour_period(cls, hour):
+        return 'pm' if 12 <= hour < 24 else 'am'
+
+    @classmethod
+    def convert_12_hour_format(cls, hour):
+        return hour - 12 if 12 < hour <= 24 else hour
+
+    @classmethod
+    def time_in_text(cls, hour, minute):
+        hour_12h_format = cls.convert_12_hour_format(hour)
+        period = cls.get_12_hour_period(hour)
+        if minute == 0:
+            time = hour_mapping[str(hour_12h_format)] + " o'clock"
+        elif minute == 15:
+            time = "quarter past " + hour_mapping[str(hour_12h_format)]
+        elif minute == 30:
+            time = "half past " + hour_mapping[str(hour_12h_format)]
+        elif minute == 45:
+            time = "quarter to " + hour_mapping[str(hour_12h_format + 1)]
+        elif 0 < minute < 30:
+            time = str(minute) + " minutes past " + hour_mapping[str(hour_12h_format)]
+        else:
+            time = str(60 - minute) + " minutes to " + hour_mapping[str(hour_12h_format + 1)]
+
+        return time + ' ' + '(' + period + ')'

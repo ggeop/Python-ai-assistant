@@ -28,7 +28,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from jarvis.core.controller import SkillController
 from jarvis.utils.startup_utils import start_up
-from jarvis.settings import GENERAL_SETTINGS, ANALYZER_CONF, ROOT_LOG_CONF
+from jarvis.settings import GENERAL_SETTINGS, ANALYZER, ROOT_LOG_CONF
 from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
 from jarvis.skills.skill_analyzer import SkillAnalyzer
 from jarvis.settings import SPEECH_RECOGNITION
@@ -61,8 +61,9 @@ class Processor:
         self.skill_analyzer = SkillAnalyzer(
                                             weight_measure=TfidfVectorizer,
                                             similarity_measure=cosine_similarity,
-                                            args=ANALYZER_CONF,
+                                            args=ANALYZER['args'],
                                             skills_=SKILLS,
+                                            sensitivity=ANALYZER['sensitivity']
                                             )
 
         self.skill_controller = SkillController(
@@ -89,5 +90,5 @@ class Processor:
                 response = self.response_creator.create_negative_response(
                     self.skill_controller.to_execute['voice_transcript'])
             self.output_engine.assistant_response(response)
-            time.sleep(2)
+            time.sleep(1)
             self.skill_controller.execute()

@@ -23,7 +23,7 @@
 import threading
 import logging
 import pyttsx3
-
+import time
 
 class TTSEngine:
     """
@@ -54,18 +54,19 @@ class TTSEngine:
         :param text: string (e.g 'tell me about google')
         """
         cumulative_batch = ''
-        for batch in self._create_text_batches(raw_text=text):
-            self.engine_.say(batch)
-            cumulative_batch += batch
-            self.console_manager.console_output(cumulative_batch)
-            try:
-                self.engine_.runAndWait()
-            except RuntimeError:
-                pass
-            if self.stop_speaking:
-                self.logger.debug('Speech interruption triggered')
-                self.stop_speaking = False
-                break
+        if text:
+            for batch in self._create_text_batches(raw_text=text):
+                self.engine_.say(batch)
+                cumulative_batch += batch
+                self.console_manager.console_output(cumulative_batch)
+                try:
+                    self.engine_.runAndWait()
+                except RuntimeError:
+                    pass
+                if self.stop_speaking:
+                    self.logger.debug('Speech interruption triggered')
+                    self.stop_speaking = False
+                    break
 
     @staticmethod
     def _create_text_batches(raw_text, number_of_words_per_batch=5):
