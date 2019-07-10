@@ -90,5 +90,4 @@ class Processor:
                 response = self.response_creator.create_negative_response(
                     self.skill_controller.to_execute['voice_transcript'])
             self.output_engine.assistant_response(response)
-            time.sleep(1)
             self.skill_controller.execute()
