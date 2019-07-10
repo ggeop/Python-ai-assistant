@@ -23,7 +23,8 @@
 import threading
 import logging
 import pyttsx3
-import time
+import queue
+
 
 class TTSEngine:
     """
@@ -31,6 +32,7 @@ class TTSEngine:
     """
     def __init__(self, console_manager, speech_response_enabled):
         self.logger = logging
+        self.message_queue = queue.Queue(maxsize=20)
         self.console_manager = console_manager
         self.speech_response_enabled = speech_response_enabled
         self.stop_speaking = False
@@ -42,34 +44,47 @@ class TTSEngine:
         :param text: string
         """
         if self.speech_response_enabled:
+            if text:
+                self.message_queue.put(text)
             try:
-                speech_tread = threading.Thread(target=self._speech_and_console, args=[text])
+                speech_tread = threading.Thread(target=self._speech_and_console)
                 speech_tread.start()
             except RuntimeError as e:
                 self.logger.error('Error in assistant response thread with message {0}'.format(e))
 
-    def _speech_and_console(self, text):
+    def _speech_and_console(self):
         """
         Speech method translate text batches to speech and print them in the console.
         :param text: string (e.g 'tell me about google')
         """
-        cumulative_batch = ''
-        if text:
-            for batch in self._create_text_batches(raw_text=text):
-                self.engine_.say(batch)
-                cumulative_batch += batch
-                self.console_manager.console_output(cumulative_batch)
-                try:
-                    self.engine_.runAndWait()
-                except RuntimeError:
-                    pass
-                if self.stop_speaking:
-                    self.logger.debug('Speech interruption triggered')
-                    self.stop_speaking = False
-                    break
+        try:
+            while not self.message_queue.empty():
+
+                cumulative_batch = ''
+                message = self.message_queue.get()
+                batches = self._create_text_batches(raw_text=message)
+
+                for batch in batches:
+                    self.engine_.say(batch)
+                    cumulative_batch += batch
+                    self.console_manager.console_output(cumulative_batch)
+                    self._run_engine()
+                    if self.stop_speaking:
+                        self.logger.debug('Speech interruption triggered')
+                        self.stop_speaking = False
+                        break
+
+        except Exception as e:
+            self.logger.error("Speech and console error message: {0}".format(e))
+
+    def _run_engine(self):
+        try:
+            self.engine_.runAndWait()
+        except RuntimeError:
+            pass
 
     @staticmethod
-    def _create_text_batches(raw_text, number_of_words_per_batch=5):
+    def _create_text_batches(raw_text, number_of_words_per_batch=8):
         """
         Splits the user speech into batches and return a list with the split batches
         :param raw_text: string
