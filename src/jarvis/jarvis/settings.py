@@ -24,14 +24,9 @@ ROOT_LOG_CONF = {
     'version': 1,
     'root': {
         'level': 'DEBUG',
-        'handlers': ['console', 'file'],
+        'handlers': ['file'],
     },
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'level': 'ERROR',
-            'formatter': 'detailed',
-        },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'DEBUG',
@@ -53,7 +48,7 @@ ROOT_LOG_CONF = {
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
     'enable_period': 300,  # In seconds
-    'user_voice_input': False,  # True: The assistant responds in voice commands,
+    'user_voice_input': True,  # True: The assistant responds in voice commands,
                                # False: The assistant waiting for text input
     'response_in_speech': True,
 }
@@ -76,7 +71,7 @@ ANALYZER = {
             "norm": 'l1',
             "use_idf": False,
             },
-    'sensitivity': 0.3,
+    'sensitivity': 0.2,
 
 }
 
