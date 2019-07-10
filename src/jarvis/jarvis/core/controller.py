@@ -55,7 +55,8 @@ class Controller:
         if self.settings_['user_voice_input']:
             if not self.execute_state['ready_to_execute']:
                 self._ready_to_start()
-            self._continue_listening()
+            else:
+                self._continue_listening()
         self.is_assistant_enabled = True
 
     def _ready_to_start(self):
@@ -105,14 +106,14 @@ class SkillController(Controller):
         """
         Execute the user skill and empty skill for execution.
         """
+        skill = self.to_execute['skill']['skill']
         try:
-            if self.to_execute['skill']['skill']:
-                logging.debug('Execute skill {0}'.format(self.to_execute.keys()))
-                self.to_execute['skill']['skill'](**self.to_execute)
+            if skill:
+                logging.debug('Execute skill {0}'.format(skill))
+                skill(**self.to_execute)
             else:
-                # If there is not an action the assistant make a request in WolframAlpha API
                 logging.debug("Not matched skills to execute")
         except Exception as e:
-            logging.debug("Error with the execution of skill {0} with message {1}".format(self.to_execute.keys(), e))
-        self.to_execute = {}  # Clear the skills queue
+            logging.debug("Error with the execution of skill with message {0}".format(e))
+        self.to_execute = {}
 
