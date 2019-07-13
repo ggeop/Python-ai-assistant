@@ -40,33 +40,30 @@ class ActivationSkills(AssistantSkill):
         updates the execute state.
         """
         play_activation_sound()
-
-        now = datetime.now()
-        day_time = int(now.strftime('%H'))
-
-        if AssistantSkill.first_activation:
-            if day_time < 12:
-                cls.response('Good morning human')
-                time.sleep(2)
-            elif 12 <= day_time < 18:
-                cls.response('Good afternoon human')
-                time.sleep(2)
-            else:
-                cls.response('Good evening human')
-                time.sleep(2)
-            cls.response('What do you want?')
-            AssistantSkill.first_activation = False
-
+        time.sleep(1)
+        cls.response(' ')
         return {'ready_to_execute': True,
-                'enable_time': now}
+                'enable_time': datetime.now()}
 
     @classmethod
     def disable_assistant(cls, **kwargs):
         """
-        Shutdown the assistant service
+        Shutdown the assistant service and clean the  bash stdout.
         """
         cls.response('Bye')
         time.sleep(1)
         clear()
         logging.debug('Application terminated gracefully.')
         sys.exit()
+
+    @classmethod
+    def assistant_greeting(cls, *kwargs):
+        now = datetime.now()
+        day_time = int(now.strftime('%H'))
+
+        if day_time < 12:
+            cls.response('Good morning human')
+        elif 12 <= day_time < 18:
+            cls.response('Good afternoon human')
+        else:
+            cls.response('Good evening human')

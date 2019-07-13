@@ -96,19 +96,20 @@ class SkillController(Controller):
         to_execute={'voice_transcript': 'open youtube', 'tag': 'open', 'skill': Skills.open_website_in_browser}
         """
         skill = self.skill_analyzer.extract(self.latest_voice_transcript)
-        self.to_execute = {
-                           'voice_transcript': self.latest_voice_transcript,
-                           'skill': skill,
-                           }
+        if skill:
+            self.to_execute = {
+                                'voice_transcript': self.latest_voice_transcript,
+                                'skill': skill,
+                                }
         logging.debug('to_execute : {0}'.format(self.to_execute))
 
     def execute(self):
         """
         Execute the user skill and empty skill for execution.
         """
-        skill = self.to_execute['skill']['skill']
         try:
-            if skill:
+            if self.to_execute:
+                skill = self.to_execute['skill']['skill']
                 logging.debug('Execute skill {0}'.format(skill))
                 skill(**self.to_execute)
             else:
