@@ -76,19 +76,17 @@ class Processor:
     def run(self):
         start_up()
         while True:
-            self._process()
+            self.skill_controller.wake_up_check()
+            if self.skill_controller.is_assistant_enabled:  # Check if the assistant is waked up
+                self._process()
 
     def _process(self):
-        self.skill_controller.wake_up_check()
-        if self.skill_controller.is_assistant_enabled:  # Check if the assistant is waked up
             self.skill_controller.get_transcript()
             self.skill_controller.get_skills()
             if self.skill_controller.to_execute:
-                response = self.response_creator.create_positive_response(
-                    self.skill_controller.to_execute['voice_transcript'])
+                response = self.response_creator.create_positive_response(self.skill_controller.latest_voice_transcript)
             else:
-                response = self.response_creator.create_negative_response(
-                    self.skill_controller.to_execute['voice_transcript'])
+                response = self.response_creator.create_negative_response(self.skill_controller.latest_voice_transcript)
+
             self.output_engine.assistant_response(response)
-            time.sleep(1)
             self.skill_controller.execute()

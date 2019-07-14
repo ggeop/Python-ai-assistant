@@ -19,10 +19,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import logging
 
 
 class SkillAnalyzer:
     def __init__(self, weight_measure, similarity_measure, args, skills_, sensitivity):
+        self.logger = logging
         self.weight_measure = weight_measure
         self.similarity_measure = similarity_measure
         self.args = args
@@ -48,6 +50,9 @@ class SkillAnalyzer:
         if similarities[skill_index] > self.analyzer_sensitivity:
             skill_key = [skill for skill in enumerate(self.skills) if skill[0] == skill_index][0][1]
             return self.skills[skill_key]
+        else:
+            self.logger.debug('Not extracted skills from user voice transcript')
+            return None
 
     def _create_vectorizer(self):
         """

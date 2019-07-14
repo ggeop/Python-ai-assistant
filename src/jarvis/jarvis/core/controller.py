@@ -55,7 +55,8 @@ class Controller:
         if self.settings_['user_voice_input']:
             if not self.execute_state['ready_to_execute']:
                 self._ready_to_start()
-            self._continue_listening()
+            else:
+                self._continue_listening()
         self.is_assistant_enabled = True
 
     def _ready_to_start(self):
@@ -95,10 +96,11 @@ class SkillController(Controller):
         to_execute={'voice_transcript': 'open youtube', 'tag': 'open', 'skill': Skills.open_website_in_browser}
         """
         skill = self.skill_analyzer.extract(self.latest_voice_transcript)
-        self.to_execute = {
-                           'voice_transcript': self.latest_voice_transcript,
-                           'skill': skill,
-                           }
+        if skill:
+            self.to_execute = {
+                                'voice_transcript': self.latest_voice_transcript,
+                                'skill': skill,
+                                }
         logging.debug('to_execute : {0}'.format(self.to_execute))
 
     def execute(self):
@@ -106,13 +108,13 @@ class SkillController(Controller):
         Execute the user skill and empty skill for execution.
         """
         try:
-            if self.to_execute['skill']['skill']:
-                logging.debug('Execute skill {0}'.format(self.to_execute.keys()))
-                self.to_execute['skill']['skill'](**self.to_execute)
+            if self.to_execute:
+                skill = self.to_execute['skill']['skill']
+                logging.debug('Execute skill {0}'.format(skill))
+                skill(**self.to_execute)
             else:
-                # If there is not an action the assistant make a request in WolframAlpha API
                 logging.debug("Not matched skills to execute")
         except Exception as e:
-            logging.debug("Error with the execution of skill {0} with message {1}".format(self.to_execute.keys(), e))
-        self.to_execute = {}  # Clear the skills queue
+            logging.debug("Error with the execution of skill with message {0}".format(e))
+        self.to_execute = {}
 

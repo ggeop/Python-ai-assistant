@@ -44,15 +44,20 @@ from jarvis.skills.word_skills import WordSkills
 
 CONTROL_SKILLS = {
     'enable_assistant': {'skill': ActivationSkills.enable_assistant,
-                      'tags': {'start', 'hi', 'hello', 'jarvis'}
-                      },
+                         'tags': {'start', 'hi', 'hello', 'jarvis'}
+                         },
 
     'disable_assistant': {'skill': ActivationSkills.disable_assistant,
-                       'tags': {'bye', 'shut down'}
-                       }
+                          'tags': {'bye', 'shut down'}
+                          }
 }
 
 BASIC_SKILLS = {
+    'assistant_greeting': {'enable': True,
+                           'skill': ActivationSkills.assistant_greeting,
+                           'tags': {'good morning', 'good afternoon', 'good evening'},
+                           'description': 'Greeting the assistant and he will greeting back e.x good morning Jarvis'
+                         },
     'open_site_in_browser': {'enable': True,
                              'skill': BrowserSkills.open_website_in_browser,
                              'tags': {'open'},

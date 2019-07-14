@@ -23,55 +23,93 @@
 import threading
 import logging
 import pyttsx3
-import time
+import queue
 
-class TTSEngine:
+
+class TTS:
     """
     Text To Speech Engine (TTS)
     """
+
+    def __init__(self):
+        self.tts_engine = self._set_voice_engine()
+
+    def run_engine(self):
+        try:
+            self.tts_engine.runAndWait()
+        except RuntimeError:
+            pass
+
+    @staticmethod
+    def _set_voice_engine():
+        """
+        Setup text to speech engine
+        :return: gtts engine object
+        """
+        tts_engine = pyttsx3.init()
+        tts_engine.setProperty('rate', 160)  # Setting up new voice rate
+        tts_engine.setProperty('volume', 1.0)  # Setting up volume level  between 0 and 1
+        return tts_engine
+
+
+class TTSEngine(TTS):
     def __init__(self, console_manager, speech_response_enabled):
+        super().__init__()
         self.logger = logging
+        self.message_queue = queue.Queue(maxsize=5)  # Maxsize is the size of the queue / capacity of messages
         self.console_manager = console_manager
         self.speech_response_enabled = speech_response_enabled
         self.stop_speaking = False
-        self.engine_ = self._set_voice_engine()
 
-    def assistant_response(self, text):
+    def assistant_response(self, message):
         """
         Assistant response in voice or/and in text.
-        :param text: string
+        :param message: string
         """
         if self.speech_response_enabled:
+            self._insert_into_message_queue(message)
             try:
-                speech_tread = threading.Thread(target=self._speech_and_console, args=[text])
+                speech_tread = threading.Thread(target=self._speech_and_console)
                 speech_tread.start()
             except RuntimeError as e:
                 self.logger.error('Error in assistant response thread with message {0}'.format(e))
 
-    def _speech_and_console(self, text):
+    def _insert_into_message_queue(self, message):
+        try:
+            if message:
+                self.message_queue.put(message)
+        except Exception as e:
+            self.logger.error("Unable to insert message to queue with error message: {0}".format(e))
+
+    def _speech_and_console(self):
         """
         Speech method translate text batches to speech and print them in the console.
         :param text: string (e.g 'tell me about google')
         """
-        cumulative_batch = ''
-        if text:
-            for batch in self._create_text_batches(raw_text=text):
-                self.engine_.say(batch)
-                cumulative_batch += batch
-                self.console_manager.console_output(cumulative_batch)
-                try:
-                    self.engine_.runAndWait()
-                except RuntimeError:
-                    pass
-                if self.stop_speaking:
-                    self.logger.debug('Speech interruption triggered')
-                    self.stop_speaking = False
-                    break
+        try:
+            while not self.message_queue.empty():
+
+                cumulative_batch = ''
+                message = self.message_queue.get()
+                batches = self._create_text_batches(raw_text=message)
+
+                for batch in batches:
+                    self.tts_engine.say(batch)
+                    cumulative_batch += batch
+                    self.console_manager.console_output(cumulative_batch)
+                    self.run_engine()
+                    if self.stop_speaking:
+                        self.logger.debug('Speech interruption triggered')
+                        self.stop_speaking = False
+                        break
+
+        except Exception as e:
+            self.logger.error("Speech and console error message: {0}".format(e))
 
     @staticmethod
-    def _create_text_batches(raw_text, number_of_words_per_batch=5):
+    def _create_text_batches(raw_text, number_of_words_per_batch=8):
         """
-        Splits the user speech into batches and return a list with the split batches
+        Splits the user speech message into batches and return a list with the split batches
         :param raw_text: string
         :param number_of_words_per_batch: int
         :return: list
@@ -94,14 +132,3 @@ class TTSEngine:
         if letter_id < len(raw_text):  # Add the rest of word in a batch
             list_of_batches.append(raw_text[letter_id:])
         return list_of_batches
-
-    @staticmethod
-    def _set_voice_engine():
-        """
-        Setup text to speech engine
-        :return: gtts engine object
-        """
-        tts_engine = pyttsx3.init()
-        tts_engine.setProperty('rate', 160)  # Setting up new voice rate
-        tts_engine.setProperty('volume', 1.0)  # Setting up volume level  between 0 and 1
-        return tts_engine
