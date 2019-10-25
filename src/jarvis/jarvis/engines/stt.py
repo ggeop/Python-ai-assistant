@@ -51,9 +51,9 @@ class STTEngine:
             voice_transcript = self.speech_recognizer.recognize_google(audio_text).lower()
             self.logger.debug('Recognized words: ' + voice_transcript)
             return voice_transcript
-        except self.speech_recognizer.UnknownValueError:
+        except self.sr.UnknownValueError:
             self.logger.info('Not recognized text')
-        except self.speech_recognizer.RequestError:
+        except self.sr.RequestError:
             self.logger.info("Google API was unreachable.")
 
     def _record(self):
