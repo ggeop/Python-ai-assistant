@@ -83,7 +83,6 @@ class Controller:
                                   }
 
             self.is_assistant_enabled = False
-        self.is_assistant_enabled = True
 
 
 class SkillController(Controller):
