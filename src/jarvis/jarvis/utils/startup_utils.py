@@ -86,7 +86,6 @@ def start_up():
     clear()
     print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
-    print(OutputStyler.HEADER + 'Waiting..' + OutputStyler.ENDC)
 
     # Clear log file in each assistant fresh start
     with open(ROOT_LOG_CONF['handlers']['file']['filename'], 'r+') as f:

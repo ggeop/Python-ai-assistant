@@ -42,8 +42,6 @@ class ActivationSkills(AssistantSkill):
         play_activation_sound()
         time.sleep(1)
         cls.response(' ')
-        return {'ready_to_execute': True,
-                'enable_time': datetime.now()}
 
     @classmethod
     def disable_assistant(cls, **kwargs):

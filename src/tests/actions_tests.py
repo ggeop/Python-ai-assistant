@@ -81,5 +81,5 @@ class ActionsTests(unittest.TestCase):
 
     def test_get_user_actions(self):
         self.actions.latest_voice_transcript = 'open open time'
-        self.actions.get_skills()
+        self.actions._extract_skill()
         self.assertEqual(2, len(self.actions.skills_to_execute))
