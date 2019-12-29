@@ -7,7 +7,7 @@ before_install:
   - sudo apt-get install python-dev
   - sudo apt-get install portaudio19-dev python-pyaudio python3-pyaudio
   - sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev sox ffmpeg
-  - sudo chown root:root /var/log
+  - sudo chown root:root /var/log/jarvis.log
   - cd src/jarvis
 install:
   - pip install -r ../../requirements.txt
