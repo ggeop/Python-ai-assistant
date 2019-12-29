@@ -14,7 +14,7 @@ before_install:
   - cd src/jarvis
 install:
   - pip install -r ../../requirements.txt
-  - python -c "import nltk; nltk.download('punkt');"
+  - python -c "import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')"
 script:
   - nosetests -v --with-coverage ../tests
 notifications:
