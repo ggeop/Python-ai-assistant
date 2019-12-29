@@ -1,6 +1,8 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/ggeop/python-voice-assistant/badge)](https://www.codefactor.io/repository/github/ggeop/Python-voice-assistant)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c90305e22186cc2c9d5/maintainability)](https://codeclimate.com/github/ggeop/Python-voice-assistant/maintainability)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/ggeop/Python-voice-assistant.svg?branch=master)](https://travis-ci.org/ggeop/Python-voice-assistant)
+
 # About
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
