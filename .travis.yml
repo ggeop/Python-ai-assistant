@@ -4,9 +4,11 @@ python:
   - "3.6"
 before_install:
   - sudo rm -f /etc/boto.cfg
+  - sudo apt-get update
   - sudo apt-get install python-dev
   - sudo apt-get install portaudio19-dev python-pyaudio python3-pyaudio
   - sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev sox ffmpeg
+  - sudo apt-get install espeak
   - sudo touch /var/log/jarvis.log
   - sudo chmod 777 /var/log/jarvis.log
   - cd src/jarvis
