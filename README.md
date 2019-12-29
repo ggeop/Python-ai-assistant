@@ -65,15 +65,11 @@ All the following APIs have free no-commercial API calls. Subscribe to the follo
 *   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
 *   [IPSTACK](https://ipstack.com/signup/free): API for current location.
 ### Download the code in your Ubundu/Debian system
-*   Go to home directory:
-
-```{bash}
-cd ~/
-```
-*   Download the Jarvis repo localy:
+*   Download the Jarvis repo localy and get the directory:
 
 ```{bash}
 git clone https://github.com/ggeop/Jarvis.git
+JARVIS_HOME=$(pwd) 
 ```
 
 ### Create Virtual Env
@@ -85,7 +81,7 @@ pip install virtualenv
 *   Create a virtual environment
 *   We create a new virtual environment inside the Jarvis directory:
 ```{bash}
-virtualenv ~/Jarvis/py_env
+virtualenv $JARVIS_HOME/Jarvis/py_env
 ```
 
 ### Install Python Dependencies
@@ -97,7 +93,7 @@ sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev sox ffmpeg
 ```
 *   Activate the virtual environment:
 ```{bash}
-source ~/Jarvis/py_env/bin/activate
+source $JARVIS_HOME/Jarvis/py_env/bin/activate
 ```
 *   Install all the Python packages in your:
 ```{bash}
@@ -118,12 +114,9 @@ sudo chown user:usergroup /var/log
 ### Start voice assistant
 *   Start the assistant service:
 ```{bash}
-python Jarvis/src/jarvis/start.py
+bash run.sh
 ```
 
-*   (OR) start the assistant service in the background:
-```{bash}
-nohup python Jarvis/src/jarvis/start.py >/dev/null 2>&1 &
-```
+**NOTE**: By default the input mode (input_mode) is 'text'. Otherwise, you can change to 'voice'
+in Jarvis/src/jarvis/jarvis/setting.py
 
----
