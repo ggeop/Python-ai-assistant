@@ -38,6 +38,7 @@ from jarvis.engines.tts import TTSEngine
 from jarvis.engines.ttt import TTTEngine
 from jarvis.core.nlp_processor import ResponseCreator
 from jarvis.core.console_manager import ConsoleManager
+from jarvis.settings import GENERAL_SETTINGS
 
 
 class Processor:
@@ -124,7 +125,7 @@ class ExecutionState:
     @classmethod
     def is_ready_to_execute(cls):
         if cls.enabled_time:
-            enabled_period_has_passed = datetime.now() > cls.enabled_time + timedelta(seconds=200)
+            enabled_period_has_passed = datetime.now() > cls.enabled_time + timedelta(seconds=GENERAL_SETTINGS.get('enabled_period'))
             return enabled_period_has_passed
         else:
             return cls.is_enabled
