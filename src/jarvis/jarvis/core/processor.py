@@ -30,11 +30,9 @@ from datetime import datetime, timedelta
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from jarvis.utils.startup_utils import start_up
-from jarvis.settings import GENERAL_SETTINGS, ANALYZER, ROOT_LOG_CONF
+
 from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
 from jarvis.skills.skill_analyzer import SkillAnalyzer
-from jarvis.settings import SPEECH_RECOGNITION
 from jarvis.engines.stt import STTEngine
 from jarvis.engines.tts import TTSEngine
 from jarvis.engines.ttt import TTTEngine
@@ -43,85 +41,70 @@ from jarvis.core.console_manager import ConsoleManager
 
 
 class Processor:
-    def __init__(self):
+    def __init__(self, settings_):
+        self.settings = settings_
         self.input_engine = STTEngine(
-                                        pause_threshold=SPEECH_RECOGNITION['pause_threshold'],
-                                        energy_theshold=SPEECH_RECOGNITION['energy_threshold'],
-                                        ambient_duration=SPEECH_RECOGNITION['ambient_duration'],
-                                        dynamic_energy_threshold=SPEECH_RECOGNITION['dynamic_energy_threshold'],
+                                        pause_threshold=self.settings.SPEECH_RECOGNITION.get('pause_threshold'),
+                                        energy_theshold=self.settings.SPEECH_RECOGNITION.get('energy_threshold'),
+                                        ambient_duration=self.settings.SPEECH_RECOGNITION.get('ambient_duration'),
+                                        dynamic_energy_threshold=self.settings.SPEECH_RECOGNITION.get('dynamic_energy_threshold'),
                                         sr=sr
-                                        ) if GENERAL_SETTINGS.get('commands_type') == 'voice' else TTTEngine() #  TODO: Replace voice with enumeration
+                                        ) if self.settings.GENERAL_SETTINGS.get('commands_type') == InputMode.VOICE else TTTEngine()
 
         self.console_manager = ConsoleManager(
-                                              log_settings=ROOT_LOG_CONF,
+                                              log_settings=self.settings.ROOT_LOG_CONF,
                                              )
         self.output_engine = TTSEngine(
                                         console_manager=self.console_manager,
-                                        speech_response_enabled=GENERAL_SETTINGS['response_in_speech']
+                                        speech_response_enabled=self.settings.GENERAL_SETTINGS.get('response_in_speech')
                                        )
         self.response_creator = ResponseCreator()
 
         self.skill_analyzer = SkillAnalyzer(
                                             weight_measure=TfidfVectorizer,
                                             similarity_measure=cosine_similarity,
-                                            args=ANALYZER['args'],
+                                            args=self.settings.ANALYZER.get('args'),
                                             skills_=SKILLS,
-                                            sensitivity=ANALYZER['sensitivity']
+                                            sensitivity=self.settings.ANALYZER.get('sensitivity')
                                             )
 
     def run(self):
-        """
-        Assistant starting point.
 
-        Basic logic:
-            1. Trivial startup procedures mainly for console
-            2. Waiting until assistant is enabled with a triggered word e.x. 'Hi Jarvis'
-            3. Extract skill from input transcript
-            4. Create a response and output the response (voice or text)
-            5. Execute the skill
+        self._traped_until_assistant_is_enabled()
 
-        """
-
-        start_up()
-        while True:
-            self._traped_until_assistant_is_enabled()
-
-            transcript = self.input_engine.recognize_input()
-            skill_to_execute = self._extract_skill(transcript)
-            response = self.response_creator.create_positive_response(transcript) if skill_to_execute \
-                else self.response_creator.create_negative_response(transcript)
+        transcript = self.input_engine.recognize_input()
+        skill_to_execute = self._extract_skill(transcript)
+        response = self.response_creator.create_positive_response(transcript) if skill_to_execute \
+            else self.response_creator.create_negative_response(transcript)
 
 
-            self.output_engine.assistant_response(response)
-            self._execute_skill(skill_to_execute)
+        self.output_engine.assistant_response(response)
+        self._execute_skill(skill_to_execute)
 
     def _execute_skill(self, skill):
         if skill:
             try:
-                skill_method = skill['skill']['skill']
+                skill_method = skill.get('skill').get('skill')
                 logging.debug('Executing skill {0}'.format(skill))
                 skill_method(**skill)
             except Exception as e:
                 logging.debug("Error with the execution of skill with message {0}".format(e))
 
     def _traped_until_assistant_is_enabled(self):
-        if GENERAL_SETTINGS.get('commands_type') == CommandsType.VOICE:
+        if self.settings.GENERAL_SETTINGS.get('commands_type') == InputMode.VOICE:
             while not ExecutionState.is_ready_to_execute:
                 voice_transcript = self.input_engine.recognize_input()
                 transcript_words = voice_transcript.split()
-                enable_tag = set(transcript_words).intersection(CONTROL_SKILLS['enable_assistant']['tags'])
+                enable_tag = set(transcript_words).intersection(CONTROL_SKILLS.get('enable_assistant').get('tags'))
 
                 if bool(enable_tag):
-                    CONTROL_SKILLS['enable_assistant']['skill']()
+                    CONTROL_SKILLS.get('enable_assistant').get('skill')()
                     ExecutionState.update()
 
     def _extract_skill(self, transcript):
         skill = self.skill_analyzer.extract(transcript)
         if skill:
-            return {
-                    'voice_transcript': transcript,
-                    'skill': skill,
-                    }
+            return {'voice_transcript': transcript, 'skill': skill}
 
 
 class ExecutionState:
@@ -147,6 +130,6 @@ class ExecutionState:
             return cls.is_enabled
 
 
-class CommandsType(Enum):
+class InputMode(Enum):
     VOICE = 'voice'
     TEXT = 'text'

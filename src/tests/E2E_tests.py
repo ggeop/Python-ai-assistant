@@ -22,15 +22,20 @@
 
 import unittest
 from unittest.mock import patch
-from jarvis.skills.skills import Skills
+
+from jarvis.core.processor import Processor
+from .test_settings import test_settings
 
 
-class SkillsTests(unittest.TestCase):
 
-    @patch('jarvis.action_manager.wikipedia.page')
-    def test_tell_me_about(self, mocked_wiki):
-        words = 'tell_the_skills me about google'
-        Skills.tell_me_about(voice_transcript=words, skill=None, tag='about')
-        self.assertEqual(1, mocked_wiki.call_count)
-        words = 'about google'
-        self.assertRaises(Exception, Skills.tell_me_about(voice_transcript=words, skill=None, tag='about'))
+class E2ETests(unittest.TestCase):
+
+    @patch('jarvis.core.processor.TTTEngine')
+    def test_run(self, mocked_ttt_engine):
+        input_transcripts = ['hi', 'time', 'date', 'about']
+        for transcipt in input_transcripts:
+            mocked_ttt_engine.return_value.recognize_input.return_value = transcipt
+            self.processor = Processor(test_settings)
+            self.processor.run()
+
+

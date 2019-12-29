@@ -21,11 +21,16 @@
 # SOFTWARE.
 
 from jarvis.core.processor import Processor
-
+from jarvis.utils.startup_utils import start_up
+from jarvis import settings
 
 def main():
-    processor = Processor()
-    processor.run()
+
+    processor = Processor(settings)
+    start_up()
+
+    while True:
+        processor.run()
 
 
 if __name__ == '__main__':
