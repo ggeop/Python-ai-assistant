@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from jarvis.settings import *
+
 ROOT_LOG_CONF = {
     'version': 1,
     'root': {
@@ -47,7 +49,7 @@ ROOT_LOG_CONF = {
 # General assistant settings
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
-    'enable_period': 300,  # In seconds
+    'enabled_period': 300,  # In seconds
     'commands_type': 'text',  # voice: The assistant waiting for voice commands,
                                  # text: The assistant waiting for text commands
     'response_in_speech': True,

@@ -27,15 +27,19 @@ from jarvis.core.processor import Processor
 from .test_settings import test_settings
 
 
+def print_argument(argument):
+    print(argument)
+
 
 class E2ETests(unittest.TestCase):
 
+    @patch('jarvis.core.processor.Processor._execute_skill', side_effect=print_argument)
     @patch('jarvis.core.processor.TTTEngine')
-    def test_run(self, mocked_ttt_engine):
+    def test_run(self, mocked_ttt_engine, mocked_execute_skill):
         input_transcripts = ['hi', 'time', 'date', 'about']
+        self.processor = Processor(test_settings)
         for transcipt in input_transcripts:
             mocked_ttt_engine.return_value.recognize_input.return_value = transcipt
-            self.processor = Processor(test_settings)
             self.processor.run()
 
 
