@@ -8,6 +8,6 @@ before_install:
   - sudo apt-get install portaudio19-dev python-pyaudio python3-pyaudio
   - sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev sox ffmpeg
 script:
-  - nosetests -v --with-coverage src/recommender/tests
+  - nosetests -v --with-coverage src/tests
 notifications:
   email: false
