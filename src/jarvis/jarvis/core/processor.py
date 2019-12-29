@@ -50,7 +50,7 @@ class Processor:
                                         ambient_duration=self.settings.SPEECH_RECOGNITION.get('ambient_duration'),
                                         dynamic_energy_threshold=self.settings.SPEECH_RECOGNITION.get('dynamic_energy_threshold'),
                                         sr=sr
-                                        ) if self.settings.GENERAL_SETTINGS.get('commands_type') == InputMode.VOICE else TTTEngine()
+                                        ) if self.settings.GENERAL_SETTINGS.get('commands_type') == InputMode.VOICE.value else TTTEngine()
 
         self.console_manager = ConsoleManager(
                                               log_settings=self.settings.ROOT_LOG_CONF,
