@@ -1,5 +1,5 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/ggeop/ai-voice-assistant/badge)](https://www.codefactor.io/repository/github/ggeop/ai-voice-assistant)
-[![Maintainability](https://api.codeclimate.com/v1/badges/8c90305e22186cc2c9d5/maintainability)](https://codeclimate.com/github/ggeop/Python-AI-voice-assistant/maintainability)
+[![CodeFactor](https://www.codefactor.io/repository/github/ggeop/python-voice-assistant/badge)](https://www.codefactor.io/repository/github/ggeop/Python-voice-assistant)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8c90305e22186cc2c9d5/maintainability)](https://codeclimate.com/github/ggeop/Python-voice-assistant/maintainability)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # About
 Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
