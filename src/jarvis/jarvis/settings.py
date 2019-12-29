@@ -48,8 +48,8 @@ ROOT_LOG_CONF = {
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
     'enabled_period': 300,  # In seconds
-    'commands_type': 'text',  # voice: The assistant waiting for voice commands,
-                                 # text: The assistant waiting for text commands
+    'input_mode': 'text',  # voice: The assistant waiting for voice commands,
+                               # text: The assistant waiting for text commands
     'response_in_speech': True,
 }
 

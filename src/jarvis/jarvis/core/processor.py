@@ -50,7 +50,7 @@ class Processor:
                                         ambient_duration=self.settings.SPEECH_RECOGNITION.get('ambient_duration'),
                                         dynamic_energy_threshold=self.settings.SPEECH_RECOGNITION.get('dynamic_energy_threshold'),
                                         sr=sr
-                                        ) if self.settings.GENERAL_SETTINGS.get('commands_type') == InputMode.VOICE.value else TTTEngine()
+                                        ) if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value else TTTEngine()
 
         self.console_manager = ConsoleManager(
                                               log_settings=self.settings.ROOT_LOG_CONF,
@@ -92,7 +92,7 @@ class Processor:
                 logging.debug("Error with the execution of skill with message {0}".format(e))
 
     def _traped_until_assistant_is_enabled(self):
-        if self.settings.GENERAL_SETTINGS.get('commands_type') == InputMode.VOICE:
+        if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE:
             while not ExecutionState.is_ready_to_execute:
                 voice_transcript = self.input_engine.recognize_input()
                 transcript_words = voice_transcript.split()
