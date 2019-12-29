@@ -8,6 +8,8 @@ before_install:
   - sudo apt-get install portaudio19-dev python-pyaudio python3-pyaudio
   - sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev sox ffmpeg
   - cd src/jarvis
+install:
+  - pip install -r ../../requirements.txt
 script:
   - nosetests -v --with-coverage ../tests
 notifications:
