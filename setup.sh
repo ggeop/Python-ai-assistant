@@ -18,7 +18,10 @@ if [[ -z "$version" ]]
 then
     echo "${red} No Python 3.x.x in your system! Install Python and try again! ${reset}"
     exit 1
+else
+    PYTHON_PATH=$(which python3)
 fi
+
 
 
 #-----------------------------------
@@ -42,7 +45,7 @@ fi
 #-----------------------------------
 # Install virtualenv
 #-----------------------------------
-pip3 install virtualenv 
+pip install virtualenv 
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
@@ -55,7 +58,7 @@ fi
 #-----------------------------------
 # Create Jarvis virtual env
 #-----------------------------------
-virtualenv $JARVIS_DIR/$VIRTUAL_ENV
+virtualenv -p $PYTHON_PATH $JARVIS_DIR/$VIRTUAL_ENV
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
@@ -69,7 +72,7 @@ fi
 # Install Python dependencies
 #-----------------------------------
 source $JARVIS_DIR/$VIRTUAL_ENV/bin/activate
-pip3 install -r $JARVIS_DIR/requirements.txt
+pip install -r $JARVIS_DIR/requirements.txt
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
