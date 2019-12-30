@@ -64,9 +64,9 @@ class Processor:
         self.skill_analyzer = SkillAnalyzer(
                                             weight_measure=TfidfVectorizer,
                                             similarity_measure=cosine_similarity,
-                                            args=self.settings.ANALYZER.get('args'),
+                                            args=self.settings.SKILL_ANALYZER.get('args'),
                                             skills_=SKILLS,
-                                            sensitivity=self.settings.ANALYZER.get('sensitivity')
+                                            sensitivity=self.settings.SKILL_ANALYZER.get('sensitivity')
                                             )
 
     def run(self):
