@@ -1,3 +1,4 @@
+dist: bionic # Run build in Ubuntu 18.04 platform
 language: python
 python:
   - "3.5"
