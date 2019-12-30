@@ -5,8 +5,7 @@ python:
   - "3.6"
 install:
   - sudo bash setup.sh
-  - cd src/jarvis
 script:
-  - nosetests -v --with-coverage ../tests
+  - sudo bash run_tests.sh
 notifications:
   email: false

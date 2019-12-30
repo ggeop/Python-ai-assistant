@@ -31,7 +31,7 @@ sudo apt-get update && /
 sudo apt-get install python-dev && /
 sudo apt-get install portaudio19-dev python-pyaudio python3-pyaudio && /
 sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev sox ffmpeg && /
-sudo apt-get install espeak
+sudo apt-get install espeak && /
 sudo apt-get install python3-pip
 
 RESULT=$?
