@@ -44,58 +44,102 @@ ROOT_LOG_CONF = {
     }
 }
 
-# General assistant settings
+
 GENERAL_SETTINGS = {
+
+    """
+    General assistant settings
+    
+    Keys Description:
+        - assistant_name: Assistant name works as an activation word
+        - enabled_period: A period (in seconds) that assistant is waked up (no need of other activation word)
+        - input_mode: A mode could be 'text' or 'voice'. In 'text' mode, the assistant waits to write in the console,
+                      and in 'voice' to speak in configured mic.
+        - response_in_text: If True: The assistant will print in the console the response
+        - response_in_speech: If True: The assistant will produce voice response via audio output.               
+    
+    """
+    
     'assistant_name': 'Jarvis',
-    'enabled_period': 300,  # In seconds
-    'input_mode': 'text',  # voice: The assistant waiting for voice commands,
-                               # text: The assistant waiting for text commands
+    'enabled_period': 300,
+    'input_mode': 'text',
+    'response_in_text': False,
     'response_in_speech': True,
 }
 
-# Google API Speech recognition settings
-# SpeechRecognition: https://pypi.org/project/SpeechRecognition/2.1.3
+
 SPEECH_RECOGNITION = {
-    'ambient_duration': 1,  # Time for auto microphone calibration
-    'pause_threshold': 1,  # minimum length silence (in seconds) at the end of a sentence
-    'energy_threshold': 3000,  # microphone sensitivity, for loud places, the energy level should be up to 4000
-    'dynamic_energy_threshold': True  # For unpredictable noise levels (Suggested to be TRUE)
+    """
+    Google API Speech recognition settings
+    SpeechRecognition API : https://pypi.org/project/SpeechRecognition/2.1.3
+    
+    Keys Description:
+        - ambient_duration: Time for auto microphone calibration
+        - pause_threshold: Minimum length silence (in seconds) at the end of a sentence
+        - energy_threshold: Microphone sensitivity, for loud places, the energy level should be up to 4000
+        - dynamic_energy_threshold: For unpredictable noise levels (Suggested to be TRUE)
+    
+    """
+    'ambient_duration': 1,
+    'pause_threshold': 1,
+    'energy_threshold': 3000,
+    'dynamic_energy_threshold': True
 }
 
-# SKill analyzer settings
-ANALYZER = {
-    # SKill analyzer (TfidfVectorizer args)
+SKILL_ANALYZER = {
     'args': {
-            "stop_words": None,
-            "lowercase": True,
-            "norm": 'l1',
-            "use_idf": False,
+                "stop_words": None,
+                "lowercase": True,
+                "norm": 'l1',
+                "use_idf": False,
             },
     'sensitivity': 0.2,
 
 }
 
-# Google text to speech API settings
+
 GOOGLE_SPEECH = {
+    """
+    Google text to speech API settings
+    
+    """
+    
     'lang': "en"
 }
 
 
-# Open weather map API settings
-# Create key: https://openweathermap.org/appid
 WEATHER_API = {
+
+    """
+    Open weather map API settings
+    Create key: https://openweathermap.org/appid
+    
+    """
+    
     'unit': 'celsius',
     'key': None
 }
 
-# WolframAlpha API settings
-# Create key: https://developer.wolframalpha.com/portal/myapps/
+
 WOLFRAMALPHA_API = {
+
+    """
+    WolframAlpha API settings
+    Create key: https://developer.wolframalpha.com/portal/myapps/
+    
+    """
+    
     'key': None
 }
 
-# IPSTACK API settings
-#Create key: https://ipstack.com/signup/free
+
 IPSTACK_API = {
+
+    """
+    IPSTACK API settings
+    Create key: https://ipstack.com/signup/free
+    
+    """
+    
     'key': None
 }
