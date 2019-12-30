@@ -54,8 +54,11 @@ class STTEngine:
             return lower_case_voice_transcript
         except self.sr.UnknownValueError:
             self.logger.info('Not recognized text')
+            return ''
         except self.sr.RequestError:
             self.logger.info("Google API was unreachable.")
+            return ''
+
 
     def _record(self):
         """
