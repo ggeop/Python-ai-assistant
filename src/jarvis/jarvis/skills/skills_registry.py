@@ -34,6 +34,7 @@ from jarvis.skills.system_health_skills import SystemHealthSkills
 from jarvis.skills.weather_skills import WeatherSkills
 from jarvis.skills.word_skills import WordSkills
 
+from jarvis.settings import GENERAL_SETTINGS
 
 # All available assistant skills
 # Keys description:
@@ -44,7 +45,7 @@ from jarvis.skills.word_skills import WordSkills
 
 CONTROL_SKILLS = {
     'enable_assistant': {'skill': ActivationSkills.enable_assistant,
-                         'tags': {'start', 'hi', 'hello', 'jarvis'}
+                         'tags': {'start', 'hi', 'hello', GENERAL_SETTINGS.get('assistant_name')}
                          },
 
     'disable_assistant': {'skill': ActivationSkills.disable_assistant,
