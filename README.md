@@ -67,39 +67,17 @@ All the following APIs have free no-commercial API calls. Subscribe to the follo
 *   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
 *   [IPSTACK](https://ipstack.com/signup/free): API for current location.
 ### Download the code in your Ubundu/Debian system
-*   Download the Jarvis repo localy and get the directory:
+*   Download the Jarvis repo localy:
 
 ```{bash}
 git clone https://github.com/ggeop/Jarvis.git
-JARVIS_HOME=$(pwd) 
+
 ```
 
-### Create Virtual Env
-The first step is to setup the virtual environment with the project dependencies.
-*   If you don't have installed the virtualenv package, you can install it with pip:
+### Setup 
+*   Setup Jarvis and system dependencies:
 ```{bash}
-pip install virtualenv
-```
-*   Create a virtual environment
-*   We create a new virtual environment inside the Jarvis directory:
-```{bash}
-virtualenv $JARVIS_HOME/Jarvis/py_env
-```
-
-### Install Python Dependencies
-*   Install python-dev package and pyaudio packages if they are not already installed:
-```{bash}
-sudo apt-get install python-dev
-sudo apt-get install portaudio19-dev python-pyaudio python3-pyaudio
-sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev sox ffmpeg
-```
-*   Activate the virtual environment:
-```{bash}
-source $JARVIS_HOME/Jarvis/py_env/bin/activate
-```
-*   Install all the Python packages in your:
-```{bash}
-pip install -r requirements.txt
+bash setup.sh
 ```
 
 ### Put the Keys in settings
@@ -108,17 +86,9 @@ pip install -r requirements.txt
 nano Jarvis/src/jarvis/jarvis/setting.py
 ```
 
-### Give access to produce logs in log directory
-```{bash}
-sudo chown user:usergroup /var/log
-```
-
 ### Start voice assistant
 *   Start the assistant service:
 ```{bash}
-bash run.sh
+bash run_jarvis.sh
 ```
-
-**NOTE**: By default the input mode (input_mode) is 'text'. Otherwise, you can change to 'voice'
-in Jarvis/src/jarvis/jarvis/setting.py
 
