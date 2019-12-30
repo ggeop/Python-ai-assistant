@@ -13,23 +13,11 @@ reset=`tput sgr0`
 # -----------------------------------
 # Python version compatibility check
 # -----------------------------------
-version=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
+version=$(python3 -V 2>&1 | grep -Po '(?<=Python )(.+)')
 if [[ -z "$version" ]]
 then
-    echo "${red} No Python in your system! Install Python and try again! ${reset}"
-    exit 0
-
-else
-    # Check if python version is 3.x.x
-    echo $version | grep -q '2.*'
-    if [ $? -eq 1 ]
-    then
-        echo In your system you have Python $version
-        echo Jarvis assistant is compartible with Python 3.5+
-        echo You can use multiple Python versions with pyenv: https://github.com/pyenv/pyenv
-        echo Install python 3.5+ with pyenv, activate it and re-run setup.sh
-        exit 0
-    fi
+    echo "${red} No Python 3.x.x in your system! Install Python and try again! ${reset}"
+    exit 1
 fi
 
 
@@ -54,7 +42,7 @@ fi
 #-----------------------------------
 # Install virtualenv
 #-----------------------------------
-pip install virtualenv 
+pip3 install virtualenv 
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
@@ -81,7 +69,7 @@ fi
 # Install Python dependencies
 #-----------------------------------
 source $JARVIS_DIR/$VIRTUAL_ENV/bin/activate
-pip install -r $JARVIS_DIR/requirements.txt
+pip3 install -r $JARVIS_DIR/requirements.txt
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
