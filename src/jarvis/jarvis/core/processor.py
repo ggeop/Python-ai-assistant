@@ -92,8 +92,8 @@ class Processor:
                 logging.debug("Error with the execution of skill with message {0}".format(e))
 
     def _traped_until_assistant_is_enabled(self):
-        if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE:
-            while not ExecutionState.is_ready_to_execute:
+        if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value:
+            while not ExecutionState.is_ready_to_execute():
                 voice_transcript = self.input_engine.recognize_input()
                 transcript_words = voice_transcript.split()
                 enable_tag = set(transcript_words).intersection(CONTROL_SKILLS.get('enable_assistant').get('tags'))
