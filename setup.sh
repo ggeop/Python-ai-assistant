@@ -54,7 +54,7 @@ fi
 #-----------------------------------
 # Install virtualenv
 #-----------------------------------
-pip3 install virtualenv 
+pip install virtualenv 
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
@@ -81,7 +81,7 @@ fi
 # Install Python dependencies
 #-----------------------------------
 source $JARVIS_DIR/$VIRTUAL_ENV/bin/activate
-pip3 install -r $JARVIS_DIR/requirements.txt
+pip install -r $JARVIS_DIR/requirements.txt
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
