@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/ggeop/Python-voice-assistant.svg?branch=master)](https://travis-ci.org/ggeop/Python-voice-assistant)
 
 # About
-Jarvis is a voice assistant service in [Python 3.4+](https://www.python.org/downloads/release/python-360/)
+Jarvis is a voice assistant service in [Python 3.5+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
 ## Assistant Skills
