@@ -38,15 +38,48 @@ It can understand human speech, talk to user and execute basic commands.
 
 *   [Behind the scenes](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
 
+## Getting Started
+### Create KEYs for third party APIs
+Jarvis assistant uses third party APIs for speech recognition,web information search, weather forecasting etc.
+All the following APIs have free no-commercial API calls. Subscribe to the following APIs in order to take FREE access KEYs.
+*   [OpenWeatherMap](https://openweathermap.org/appid): API for weather forecast.
+*   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
+*   [IPSTACK](https://ipstack.com/signup/free): API for current location.
+### Setup Jarvis in Ubundu/Debian system
+*   Download the Jarvis repo localy:
+
+```bash
+git clone https://github.com/ggeop/Jarvis.git
+```
+*   Setup Jarvis and system dependencies:
+```bash
+bash setup.sh
+```
+
+*   Put the Keys in settings
+
+**NOTE:** *For better exprerience, before you start the application you can put the free KEYs in the settings.py*
+
+```bash
+nano Jarvis/src/jarvis/jarvis/setting.py
+```
+
+### Start voice assistant
+*   Start the assistant service:
+```bash
+bash run_jarvis.sh
+```
+
+
 ### How to add a new Skill
 You can easily add a new skill in two steps.
 *   Create a new configurationin SKILLS in **skills_registry.py**
-```{python}
+```python
 'new_skill': {'enable': True,
-                 'skill': Skills.new_skill,
-                 'tags': {'tag1', 'tag2'},
-                 'description': 'skill description..'
-                },                
+              'skill': Skills.new_skill,
+              'tags': {'tag1', 'tag2'},
+              'description': 'skill description..'
+              }               
 ```
 *   Create a new skill package in **skills**
 
@@ -59,36 +92,5 @@ In the following example he have a dimensional space with three skills.
 The user input analyzed in this space and by using a similarity metric (e.g cosine) we find the most similar skill.
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/skill_space_desicion.png)
 
-## Getting Started
-### Create KEYs for third party APIs
-Jarvis assistant uses third party APIs for speech recognition,web information search, weather forecasting etc.
-All the following APIs have free no-commercial API calls. Subscribe to the following APIs in order to take FREE access KEYs.
-*   [OpenWeatherMap](https://openweathermap.org/appid): API for weather forecast.
-*   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
-*   [IPSTACK](https://ipstack.com/signup/free): API for current location.
-### Download the code in your Ubundu/Debian system
-*   Download the Jarvis repo localy:
 
-```{bash}
-git clone https://github.com/ggeop/Jarvis.git
-
-```
-
-### Setup 
-*   Setup Jarvis and system dependencies:
-```{bash}
-bash setup.sh
-```
-
-### Put the Keys in settings
-*   Before you start running the application you have to put the free KEYs in the settings.py:
-```{bash}
-nano Jarvis/src/jarvis/jarvis/setting.py
-```
-
-### Start voice assistant
-*   Start the assistant service:
-```{bash}
-bash run_jarvis.sh
-```
 
