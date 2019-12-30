@@ -49,8 +49,9 @@ class STTEngine:
         audio_text = self._record()
         try:
             voice_transcript = self.speech_recognizer.recognize_google(audio_text)
-            self.logger.debug('Recognized words: ' + voice_transcript)
-            return voice_transcript
+            lower_case_voice_transcript = voice_transcript.lower() if voice_transcript else ''
+            self.logger.debug('Recognized words: {0} '.format(lower_case_voice_transcript))
+            return lower_case_voice_transcript
         except self.sr.UnknownValueError:
             self.logger.info('Not recognized text')
         except self.sr.RequestError:
