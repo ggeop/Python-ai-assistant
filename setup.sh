@@ -45,7 +45,7 @@ fi
 #-----------------------------------
 # Install virtualenv
 #-----------------------------------
-pip install virtualenv 
+pip3 install virtualenv
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
@@ -72,7 +72,12 @@ fi
 # Install Python dependencies
 #-----------------------------------
 source $JARVIS_DIR/$VIRTUAL_ENV/bin/activate
-pip install -r $JARVIS_DIR/requirements.txt
+
+# Install pip in virtualenv
+sudo apt-get install python3-pip
+
+# Install python requirements
+pip3 install -r $JARVIS_DIR/requirements.txt
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
@@ -108,6 +113,11 @@ else
     echo "${red}Create log access failed ${reset}"
     exit 1
 fi
+
+#-----------------------------------
+# Deactivate virtualenv
+#-----------------------------------
+deactivate
 
 echo "${green} Jarvis setup succeed! ${reset}"
 echo "Start Jarvis: bash run_jarvis.sh"
