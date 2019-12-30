@@ -3,11 +3,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/ggeop/Python-voice-assistant.svg?branch=master)](https://travis-ci.org/ggeop/Python-voice-assistant)
 
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
+
 # About
 Jarvis is a voice assistant service in [Python 3.5+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
-## Assistant Skills
+#### Assistant Skills
 *   **Opens a web page** (e.g 'Jarvis open youtube')
 *   **Play a video in Youtube** (e.g 'find in you tdex in youtube')
 *   **Opens libreoffice suite applications (calc, writer, impress)** (e.g 'Jarvis open calc')
@@ -24,7 +26,7 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Tells the current location** (e.g 'Jarvis tell me your current location')
 *   **Tells how much memory consumes** (e.g 'Jarvis tell me your memory consumption)
 
-### Assistant Features
+#### Assistant Features
 *   **Asynchronous command execution & speech interruption**
 *   **Custom wake words**, can be triggered with any word or phrase e.g ('hi', 'hi Jarvis', 'wake up') 
 *   **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
@@ -32,11 +34,6 @@ It can understand human speech, talk to user and execute basic commands.
 *   Configurable **assistant name** (e.g 'Jarvis', 'Sofia', 'John' etc.)
 *   **Log preview** in console
 *   **Vocal or/and text response**
-
-### Jarvis in action console output
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
-
-*   [Behind the scenes](https://github.com/ggeop/Jarvis/blob/master/imgs/jarvis_log.PNG)
 
 ## Getting Started
 ### Create KEYs for third party APIs
@@ -83,10 +80,10 @@ You can easily add a new skill in two steps.
 ```
 *   Create a new skill package in **skills**
 
-## Desicion Model
+### Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
 
-## Extract skill
+### Extract skill
 The skill extraction implement in a matrix of [TF-IDF features](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html) for each skill.
 In the following example he have a dimensional space with three skills.
 The user input analyzed in this space and by using a similarity metric (e.g cosine) we find the most similar skill.
