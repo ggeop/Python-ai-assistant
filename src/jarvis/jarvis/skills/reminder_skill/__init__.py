@@ -60,7 +60,7 @@ class ReminderSkill(AssistantSkill):
         for time_interval in time_intervals.values():
             for variation in time_interval['variations']:
                 if variation in voice_transcript:
-                    reg_ex = re.search('[0-9]', voice_transcript)
+                    reg_ex = re.search('([0-9])', voice_transcript)#Change '[0-9]'to '([0-9])' and now the skill is working
                     duration = reg_ex.group(1)
                     return duration, time_interval['scheduler_interval']
 
