@@ -55,7 +55,7 @@ class ActivationSkills(AssistantSkill):
         sys.exit()
 
     @classmethod
-    def assistant_greeting(cls, *kwargs):
+    def assistant_greeting(cls, **kwargs): #changed *kwargs to **kwargs
         now = datetime.now()
         day_time = int(now.strftime('%H'))
 
