@@ -44,12 +44,13 @@ class AssistantInfoSkills(AssistantSkill):
     def tell_the_skills(cls, **kwargs):
         """
         Tells what he can do as assistant.
-        """
-        '''response_base = 'I can do the following: \n\n'
+        
+        response_base = 'I can do the following: \n\n'
         response = cls._create_skill_response(response_base)
-        response.assistant_response(response)'''#That doesn't work "str" has no attribut assistant_response
+        response.assistant_response(response)#That doesn't work str has no attribut assistant_response
         #But that works:
-        try: 
+         """
+        try:
             response_base = 'I can do the following: \n\n'
             response = cls._create_skill_response(response_base)
             # response.assistant_response(response) For testing but that just won't work so cls.response() is the easiest fix xD
