@@ -33,25 +33,23 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
 from jarvis.skills.skill_analyzer import SkillAnalyzer
-from jarvis.engines.stt import STTEngine
-from jarvis.engines.tts import TTSEngine
-from jarvis.engines.ttt import TTTEngine
 from jarvis.core.nlp_processor import ResponseCreator
 from jarvis.settings import GENERAL_SETTINGS
+import jarvis.engines as engines
 
 
 class Processor:
     def __init__(self, settings_):
         self.settings = settings_
-        self.input_engine = STTEngine(
+        self.input_engine = engines.STTEngine(
                                         pause_threshold=self.settings.SPEECH_RECOGNITION.get('pause_threshold'),
                                         energy_theshold=self.settings.SPEECH_RECOGNITION.get('energy_threshold'),
                                         ambient_duration=self.settings.SPEECH_RECOGNITION.get('ambient_duration'),
                                         dynamic_energy_threshold=self.settings.SPEECH_RECOGNITION.get('dynamic_energy_threshold'),
                                         sr=sr
-                                        ) if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value else TTTEngine()
+                                        ) if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value else engines.TTTEngine()
 
-        self.output_engine = TTSEngine() if self.settings.GENERAL_SETTINGS.get('response_in_speech') else TTTEngine()
+        self.output_engine = engines.TTSEngine() if self.settings.GENERAL_SETTINGS.get('response_in_speech') else engines.TTTEngine()
 
         self.response_creator = ResponseCreator()
 

@@ -20,16 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.engines.tts import TTSEngine
-from jarvis.engines.ttt import TTTEngine
 from jarvis.settings import GENERAL_SETTINGS
 from jarvis.core.console_manager import ConsoleManager
+import jarvis.engines as engines
 
 
 class AssistantSkill:
     first_activation = True
     console_manager = ConsoleManager()
-    tts_engine = TTSEngine() if GENERAL_SETTINGS.get('response_in_speech') else TTTEngine()
+    tts_engine = engines.TTSEngine() if GENERAL_SETTINGS.get('response_in_speech') else engines.TTTEngine()
 
     @classmethod
     def response(cls, text):
