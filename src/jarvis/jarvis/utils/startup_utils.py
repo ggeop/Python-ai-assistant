@@ -36,6 +36,7 @@ from jarvis.utils.console_utils import jarvis_logo, start_text, OutputStyler, us
 # Create a Console & Rotating file logger
 config.dictConfig(ROOT_LOG_CONF)
 
+
 def log(func):
     """
     Logging wrapper
@@ -44,7 +45,8 @@ def log(func):
     def wrapper(*args, **kwargs):
         try:
             logging.debug(func.__name__)
-            func(*args, **kwargs)
+            result = func(*args, **kwargs)
+            return result
         except Exception:
             logging.error(func.__name__)
             traceback.print_exc(file=sys.stdout)
