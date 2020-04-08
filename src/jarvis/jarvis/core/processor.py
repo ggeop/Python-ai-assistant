@@ -37,7 +37,6 @@ from jarvis.engines.stt import STTEngine
 from jarvis.engines.tts import TTSEngine
 from jarvis.engines.ttt import TTTEngine
 from jarvis.core.nlp_processor import ResponseCreator
-from jarvis.core.console_manager import ConsoleManager
 from jarvis.settings import GENERAL_SETTINGS
 
 
@@ -52,13 +51,8 @@ class Processor:
                                         sr=sr
                                         ) if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value else TTTEngine()
 
-        self.console_manager = ConsoleManager(
-                                              log_settings=self.settings.ROOT_LOG_CONF,
-                                             )
-        self.output_engine = TTSEngine(
-                                        console_manager=self.console_manager,
-                                        speech_response_enabled=self.settings.GENERAL_SETTINGS.get('response_in_speech')
-                                       )
+        self.output_engine = TTSEngine() if self.settings.GENERAL_SETTINGS.get('response_in_speech') else TTTEngine()
+
         self.response_creator = ResponseCreator()
 
         self.skill_analyzer = SkillAnalyzer(
@@ -71,13 +65,12 @@ class Processor:
 
     def run(self):
 
-        self._traped_until_assistant_is_enabled()
+        self._trapped_until_assistant_is_enabled()
 
         transcript = self.input_engine.recognize_input()
         skill_to_execute = self._extract_skill(transcript)
         response = self.response_creator.create_positive_response(transcript) if skill_to_execute \
             else self.response_creator.create_negative_response(transcript)
-
 
         self.output_engine.assistant_response(response)
         self._execute_skill(skill_to_execute)
@@ -91,7 +84,7 @@ class Processor:
             except Exception as e:
                 logging.debug("Error with the execution of skill with message {0}".format(e))
 
-    def _traped_until_assistant_is_enabled(self):
+    def _trapped_until_assistant_is_enabled(self):
         if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value:
             while not ExecutionState.is_ready_to_execute():
                 voice_transcript = self.input_engine.recognize_input()

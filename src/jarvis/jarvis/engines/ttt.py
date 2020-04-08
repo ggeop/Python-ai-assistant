@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import logging
+from jarvis.core.console_manager import ConsoleManager
 
 
 class TTTEngine:
@@ -29,6 +30,7 @@ class TTTEngine:
     """
     def __init__(self):
         self.logger = logging
+        self.console_manager = ConsoleManager()
 
     def recognize_input(self):
         self.logger.info("Waiting for user input.")
@@ -37,3 +39,14 @@ class TTTEngine:
             self.logger.info("User didn't said something")
             text_transcript = input('>> ').lower()
         return text_transcript
+
+    def assistant_response(self, message):
+        """
+        Assistant response in voice or/and in text.
+        :param message: string
+        """
+        try:
+            if message:
+                self.console_manager.console_output(message)
+        except RuntimeError as e:
+            self.logger.error('Error in assistant response with message {0}'.format(e))

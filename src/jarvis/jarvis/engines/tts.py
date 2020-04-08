@@ -25,6 +25,8 @@ import logging
 import pyttsx3
 import queue
 
+from jarvis.core.console_manager import ConsoleManager
+
 
 class TTS:
     """
@@ -53,26 +55,24 @@ class TTS:
 
 
 class TTSEngine(TTS):
-    def __init__(self, console_manager, speech_response_enabled):
+    def __init__(self):
         super().__init__()
         self.logger = logging
         self.message_queue = queue.Queue(maxsize=5)  # Maxsize is the size of the queue / capacity of messages
-        self.console_manager = console_manager
-        self.speech_response_enabled = speech_response_enabled
         self.stop_speaking = False
+        self.console_manager = ConsoleManager()
 
     def assistant_response(self, message):
         """
         Assistant response in voice or/and in text.
         :param message: string
         """
-        if self.speech_response_enabled:
-            self._insert_into_message_queue(message)
-            try:
-                speech_tread = threading.Thread(target=self._speech_and_console)
-                speech_tread.start()
-            except RuntimeError as e:
-                self.logger.error('Error in assistant response thread with message {0}'.format(e))
+        self._insert_into_message_queue(message)
+        try:
+            speech_tread = threading.Thread(target=self._speech_and_console)
+            speech_tread.start()
+        except RuntimeError as e:
+            self.logger.error('Error in assistant response thread with message {0}'.format(e))
 
     def _insert_into_message_queue(self, message):
         try:

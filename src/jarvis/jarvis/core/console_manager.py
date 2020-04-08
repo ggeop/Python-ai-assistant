@@ -25,13 +25,14 @@ import os
 import psutil
 
 from jarvis.utils.console_utils import jarvis_logo, OutputStyler, clear, stdout_print
+from jarvis.settings import ROOT_LOG_CONF
 
 
 class ConsoleManager:
-    def __init__(self, log_settings):
-        self.log_settings = log_settings
+    def __init__(self, ):
         # self.dynamic_energy_ratio = None
         # self.energy_threshold = None
+        pass
 
     def console_output(self, text):
         clear()
@@ -53,7 +54,7 @@ class ConsoleManager:
         # print(' ')
 
         print(OutputStyler.HEADER + '-------------- LOG --------------' + OutputStyler.ENDC)
-        lines = subprocess.check_output(['tail', '-10', self.log_settings['handlers']['file']['filename']]).decode("utf-8")
+        lines = subprocess.check_output(['tail', '-10', ROOT_LOG_CONF['handlers']['file']['filename']]).decode("utf-8")
         print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
 
         print(OutputStyler.HEADER + '-------------- ASSISTANT --------------' + OutputStyler.ENDC)

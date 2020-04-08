@@ -64,7 +64,7 @@ GENERAL_SETTINGS = {
     'enabled_period': 300,
     'input_mode': 'text',
     'response_in_text': False,
-    'response_in_speech': True,
+    'response_in_speech': False,
 }
 
 

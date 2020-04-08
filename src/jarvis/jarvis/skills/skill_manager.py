@@ -21,19 +21,15 @@
 # SOFTWARE.
 
 from jarvis.engines.tts import TTSEngine
-from jarvis.settings import GENERAL_SETTINGS, ROOT_LOG_CONF
+from jarvis.engines.ttt import TTTEngine
+from jarvis.settings import GENERAL_SETTINGS
 from jarvis.core.console_manager import ConsoleManager
 
 
 class AssistantSkill:
     first_activation = True
-    console_manager = ConsoleManager(
-                                     log_settings=ROOT_LOG_CONF,
-                                    )
-    tts_engine = TTSEngine(
-                           console_manager=console_manager,
-                           speech_response_enabled=GENERAL_SETTINGS['response_in_speech']
-                           )
+    console_manager = ConsoleManager()
+    tts_engine = TTSEngine() if GENERAL_SETTINGS.get('response_in_speech') else TTTEngine()
 
     @classmethod
     def response(cls, text):
