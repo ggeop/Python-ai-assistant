@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import speech_recognition as sr
 import logging
+import speech_recognition as sr
 
 from enum import Enum
 from datetime import datetime, timedelta
@@ -45,14 +45,15 @@ class Processor:
                                         pause_threshold=self.settings.SPEECH_RECOGNITION.get('pause_threshold'),
                                         energy_theshold=self.settings.SPEECH_RECOGNITION.get('energy_threshold'),
                                         ambient_duration=self.settings.SPEECH_RECOGNITION.get('ambient_duration'),
-                                        dynamic_energy_threshold=self.settings.SPEECH_RECOGNITION.get('dynamic_energy_threshold'),
+                                        dynamic_energy_threshold=self.settings.SPEECH_RECOGNITION.get(
+                                            'dynamic_energy_threshold'),
                                         sr=sr
-                                        ) if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value else engines.TTTEngine()
+                                        ) if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value \
+            else engines.TTTEngine()
 
-        self.output_engine = engines.TTSEngine() if self.settings.GENERAL_SETTINGS.get('response_in_speech') else engines.TTTEngine()
-
+        self.output_engine = engines.TTSEngine() if self.settings.GENERAL_SETTINGS.get('response_in_speech') \
+            else engines.TTTEngine()
         self.response_creator = ResponseCreator()
-
         self.skill_analyzer = SkillAnalyzer(
                                             weight_measure=TfidfVectorizer,
                                             similarity_measure=cosine_similarity,
@@ -73,15 +74,6 @@ class Processor:
         self.output_engine.assistant_response(response)
         self._execute_skill(skill_to_execute)
 
-    def _execute_skill(self, skill):
-        if skill:
-            try:
-                skill_method = skill.get('skill').get('skill')
-                logging.debug('Executing skill {0}'.format(skill))
-                skill_method(**skill)
-            except Exception as e:
-                logging.debug("Error with the execution of skill with message {0}".format(e))
-
     def _trapped_until_assistant_is_enabled(self):
         if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value:
             while not ExecutionState.is_ready_to_execute():
@@ -97,6 +89,16 @@ class Processor:
         skill = self.skill_analyzer.extract(transcript)
         if skill:
             return {'voice_transcript': transcript, 'skill': skill}
+
+    @staticmethod
+    def _execute_skill(skill):
+        if skill:
+            try:
+                skill_method = skill.get('skill').get('skill')
+                logging.debug('Executing skill {0}'.format(skill))
+                skill_method(**skill)
+            except Exception as e:
+                logging.debug("Error with the execution of skill with message {0}".format(e))
 
 
 class ExecutionState:
@@ -116,7 +118,8 @@ class ExecutionState:
     @classmethod
     def is_ready_to_execute(cls):
         if cls.enabled_time:
-            enabled_period_has_passed = datetime.now() > cls.enabled_time + timedelta(seconds=GENERAL_SETTINGS.get('enabled_period'))
+            enabled_period_has_passed = datetime.now() > cls.enabled_time + timedelta(seconds=GENERAL_SETTINGS.get(
+                'enabled_period'))
             return enabled_period_has_passed
         else:
             return cls.is_enabled

@@ -39,7 +39,13 @@ config.dictConfig(ROOT_LOG_CONF)
 
 def log(func):
     """
-    Logging wrapper
+    log decorator
+    -----------------
+    e.x
+    @log
+    def f(n)
+        return n + 1
+    -----------------
     :param func: function object
     """
     def wrapper(*args, **kwargs):
