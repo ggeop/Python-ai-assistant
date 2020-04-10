@@ -120,5 +120,29 @@ fi
 #-----------------------------------
 deactivate
 
+#-----------------------------------
+# Install MongoDB Server
+#-----------------------------------
+# Install process: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+
+# Install gnupg
+sudo apt-get install gnupg
+
+# MongoDB public GPG Key
+wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+
+# Create the /etc/apt/sources.list.d/mongodb-org-4.2.list file for Ubuntu 16.04 (Xenial):
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+
+# Reload local package database
+sudo apt-get update
+
+# Install a specific release of MongoDB
+sudo apt-get install -y mongodb-org=4.2.5 mongodb-org-server=4.2.5 mongodb-org-shell=4.2.5 mongodb-org-mongos=4.2.5 mongodb-org-tools=4.2.5
+
+
+#-----------------------------------
+# Finished
+#-----------------------------------
 echo "${green} Jarvis setup succeed! ${reset}"
 echo "Start Jarvis: bash run_jarvis.sh"
