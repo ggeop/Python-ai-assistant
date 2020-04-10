@@ -20,16 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import sys
-import time
 import logging
 import subprocess
-
+import sys
+import time
 from datetime import datetime
 
-from jarvis.utils.startup import play_activation_sound
-from jarvis.utils.console import clear
 from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.utils.console import clear
+from jarvis.utils.startup import play_activation_sound
 
 
 def start_mongoDB_server():
