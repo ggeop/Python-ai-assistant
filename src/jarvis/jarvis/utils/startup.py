@@ -31,7 +31,7 @@ import subprocess
 from logging import config
 
 from jarvis.settings import ROOT_LOG_CONF
-from jarvis.utils.console_utils import jarvis_logo, start_text, OutputStyler, user_input, clear, stdout_print
+from jarvis.utils.console import jarvis_logo, start_text, OutputStyler, user_input, clear, stdout_print
 
 # Create a Console & Rotating file logger
 config.dictConfig(ROOT_LOG_CONF)

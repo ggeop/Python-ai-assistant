@@ -21,14 +21,14 @@
 # SOFTWARE.
 
 from jarvis.core.processor import Processor
-from jarvis.utils.startup_utils import start_up
+from jarvis.utils.startup import start_up
 from jarvis import settings
 
 
 def main():
 
-    processor = Processor(settings)
     start_up()
+    processor = Processor(settings)
 
     while True:
         processor.run()

@@ -24,7 +24,7 @@ import subprocess
 import os
 import psutil
 
-from jarvis.utils.console_utils import jarvis_logo, OutputStyler, clear, stdout_print
+from jarvis.utils.console import jarvis_logo, OutputStyler, clear, stdout_print
 from jarvis.settings import ROOT_LOG_CONF
 
 

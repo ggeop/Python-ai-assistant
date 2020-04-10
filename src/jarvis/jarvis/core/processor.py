@@ -30,17 +30,19 @@ from datetime import datetime, timedelta
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-
-from jarvis.skills.skills_registry import CONTROL_SKILLS, SKILLS
 from jarvis.skills.skill_analyzer import SkillAnalyzer
+from jarvis.skills.skills_registry import skill_objects
 from jarvis.core.nlp_processor import ResponseCreator
 from jarvis.settings import GENERAL_SETTINGS
+from jarvis.utils.mongoDB import MongoDB
+
 import jarvis.engines as engines
 
 
 class Processor:
     def __init__(self, settings_):
         self.settings = settings_
+        self.db = MongoDB()
         self.input_engine = engines.STTEngine(
                                         pause_threshold=self.settings.SPEECH_RECOGNITION.get('pause_threshold'),
                                         energy_theshold=self.settings.SPEECH_RECOGNITION.get('energy_threshold'),
@@ -58,8 +60,8 @@ class Processor:
                                             weight_measure=TfidfVectorizer,
                                             similarity_measure=cosine_similarity,
                                             args=self.settings.SKILL_ANALYZER.get('args'),
-                                            skills_=SKILLS,
-                                            sensitivity=self.settings.SKILL_ANALYZER.get('sensitivity')
+                                            sensitivity=self.settings.SKILL_ANALYZER.get('sensitivity'),
+                                            db=self.db
                                             )
 
     def run(self):
@@ -79,10 +81,12 @@ class Processor:
             while not ExecutionState.is_ready_to_execute():
                 voice_transcript = self.input_engine.recognize_input()
                 transcript_words = voice_transcript.split()
-                enable_tag = set(transcript_words).intersection(CONTROL_SKILLS.get('enable_assistant').get('tags'))
+                enable_tag = set(transcript_words).intersection(self.db.get_from_table('control_skills', {'name': 'enable_assistant'}) .get('tags'))
 
                 if bool(enable_tag):
-                    CONTROL_SKILLS.get('enable_assistant').get('skill')()
+                    skill_name = self.db.get_from_table('control_skills', {'name': 'enable_assistant'}).get('skills')
+                    skill_object = skill_objects[skill_name]
+                    skill_object()
                     ExecutionState.update()
 
     def _extract_skill(self, transcript):
@@ -94,8 +98,9 @@ class Processor:
     def _execute_skill(skill):
         if skill:
             try:
-                skill_method = skill.get('skill').get('skill')
+                skill_method_name = skill.get('skill').get('skill')
                 logging.debug('Executing skill {0}'.format(skill))
+                skill_method = skill_objects[skill_method_name]
                 skill_method(**skill)
             except Exception as e:
                 logging.debug("Error with the execution of skill with message {0}".format(e))

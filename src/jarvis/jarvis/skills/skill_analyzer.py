@@ -23,20 +23,20 @@ import logging
 
 
 class SkillAnalyzer:
-    def __init__(self, weight_measure, similarity_measure, args, skills_, sensitivity):
+    def __init__(self, weight_measure, similarity_measure, args, sensitivity, db):
         self.logger = logging
         self.weight_measure = weight_measure
         self.similarity_measure = similarity_measure
         self.args = args
         self.vectorizer = self._create_vectorizer()
-        self.skills = skills_
+        self.skills = [i for i in db.get_from_table('skills')]
         self.analyzer_sensitivity = sensitivity
 
     @property
     def tags(self):
         tags_list = []
-        for skill in self.skills.values():
-            tags_list.append(list(skill['tags']))
+        for skill in self.skills:
+            tags_list.append(skill['tags'].split(','))
         return [' '.join(tag) for tag in tags_list]
 
     def extract(self, user_transcript):
@@ -49,7 +49,7 @@ class SkillAnalyzer:
         skill_index = similarities.argsort(axis=None)[-1]  # Extract the most similar skill
         if similarities[skill_index] > self.analyzer_sensitivity:
             skill_key = [skill for skill in enumerate(self.skills) if skill[0] == skill_index][0][1]
-            return self.skills[skill_key]
+            return skill_key
         else:
             self.logger.debug('Not extracted skills from user voice transcript')
             return None

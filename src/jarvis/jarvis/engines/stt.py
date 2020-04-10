@@ -22,7 +22,7 @@
 
 import logging
 
-from jarvis.utils.console_utils import user_input, clear
+from jarvis.utils.console import user_input, clear
 
 
 class STTEngine:

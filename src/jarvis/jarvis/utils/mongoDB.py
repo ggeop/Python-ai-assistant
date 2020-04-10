@@ -20,16 +20,46 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import sys
-import time
-import logging
 import subprocess
+import logging
+from pymongo import MongoClient
+from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
 
-from datetime import datetime
 
-from jarvis.utils.startup import play_activation_sound
-from jarvis.utils.console import clear
-from jarvis.skills.skill_manager import AssistantSkill
+def _convert_skill_object_to_str(skill):
+    for sk in skill:
+        sk.update((k, v.__name__) for k, v in sk.items() if k == 'skill')
+
+
+ENABLED_BASIC_SKILLS = [skill for skill in BASIC_SKILLS if skill['enable']]
+SKILLS = CONTROL_SKILLS + ENABLED_BASIC_SKILLS
+
+_convert_skill_object_to_str(BASIC_SKILLS)
+_convert_skill_object_to_str(CONTROL_SKILLS)
+
+
+class MongoDB:
+
+    def __init__(self, host='localhost', port=27017, database='skills'):
+        self.client = MongoClient(host, port)
+        self.database = self.client[database]
+        self._initialize_db()
+
+    def _initialize_db(self, database='skills'):
+        self.client.drop_database(database)
+
+        self.insert_to_table('basic_skills', BASIC_SKILLS)
+        self.insert_to_table('control_skills', CONTROL_SKILLS)
+        self.insert_to_table('enabled_basic_skills', ENABLED_BASIC_SKILLS)
+        self.insert_to_table('skills', SKILLS)
+
+    def get_from_table(self, table_name, key=None):
+        table_obj = self.database[table_name]
+        return table_obj.find(key)
+
+    def insert_to_table(self, table_name, values):
+        table_obj = self.database[table_name]
+        table_obj.insert_many(values)
 
 
 def start_mongoDB_server():
@@ -44,41 +74,3 @@ def stop_mongoDB_server():
     process = subprocess.Popen(stopMongoServerCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     logging.info(output)
-
-
-class ActivationSkills(AssistantSkill):
-
-    @classmethod
-    def enable_assistant(cls, **kwargs):
-        """
-        Creates the assistant respond according to the datetime hour and
-        updates the execute state.
-        """
-        start_mongoDB_server()
-        play_activation_sound()
-        time.sleep(1)
-        cls.response(' ')
-
-    @classmethod
-    def disable_assistant(cls, **kwargs):
-        """
-        Shutdown the assistant service and clean the  bash stdout.
-        """
-        cls.response('Bye')
-        time.sleep(1)
-        clear()
-        stop_mongoDB_server()
-        logging.debug('Application terminated gracefully.')
-        sys.exit()
-
-    @classmethod
-    def assistant_greeting(cls, *kwargs):
-        now = datetime.now()
-        day_time = int(now.strftime('%H'))
-
-        if day_time < 12:
-            cls.response('Good morning human')
-        elif 12 <= day_time < 18:
-            cls.response('Good afternoon human')
-        else:
-            cls.response('Good evening human')
