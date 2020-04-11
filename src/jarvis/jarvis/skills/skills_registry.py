@@ -53,7 +53,7 @@ CONTROL_SKILLS = [
 
     {'name': 'disable_assistant',
      'skill': ActivationSkills.disable_assistant,
-     'tags': 'bye, shut down'
+     'tags': 'bye, shut down, exit, termination'
      }
 ]
 
