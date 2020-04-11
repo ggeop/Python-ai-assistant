@@ -23,7 +23,6 @@
 import logging
 import speech_recognition as sr
 
-from enum import Enum
 from datetime import datetime, timedelta
 
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -33,7 +32,7 @@ from jarvis.skills.skill_analyzer import SkillAnalyzer
 from jarvis.skills.skills_registry import skill_objects, db
 from jarvis.core.nlp_processor import ResponseCreator
 from jarvis.settings import GENERAL_SETTINGS
-
+from jarvis.enumerations import InputMode
 
 import jarvis.engines as engines
 
@@ -134,7 +133,3 @@ class ExecutionState:
         else:
             return cls.is_enabled
 
-
-class InputMode(Enum):
-    VOICE = 'voice'
-    TEXT = 'text'

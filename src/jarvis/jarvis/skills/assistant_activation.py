@@ -30,6 +30,7 @@ from jarvis.utils.console import clear
 from jarvis.utils.startup import play_activation_sound
 from jarvis.utils.mongoDB import stop_mongoDB_server
 from jarvis.settings import GENERAL_SETTINGS
+from jarvis.enumerations import InputMode
 
 
 class ActivationSkills(AssistantSkill):
@@ -40,7 +41,7 @@ class ActivationSkills(AssistantSkill):
         Creates the assistant respond according to the datetime hour and
         updates the execute state.
         """
-        if GENERAL_SETTINGS['input_mode'] == 'voice':
+        if GENERAL_SETTINGS['input_mode'] == InputMode.VOICE.value:
             play_activation_sound()
             time.sleep(1)
         cls.response('Hey user')

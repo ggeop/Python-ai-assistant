@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from jarvis.enumerations import InputMode
+
 ROOT_LOG_CONF = {
     'version': 1,
     'root': {
@@ -51,8 +53,9 @@ General assistant settings
 Keys Description:
     - assistant_name: Assistant name works as an activation word
     - enabled_period: A period (in seconds) that assistant is waked up (no need of other activation word)
-    - input_mode: A mode could be 'text' or 'voice'. In 'text' mode, the assistant waits to write in the console,
-                  and in 'voice' to speak in configured mic.
+    - input_mode: A mode could be 'InputMode.TEXT.value' or 'InputMode.VOICE.value'.
+      In 'InputMode.TEXT.value' mode, the assistant waits to write in the console,
+      and in 'InputMode.VOICE.value' to speak in configured mic.
     - response_in_text: If True: The assistant will print in the console the response
     - response_in_speech: If True: The assistant will produce voice response via audio output.               
 
@@ -62,7 +65,7 @@ Keys Description:
 GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
     'enabled_period': 300,
-    'input_mode': 'text',
+    'input_mode': InputMode.TEXT.value,
     'response_in_text': False,
     'response_in_speech': False,
 }
