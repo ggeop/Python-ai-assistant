@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 import logging
-import subprocess
 import sys
 import time
 from datetime import datetime
@@ -29,20 +28,8 @@ from datetime import datetime
 from jarvis.skills.skill_manager import AssistantSkill
 from jarvis.utils.console import clear
 from jarvis.utils.startup import play_activation_sound
-
-
-def start_mongoDB_server():
-    stopMongoServerCommand = "sudo service mongod start"
-    process = subprocess.Popen(stopMongoServerCommand.split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    logging.info(output)
-
-
-def stop_mongoDB_server():
-    stopMongoServerCommand = "sudo service mongod stop"
-    process = subprocess.Popen(stopMongoServerCommand.split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    logging.info(output)
+from jarvis.utils.mongoDB import stop_mongoDB_server
+from jarvis.settings import GENERAL_SETTINGS
 
 
 class ActivationSkills(AssistantSkill):
@@ -53,10 +40,10 @@ class ActivationSkills(AssistantSkill):
         Creates the assistant respond according to the datetime hour and
         updates the execute state.
         """
-        start_mongoDB_server()
-        play_activation_sound()
-        time.sleep(1)
-        cls.response(' ')
+        if GENERAL_SETTINGS['input_mode'] == 'voice':
+            play_activation_sound()
+            time.sleep(1)
+        cls.response('Hey user')
 
     @classmethod
     def disable_assistant(cls, **kwargs):
