@@ -21,19 +21,19 @@
 # SOFTWARE.
 
 from jarvis.skills.assistant_activation import ActivationSkills
-from jarvis.skills.assistant_info_skills import AssistantInfoSkills
-from jarvis.skills.datetime_skills import DatetimeSkills
-from jarvis.skills.browser_skills import BrowserSkills
+from jarvis.skills.assistant_info import AssistantInfoSkills
+from jarvis.skills.datetime import DatetimeSkills
+from jarvis.skills.browser import BrowserSkills
 from jarvis.skills.util_skills import UtilSkills
-from jarvis.skills.internet_skills import InternetSkills
-from jarvis.skills.libreoffice_suite_skills import LibreofficeSkills
-from jarvis.skills.linux_app_skills import LinuxAppSkills
-from jarvis.skills.location_skill import LocationSkill
-from jarvis.skills.reminder_skill import ReminderSkill
-from jarvis.skills.system_health_skills import SystemHealthSkills
-from jarvis.skills.weather_skills import WeatherSkills
-from jarvis.skills.word_skills import WordSkills
-from jarvis.skills.history_skills import HistorySkills
+from jarvis.skills.internet import InternetSkills
+from jarvis.skills.libreoffice_suite import LibreofficeSkills
+from jarvis.skills.linux_app import LinuxAppSkills
+from jarvis.skills.location import LocationSkill
+from jarvis.skills.reminder import ReminderSkill
+from jarvis.skills.system_health import SystemHealthSkills
+from jarvis.skills.weather import WeatherSkills
+from jarvis.skills.text import WordSkills
+from jarvis.skills.history import HistorySkills
 
 from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils.mongoDB import db

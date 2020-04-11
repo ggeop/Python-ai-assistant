@@ -27,7 +27,7 @@ import time
 from pyowm import OWM
 
 from jarvis.settings import WEATHER_API
-from jarvis.skills.location_skill import  LocationSkill
+from jarvis.skills.location import  LocationSkill
 
 from jarvis.skills.skill_manager import AssistantSkill
 
