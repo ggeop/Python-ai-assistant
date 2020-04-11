@@ -22,44 +22,7 @@
 
 import subprocess
 import logging
-from pymongo import MongoClient
-from jarvis.skills.skills_registry import BASIC_SKILLS, CONTROL_SKILLS
-
-
-def _convert_skill_object_to_str(skill):
-    for sk in skill:
-        sk.update((k, v.__name__) for k, v in sk.items() if k == 'skill')
-
-
-ENABLED_BASIC_SKILLS = [skill for skill in BASIC_SKILLS if skill['enable']]
-SKILLS = CONTROL_SKILLS + ENABLED_BASIC_SKILLS
-
-_convert_skill_object_to_str(BASIC_SKILLS)
-_convert_skill_object_to_str(CONTROL_SKILLS)
-
-
-class MongoDB:
-
-    def __init__(self, host='localhost', port=27017, database='skills'):
-        self.client = MongoClient(host, port)
-        self.database = self.client[database]
-        self._initialize_db()
-
-    def _initialize_db(self, database='skills'):
-        self.client.drop_database(database)
-
-        self.insert_to_table('basic_skills', BASIC_SKILLS)
-        self.insert_to_table('control_skills', CONTROL_SKILLS)
-        self.insert_to_table('enabled_basic_skills', ENABLED_BASIC_SKILLS)
-        self.insert_to_table('skills', SKILLS)
-
-    def get_from_table(self, table_name, key=None):
-        table_obj = self.database[table_name]
-        return table_obj.find(key)
-
-    def insert_to_table(self, table_name, values):
-        table_obj = self.database[table_name]
-        table_obj.insert_many(values)
+from pymongo import MongoClient, DESCENDING
 
 
 def start_mongoDB_server():
@@ -74,3 +37,37 @@ def stop_mongoDB_server():
     process = subprocess.Popen(stopMongoServerCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     logging.info(output)
+
+
+class MongoDB:
+    """
+    This class encapsulates methods related to MongoDB 
+    """
+
+    def __init__(self, host='localhost', port=27017):
+        self.client = MongoClient(host, port)
+        self.database = self.client['jarvis']
+
+    def get_documents(self, collection, key=None, limit=None):
+        collection_obj = self.database[collection]
+        try:
+            if limit:
+                return list(collection_obj.find(key).sort('_id', DESCENDING).limit(limit))
+            else:
+                return list(collection_obj.find(key).sort('_id', DESCENDING))
+        except Exception as e:
+            logging.error(e)
+
+    def insert_many_documents(self, collection, documents):
+        collection_obj = self.database[collection]
+        try:
+            collection_obj.insert_many(documents)
+        except Exception as e:
+            logging.error(e)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Start MongoDB Service
+# ----------------------------------------------------------------------------------------------------------------------
+start_mongoDB_server()
+db = MongoDB()

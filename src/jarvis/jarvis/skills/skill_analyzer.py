@@ -29,7 +29,7 @@ class SkillAnalyzer:
         self.similarity_measure = similarity_measure
         self.args = args
         self.vectorizer = self._create_vectorizer()
-        self.skills = [i for i in db.get_from_table('skills')]
+        self.skills = db.get_documents(collection='skills')
         self.analyzer_sensitivity = sensitivity
 
     @property

@@ -33,8 +33,10 @@ from jarvis.skills.reminder_skill import ReminderSkill
 from jarvis.skills.system_health_skills import SystemHealthSkills
 from jarvis.skills.weather_skills import WeatherSkills
 from jarvis.skills.word_skills import WordSkills
+from jarvis.skills.history_skills import HistorySkills
 
 from jarvis.settings import GENERAL_SETTINGS
+from jarvis.utils.mongoDB import db
 
 # All available assistant skills
 # Keys description:
@@ -194,31 +196,62 @@ BASIC_SKILLS = [
      'tags': 'skills, your skills, what are your skills',
      'description': 'Ask to tell you what he can do e.g. "Jarvis what can you do"?'
      },
+
     {'name': 'take_a_note',
      'enable': True,
      'skill': LinuxAppSkills.open_note_app,
      'tags': 'note',
      'description': 'Ask to create a note e.g. "Jarvis can you open a note"?'
      },
+
     {'name': 'open_new_browser_window',
      'enable': True,
      'skill': LinuxAppSkills.open_new_browser_window,
      'tags': 'firefox, open firefox',
      'description': 'Ask to open new browser window e.g. "Jarvis can you open a firefox"?'
      },
+
     {'name': 'open_new_bash',
      'enable': True,
      'skill': LinuxAppSkills.open_new_bash,
      'tags': 'bash',
      'description': 'Ask to open new bash e.g. "Jarvis can you open bash"?'
      },
+
     {'name': 'get_current_location',
      'enable': True,
      'skill': LocationSkill.get_current_location,
      'tags': 'my location, current location',
      'description': 'Ask to tell you your current location e.g. "Jarvis tell me my location"?'
-     }
+     },
 
+    {'name': 'show_history_log',
+     'enable': True,
+     'skill': HistorySkills.show_history_log,
+     'tags': 'history, history log, user history',
+     'description': 'Ask to tell you asked commands e.g. "Jarvis tell me my history"?'
+     }
 ]
 
 skill_objects = {skill['skill'].__name__: skill['skill'] for skill in BASIC_SKILLS + CONTROL_SKILLS}
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Load skills in MongoDB
+# ----------------------------------------------------------------------------------------------------------------------
+
+def _convert_skill_object_to_str(skill):
+ for sk in skill:
+  sk.update((k, v.__name__) for k, v in sk.items() if k == 'skill')
+
+
+ENABLED_BASIC_SKILLS = [skill for skill in BASIC_SKILLS if skill['enable']]
+SKILLS = CONTROL_SKILLS + ENABLED_BASIC_SKILLS
+
+_convert_skill_object_to_str(BASIC_SKILLS)
+_convert_skill_object_to_str(CONTROL_SKILLS)
+
+db.insert_many_documents(collection='basic_skills', documents=BASIC_SKILLS)
+db.insert_many_documents(collection='control_skills', documents=CONTROL_SKILLS)
+db.insert_many_documents(collection='enabled_basic_skills', documents=ENABLED_BASIC_SKILLS)
+db.insert_many_documents(collection='skills', documents=SKILLS)

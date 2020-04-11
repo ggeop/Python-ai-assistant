@@ -26,15 +26,14 @@ import speech_recognition as sr
 from enum import Enum
 from datetime import datetime, timedelta
 
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from jarvis.skills.skill_analyzer import SkillAnalyzer
-from jarvis.skills.skills_registry import skill_objects
+from jarvis.skills.skills_registry import skill_objects, db
 from jarvis.core.nlp_processor import ResponseCreator
 from jarvis.settings import GENERAL_SETTINGS
-from jarvis.utils.mongoDB import MongoDB
+
 
 import jarvis.engines as engines
 
@@ -42,7 +41,7 @@ import jarvis.engines as engines
 class Processor:
     def __init__(self, settings_):
         self.settings = settings_
-        self.db = MongoDB()
+        self.db = db
         self.input_engine = engines.STTEngine(
                                         pause_threshold=self.settings.SPEECH_RECOGNITION.get('pause_threshold'),
                                         energy_theshold=self.settings.SPEECH_RECOGNITION.get('energy_threshold'),
@@ -76,15 +75,21 @@ class Processor:
         self.output_engine.assistant_response(response)
         self._execute_skill(skill_to_execute)
 
+        record = {'user_transcript': transcript,
+                  'response': response,
+                  'executed_skill': skill_to_execute
+        }
+        self.db.insert_many_documents('history', [record])
+
     def _trapped_until_assistant_is_enabled(self):
         if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value:
             while not ExecutionState.is_ready_to_execute():
                 voice_transcript = self.input_engine.recognize_input()
                 transcript_words = voice_transcript.split()
-                enable_tag = set(transcript_words).intersection(self.db.get_from_table('control_skills', {'name': 'enable_assistant'}) .get('tags'))
+                enable_tag = set(transcript_words).intersection(self.db.get_documents('control_skills', {'name': 'enable_assistant'}) .get('tags'))
 
                 if bool(enable_tag):
-                    skill_name = self.db.get_from_table('control_skills', {'name': 'enable_assistant'}).get('skills')
+                    skill_name = self.db.get_documents('control_skills', {'name': 'enable_assistant'}).get('skills')
                     skill_object = skill_objects[skill_name]
                     skill_object()
                     ExecutionState.update()

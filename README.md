@@ -25,6 +25,7 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Tells everything it can do** (e.g 'Jarvis tell me your skills or tell me what can you do')
 *   **Tells the current location** (e.g 'Jarvis tell me your current location')
 *   **Tells how much memory consumes** (e.g 'Jarvis tell me your memory consumption)
+*   **Tells users commands history** (e.g 'Jarvis tell me my history')
 
 #### Assistant Features
 *   **Asynchronous command execution & speech interruption**
@@ -72,11 +73,12 @@ bash run_jarvis.sh
 You can easily add a new skill in two steps.
 *   Create a new configurationin SKILLS in **skills_registry.py**
 ```python
-'new_skill': {'enable': True,
-              'skill': Skills.new_skill,
-              'tags': {'tag1', 'tag2'},
-              'description': 'skill description..'
-              }               
+{ 'name': 'new_skill',
+  'enable': True,
+  'skill': Skills.new_skill,
+  'tags': {'tag1', 'tag2'},
+  'description': 'skill description..'
+}               
 ```
 *   Create a new skill package in **skills**
 

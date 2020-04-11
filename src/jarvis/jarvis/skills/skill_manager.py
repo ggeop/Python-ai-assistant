@@ -35,6 +35,7 @@ class AssistantSkill:
         cls.tts_engine.assistant_response(text)
 
     @classmethod
-    def _extract_tags(cls, voice_transcript, skill_tags):
+    def _extract_tags(cls, voice_transcript, tags):
         transcript_words = voice_transcript.split()
-        return set(transcript_words).intersection(skill_tags)
+        tags = tags.split(',')
+        return set(transcript_words).intersection(tags)
