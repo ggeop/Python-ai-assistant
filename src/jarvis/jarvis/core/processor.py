@@ -102,10 +102,10 @@ class Processor:
     def _execute_skill(skill):
         if skill:
             try:
-                skill_method_name = skill.get('skill').get('skill')
-                logging.debug('Executing skill {0}'.format(skill))
-                skill_method = skill_objects[skill_method_name]
-                skill_method(**skill)
+                logging.debug('Executing skill {0}'.format(skill.get('skill').get('name')))
+                skill_func_name = skill.get('skill').get('func')
+                skill_func = skill_objects[skill_func_name]
+                skill_func(**skill)
             except Exception as e:
                 logging.debug("Error with the execution of skill with message {0}".format(e))
 
