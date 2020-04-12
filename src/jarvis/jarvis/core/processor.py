@@ -63,17 +63,36 @@ class Processor:
                                             )
 
     def run(self):
+        """
+        This method is the assistant starting point.
 
+        - STEP 1: Waiting for enable keyword (ONLY in 'voice' mode)
+        - STEP 2: Retrieve input (voice or text)
+        - STEP 3: Matches the input with a skill
+        - STEP 4: Create a response
+        - STEP 5: Execute matched skill
+        - STEP 6: Insert user transcript and response in history collection (in MongoDB)
+
+        """
+
+        # STEP 1
         self._trapped_until_assistant_is_enabled()
 
+        # STEP 2
         transcript = self.input_engine.recognize_input()
+
+        # STEP 3
         skill_to_execute = self._extract_skill(transcript)
+
+        # STEP 4
         response = self.response_creator.create_positive_response(transcript) if skill_to_execute \
             else self.response_creator.create_negative_response(transcript)
-
         self.output_engine.assistant_response(response)
+
+        # STEP 5
         self._execute_skill(skill_to_execute)
 
+        # STEP 6
         record = {'user_transcript': transcript,
                   'response': response,
                   'executed_skill': skill_to_execute
@@ -81,6 +100,9 @@ class Processor:
         self.db.insert_many_documents('history', [record])
 
     def _trapped_until_assistant_is_enabled(self):
+        """
+        In voice mode assistant waiting to hear an enable keyword to start, until then is trapped in a loop.
+        """
         if self.settings.GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value:
             while not ExecutionState.is_ready_to_execute():
                 voice_transcript = self.input_engine.recognize_input()
