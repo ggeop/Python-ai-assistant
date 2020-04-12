@@ -41,7 +41,7 @@ ROOT_LOG_CONF = {
     },
     'formatters': {
         'detailed': {
-            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            'format': '%(levelname)s - %(message)s'
         },
     }
 }
