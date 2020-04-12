@@ -20,9 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.skills import skills_registry
-
 from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.utils.mongoDB import db
 
 
 class AssistantInfoSkills(AssistantSkill):
@@ -32,11 +31,11 @@ class AssistantInfoSkills(AssistantSkill):
         """
         Responses that assistant can hear the user.
         """
-        print('Yes, I hear you!')
+        cls.response('Yes, I hear you!')
 
     @classmethod
     def _create_skill_response(cls, response):
-        for skill_id, skill in enumerate(skills_registry.BASIC_SKILLS.values()):
+        for skill_id, skill in enumerate(db.get_documents(collection='basic_skills')):
             response = response + '{0}) '.format(skill_id + 1) + skill['description'] + '\n'
         return response
 
@@ -52,10 +51,9 @@ class AssistantInfoSkills(AssistantSkill):
         try:
             response_base = 'I can do the following: \n\n'
             response = cls._create_skill_response(response_base)
-            # response.assistant_response(response) For testing but that just won't work so cls.response() is the easiest fix xD
             cls.response(response)
         except Exception as e:
-            print("Error with the execution of skill with message {0}".format(e)) #Just in case something  doesn't work, we get an error code
+            print("Error with the execution of skill with message {0}".format(e))
 
     @classmethod
     def assistant_help(cls, **kwargs):
