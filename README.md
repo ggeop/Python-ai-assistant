@@ -27,6 +27,8 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Tells how much memory consumes** (e.g 'Jarvis tell me your memory consumption)
 *   **Tells users commands history** (e.g 'Jarvis tell me my history')
 *   **Write/tell 'learn' and enable learning mode and add new responses on demand!** (e.g 'learn')
+*   **Clear bash console** (e.g 'Jarvis clear console')
+*   **Has help command, which prints all the skills with their descriptions** (e.g 'help')
 
 #### Assistant Features
 *   **Asynchronous command execution & speech interruption**
@@ -36,6 +38,7 @@ It can understand human speech, talk to user and execute basic commands.
 *   Configurable **assistant name** (e.g 'Jarvis', 'Sofia', 'John' etc.)
 *   **Log preview** in console
 *   **Vocal or/and text response**
+*   **Keeps commands history and learned skills** in MongoDB.
 
 ## Getting Started
 ### Create KEYs for third party APIs
