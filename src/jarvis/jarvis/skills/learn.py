@@ -21,15 +21,23 @@
 # SOFTWARE.
 
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.mongoDB import db
+
+header = """
+-------------------------------------------------------------------------
+I would like to learn, tell me the right answer!
+-------------------------------------------------------------------------
+* Note: Create new skill! Write your question and the appropriate answer.
+\n
+"""
 
 
 class Learn(AssistantSkill):
 
     @classmethod
     def learn(cls, **kwargs):
-        print('-------- Learning Mode ON --------')
+        print(header)
         continue_add = 'y'
         while continue_add == 'y':
             # TODO: Add also speech input based on assistant mode.
@@ -43,8 +51,8 @@ class Learn(AssistantSkill):
                          },
 
             continue_add = input('Continue add skills (y/n): ').lower()
-            db.insert_many_documents(collection='skills', documents=new_skill)
-        print('-------- Learning Mode OFF --------')
+            db.insert_many_documents(collection='learned_skills', documents=new_skill)
+        print('------------------------------------------------------------------------')
 
     @classmethod
     def tell_response(cls, **kwargs):

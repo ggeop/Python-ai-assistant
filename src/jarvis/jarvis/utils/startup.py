@@ -32,6 +32,7 @@ from logging import config
 
 from jarvis.settings import ROOT_LOG_CONF
 from jarvis.utils.console import jarvis_logo, start_text, OutputStyler, user_input, clear, stdout_print
+from jarvis.utils.mongoDB import db
 
 # Create a Console & Rotating file logger
 config.dictConfig(ROOT_LOG_CONF)
@@ -84,6 +85,12 @@ def startup_ckecks():
     if not internet_connectivity_check():
         stdout_print("WARNING: No internet connection, skills with internet connection will not work")
         time.sleep(3)
+
+    if not db.is_collection_empty(collection='learned_skills'):
+        print("INFO: I found learned skills..")
+        user_answer = input('Remove learned skills (y/n): ').lower()
+        if user_answer == 'y':
+            db.drop_collection(collection='learned_skills')
 
 
 def start_up():

@@ -21,20 +21,25 @@
 # SOFTWARE.
 
 import re
+import logging
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.mongoDB import db
 
 header = """
-------------------------
+-------------------------------------------------------------------------
 History
-------------------------
-##########################################################################
-# Note: The default limit is 3.
-#       Change the limit by adding a number e.g show me user history 10
-##########################################################################
-\n
+-------------------------------------------------------------------------
+* Note: The default limit is 3. Change the limit by adding a number e.g 
+show me user history 10.
+
 """
+
+response_base = """
+* User Transcript: {0}
+* Response: {1}
+* Executed Skill: {2}
+------------------------"""
 
 
 class HistorySkills(AssistantSkill):
@@ -57,18 +62,21 @@ class HistorySkills(AssistantSkill):
     @classmethod
     def _create_response(cls, documents):
         response = ''
-        for document in documents:
-            response += """
-         * User Transcript: {0}
-         * Response: {1}
-         * Executed Skill: {2}
-         ------------------------
-         """.format(document.get('user_transcript'), document.get('response'), document.get('executed_skill').get('skill'))
-        return header + response
+        try:
+            for document in documents:
+                response += response_base.format(document.get('user_transcript', '--'),
+                                                 document.get('response', '--'),
+                                                 document.get('executed_skill').get('skill').get('name') if
+                                                 document.get('executed_skill') else '--'
+                                                 )
+        except Exception as e:
+            logging.error(e)
+        finally:
+            return header + response
 
     @classmethod
     def _extract_history_limit(cls, voice_transcript, skill):
-        tags = cls._extract_tags(voice_transcript, skill['tags'])
+        tags = cls.extract_tags(voice_transcript, skill['tags'])
         only_number_regex = '([0-9]+$)'
         for tag in tags:
             reg_ex = re.search(tag + ' ' + only_number_regex, voice_transcript)

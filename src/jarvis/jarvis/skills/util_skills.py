@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class UtilSkills(AssistantSkill):
@@ -30,4 +30,9 @@ class UtilSkills(AssistantSkill):
         """
         Stop assistant speech.
         """
-        cls.tts_engine.stop_speaking = True
+        cls.engine.stop_speaking = True
+
+    @classmethod
+    def clear_console(cls, **kwargs):
+        cls.console_manager.console_output("Sure")
+

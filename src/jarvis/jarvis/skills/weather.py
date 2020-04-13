@@ -29,19 +29,19 @@ from pyowm import OWM
 from jarvis.settings import WEATHER_API
 from jarvis.skills.location import  LocationSkill
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class WeatherSkills(AssistantSkill):
     
     @classmethod
-    def tell_the_weather(cls, voice_transcript, skill,  **kwargs):
+    def tell_the_weather(cls, voice_transcript, skill):
         """
         Tells the weather of a place
         :param tag: string (e.g 'weather')
         :param voice_transcript: string (e.g 'weather in London')
         """
-        tags = cls._extract_tags(voice_transcript, skill['tags'])
+        tags = cls.extract_tags(voice_transcript, skill['tags'])
         for tag in tags:
             reg_ex = re.search(tag + ' [a-zA-Z][a-zA-Z] ([a-zA-Z]+)', voice_transcript)
             try:

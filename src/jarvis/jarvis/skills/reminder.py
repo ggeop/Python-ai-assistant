@@ -26,7 +26,7 @@ import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class ReminderSkill(AssistantSkill):

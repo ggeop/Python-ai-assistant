@@ -24,7 +24,7 @@ import os
 import psutil
 
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class SystemHealthSkills(AssistantSkill):

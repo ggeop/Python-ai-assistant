@@ -24,7 +24,7 @@ import subprocess
 import logging
 import time
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class LinuxAppSkills(AssistantSkill):

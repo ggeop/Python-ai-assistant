@@ -24,7 +24,7 @@ import re
 import time
 import logging
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class WordSkills(AssistantSkill):
@@ -36,7 +36,7 @@ class WordSkills(AssistantSkill):
         :param voice_transcript: string (e.g 'spell word animal')
         :param skill: dict (e.g
         """
-        tags = cls._extract_tags(voice_transcript, skill['tags'])
+        tags = cls.extract_tags(voice_transcript, skill['tags'])
         for tag in tags:
             reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
             try:

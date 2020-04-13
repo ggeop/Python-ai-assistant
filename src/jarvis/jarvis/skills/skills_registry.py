@@ -64,6 +64,7 @@ BASIC_SKILLS = [
      'tags': 'good morning, good afternoon, good evening',
      'description': 'Greeting the assistant and he will greeting back e.x good morning Jarvis'
      },
+
     {'name': 'open_site_in_browser',
      'enable': True,
      'func': BrowserSkills.open_website_in_browser,
@@ -95,8 +96,8 @@ BASIC_SKILLS = [
     {'name': 'tell_about',
      'enable': True,
      'func': BrowserSkills.tell_me_about,
-     'tags': 'about',
-     'description': 'Ask me "about" something, e.g. tell_the_skills me about google'
+     'tags': 'about, what is',
+     'description': 'Ask me "about" something, e.g. tell me about google, what is google'
      },
     {'name': 'speech_interruption',
      'enable': True,
@@ -243,8 +244,15 @@ BASIC_SKILLS = [
      'enable': True,
      'func': Learn.tell_response,
      'tags': '',
-     'description': ''
-     }
+     'description': 'Util skill, there is no tags to call it'
+     },
+
+     {'name': 'clear_console',
+      'enable': True,
+      'func': UtilSkills.clear_console,
+      'tags': 'clear, clear console',
+      'description': 'clears bash console e.g "Jarvis clean console"'
+      }
 ]
 
 skill_objects = {skill['func'].__name__: skill['func'] for skill in BASIC_SKILLS + CONTROL_SKILLS}
@@ -254,18 +262,26 @@ skill_objects = {skill['func'].__name__: skill['func'] for skill in BASIC_SKILLS
 # Load skills in MongoDB
 # ----------------------------------------------------------------------------------------------------------------------
 
+# -------------------------
+# Pre-loading processing
+# -------------------------
 def _convert_skill_object_to_str(skill):
     for sk in skill:
         sk.update((k, v.__name__) for k, v in sk.items() if k == 'func')
 
 
-ENABLED_BASIC_SKILLS = [skill for skill in BASIC_SKILLS if skill['enable']]
-SKILLS = CONTROL_SKILLS + ENABLED_BASIC_SKILLS
-
-_convert_skill_object_to_str(BASIC_SKILLS)
 _convert_skill_object_to_str(CONTROL_SKILLS)
 
-db.insert_many_documents(collection='basic_skills', documents=BASIC_SKILLS)
-db.insert_many_documents(collection='control_skills', documents=CONTROL_SKILLS)
-db.insert_many_documents(collection='enabled_basic_skills', documents=ENABLED_BASIC_SKILLS)
-db.insert_many_documents(collection='skills', documents=SKILLS)
+# Create enable basic skills
+ENABLED_BASIC_SKILLS = [skill for skill in BASIC_SKILLS if skill['enable']]
+_convert_skill_object_to_str(ENABLED_BASIC_SKILLS)
+
+# -------------------------
+# Loading
+# -------------------------
+all_skills = {
+    'control_skills': CONTROL_SKILLS,
+    'enabled_basic_skills': ENABLED_BASIC_SKILLS,
+}
+for collection, documents in all_skills.items():
+    db.update_collection(collection, documents)

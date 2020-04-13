@@ -34,7 +34,9 @@ class SkillAnalyzer:
 
     @property
     def skills(self):
-        return self.db.get_documents(collection='skills')
+        return self.db.get_documents(collection='control_skills')\
+               + self.db.get_documents(collection='enabled_basic_skills')\
+               + self.db.get_documents(collection='learned_skills')
 
     @property
     def tags(self):

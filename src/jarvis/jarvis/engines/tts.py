@@ -64,7 +64,7 @@ class TTSEngine(TTS):
 
     def assistant_response(self, message):
         """
-        Assistant response in voice or/and in text.
+        Assistant response in voice.
         :param message: string
         """
         self._insert_into_message_queue(message)
@@ -76,8 +76,7 @@ class TTSEngine(TTS):
 
     def _insert_into_message_queue(self, message):
         try:
-            if message:
-                self.message_queue.put(message)
+            self.message_queue.put(message)
         except Exception as e:
             self.logger.error("Unable to insert message to queue with error message: {0}".format(e))
 

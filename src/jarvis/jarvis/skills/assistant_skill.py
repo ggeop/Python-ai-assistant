@@ -20,22 +20,43 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import logging
+
 from jarvis.settings import GENERAL_SETTINGS
 from jarvis.core.console_manager import ConsoleManager
 import jarvis.engines as engines
 
 
 class AssistantSkill:
+    """
+    This class is the parent of all skill classes.
+    """
     first_activation = True
     console_manager = ConsoleManager()
-    tts_engine = engines.TTSEngine() if GENERAL_SETTINGS.get('response_in_speech') else engines.TTTEngine()
+    engine = engines.TTSEngine() if GENERAL_SETTINGS.get('response_in_speech') else engines.TTTEngine()
 
     @classmethod
     def response(cls, text):
-        cls.tts_engine.assistant_response(text)
+        cls.engine.assistant_response(text)
 
     @classmethod
-    def _extract_tags(cls, voice_transcript, tags):
-        transcript_words = voice_transcript.split()
-        tags = tags.split(',')
-        return set(transcript_words).intersection(tags)
+    def extract_tags(cls, voice_transcript, tags):
+        """
+        This method identifies the tags from the user transcript for a specific skill.
+
+        e.x
+        Let's that the user says "hi jarvis!".
+        The skill analyzer will match it with enable_assistant skill which has tags 'hi, hello ..'
+        This method will identify the that the enabled word was the 'hi' not the hello.
+
+        :param voice_transcript: string
+        :param tags: string
+        :return: set
+        """
+        try:
+            transcript_words = voice_transcript.split()
+            tags = tags.split(',')
+            return set(transcript_words).intersection(tags)
+        except Exception as e:
+            logging.error("Failed to extract tags with message {0}".format(e))
+            return set()

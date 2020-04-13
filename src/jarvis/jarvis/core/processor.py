@@ -94,8 +94,8 @@ class Processor:
 
         # STEP 6
         record = {'user_transcript': transcript,
-                  'response': response,
-                  'executed_skill': skill_to_execute
+                  'response': response if response else '--',
+                  'executed_skill': skill_to_execute if skill_to_execute else '--'
         }
         self.db.insert_many_documents('history', [record])
 
@@ -107,7 +107,9 @@ class Processor:
             while not ExecutionState.is_ready_to_execute():
                 voice_transcript = self.input_engine.recognize_input()
                 transcript_words = voice_transcript.split()
-                enable_tag = set(transcript_words).intersection(self.db.get_documents('control_skills', {'name': 'enable_assistant'}) .get('tags'))
+                enable_skills = self.db.get_documents('control_skills', {'name': 'enable_assistant'})
+                enable_tags = [skill.get('tags') for skill in enable_skills]
+                enable_tag = set(transcript_words).intersection(enable_tags)
 
                 if bool(enable_tag):
                     skill_name = self.db.get_documents('control_skills', {'name': 'enable_assistant'}).get('skills')

@@ -27,10 +27,11 @@ import time
 import re
 import urllib.request
 import subprocess
+import webbrowser
 
 from bs4 import BeautifulSoup as bs
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class BrowserSkills(AssistantSkill):
@@ -38,21 +39,24 @@ class BrowserSkills(AssistantSkill):
     @classmethod
     def tell_me_about(cls, voice_transcript, skill):
         """
-        Tells about something by searching in wikipedia
+        Tells about something by searching on wiki.
         :param voice_transcript: string (e.g 'about google')
-        :param skill: dict (e.g
+        :param skill: dict
         """
-        tags = cls._extract_tags(voice_transcript, skill['tags'])
+        tags = cls.extract_tags(voice_transcript, skill['tags'])
+        only_text_pattern = '([a-zA-Z]+)'
         for tag in tags:
-            reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
+            reg_ex = re.search(tag + ' ' + only_text_pattern, voice_transcript)
             try:
                 if reg_ex:
                     topic = reg_ex.group(1)
                     response = cls._decoded_wiki_response(topic)
                     cls.response(response)
             except Exception as e:
-                logging.debug(e)
-                cls.response(" I can't find on the internet what you want")
+                logging.error("Error with the execution of skill with message {0}".format(e))
+                cls.response(" I can't find what you want, and I will open a new tab in browser")
+                time.sleep(1)
+                cls._search_on_google(topic)
 
     @classmethod
     def open_in_youtube(cls, voice_transcript, skill):
@@ -61,7 +65,7 @@ class BrowserSkills(AssistantSkill):
         :param voice_transcript: string (e.g 'about google')
         :param skill: dict (e.g
         """
-        tags = cls._extract_tags(voice_transcript, skill['tags'])
+        tags = cls.extract_tags(voice_transcript, skill['tags'])
         for tag in tags:
             reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
             try:
@@ -75,7 +79,7 @@ class BrowserSkills(AssistantSkill):
                     video = 'https://www.youtube.com' + vids[0]['href']
                     subprocess.Popen(["python", "-m", "webbrowser", "-t", video], stdout=subprocess.PIPE, shell=False)
             except Exception as e:
-                logging.debug(e)
+                logging.error("Error with the execution of skill with message {0}".format(e))
                 cls.response("I can't find what do you want in Youtube..")
 
     @classmethod
@@ -89,7 +93,7 @@ class BrowserSkills(AssistantSkill):
         e.g voice_transcript='open youtube and open netflix' the application will find
         and execute only the first one, in our case will open the youtube.
         """
-        tags = cls._extract_tags(voice_transcript, skill['tags'])
+        tags = cls.extract_tags(voice_transcript, skill['tags'])
         for tag in tags:
             reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
             try:
@@ -97,11 +101,11 @@ class BrowserSkills(AssistantSkill):
                     domain = reg_ex.group(1)
                     url = cls._create_url(domain)
                     cls.response('Sure')
-                    subprocess.Popen(["python", "-m", "webbrowser", "-t", url], stdout=subprocess.PIPE, shell=False)
                     time.sleep(1)
+                    webbrowser.open_new_tab(url)
                     cls.response('I opened the {0}'.format(domain))
             except Exception as e:
-                logging.debug(e)
+                logging.error("Error with the execution of skill with message {0}".format(e))
                 cls.response("I can't find this domain..")
 
     @classmethod
@@ -113,18 +117,19 @@ class BrowserSkills(AssistantSkill):
             client.close()
             soup = bs(xml_page, "xml")
             news_list = soup.findAll("item")
+            response = ""
             for news in news_list[:5]:
-                response = ""
-                data = news.title.text.encode('utf-8')
+                data = news.title.text.encode('utf-8') + '\n'
                 response += data.decode()
-                cls.response(response)
+            cls.response(response)
         except Exception as e:
-            logging.debug(e)
+            logging.error("Error with the execution of skill with message {0}".format(e))
+            cls.response("I can't find about daily news..")
 
     @classmethod
     def _decoded_wiki_response(cls, topic):
         """
-        A private method for decoding the wiki response.
+        Decoding the wiki response.
         :param topic: string
         :return: string
         """
@@ -146,4 +151,13 @@ class BrowserSkills(AssistantSkill):
         else:
             url = 'http://www.' + tag + '.com'
         return url
+
+    @classmethod
+    def _search_on_google(cls, term):
+        url = "https://www.google.com.tr/search?q={}".format(term)
+        try:
+            webbrowser.open_new_tab(url)
+        except Exception as e:
+            logging.error("Error with the execution of skill with message {0}".format(e))
+            cls.response("Sorry I faced an issue with google search")
 

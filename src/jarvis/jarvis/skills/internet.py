@@ -25,7 +25,7 @@ import json
 import requests
 import logging
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class InternetSkills(AssistantSkill):

@@ -58,6 +58,8 @@ class ConsoleManager:
         print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
 
         print(OutputStyler.HEADER + '-------------- ASSISTANT --------------' + OutputStyler.ENDC)
+
+        text = text if text else ''
         print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
 
     @staticmethod

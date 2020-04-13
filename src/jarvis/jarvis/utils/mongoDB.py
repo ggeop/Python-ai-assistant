@@ -65,6 +65,24 @@ class MongoDB:
         except Exception as e:
             logging.error(e)
 
+    def drop_collection(self, collection):
+        collection_obj = self.database[collection]
+        try:
+            collection_obj.drop()
+        except Exception as e:
+            logging.error(e)
+
+    def update_collection(self, collection, documents):
+        self.drop_collection(collection)
+        self.insert_many_documents(collection, documents)
+
+    def is_collection_empty(self, collection):
+        collection_obj = self.database[collection]
+        try:
+            return collection_obj.count() == 0
+        except Exception as e:
+            logging.error(e)
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Start MongoDB Service

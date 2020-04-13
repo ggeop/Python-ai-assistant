@@ -20,8 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.skills.skill_manager import AssistantSkill
+import logging
+
+from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.mongoDB import db
+
+help_header = "------------------------------- Help -----------------------------------"
 
 
 class AssistantInfoSkills(AssistantSkill):
@@ -34,34 +38,54 @@ class AssistantInfoSkills(AssistantSkill):
         cls.response('Yes, I hear you!')
 
     @classmethod
-    def _create_skill_response(cls, response):
-        for skill_id, skill in enumerate(db.get_documents(collection='basic_skills')):
-            response = response + '{0}) '.format(skill_id + 1) + skill['description'] + '\n'
-        return response
-
-    @classmethod
     def tell_the_skills(cls, **kwargs):
         """
         Tells what he can do as assistant.
-        response_base = 'I can do the following: \n\n'
-        response = cls._create_skill_response(response_base)
-        response.assistant_response(response)#That doesn't work str has no attribut assistant_response
-        #But that works:
-         """
+
+        NOTE: Use print instead cls.response() because we want only to print the response
+        """
         try:
             response_base = 'I can do the following: \n\n'
             response = cls._create_skill_response(response_base)
             cls.response(response)
         except Exception as e:
-            print("Error with the execution of skill with message {0}".format(e))
+            logging.error("Error with the execution of skill with message {0}".format(e))
+            cls.response("Sorry I faced an issue")
 
     @classmethod
     def assistant_help(cls, **kwargs):
         """
         Assistant help prints valuable information about the application.
+
+        NOTE: Use print instead cls.response() because we want only to print the response
         """
-        print("---- Help ----")
-        print("Assistant skills: ")
+        print(help_header)
         response_base = ''
-        response = cls._create_skill_response(response_base)
-        print(response)
+        try:
+            response = cls._create_skill_response(response_base)
+            print(response)
+        except Exception as e:
+            logging.error("Error with the execution of skill with message {0}".format(e))
+            cls.response("Sorry I faced an issue")
+
+    @classmethod
+    def _create_skill_response(cls, response):
+
+        # --------------------------------------------------------------------------------------------------------------
+        # For existing skills (basic skills)
+        # --------------------------------------------------------------------------------------------------------------
+        basic_skills = db.get_documents(collection='enabled_basic_skills')
+        response = response + '* Basic Enabled Skills:' + '\n'
+        for skill_id, skill in enumerate(basic_skills, start=1):
+            response = response + '{0}) '.format(skill_id) + skill.get('description') + '\n'
+
+        # --------------------------------------------------------------------------------------------------------------
+        # For learned skills (created from 'learn' skill)
+        # --------------------------------------------------------------------------------------------------------------
+        skills = db.get_documents(collection='learned_skills')
+        response = response + '\n' + '* Learned Skills:' + '\n'
+        for skill_id, skill in enumerate(skills, start=1):
+            message = 'Learned skill - Q: ' + skill.get('tags') + ' | R: ' + skill.get('response')
+            response = response + '{0}) '.format(skill_id) + message + '\n'
+
+        return response

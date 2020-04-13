@@ -26,7 +26,7 @@ import wolframalpha
 
 from jarvis.settings import WOLFRAMALPHA_API
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class WolframSkills(AssistantSkill):

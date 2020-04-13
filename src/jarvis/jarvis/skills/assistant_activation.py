@@ -25,7 +25,7 @@ import sys
 import time
 from datetime import datetime
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.console import clear
 from jarvis.utils.startup import play_activation_sound
 from jarvis.utils.mongoDB import stop_mongoDB_server
@@ -38,18 +38,23 @@ class ActivationSkills(AssistantSkill):
     @classmethod
     def enable_assistant(cls, **kwargs):
         """
-        Creates the assistant respond according to the datetime hour and
-        updates the execute state.
+        Plays activation sound and creates the assistant response according to the day hour.
         """
         if GENERAL_SETTINGS['input_mode'] == InputMode.VOICE.value:
-            play_activation_sound()
+            try:
+                play_activation_sound()
+            except Exception as e:
+                logging.error("Error with the execution of skill with message {0}".format(e))
+                cls.response("Sorry I faced an issue")
             time.sleep(1)
-        cls.response('Hey user')
+        cls.assistant_greeting(kwargs)
 
     @classmethod
     def disable_assistant(cls, **kwargs):
         """
-        Shutdown the assistant service and clean the  bash stdout.
+        - Clear console
+        - Stop MongoDB server
+        - Shutdown the assistant service
         """
         cls.response('Bye')
         time.sleep(1)
@@ -60,12 +65,15 @@ class ActivationSkills(AssistantSkill):
 
     @classmethod
     def assistant_greeting(cls, *kwargs):
+        """
+        Assistant greeting based on day hour.
+        """
         now = datetime.now()
         day_time = int(now.strftime('%H'))
 
         if day_time < 12:
-            cls.response('Good morning human')
+            cls.response('Good morning')
         elif 12 <= day_time < 18:
-            cls.response('Good afternoon human')
+            cls.response('Good afternoon')
         else:
-            cls.response('Good evening human')
+            cls.response('Good evening')

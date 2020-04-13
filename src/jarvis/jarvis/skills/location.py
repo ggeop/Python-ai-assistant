@@ -26,7 +26,7 @@ import logging
 
 from jarvis.settings import IPSTACK_API
 
-from jarvis.skills.skill_manager import AssistantSkill
+from jarvis.skills.assistant_skill import AssistantSkill
 
 
 class LocationSkill(AssistantSkill):
