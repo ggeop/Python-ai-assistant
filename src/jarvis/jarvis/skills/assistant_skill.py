@@ -22,8 +22,8 @@
 
 import logging
 
-from jarvis.settings import GENERAL_SETTINGS
 from jarvis.core.console_manager import ConsoleManager
+from jarvis.utils.mongoDB import db
 import jarvis.engines as engines
 
 
@@ -33,7 +33,8 @@ class AssistantSkill:
     """
     first_activation = True
     console_manager = ConsoleManager()
-    engine = engines.TTSEngine() if GENERAL_SETTINGS.get('response_in_speech') else engines.TTTEngine()
+    engine = engines.TTSEngine() if db.get_documents(collection='general_settings', key='response_in_speech')\
+        else engines.TTTEngine()
 
     @classmethod
     def response(cls, text):

@@ -35,7 +35,6 @@ from jarvis.skills.weather import WeatherSkills
 from jarvis.skills.text import WordSkills
 from jarvis.skills.history import HistorySkills
 from jarvis.skills.learn import Learn
-from jarvis.settings import GENERAL_SETTINGS
 from jarvis.utils.mongoDB import db
 
 # All available assistant skills
@@ -48,7 +47,7 @@ from jarvis.utils.mongoDB import db
 CONTROL_SKILLS = [
     {'name': 'enable_assistant',
      'func': ActivationSkills.enable_assistant,
-     'tags': 'start, hi, hello, ' + GENERAL_SETTINGS.get('assistant_name')
+     'tags': 'start, hi, hello'
      },
 
     {'name': 'disable_assistant',
@@ -123,7 +122,7 @@ BASIC_SKILLS = [
     {'name': 'assistant_check',
      'enable': True,
      'func': AssistantInfoSkills.assistant_check,
-     'tags': 'hear, hey jarvis, are you there',
+     'tags': 'hear, hey, are you there',
      'description': 'Ask me if I "hear" you, e.g. Jarvis "can you hear" me?'
      },
 
@@ -247,24 +246,17 @@ BASIC_SKILLS = [
      'description': 'Util skill, there is no tags to call it'
      },
 
-     {'name': 'clear_console',
-      'enable': True,
-      'func': UtilSkills.clear_console,
-      'tags': 'clear, clear console',
-      'description': 'clears bash console e.g "Jarvis clean console"'
-      }
+    {'name': 'clear_console',
+     'enable': True,
+     'func': UtilSkills.clear_console,
+     'tags': 'clear, clear console',
+     'description': 'clears bash console e.g "Jarvis clean console"'
+     }
 ]
 
 skill_objects = {skill['func'].__name__: skill['func'] for skill in BASIC_SKILLS + CONTROL_SKILLS}
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-# Load skills in MongoDB
-# ----------------------------------------------------------------------------------------------------------------------
-
-# -------------------------
-# Pre-loading processing
-# -------------------------
 def _convert_skill_object_to_str(skill):
     for sk in skill:
         sk.update((k, v.__name__) for k, v in sk.items() if k == 'func')
@@ -275,13 +267,3 @@ _convert_skill_object_to_str(CONTROL_SKILLS)
 # Create enable basic skills
 ENABLED_BASIC_SKILLS = [skill for skill in BASIC_SKILLS if skill['enable']]
 _convert_skill_object_to_str(ENABLED_BASIC_SKILLS)
-
-# -------------------------
-# Loading
-# -------------------------
-all_skills = {
-    'control_skills': CONTROL_SKILLS,
-    'enabled_basic_skills': ENABLED_BASIC_SKILLS,
-}
-for collection, documents in all_skills.items():
-    db.update_collection(collection, documents)

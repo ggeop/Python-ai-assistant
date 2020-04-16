@@ -20,93 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import sys
 import os
-import time
 import requests
-import traceback
 import logging
 import subprocess
-
-from logging import config
-
-from jarvis.settings import ROOT_LOG_CONF
-from jarvis.utils.console import jarvis_logo, start_text, OutputStyler, user_input, clear, stdout_print
-from jarvis.utils.mongoDB import db
-
-# Create a Console & Rotating file logger
-config.dictConfig(ROOT_LOG_CONF)
-
-
-def log(func):
-    """
-    log decorator
-    -----------------
-    e.x
-    @log
-    def f(n)
-        return n + 1
-    -----------------
-    :param func: function object
-    """
-    def wrapper(*args, **kwargs):
-        try:
-            logging.debug(func.__name__)
-            result = func(*args, **kwargs)
-            return result
-        except Exception:
-            logging.error(func.__name__)
-            traceback.print_exc(file=sys.stdout)
-    return wrapper
-
-
-def internet_connectivity_check(url='http://www.google.com/', timeout=2):
-    """
-    Checks for internet connection availability based on google page.
-    """
-    try:
-        _ = requests.get(url, timeout=timeout)
-        return True
-    except requests.ConnectionError:
-        logging.info("No internet connection.")
-        return False
-
-
-def startup_ckecks():
-    """
-    Initial checks
-    """
-
-    print("=" * 48)
-    print("Startup ckeck")
-    print("=" * 48)
-
-    print("INFO: Internet connection check..")
-    if not internet_connectivity_check():
-        stdout_print("WARNING: No internet connection, skills with internet connection will not work")
-        time.sleep(3)
-
-    if not db.is_collection_empty(collection='learned_skills'):
-        print("INFO: I found learned skills..")
-        user_answer = input('Remove learned skills (y/n): ').lower()
-        if user_answer == 'y':
-            db.drop_collection(collection='learned_skills')
-
-
-def start_up():
-    """
-    Do initial checks, clear the console and print the assistant logo.
-    """
-    startup_ckecks()
-    clear()
-    print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
-    print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
-
-    # Clear log file in each assistant fresh start
-    with open(ROOT_LOG_CONF['handlers']['file']['filename'], 'r+') as f:
-        f.truncate(0)
-
-    logging.info('APPLICATION STARTED..')
 
 
 def play_activation_sound():
@@ -118,3 +35,80 @@ def play_activation_sound():
     fnull = open(os.devnull, 'w')
     subprocess.Popen(['play', enable_sound], stdout=fnull, stderr=fnull).communicate()
 
+
+def internet_connectivity_check(url='http://www.google.com/', timeout=2):
+    """
+    Checks for internet connection availability based on google page.
+    """
+    try:
+        logging.debug('Internet connection check..')
+        _ = requests.get(url, timeout=timeout)
+        return True
+    except requests.ConnectionError:
+        logging.warning("No internet connection.")
+        return False
+
+
+def configure_MongoDB(db, settings):
+    # ----------------------------------------------------------------------------------------------------------------------
+    # Load settings in MongoDB
+    # ----------------------------------------------------------------------------------------------------------------------
+    configure = True
+    if db.is_collection_empty(collection='general_settings'):
+        print('-' * 48)
+        print('Assistant is already configured.')
+        print('-' * 48)
+        configure = input('Do you want to configure it again (y/n): ').lower() == 'y'
+
+    while configure:
+        default_asssistant_name = settings.DEFAULT_GENERAL_SETTINGS['assistant_name']
+        default_enabled_period = settings.DEFAULT_GENERAL_SETTINGS['enabled_period']
+        default_response_in_text = settings.DEFAULT_GENERAL_SETTINGS['response_in_text']
+        default_response_in_speech = settings.DEFAULT_GENERAL_SETTINGS['response_in_speech']
+
+        print('Set assistant name (default is Jarvis')
+        assistant_name = (input('Assistant name: ') or default_asssistant_name).lower()
+
+        enable_period = input('Enable period (seconds): ') or default_enabled_period
+        while not enable_period.isdigit():
+            logging.info("Please give a number ONLY e.g 300, 100")
+            enable_period = input('Enable period (seconds): ') or default_enabled_period
+
+        response_in_text = (input('Response in txt (seconds) (y/n): ').lower() == 'y' or default_response_in_text)
+        response_in_speech = (input('Response in speech (seconds) (y/n): ').lower() == 'y' or default_response_in_speech)
+
+        new_settings = {
+            'Assistant Name': assistant_name,
+            'Enabled Period': enable_period,
+            'Input Mode': 'text',  # TODO
+            'Response in text': response_in_text,
+            'Response in speech': response_in_speech,
+        }
+
+        print("\n The new settings are the following: \n")
+        for setting_desc, value in new_settings.items():
+            print('* {0}: {1}'.format(setting_desc, value))
+
+        save_new_settings = input('Do you want to save new settings (y/n): ').lower() == 'y'
+
+        if save_new_settings:
+            db.update_collection(collection='general_settings', documents=new_settings)
+            #TODO Add assistant name in greeding skill
+            configure = False
+
+    # ----------------------------------------------------------------------------------------------------------------------
+    # Load skills in MongoDB
+    # ----------------------------------------------------------------------------------------------------------------------
+    from jarvis.skills.skills_registry import CONTROL_SKILLS, ENABLED_BASIC_SKILLS
+    all_skills = {
+        'control_skills': CONTROL_SKILLS,
+        'enabled_basic_skills': ENABLED_BASIC_SKILLS,
+    }
+    for collection, documents in all_skills.items():
+        db.update_collection(collection, documents)
+
+    if not db.is_collection_empty(collection='learned_skills'):
+        print("INFO: I found learned skills..")
+        user_answer = input('Remove learned skills (y/n): ').lower()
+        if user_answer == 'y':
+            db.drop_collection(collection='learned_skills')

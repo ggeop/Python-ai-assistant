@@ -48,7 +48,11 @@ ROOT_LOG_CONF = {
 
 
 """
-General assistant settings
+Default General assistant settings
+These values load in the MongoDB as the default values.
+You can change the values when you start the assistant.
+The application will ask you 'Do you want to configure it again (y/n)'
+I you write yes you can change the following settings or you can change the following default values.
 
 Keys Description:
     - assistant_name: Assistant name works as an activation word
@@ -62,7 +66,7 @@ Keys Description:
 """
 
 
-GENERAL_SETTINGS = {
+DEFAULT_GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
     'enabled_period': 300,
     'input_mode': InputMode.TEXT.value,

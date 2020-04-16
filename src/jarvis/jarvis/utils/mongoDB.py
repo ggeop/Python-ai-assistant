@@ -51,10 +51,8 @@ class MongoDB:
     def get_documents(self, collection, key=None, limit=None):
         collection_obj = self.database[collection]
         try:
-            if limit:
-                return list(collection_obj.find(key).sort('_id', DESCENDING).limit(limit))
-            else:
-                return list(collection_obj.find(key).sort('_id', DESCENDING))
+            result = collection_obj.find(key).sort('_id', DESCENDING)
+            return list(result.limit(limit) if limit else result)
         except Exception as e:
             logging.error(e)
 
@@ -75,6 +73,13 @@ class MongoDB:
     def update_collection(self, collection, documents):
         self.drop_collection(collection)
         self.insert_many_documents(collection, documents)
+
+    def update_document(self, collection, filter_document, new_value, upsert=True):
+        collection_obj = self.database[collection]
+        try:
+            collection_obj.update(filter_document, new_value, upsert)
+        except Exception as e:
+            logging.error(e)
 
     def is_collection_empty(self, collection):
         collection_obj = self.database[collection]

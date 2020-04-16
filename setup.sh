@@ -141,6 +141,12 @@ sudo apt-get update
 # Install a specific release of MongoDB
 sudo apt-get install -y mongodb-org=4.2.5 mongodb-org-server=4.2.5 mongodb-org-shell=4.2.5 mongodb-org-mongos=4.2.5 mongodb-org-tools=4.2.5
 
+# Create alias in .bashrc
+echo >> ~/.bashrc
+echo >> "# Create alias for Jarvis assistant"
+echo "alias jarvis='bash ${JARVIS_DIR}/run_jarvis.sh'"
+echo >> ~.bashrc
+source ~/.bashrc
 
 #-----------------------------------
 # Finished
