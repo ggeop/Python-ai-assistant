@@ -39,7 +39,8 @@ class ActivationSkills(AssistantSkill):
         """
         Plays activation sound and creates the assistant response according to the day hour.
         """
-        if db.get_documents(collection='general_settings', key='input_mode') == InputMode.VOICE.value:
+        input_mode = db.get_documents(collection='general_settings')[0]['input_mode']
+        if input_mode == InputMode.VOICE.value:
             try:
                 play_activation_sound()
             except Exception as e:

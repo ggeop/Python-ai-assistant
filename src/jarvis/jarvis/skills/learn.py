@@ -57,3 +57,14 @@ class Learn(AssistantSkill):
     @classmethod
     def tell_response(cls, **kwargs):
         cls.response(kwargs.get('skill').get('response'))
+
+    @classmethod
+    def clear_learned_skills(cls, **kwargs):
+        if db.is_collection_empty(collection='learned_skills'):
+            cls.response("I can't find learned skills in my database")
+        else:
+            cls.response('I found learned skills..')
+            user_answer = input('Are you sure to remove learned skills (y/n): ').lower()
+            if user_answer in ['y', 'yes']:
+                db.drop_collection(collection='learned_skills')
+                cls.response("Perfect I have deleted them all")

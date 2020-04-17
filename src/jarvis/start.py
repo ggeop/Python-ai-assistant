@@ -66,7 +66,7 @@ def main():
     clear()
     print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
     print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
-    processor = Processor(settings)
+    processor = Processor(settings, db)
 
     while True:
         processor.run()

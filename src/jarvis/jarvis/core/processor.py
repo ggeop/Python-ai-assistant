@@ -31,14 +31,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 from jarvis.skills.skill_analyzer import SkillAnalyzer
 from jarvis.skills.skills_registry import skill_objects, db
 from jarvis.core.nlp_processor import ResponseCreator
-from jarvis.settings import DEFAULT_GENERAL_SETTINGS
 from jarvis.enumerations import InputMode
 
 import jarvis.engines as engines
 
 
 class Processor:
-    def __init__(self, settings_):
+    def __init__(self, settings_, db):
         self.settings = settings_
         self.db = db
         self.input_engine = engines.STTEngine(
@@ -48,10 +47,10 @@ class Processor:
                                         dynamic_energy_threshold=self.settings.SPEECH_RECOGNITION.get(
                                             'dynamic_energy_threshold'),
                                         sr=sr
-                                        ) if self.settings.DEFAULT_GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value \
+                                        ) if db.get_documents(collection='general_settings')[0]['input_mode'] == InputMode.VOICE.value \
             else engines.TTTEngine()
 
-        self.output_engine = engines.TTSEngine() if self.settings.DEFAULT_GENERAL_SETTINGS.get('response_in_speech') \
+        self.output_engine = engines.TTSEngine() if db.get_documents(collection='general_settings')[0]['response_in_speech'] \
             else engines.TTTEngine()
         self.response_creator = ResponseCreator()
         self.skill_analyzer = SkillAnalyzer(
@@ -103,7 +102,7 @@ class Processor:
         """
         In voice mode assistant waiting to hear an enable keyword to start, until then is trapped in a loop.
         """
-        if self.settings.DEFAULT_GENERAL_SETTINGS.get('input_mode') == InputMode.VOICE.value:
+        if self.db.get_documents(collection='general_settings')[0]['input_mode'] == InputMode.VOICE.value:
             while not ExecutionState.is_ready_to_execute():
                 voice_transcript = self.input_engine.recognize_input()
                 transcript_words = voice_transcript.split()
@@ -151,8 +150,8 @@ class ExecutionState:
     @classmethod
     def is_ready_to_execute(cls):
         if cls.enabled_time:
-            enabled_period_has_passed = datetime.now() > cls.enabled_time + timedelta(seconds=DEFAULT_GENERAL_SETTINGS.get(
-                'enabled_period'))
+            enabled_period_has_passed = datetime.now() > cls.enabled_time + timedelta(seconds=
+                                                    db.get_documents(collection='general_settings')[0]['enable_period'])
             return enabled_period_has_passed
         else:
             return cls.is_enabled

@@ -74,10 +74,10 @@ class MongoDB:
         self.drop_collection(collection)
         self.insert_many_documents(collection, documents)
 
-    def update_document(self, collection, filter_document, new_value, upsert=True):
+    def update_document(self, collection, query, new_value, upsert=True):
         collection_obj = self.database[collection]
         try:
-            collection_obj.update(filter_document, new_value, upsert)
+            collection_obj.update(query, {'$set': new_value}, upsert)
         except Exception as e:
             logging.error(e)
 

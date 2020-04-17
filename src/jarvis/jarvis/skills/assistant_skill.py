@@ -27,17 +27,23 @@ from jarvis.utils.mongoDB import db
 import jarvis.engines as engines
 
 
+def classproperty(func):
+    if not isinstance(func, (classmethod, staticmethod)):
+        func = classmethod(func)
+    return classproperty(func)
+
+
 class AssistantSkill:
     """
     This class is the parent of all skill classes.
     """
     first_activation = True
     console_manager = ConsoleManager()
-    engine = engines.TTSEngine() if db.get_documents(collection='general_settings', key='response_in_speech')\
-        else engines.TTTEngine()
+    engine = None
 
     @classmethod
     def response(cls, text):
+        cls.set_engine()
         cls.engine.assistant_response(text)
 
     @classmethod
@@ -61,3 +67,9 @@ class AssistantSkill:
         except Exception as e:
             logging.error("Failed to extract tags with message {0}".format(e))
             return set()
+
+    @classmethod
+    def set_engine(cls):
+        if not cls.engine and not db.is_collection_empty(collection='general_settings'):
+            cls.engine = engines.TTSEngine() if db.get_documents(collection='general_settings')[0]['response_in_speech']\
+                    else engines.TTTEngine()
