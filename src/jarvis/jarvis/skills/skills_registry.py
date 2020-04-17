@@ -246,6 +246,13 @@ BASIC_SKILLS = [
      'description': 'Util skill, there is no tags to call it'
      },
 
+    {'name': 'clear_learned_skills',
+     'enable': True,
+     'func': Learn.clear_learned_skills,
+     'tags': 'clear learned skills, drop learned skills, remove learned skills',
+     'description': 'Clear the learned skills e.g. "Jarvis clear learned skills"'
+     },
+
     {'name': 'clear_console',
      'enable': True,
      'func': UtilSkills.clear_console,
