@@ -23,6 +23,7 @@
 
 from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.mongoDB import db
+from jarvis.utils import console, user_input
 
 header = """
 -------------------------------------------------------------------------
@@ -37,7 +38,7 @@ class Learn(AssistantSkill):
 
     @classmethod
     def learn(cls, **kwargs):
-        print(header)
+        cls.console(header)
         continue_add = 'y'
         while continue_add == 'y':
             # TODO: Add also speech input based on assistant mode.
@@ -52,7 +53,6 @@ class Learn(AssistantSkill):
 
             continue_add = input('Continue add skills (y/n): ').lower()
             db.insert_many_documents(collection='learned_skills', documents=new_skill)
-        print('------------------------------------------------------------------------')
 
     @classmethod
     def tell_response(cls, **kwargs):
@@ -64,7 +64,8 @@ class Learn(AssistantSkill):
             cls.response("I can't find learned skills in my database")
         else:
             cls.response('I found learned skills..')
+            user_input.check_input_to_continue('Are you sure to remove learned skills')
             user_answer = input('Are you sure to remove learned skills (y/n): ').lower()
-            if user_answer in ['y', 'yes']:
+            if user_answer:
                 db.drop_collection(collection='learned_skills')
                 cls.response("Perfect I have deleted them all")

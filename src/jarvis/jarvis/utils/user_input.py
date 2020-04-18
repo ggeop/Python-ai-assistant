@@ -20,19 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.skills.assistant_skill import AssistantSkill
+
+def validate_digits_input(message):
+    while True:
+        try:
+            user_input = int(input(message + ' '))
+        except ValueError:
+            print("Please give a number ONLY e.g 100, 300")
+            continue
+        else:
+            break
+    return user_input
 
 
-class UtilSkills(AssistantSkill):
+def check_input_to_continue(message):
+    positive_answers = ['yes', 'y', 'sure', 'yeah']
+    return input(message + ' (y/n): ').lower() in positive_answers
 
-    @classmethod
-    def speech_interruption(cls, **kwargs):
-        """
-        Stop assistant speech.
-        """
-        cls.engine.stop_speaking = True
 
-    @classmethod
-    def clear_console(cls, **kwargs):
-        cls.console("Sure")
+def validate_input_with_choices(message, available_choices):
+    user_input = input(message)
+    while not user_input in available_choices:
+        print('Please select on of the values: {0}'.format(available_choices))
+        user_input = input('Set input mode: ')
+    return user_input
 

@@ -25,18 +25,6 @@ from subprocess import call
 
 from jarvis._version import __version__
 
-jarvis_logo = "\n" \
-              "      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n" \
-              "      ██║██╔══██╗██╔══██╗██║   ██║██║██╔════╝\n" \
-              "      ██║███████║██████╔╝██║   ██║██║███████╗\n" \
-              " ██   ██║██╔══██║██╔══██╗╚██╗ ██╔╝██║╚════██║\n" \
-              " ╚█████╔╝██║  ██║██║  ██║ ╚████╔╝ ██║███████║\n" \
-              "  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝"
-start_text = "" \
-             " -----------------------------------------------\n" \
-             " -  Voice Assistant Platform  " + "v" + __version__ + "-\n" \
-             " -----------------------------------------------\n"
-
 
 class OutputStyler:
     HEADER = '\033[95m'
@@ -66,3 +54,40 @@ def stdout_print(text):
     :param text: string
     """
     print(OutputStyler.CYAN + text + OutputStyler.ENDC)
+
+
+def add_dashes(text):
+    """
+    Add dashes based on terminal length
+    """
+    result = os.popen('stty size', 'r').read().split()
+    if result:
+        rows, columns = result
+        text_length = len(text)
+        remaining_places = int(columns) - text_length
+        if remaining_places > 0:
+            return '-' * (remaining_places // 2) + text + '-' * (remaining_places // 2)
+        else:
+            return text
+    else:
+        return text
+
+
+def print_console_header(text='-'):
+    """
+    Create a dynamic header based on terminal length.
+    """
+    print(add_dashes(text))
+
+
+jarvis_logo = "\n" \
+              "      ██╗ █████╗ ██████╗ ██╗   ██╗██╗███████╗\n" \
+              "      ██║██╔══██╗██╔══██╗██║   ██║██║██╔════╝\n" \
+              "      ██║███████║██████╔╝██║   ██║██║███████╗\n" \
+              " ██   ██║██╔══██║██╔══██╗╚██╗ ██╔╝██║╚════██║\n" \
+              " ╚█████╔╝██║  ██║██║  ██║ ╚████╔╝ ██║███████║\n" \
+              "  ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚══════╝"
+start_text = "" \
+             + add_dashes('-') + \
+             " -  Voice Assistant Platform  " + "v" + __version__ + "-\n" \
+             + add_dashes('-')

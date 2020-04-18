@@ -42,6 +42,10 @@ class AssistantSkill:
     engine = None
 
     @classmethod
+    def console(cls, text):
+        cls.console_manager.console_output(text)
+
+    @classmethod
     def response(cls, text):
         cls.set_engine()
         cls.engine.assistant_response(text)

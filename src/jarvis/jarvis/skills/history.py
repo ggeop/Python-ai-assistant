@@ -24,12 +24,14 @@ import re
 import logging
 
 from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.utils import console
 from jarvis.utils.mongoDB import db
 
-header = """
--------------------------------------------------------------------------
-History
--------------------------------------------------------------------------
+header =\
+console.add_dashes('-') + \
+'History'
+console.add_dashes('-') + \
+""""
 * Note: The default limit is 3. Change the limit by adding a number e.g 
 show me user history 10.
 
@@ -48,16 +50,15 @@ class HistorySkills(AssistantSkill):
     @classmethod
     def show_history_log(cls, voice_transcript, skill):
         """
-        This method prints user commands history & assistant responses.
+        This method cls.consoles user commands history & assistant responses.
 
-        NOTE: Use print instead cls.response() because we want only to print the response
         """
 
         limit = cls._extract_history_limit(voice_transcript, skill)
         limit = limit if limit else cls.default_limit
         documents = db.get_documents(collection='history', limit=limit)
         response = cls._create_response(documents)
-        print(response)
+        cls.console(response)
 
     @classmethod
     def _create_response(cls, documents):
@@ -72,6 +73,7 @@ class HistorySkills(AssistantSkill):
         except Exception as e:
             logging.error(e)
         finally:
+            from jarvis.utils import user_input, console
             return header + response
 
     @classmethod

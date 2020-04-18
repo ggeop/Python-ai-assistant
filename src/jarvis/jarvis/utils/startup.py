@@ -24,7 +24,9 @@ import os
 import requests
 import logging
 import subprocess
-from jarvis.enumerations import InputMode
+from jarvis.utils import user_input, console
+from jarvis.enumerations import InputMode, MongoCollections
+
 
 def play_activation_sound():
     """
@@ -50,7 +52,6 @@ def internet_connectivity_check(url='http://www.google.com/', timeout=2):
 
 
 def configure_MongoDB(db, settings):
-
     # ------------------------------------------------------------------------------------------------------------------
     # Load skills
     # ------------------------------------------------------------------------------------------------------------------
@@ -58,8 +59,8 @@ def configure_MongoDB(db, settings):
     from jarvis.skills.skills_registry import CONTROL_SKILLS, ENABLED_BASIC_SKILLS
 
     all_skills = {
-        'control_skills': CONTROL_SKILLS,
-        'enabled_basic_skills': ENABLED_BASIC_SKILLS,
+        MongoCollections.CONTROL_SKILLS.value: CONTROL_SKILLS,
+        MongoCollections.ENABLED_BASIC_SKILLS.value: ENABLED_BASIC_SKILLS,
     }
     for collection, documents in all_skills.items():
         db.update_collection(collection, documents)
@@ -69,41 +70,44 @@ def configure_MongoDB(db, settings):
     # ------------------------------------------------------------------------------------------------------------------
 
     # Only in first time or if 'general_settings' collection is deleted
-    if db.is_collection_empty(collection='general_settings'):
-        print('-' * 48)
+    if db.is_collection_empty(collection=MongoCollections.GENERAL_SETTINGS.value):
+        console.print_console_header()
         print('First time configuration')
-        print('-' * 48)
+        console.print_console_header()
         configure = True
 
         while configure:
-            default_asssistant_name = settings.DEFAULT_GENERAL_SETTINGS['assistant_name']
             default_enabled_period = settings.DEFAULT_GENERAL_SETTINGS['enabled_period']
             default_input_mode = settings.DEFAULT_GENERAL_SETTINGS['input_mode']
-            default_response_in_text = settings.DEFAULT_GENERAL_SETTINGS['response_in_text']
             default_response_in_speech = settings.DEFAULT_GENERAL_SETTINGS['response_in_speech']
 
-            print('Set assistant name (default: Jarvis')
-            assistant_name = (input('New assistant name: ') or default_asssistant_name).lower()
+            console.print_console_header('--------------------------- Assistant Name ---------------------------')
+            print('NOTE: Set assistant name (default: Jarvis), you can activate assistant with this name')
+            assistant_name = input('New assistant name: ').lower()
 
-            enable_period = input('New enable period (seconds): ') or default_enabled_period
-            while not enable_period.isdigit():
-                print("Please give a number ONLY e.g 300, 100")
-                enable_period = input('New enable period (seconds): ') or default_enabled_period
+            console.print_console_header('--------------------------- Enable Period ---------------------------')
+            print(
+                'NOTE: Enable period is the duration without need activation word to execute a command (default: {0} '
+                'seconds) '
+                .format(default_enabled_period))
+            enable_period = user_input.validate_digits_input('New enable period (seconds): ')
 
-            input_mode = input('Set input mode (text or voice): ') or default_input_mode
+            console.print_console_header('--------------------------- Input Mode ---------------------------')
+            print('NOTE: Set the type of the user input text or voice (default: {0})'.format(default_input_mode))
+            print('* text: Write in console')
+            print('* voice: Talk in microphone')
             input_mode_values = [mode.value for mode in InputMode]
-            while not input_mode in input_mode_values:
-                print("Please select on of the values: {0}".format( input_mode_values))
-                input_mode = input('Set input mode (text or voice): ') or default_input_mode
+            input_mode = user_input.validate_input_with_choices(message='Set input mode: ',
+                                                                available_choices=input_mode_values)
 
-            response_in_text = (input('Response in txt (seconds) (y/n): ').lower() in ['y', 'yes'] or default_response_in_text)
-            response_in_speech = (input('Response in speech (seconds) (y/n): ').lower() in ['y', 'yes'] or default_response_in_speech)
+            console.print_console_header('--------------------------- Response in Speech ---------------------------')
+            print('NOTE: Choose also speech response output (default: {0})'.format(default_response_in_speech))
+            response_in_speech = user_input.check_input_to_continue('Response in speech')
 
             new_settings = {
                 'assistant_name': assistant_name,
                 'enabled_period': enable_period,
                 'input_mode': input_mode,
-                'response_in_text': response_in_text,
                 'response_in_speech': response_in_speech,
             }
 
@@ -114,7 +118,7 @@ def configure_MongoDB(db, settings):
             save_new_settings = input('Do you want to save new settings (y/n): ').lower() in ['y', 'yes']
 
             if save_new_settings:
-                db.update_collection(collection='general_settings', documents=[new_settings])
+                db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[new_settings])
                 configure = False
 
     # --------------------------------------------------------------------------------------------------------------
@@ -122,22 +126,22 @@ def configure_MongoDB(db, settings):
     # --------------------------------------------------------------------------------------------------------------
 
     # Add assistant name in  skill 'enable_assistant' + 'assistant_check' tags
-    assistant_name = db.get_documents(collection='general_settings')[0]['assistant_name']
+    assistant_name = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)[0]['assistant_name']
 
     # Update enable_assistant skill
-    existing_enable_assistant_tags = db.get_documents(collection='control_skills',
+    existing_enable_assistant_tags = db.get_documents(collection=MongoCollections.CONTROL_SKILLS.value,
                                                       key={'name': 'enable_assistant'})[0]['tags']
     new_enable_assistant_tags = {'tags': existing_enable_assistant_tags + ' ' + assistant_name}
-    db.update_document(collection='control_skills',
+    db.update_document(collection=MongoCollections.CONTROL_SKILLS.value,
                        query={'name': 'enable_assistant'},
                        new_value=new_enable_assistant_tags
                        )
 
     # Update assistant_check
-    existing_assistant_check_tags = db.get_documents(collection='enabled_basic_skills',
+    existing_assistant_check_tags = db.get_documents(collection=MongoCollections.ENABLED_BASIC_SKILLS.value,
                                                      key={'name': 'assistant_check'})[0]['tags']
     new_assistant_check_tags = {'tags': existing_assistant_check_tags + ' ' + assistant_name}
-    db.update_document(collection='enabled_basic_skills',
+    db.update_document(collection=MongoCollections.ENABLED_BASIC_SKILLS.value,
                        query={'name': 'assistant_check'},
                        new_value=new_assistant_check_tags
                        )

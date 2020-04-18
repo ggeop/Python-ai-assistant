@@ -23,7 +23,7 @@
 import unittest
 from unittest.mock import patch
 
-from jarvis.skills.assistant_activation import ActivationSkills, GENERAL_SETTINGS
+from jarvis.skills.assistant_activation import ActivationSkills
 from jarvis.skills.assistant_info import AssistantInfoSkills
 from jarvis.utils.mongoDB import start_mongoDB_server, stop_mongoDB_server
 from jarvis.enumerations import InputMode

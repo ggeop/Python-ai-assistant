@@ -24,8 +24,7 @@ import logging
 
 from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.mongoDB import db
-
-help_header = "------------------------------- Help -----------------------------------"
+from jarvis.utils.console import add_dashes
 
 
 class AssistantInfoSkills(AssistantSkill):
@@ -41,8 +40,6 @@ class AssistantInfoSkills(AssistantSkill):
     def tell_the_skills(cls, **kwargs):
         """
         Tells what he can do as assistant.
-
-        NOTE: Use print instead cls.response() because we want only to print the response
         """
         try:
             response_base = 'I can do the following: \n\n'
@@ -57,13 +54,12 @@ class AssistantInfoSkills(AssistantSkill):
         """
         Assistant help prints valuable information about the application.
 
-        NOTE: Use print instead cls.response() because we want only to print the response
         """
-        print(help_header)
+        cls.console(add_dashes('Help'))
         response_base = ''
         try:
             response = cls._create_skill_response(response_base)
-            print(response)
+            cls.console(response)
         except Exception as e:
             logging.error("Error with the execution of skill with message {0}".format(e))
             cls.response("Sorry I faced an issue")

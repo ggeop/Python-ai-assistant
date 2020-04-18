@@ -53,4 +53,4 @@ class LibreofficeSkills(AssistantSkill):
     def _open_libreoffice_app(cls, app):
         app_arg = '-' + app
         subprocess.Popen(['libreoffice', app_arg], stdout=subprocess.PIPE, shell=False)
-        print('I opened a new' + app + ' document..')
+        cls.console('I opened a new' + app + ' document..')

@@ -26,7 +26,7 @@ import psutil
 
 from jarvis.utils.console import jarvis_logo, OutputStyler, clear, stdout_print
 from jarvis.settings import ROOT_LOG_CONF
-
+from jarvis.utils import console
 
 class ConsoleManager:
     def __init__(self, ):
@@ -41,9 +41,7 @@ class ConsoleManager:
 
         stdout_print("  NOTE: CTRL + C If you want to Quit.")
 
-        print(OutputStyler.HEADER + '-------------- INFO --------------' + OutputStyler.ENDC)
-
-        print(OutputStyler.HEADER + 'SYSTEM ---------------------------' + OutputStyler.ENDC)
+        print(OutputStyler.HEADER + console.add_dashes('SYSTEM') + OutputStyler.ENDC)
         print(OutputStyler.BOLD +
               'RAM USAGE: {0:.2f} GB'.format(self._get_memory()) + OutputStyler.ENDC)
 
@@ -53,11 +51,11 @@ class ConsoleManager:
         #       'DYNAMIC ENERGY LEVEL: ' + '|' * int(self.dynamic_energy_ratio) + OutputStyler.ENDC)
         # print(' ')
 
-        print(OutputStyler.HEADER + '-------------- LOG --------------' + OutputStyler.ENDC)
+        print(OutputStyler.HEADER + console.add_dashes('LOG') + OutputStyler.ENDC)
         lines = subprocess.check_output(['tail', '-10', ROOT_LOG_CONF['handlers']['file']['filename']]).decode("utf-8")
         print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
 
-        print(OutputStyler.HEADER + '-------------- ASSISTANT --------------' + OutputStyler.ENDC)
+        print(OutputStyler.HEADER + console.add_dashes('ASSISTANT') + OutputStyler.ENDC)
 
         text = text if text else ''
         print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
