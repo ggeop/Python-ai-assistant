@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 import os
-from subprocess import call
+import subprocess
 
 from jarvis._version import __version__
 
@@ -45,7 +45,7 @@ def clear():
     """
     Clear stdout
     """
-    _ = call('clear' if os.name == 'posix' else 'cls')  # check and make call for specific operating system
+    subprocess.call('tput reset' if os.name == 'posix' else 'cls', shell=True)  # check and make call for specific operating system
 
 
 def stdout_print(text):
