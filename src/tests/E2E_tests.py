@@ -27,6 +27,7 @@ from jarvis.core.processor import Processor
 from .test_settings import test_settings
 from jarvis.utils.mongoDB import db
 from jarvis.utils.mongoDB import start_mongoDB_server, stop_mongoDB_server
+from jarvis.utils.startup import configure_MongoDB
 
 
 def print_argument(argument):
@@ -37,6 +38,7 @@ class E2ETests(unittest.TestCase):
 
     def setUp(self):
         start_mongoDB_server()
+        configure_MongoDB(db, test_settings)
 
     def tearDown(self):
         stop_mongoDB_server()

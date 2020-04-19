@@ -31,13 +31,16 @@ from jarvis.utils.mongoDB import MongoDB, start_mongoDB_server, stop_mongoDB_ser
 from jarvis.settings import *
 from jarvis.skills.datetime import DatetimeSkills
 from jarvis.skills.internet import InternetSkills
+from jarvis.utils.mongoDB import db
+from jarvis.utils.startup import configure_MongoDB
+from .test_settings import test_settings
 
 
 class SkillTests(unittest.TestCase):
 
     def setUp(self):
         start_mongoDB_server()
-        db = MongoDB()
+        configure_MongoDB(db, test_settings)
         self.skill_analyzer = SkillAnalyzer(
             weight_measure=TfidfVectorizer,
             similarity_measure=cosine_similarity,
