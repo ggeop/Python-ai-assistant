@@ -23,9 +23,10 @@
 import os
 import requests
 import logging
-import subprocess
+
 from jarvis.utils import user_input, console
 from jarvis.enumerations import InputMode, MongoCollections
+from playsound import playsound
 
 
 def play_activation_sound():
@@ -33,9 +34,8 @@ def play_activation_sound():
     Plays a sound when the assistant enables.
     """
     utils_dir = os.path.dirname(__file__)
-    enable_sound = os.path.join(utils_dir, '..', 'files', 'enable_sound.wav')
-    fnull = open(os.devnull, 'w')
-    subprocess.Popen(['play', enable_sound], stdout=fnull, stderr=fnull).communicate()
+    activation_soundfile = os.path.join(utils_dir, '..', 'files', 'enable_sound.wav')
+    playsound(activation_soundfile)
 
 
 def internet_connectivity_check(url='http://www.google.com/', timeout=2):

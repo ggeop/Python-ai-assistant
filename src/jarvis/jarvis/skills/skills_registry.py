@@ -258,7 +258,14 @@ BASIC_SKILLS = [
      'func': UtilSkills.clear_console,
      'tags': 'clear, clear console',
      'description': 'clears bash console e.g "Jarvis clean console"'
-     }
+     },
+
+     {'name': 'set_alarm',
+      'enable': True,
+      'func': ReminderSkill.set_alarm,
+      'tags': 'alarm, set alarm',
+      'description': 'Set daily alarm (the assistant service should be running) e.g "Jarvis set alarm"'
+      }
 ]
 
 skill_objects = {skill['func'].__name__: skill['func'] for skill in BASIC_SKILLS + CONTROL_SKILLS}

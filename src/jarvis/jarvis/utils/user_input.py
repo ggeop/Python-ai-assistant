@@ -21,10 +21,23 @@
 # SOFTWARE.
 
 
-def validate_digits_input(message):
+# TODO: Add the engine for input, now works only with text input :-(
+def validate_digits_input(message, values_range=None):
+    """
+    Checks users input to be only numbers else it will be in infinite loop for a right value.
+    Extra parameter 'values_range' checks the input to be between a range.
+    """
+    user_input = None
     while True:
         try:
             user_input = int(input(message + ' '))
+            if values_range:
+                min_value = values_range[0]
+                max_value = values_range[1]
+                if not min_value <= user_input <= max_value:
+                    print("Please give a number higher/equal than {0} and smaller/equal than {1}"
+                          .format(min_value, max_value))
+                    raise ValueError
         except ValueError:
             print("Please give a number ONLY e.g 100, 300")
             continue

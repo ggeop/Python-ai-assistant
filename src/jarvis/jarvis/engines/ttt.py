@@ -34,11 +34,15 @@ class TTTEngine:
 
     def recognize_input(self):
         self.logger.info("Waiting for user input.")
-        text_transcript = input('>> ').lower()
-        while text_transcript == '':
-            self.logger.info("User didn't said something")
+        try:
             text_transcript = input('>> ').lower()
-        return text_transcript
+            while text_transcript == '':
+                self.logger.info("User didn't said something")
+                text_transcript = input('>> ').lower()
+            return text_transcript
+        except EOFError as e:
+            logging.error(e)
+            return ''
 
     def assistant_response(self, message):
         """
