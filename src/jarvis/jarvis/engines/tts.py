@@ -90,18 +90,17 @@ class TTSEngine(TTS):
 
                 cumulative_batch = ''
                 message = self.message_queue.get()
-                batches = self._create_text_batches(raw_text=message)
-
-                for batch in batches:
-                    self.tts_engine.say(batch)
-                    cumulative_batch += batch
-                    self.console_manager.console_output(cumulative_batch)
-                    self.run_engine()
-                    if self.stop_speaking:
-                        self.logger.debug('Speech interruption triggered')
-                        self.stop_speaking = False
-                        break
-
+                if message:
+                    batches = self._create_text_batches(raw_text=message)
+                    for batch in batches:
+                        self.tts_engine.say(batch)
+                        cumulative_batch += batch
+                        self.console_manager.console_output(cumulative_batch)
+                        self.run_engine()
+                        if self.stop_speaking:
+                            self.logger.debug('Speech interruption triggered')
+                            self.stop_speaking = False
+                            break
         except Exception as e:
             self.logger.error("Speech and console error message: {0}".format(e))
 

@@ -26,9 +26,9 @@ from logging import config
 from jarvis.core.processor import Processor
 from jarvis import settings
 from jarvis.settings import ROOT_LOG_CONF
-from jarvis.utils.console import stdout_print, clear, OutputStyler, jarvis_logo, start_text
 from jarvis.utils.mongoDB import db
 from jarvis.utils.startup import internet_connectivity_check, configure_MongoDB
+from jarvis.core.console_manager import ConsoleManager
 
 # Create a Console & Rotating file logger
 config.dictConfig(ROOT_LOG_CONF)
@@ -48,9 +48,7 @@ def main():
     with open(ROOT_LOG_CONF['handlers']['file']['filename'], 'r+') as f:
         f.truncate(0)
 
-    logging.info('=' * 48)
-    logging.info('Startup ckeck')
-    logging.info('=' * 48)
+    logging.info('Startup checks..')
 
     # STEP 2
     if not internet_connectivity_check():
@@ -60,12 +58,11 @@ def main():
     # STEP 3
     configure_MongoDB(db, settings)
 
-    logging.info('APPLICATION STARTS..')
-
     # STEP 4
-    clear()
-    print(OutputStyler.CYAN + jarvis_logo + OutputStyler.ENDC)
-    print(OutputStyler.HEADER + start_text + OutputStyler.ENDC)
+    console_manager = ConsoleManager()
+    logging.info('Application started')
+    console_manager.console_output()
+
     processor = Processor(settings, db)
 
     while True:

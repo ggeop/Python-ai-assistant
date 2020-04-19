@@ -27,11 +27,10 @@ from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils import console
 from jarvis.utils.mongoDB import db
 
-header =\
-console.add_dashes('-') + \
-'History'
-console.add_dashes('-') + \
-""""
+header = """
+------------------------
+- History              -
+------------------------
 * Note: The default limit is 3. Change the limit by adding a number e.g 
 show me user history 10.
 

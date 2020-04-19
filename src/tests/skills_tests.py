@@ -44,13 +44,14 @@ class SkillTests(unittest.TestCase):
 
     @patch('jarvis.skills.assistant_activation.play_activation_sound')
     @patch('jarvis.skills.assistant_activation.ActivationSkills.assistant_greeting')
-    def test_enable_assistant(self, mocked_assistant_greeting, mocked_play_activation_sound):
-        with patch.dict(GENERAL_SETTINGS, {'input_mode': InputMode.VOICE.value}, clear=True):
+    @patch('jarvis.skills.assistant_activation.db.get_documents')
+    def test_enable_assistant(self, mocked_get_documents, mocked_assistant_greeting, mocked_play_activation_sound):
+            mocked_get_documents.return_value = [{'input_mode': InputMode.VOICE.value}]
             ActivationSkills.enable_assistant()
             self.assertEqual(1, mocked_assistant_greeting.call_count)
             self.assertEqual(1, mocked_play_activation_sound.call_count)
 
-        with patch.dict(GENERAL_SETTINGS, {'input_mode': InputMode.TEXT.value}, clear=True):
+            mocked_get_documents.return_value = [{'input_mode': InputMode.TEXT.value}]
             ActivationSkills.enable_assistant()
             self.assertEqual(2, mocked_assistant_greeting.call_count)
             self.assertEqual(1, mocked_play_activation_sound.call_count)

@@ -27,41 +27,63 @@ import psutil
 from jarvis.utils.console import jarvis_logo, OutputStyler, clear, stdout_print
 from jarvis.settings import ROOT_LOG_CONF
 from jarvis.utils import console
+from jarvis.enumerations import MongoCollections
+from jarvis.utils.mongoDB import db
+
 
 class ConsoleManager:
     def __init__(self, ):
-        # self.dynamic_energy_ratio = None
-        # self.energy_threshold = None
         pass
 
-    def console_output(self, text):
+    def console_output(self, text=''):
+
         clear()
 
+        # -------------------------------------------------------------------------------------------------------------
+        # Logo sector
+        # -------------------------------------------------------------------------------------------------------------
         stdout_print(jarvis_logo)
-
         stdout_print("  NOTE: CTRL + C If you want to Quit.")
 
+        # -------------------------------------------------------------------------------------------------------------
+        # General info sector
+        # -------------------------------------------------------------------------------------------------------------
+        settings_documents = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)
+        if settings_documents:
+            settings = settings_documents[0]
+            print(OutputStyler.HEADER + console.add_dashes('GENERAL INFO') + OutputStyler.ENDC)
+            enabled = OutputStyler.GREEN + 'ENABLED' + OutputStyler.ENDC if settings['response_in_speech'] else OutputStyler.WARNING + 'NOT ENABLED' + OutputStyler.ENDC
+            print(OutputStyler.BOLD + 'RESPONSE IN SPEECH: ' + enabled)
+            print(OutputStyler.BOLD + 'ENABLED PERIOD: ' + OutputStyler.GREEN + '{0}'.format(str(settings['enabled_period'])) + OutputStyler.ENDC + OutputStyler.ENDC)
+            print(OutputStyler.BOLD + 'INPUT MODE: ' + OutputStyler.GREEN + '{0}'.format(settings['input_mode'].upper() + OutputStyler.ENDC) + OutputStyler.ENDC)
+
+        # -------------------------------------------------------------------------------------------------------------
+        # System info sector
+        # -------------------------------------------------------------------------------------------------------------
         print(OutputStyler.HEADER + console.add_dashes('SYSTEM') + OutputStyler.ENDC)
         print(OutputStyler.BOLD +
               'RAM USAGE: {0:.2f} GB'.format(self._get_memory()) + OutputStyler.ENDC)
 
-        # print(OutputStyler.HEADER + 'MIC ------------------------------' + OutputStyler.ENDC)
-        # print(OutputStyler.BOLD +
-        #       'ENERGY THRESHOLD LEVEL: ' + '|' * int(self.energy_threshold) + '\n'
-        #       'DYNAMIC ENERGY LEVEL: ' + '|' * int(self.dynamic_energy_ratio) + OutputStyler.ENDC)
-        # print(' ')
+        # -------------------------------------------------------------------------------------------------------------
+        # Assistant logs sector
+        # -------------------------------------------------------------------------------------------------------------
 
         print(OutputStyler.HEADER + console.add_dashes('LOG') + OutputStyler.ENDC)
         lines = subprocess.check_output(['tail', '-10', ROOT_LOG_CONF['handlers']['file']['filename']]).decode("utf-8")
         print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
 
-        print(OutputStyler.HEADER + console.add_dashes('ASSISTANT') + OutputStyler.ENDC)
+        # -------------------------------------------------------------------------------------------------------------
+        # Assistant input/output sector
+        # -------------------------------------------------------------------------------------------------------------
 
+        print(OutputStyler.HEADER + console.add_dashes('ASSISTANT') + OutputStyler.ENDC)
         text = text if text else ''
-        print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
+        if text:
+            print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
+            print(OutputStyler.HEADER + console.add_dashes('-') + OutputStyler.ENDC)
 
     @staticmethod
     def _get_memory():
         pid = os.getpid()
         py = psutil.Process(pid)
-        return py.memory_info()[0] / 2. ** 30  # memory use in GB...I think
+        return py.memory_info()[0] / 2. ** 30

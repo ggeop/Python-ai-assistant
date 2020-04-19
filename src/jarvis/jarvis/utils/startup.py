@@ -81,18 +81,18 @@ def configure_MongoDB(db, settings):
             default_input_mode = settings.DEFAULT_GENERAL_SETTINGS['input_mode']
             default_response_in_speech = settings.DEFAULT_GENERAL_SETTINGS['response_in_speech']
 
-            console.print_console_header('--------------------------- Assistant Name ---------------------------')
+            console.print_console_header('Assistant Name')
             print('NOTE: Set assistant name (default: Jarvis), you can activate assistant with this name')
             assistant_name = input('New assistant name: ').lower()
 
-            console.print_console_header('--------------------------- Enable Period ---------------------------')
+            console.print_console_header('Enable Period')
             print(
                 'NOTE: Enable period is the duration without need activation word to execute a command (default: {0} '
                 'seconds) '
                 .format(default_enabled_period))
             enable_period = user_input.validate_digits_input('New enable period (seconds): ')
 
-            console.print_console_header('--------------------------- Input Mode ---------------------------')
+            console.print_console_header('Input Mode')
             print('NOTE: Set the type of the user input text or voice (default: {0})'.format(default_input_mode))
             print('* text: Write in console')
             print('* voice: Talk in microphone')
@@ -100,7 +100,7 @@ def configure_MongoDB(db, settings):
             input_mode = user_input.validate_input_with_choices(message='Set input mode: ',
                                                                 available_choices=input_mode_values)
 
-            console.print_console_header('--------------------------- Response in Speech ---------------------------')
+            console.print_console_header('Response in Speech')
             print('NOTE: Choose also speech response output (default: {0})'.format(default_response_in_speech))
             response_in_speech = user_input.check_input_to_continue('Response in speech')
 

@@ -60,13 +60,15 @@ def add_dashes(text):
     """
     Add dashes based on terminal length
     """
-    result = os.popen('stty size', 'r').read().split()
+    process = os.popen('stty size', 'r')
+    result = process.read()
+    process.close()
     if result:
-        rows, columns = result
+        rows, columns = result.split()
         text_length = len(text)
         remaining_places = int(columns) - text_length
         if remaining_places > 0:
-            return '-' * (remaining_places // 2) + text + '-' * (remaining_places // 2)
+            return '-' * (remaining_places // 2 - 1) + ' ' + text + ' ' + '-' * (remaining_places // 2 - 1)
         else:
             return text
     else:
