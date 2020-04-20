@@ -77,14 +77,14 @@ class MongoDB:
     def update_document(self, collection, query, new_value, upsert=True):
         collection_obj = self.database[collection]
         try:
-            collection_obj.update(query, {'$set': new_value}, upsert)
+            collection_obj.update_one(query, {'$set': new_value}, upsert)
         except Exception as e:
             logging.error(e)
 
     def is_collection_empty(self, collection):
         collection_obj = self.database[collection]
         try:
-            return collection_obj.count() == 0
+            return collection_obj.estimated_document_count() == 0
         except Exception as e:
             logging.error(e)
 
