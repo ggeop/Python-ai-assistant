@@ -53,6 +53,27 @@ class TestSkillMatching(unittest.TestCase):
 
         db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[default_settings])
 
+        # Add assistant name in  skill 'enable_assistant' + 'assistant_check' tags
+        assistant_name = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)[0]['assistant_name']
+
+        # Update enable_assistant skill
+        existing_enable_assistant_tags = db.get_documents(collection=MongoCollections.CONTROL_SKILLS.value,
+                                                          key={'name': 'enable_assistant'})[0]['tags']
+        new_enable_assistant_tags = {'tags': existing_enable_assistant_tags + ' ' + assistant_name}
+        db.update_document(collection=MongoCollections.CONTROL_SKILLS.value,
+                           query={'name': 'enable_assistant'},
+                           new_value=new_enable_assistant_tags
+                           )
+
+        # Update assistant_check
+        existing_assistant_check_tags = db.get_documents(collection=MongoCollections.ENABLED_BASIC_SKILLS.value,
+                                                         key={'name': 'assistant_check'})[0]['tags']
+        new_assistant_check_tags = {'tags': existing_assistant_check_tags + ' ' + assistant_name}
+        db.update_document(collection=MongoCollections.ENABLED_BASIC_SKILLS.value,
+                           query={'name': 'assistant_check'},
+                           new_value=new_assistant_check_tags
+                           )
+
 
     def test_all_skill_matches(self, mocked_ttt_engine, mocked_execute_skill):
         """
