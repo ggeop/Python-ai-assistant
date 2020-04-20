@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import logging
+from jarvis.utils.mapping import math_symbols_mapping
 
 
 class SkillAnalyzer:
@@ -48,7 +49,9 @@ class SkillAnalyzer:
     def extract(self, user_transcript):
 
         train_tdm = self._train_model()
-        test_tdm = self.vectorizer.transform([user_transcript])
+        user_transcript_with_replaced_math_symbols = self._replace_math_symbols_with_words(user_transcript)
+
+        test_tdm = self.vectorizer.transform([user_transcript_with_replaced_math_symbols])
 
         similarities = self.similarity_measure(train_tdm, test_tdm)  # Calculate similarities
 
@@ -59,6 +62,17 @@ class SkillAnalyzer:
         else:
             self.logger.debug('Not extracted skills from user voice transcript')
             return None
+
+    def _replace_math_symbols_with_words(self, transcript):
+        replaced_transcript = ''
+        for word in transcript.split():
+            if word in math_symbols_mapping.values():
+                for key, value in math_symbols_mapping.items():
+                    if value == word:
+                        replaced_transcript += ' ' + key
+            else:
+                replaced_transcript +=  ' ' + word
+        return replaced_transcript
 
     def _create_vectorizer(self):
         """

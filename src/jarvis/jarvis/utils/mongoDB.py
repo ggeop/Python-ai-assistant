@@ -26,14 +26,14 @@ from pymongo import MongoClient, DESCENDING
 
 
 def start_mongoDB_server():
-    stopMongoServerCommand = "service mongod start"
+    stopMongoServerCommand = "sudo service mongod start"
     process = subprocess.Popen(stopMongoServerCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     logging.info(output)
 
 
 def stop_mongoDB_server():
-    stopMongoServerCommand = "service mongod stop"
+    stopMongoServerCommand = "sudo service mongod stop"
     process = subprocess.Popen(stopMongoServerCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     logging.info(output)

@@ -30,6 +30,7 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Write/tell 'learn' and enable learning mode and add new responses on demand!** (e.g 'learn')
 *   **Clear bash console** (e.g 'Jarvis clear console')
 *   **Has help command, which prints all the skills with their descriptions** (e.g 'help')
+*   **Do basic calculations** (e.g 'Jarvis (5 + 6) * 8')
 
 #### Assistant Features
 *   **Asynchronous command execution & speech interruption**

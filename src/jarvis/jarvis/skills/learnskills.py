@@ -34,7 +34,7 @@ I would like to learn, tell me the right answer!
 """
 
 
-class Learn(AssistantSkill):
+class LearnSkills(AssistantSkill):
 
     @classmethod
     def learn(cls, **kwargs):

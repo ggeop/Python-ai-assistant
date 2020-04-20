@@ -29,12 +29,14 @@ from jarvis.skills.internet import InternetSkills
 from jarvis.skills.libreoffice_suite import LibreofficeSkills
 from jarvis.skills.linux_app import LinuxAppSkills
 from jarvis.skills.location import LocationSkill
-from jarvis.skills.reminder import ReminderSkill
+from jarvis.skills.reminder import ReminderSkills
 from jarvis.skills.system_health import SystemHealthSkills
 from jarvis.skills.weather import WeatherSkills
 from jarvis.skills.text import WordSkills
 from jarvis.skills.history import HistorySkills
-from jarvis.skills.learn import Learn
+from jarvis.skills.learnskills import LearnSkills
+from jarvis.skills.math import MathSkills
+from jarvis.utils.mapping import math_tags
 from jarvis.utils.mongoDB import db
 
 # All available assistant skills
@@ -185,7 +187,7 @@ BASIC_SKILLS = [
 
     {'name': 'create_reminder',
      'enable': True,
-     'func': ReminderSkill.create_reminder,
+     'func': ReminderSkills.create_reminder,
      'tags': 'reminder, remind me',
      'description': 'Ask to remind you something e.g. "Jarvis create a 5 minute reminder"?'
      },
@@ -234,21 +236,21 @@ BASIC_SKILLS = [
 
     {'name': 'learn',
      'enable': True,
-     'func': Learn.learn,
+     'func': LearnSkills.learn,
      'tags': 'learn new skills, learn',
      'description': 'Learn e.g. "Jarvis learn"'
      },
 
     {'name': 'tell_response',
      'enable': True,
-     'func': Learn.tell_response,
+     'func': LearnSkills.tell_response,
      'tags': '',
      'description': 'Util skill, there is no tags to call it'
      },
 
     {'name': 'clear_learned_skills',
      'enable': True,
-     'func': Learn.clear_learned_skills,
+     'func': LearnSkills.clear_learned_skills,
      'tags': 'clear learned skills, drop learned skills, remove learned skills',
      'description': 'Clear the learned skills e.g. "Jarvis clear learned skills"'
      },
@@ -260,12 +262,19 @@ BASIC_SKILLS = [
      'description': 'clears bash console e.g "Jarvis clean console"'
      },
 
-     {'name': 'set_alarm',
-      'enable': True,
-      'func': ReminderSkill.set_alarm,
-      'tags': 'alarm, set alarm',
-      'description': 'Set daily alarm (the assistant service should be running) e.g "Jarvis set alarm"'
-      }
+    {'name': 'set_alarm',
+     'enable': True,
+     'func': ReminderSkills.set_alarm,
+     'tags': 'alarm, set alarm',
+     'description': 'Set daily alarm (the assistant service should be running) e.g "Jarvis set alarm"'
+     },
+
+    {'name': 'do_calculations',
+     'enable': True,
+     'func': MathSkills.do_calculations,
+     'tags': math_tags,
+     'description': 'Do basic math calculations in bash terminal e.g " (5+5) ^ 2"'
+     }
 ]
 
 skill_objects = {skill['func'].__name__: skill['func'] for skill in BASIC_SKILLS + CONTROL_SKILLS}

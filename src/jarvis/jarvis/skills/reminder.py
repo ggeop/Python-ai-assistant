@@ -54,7 +54,7 @@ time_intervals = {
 }
 
 
-class ReminderSkill(AssistantSkill):
+class ReminderSkills(AssistantSkill):
 
     @classmethod
     def _get_reminder_duration_and_time_interval(cls, voice_transcript):

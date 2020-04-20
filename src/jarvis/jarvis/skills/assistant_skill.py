@@ -37,15 +37,6 @@ class AssistantSkill:
     first_activation = True
     console_manager = ConsoleManager()
     engine = None
-    input_engine = engines.STTEngine(
-        pause_threshold=SPEECH_RECOGNITION.get('pause_threshold'),
-        energy_theshold=SPEECH_RECOGNITION.get('energy_threshold'),
-        ambient_duration=SPEECH_RECOGNITION.get('ambient_duration'),
-        dynamic_energy_threshold=SPEECH_RECOGNITION.get(
-            'dynamic_energy_threshold'),
-        sr=sr
-    ) if db.get_documents(collection='general_settings')[0]['input_mode'] == InputMode.VOICE.value \
-        else engines.TTTEngine()
 
     @classmethod
     def console(cls, text):
