@@ -26,7 +26,7 @@ from unittest.mock import patch
 from jarvis.core.processor import Processor
 from jarvis import settings
 from jarvis.utils.mongoDB import db
-from jarvis.skills.skills_registry import BASIC_SKILLS
+from jarvis.skills.skills_registry import CONTROL_SKILLS, BASIC_SKILLS, ENABLED_BASIC_SKILLS
 from jarvis.enumerations import MongoCollections
 
 
@@ -39,6 +39,14 @@ def get_skill_name_from_call_args(call_agrs):
 class TestSkillMatching(unittest.TestCase):
 
     def setUp(self):
+
+        all_skills = {
+            MongoCollections.CONTROL_SKILLS.value: CONTROL_SKILLS,
+            MongoCollections.ENABLED_BASIC_SKILLS.value: ENABLED_BASIC_SKILLS,
+        }
+        for collection, documents in all_skills.items():
+            db.update_collection(collection, documents)
+
         default_assistant_name = settings.DEFAULT_GENERAL_SETTINGS['assistant_name']
         default_enabled_period = settings.DEFAULT_GENERAL_SETTINGS['enabled_period']
         default_input_mode = settings.DEFAULT_GENERAL_SETTINGS['input_mode']
