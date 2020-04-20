@@ -27,7 +27,7 @@ from jarvis.core.processor import Processor
 from jarvis import settings
 from jarvis.utils.mongoDB import db
 from jarvis.skills.skills_registry import BASIC_SKILLS
-from jarvis.utils.startup import configure_MongoDB
+from jarvis.enumerations import MongoCollections
 
 
 def get_skill_name_from_call_args(call_agrs):
@@ -39,7 +39,20 @@ def get_skill_name_from_call_args(call_agrs):
 class TestSkillMatching(unittest.TestCase):
 
     def setUp(self):
-        configure_MongoDB(db, settings)
+        default_assistant_name = settings.DEFAULT_GENERAL_SETTINGS['assistant_name']
+        default_enabled_period = settings.DEFAULT_GENERAL_SETTINGS['enabled_period']
+        default_input_mode = settings.DEFAULT_GENERAL_SETTINGS['input_mode']
+        default_response_in_speech = settings.DEFAULT_GENERAL_SETTINGS['response_in_speech']
+
+        default_settings = {
+            'assistant_name': default_assistant_name,
+            'enabled_period': default_enabled_period,
+            'input_mode': default_input_mode,
+            'response_in_speech': default_response_in_speech,
+        }
+
+        db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[default_settings])
+
 
     def test_all_skill_matches(self, mocked_ttt_engine, mocked_execute_skill):
         """
