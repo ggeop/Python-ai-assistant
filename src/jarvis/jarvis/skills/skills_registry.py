@@ -47,235 +47,245 @@ from jarvis.utils.mongoDB import db
 #    - 'description': skill description
 
 CONTROL_SKILLS = [
-    {'name': 'enable_assistant',
+    {
      'func': ActivationSkills.enable_assistant,
-     'tags': 'start, hi, hello'
+     'tags': 'start, hi, hello, start, wake up',
+     'description': 'Enables the assistant (ready to hear command)'
      },
 
-    {'name': 'disable_assistant',
+    {
      'func': ActivationSkills.disable_assistant,
-     'tags': 'bye, shut down, exit, termination'
+     'tags': 'bye, shut down, exit, termination',
+     'description': 'Stops the assistant service (disable assistant)'
      }
 ]
 
 BASIC_SKILLS = [
-    {'name': 'assistant_greeting',
+
+    {
      'enable': True,
      'func': ActivationSkills.assistant_greeting,
      'tags': 'good morning, good afternoon, good evening',
-     'description': 'Greeting the assistant and he will greeting back e.x good morning Jarvis'
+     'description': 'Greeting the assistant and he will greeting back'
      },
 
-    {'name': 'open_site_in_browser',
+    {
      'enable': True,
      'func': BrowserSkills.open_website_in_browser,
      'tags': 'open',
-     'description': 'Ask me to "open" a domain in the browser e.x open facebook'
+     'description': 'Opens a domain in browser'
      },
 
-    {'name': 'tell_daily_news',
+    {
      'enable': True,
      'func': BrowserSkills.tell_me_today_news,
      'tags': 'news, today news',
-     'description': 'Ask me to tell the daily news e.x "Tell me the news today"'
+     'description': 'Tells the daily news (find on Google newsfeed)'
      },
 
-    {'name': 'tell_time',
+    {
      'enable': True,
      'func': DatetimeSkills.tell_the_time,
      'tags': 'time, hour',
-     'description': 'Ask me for the current "time"'
+     'description': 'Tells the current time'
      },
 
-    {'name': 'tell_date',
+    {
      'enable': True,
      'func': DatetimeSkills.tell_the_date,
      'tags': 'date',
-     'description': 'Ask me for the current "date"'
+     'description': 'Tells the current date'
      },
 
-    {'name': 'tell_about',
+    {
      'enable': True,
      'func': BrowserSkills.tell_me_about,
      'tags': 'about, what is',
-     'description': 'Ask me "about" something, e.g. tell me about google, what is google'
+     'description': 'Tells about something based on Google search'
      },
-    {'name': 'speech_interruption',
+
+    {
      'enable': True,
      'func': UtilSkills.speech_interruption,
      'tags': 'stop',
-     'description': 'Tell "stop", to interrupt assistant speech'
+     'description': 'Stop/interrupt assistant speech'
      },
 
-    {'name': 'assistant_help',
+    {
      'enable': True,
      'func': AssistantInfoSkills.assistant_help,
      'tags': 'help',
-     'description': 'Ask me for "help", e.g. Jarvis help me'
+     'description': 'A list with all the available skills'
      },
 
-    {'name': 'tells_the_weather',
+    {
      'enable': True,
      'func': WeatherSkills.tell_the_weather,
      'tags': 'weather, temperature, weather prediction',
-     'description': 'Ask for the "weather in" somewhere, e.g. weather in London'
+     'description': 'Tells the weather for a location (default in current location)'
      },
 
-    {'name': 'assistant_check',
+    {
      'enable': True,
      'func': AssistantInfoSkills.assistant_check,
      'tags': 'hear, hey, are you there',
-     'description': 'Ask me if I "hear" you, e.g. Jarvis "can you hear" me?'
+     'description': 'Tells the current location'
      },
 
-    {'name': 'libreoffice_calc',
+    {
      'enable': True,
      'func': LibreofficeSkills.open_libreoffice_calc,
      'tags': 'calc, excel',
-     'description': 'Ask me to "open writer", e.g. Jarvis "can you open calc"?'
+     'description': 'Opens excel applcation'
      },
 
-    {'name': 'open_libreoffice_writer',
+    {
      'enable': True,
      'func': LibreofficeSkills.open_libreoffice_writer,
      'tags': 'writer, word',
-     'description': 'Ask me to "open writer", e.g. Jarvis "can you open writer"?'
+     'description': 'Opens writer application'
      },
 
-    {'name': 'open_libreoffice_impress',
+    {
      'enable': True,
      'func': LibreofficeSkills.open_libreoffice_impress,
-     'tags': 'impress, power point',
-     'description': 'Ask me to "open impress", e.g. Jarvis "can you open impress"?'
+     'tags': 'impress',
+     'description': 'Opens impress application'
      },
 
-    {'name': 'tell_memory_consumption',
+    {
      'enable': True,
      'func': SystemHealthSkills.tell_memory_consumption,
      'tags': 'ram, ram usage, memory, memory consumption',
-     'description': 'Ask for the memory consumption, '
-                    'e.g. Jarvis how much "memory" are you using?'
+     'description': 'The assistant current memory consumption, '
+
      },
 
-    {'name': 'open_in_youtube',
+    {
      'enable': True,
      'func': BrowserSkills.open_in_youtube,
      'tags': 'open in youtube, find in youtube, play in youtube',
-     'description': 'Ask for the memory consumption, e.g. Jarvis how much "memory" are you using?'
+     'description': 'Plays a video in Youtube'
      },
 
-    {'name': 'run_speedtest',
+    {
      'enable': True,
      'func': InternetSkills.run_speedtest,
      'tags': 'speedtest, internet speed, ping',
-     'description': 'Ask for internet speedtest, e.g. Jarvis tell_the_skills me the "internet speed"?'
+     'description': 'Checks internet speed'
      },
 
-    {'name': 'internet_availability',
+    {
      'enable': True,
      'func': InternetSkills.internet_availability,
      'tags': 'internet conection, internet',
-     'description': 'Ask for "internet connection", e.g. "Jarvis do we have internet"?'
+     'description': 'Checks for internet availability'
      },
 
-    {'name': 'spell_a_word',
+    {
      'enable': True,
      'func': WordSkills.spell_a_word,
      'tags': 'spell, spell the word',
-     'description': 'Ask to spell a word, e.g. Jarvis can you spell the word "animal"?'
+     'description': 'Spells a word'
      },
 
-    {'name': 'create_reminder',
+    {
      'enable': True,
      'func': ReminderSkills.create_reminder,
      'tags': 'reminder, remind me',
-     'description': 'Ask to remind you something e.g. "Jarvis create a 5 minute reminder"?'
+     'description': 'Create a time reminder'
      },
 
-    {'name': 'tell_the_skills',
+    {
      'enable': True,
      'func': AssistantInfoSkills.tell_the_skills,
      'tags': 'skills, your skills, what are your skills',
-     'description': 'Ask to tell you what he can do e.g. "Jarvis what can you do"?'
+     'description': 'Tells all assistant available skills'
      },
 
-    {'name': 'take_a_note',
+    {
      'enable': True,
      'func': LinuxAppSkills.open_note_app,
      'tags': 'note',
-     'description': 'Ask to create a note e.g. "Jarvis can you open a note"?'
+     'description': 'Ask to create a note'
      },
 
-    {'name': 'open_new_browser_window',
+    {
      'enable': True,
      'func': LinuxAppSkills.open_new_browser_window,
      'tags': 'firefox, open firefox',
-     'description': 'Ask to open new browser window e.g. "Jarvis can you open a firefox"?'
+     'description': 'Ask to open new browser window'
      },
 
-    {'name': 'open_new_bash',
+    {
      'enable': True,
      'func': LinuxAppSkills.open_new_bash,
      'tags': 'bash',
-     'description': 'Ask to open new bash e.g. "Jarvis can you open bash"?'
+     'description': 'Ask to open new bash'
      },
 
-    {'name': 'get_current_location',
+    {
      'enable': True,
      'func': LocationSkill.get_current_location,
      'tags': 'my location, current location',
-     'description': 'Ask to tell you your current location e.g. "Jarvis tell me my location"?'
+     'description': 'Ask to tell you your current location'
      },
 
-    {'name': 'show_history_log',
+    {
      'enable': True,
      'func': HistorySkills.show_history_log,
      'tags': 'history, history log, user history',
-     'description': 'Ask to tell you asked commands e.g. "Jarvis tell me my history"?'
+     'description': 'Ask to tell you asked commands'
      },
 
-    {'name': 'learn',
+    {
      'enable': True,
      'func': LearnSkills.learn,
      'tags': 'learn new skills, learn',
-     'description': 'Learn e.g. "Jarvis learn"'
+     'description': 'Learn new skills'
      },
 
-    {'name': 'tell_response',
+    {
      'enable': True,
      'func': LearnSkills.tell_response,
      'tags': '',
      'description': 'Util skill, there is no tags to call it'
      },
 
-    {'name': 'clear_learned_skills',
+    {
      'enable': True,
      'func': LearnSkills.clear_learned_skills,
      'tags': 'clear learned skills, drop learned skills, remove learned skills',
-     'description': 'Clear the learned skills e.g. "Jarvis clear learned skills"'
+     'description': 'Clear the learned skills'
      },
 
-    {'name': 'clear_console',
+    {
      'enable': True,
      'func': UtilSkills.clear_console,
      'tags': 'clear, clear console',
-     'description': 'clears bash console e.g "Jarvis clean console"'
+     'description': 'Clears bash console'
      },
 
-    {'name': 'set_alarm',
+    {
      'enable': True,
      'func': ReminderSkills.set_alarm,
      'tags': 'alarm, set alarm',
-     'description': 'Set daily alarm (the assistant service should be running) e.g "Jarvis set alarm"'
+     'description': 'Set daily alarm (the assistant service should be running)'
      },
 
-    {'name': 'do_calculations',
+    {
      'enable': True,
      'func': MathSkills.do_calculations,
      'tags': math_tags,
      'description': 'Do basic math calculations in bash terminal e.g " (5+5) ^ 2"'
      }
 ]
+
+
+# Add name key in both BASIC_SKILLS and CONTROL_SKILLS
+for skill in BASIC_SKILLS + CONTROL_SKILLS:
+    skill['name'] = skill['func'].__name__
+
 
 skill_objects = {skill['func'].__name__: skill['func'] for skill in BASIC_SKILLS + CONTROL_SKILLS}
 
