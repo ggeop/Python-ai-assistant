@@ -22,8 +22,9 @@
 
 math_symbols_mapping = {
     'equal': '=',
-    'open parentheses': '(',
-    'close parentheses':  ')',
+    # ---- The following symbols are disable because are not matched correctly with the math skill ----.
+    # 'open parentheses': '(',
+    # 'close parentheses':  ')',
     'plus': '+',
     'minus': '-',
     'asterisk': '*',

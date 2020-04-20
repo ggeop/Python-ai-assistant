@@ -44,7 +44,7 @@ class SkillAnalyzer:
         tags_list = []
         for skill in self.skills:
             tags_list.append(skill['tags'].split(','))
-        return [' '.join(tag) for tag in tags_list]
+        return [','.join(tag) for tag in tags_list]
 
     def extract(self, user_transcript):
 
@@ -71,7 +71,7 @@ class SkillAnalyzer:
                     if value == word:
                         replaced_transcript += ' ' + key
             else:
-                replaced_transcript +=  ' ' + word
+                replaced_transcript += ' ' + word
         return replaced_transcript
 
     def _create_vectorizer(self):
