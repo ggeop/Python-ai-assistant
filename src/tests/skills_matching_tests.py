@@ -27,6 +27,7 @@ from jarvis.core.processor import Processor
 from jarvis import settings
 from jarvis.utils.mongoDB import db
 from jarvis.skills.skills_registry import BASIC_SKILLS
+from jarvis.utils.startup import configure_MongoDB
 
 
 def get_skill_name_from_call_args(call_agrs):
@@ -36,6 +37,9 @@ def get_skill_name_from_call_args(call_agrs):
 @patch('jarvis.core.processor.Processor._execute_skill')
 @patch('jarvis.core.processor.engines.TTTEngine')
 class TestSkillMatching(unittest.TestCase):
+
+    def setUp(self):
+        configure_MongoDB(db, settings)
 
     def test_all_skill_matches(self, mocked_ttt_engine, mocked_execute_skill):
         """
