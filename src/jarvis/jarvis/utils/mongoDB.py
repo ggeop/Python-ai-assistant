@@ -25,20 +25,6 @@ import logging
 from pymongo import MongoClient, DESCENDING
 
 
-def start_mongoDB_server():
-    stopMongoServerCommand = "sudo service mongod start"
-    process = subprocess.Popen(stopMongoServerCommand.split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    logging.info(output)
-
-
-def stop_mongoDB_server():
-    stopMongoServerCommand = "sudo service mongod stop"
-    process = subprocess.Popen(stopMongoServerCommand.split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    logging.info(output)
-
-
 class MongoDB:
     """
     This class encapsulates methods related to MongoDB 
@@ -90,7 +76,6 @@ class MongoDB:
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# Start MongoDB Service
+# Create MongoDB connection instance
 # ----------------------------------------------------------------------------------------------------------------------
-start_mongoDB_server()
 db = MongoDB()
