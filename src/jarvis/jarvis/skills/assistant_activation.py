@@ -28,7 +28,7 @@ from datetime import datetime
 from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.console import clear
 from jarvis.utils.startup import play_activation_sound
-from jarvis.utils.mongoDB import db, stop_mongoDB_server
+from jarvis.utils.mongoDB import db
 from jarvis.enumerations import InputMode, MongoCollections
 
 
@@ -53,13 +53,11 @@ class ActivationSkills(AssistantSkill):
     def disable_assistant(cls, **kwargs):
         """
         - Clear console
-        - Stop MongoDB server
         - Shutdown the assistant service
         """
         cls.response('Bye')
         time.sleep(1)
         clear()
-        stop_mongoDB_server()
         logging.debug('Application terminated gracefully.')
         sys.exit()
 
