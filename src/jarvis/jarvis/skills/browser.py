@@ -89,13 +89,23 @@ class BrowserSkills(AssistantSkill):
         :param voice_transcript: string (e.g 'about google')
         :param skill: dict (e.g
 
-        NOTE: If in the voice_transcript there are more than one commands_dict
-        e.g voice_transcript='open youtube and open netflix' the application will find
-        and execute only the first one, in our case will open the youtube.
+        Web page can be in the following formats
+          * open www.xxxx.com
+          *  open xxxx.com
+          *  open xxxx
+
+        Limitations
+        - If in the voice_transcript there are more than one commands_dict
+          e.g voice_transcript='open youtube and open netflix' the application will find
+          and execute only the first one, in our case will open the youtube.
+        - Support ONLY the following top domains: '.com', '.org', '.net', '.int', '.edu', '.gov', '.mil'
+
         """
         tags = cls.extract_tags(voice_transcript, skill['tags'])
+        domain_regex = '([\.a-zA-Z]+)'
+        ""
         for tag in tags:
-            reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
+            reg_ex = re.search(tag + ' ' + domain_regex, voice_transcript)
             try:
                 if reg_ex:
                     domain = reg_ex.group(1)
@@ -140,16 +150,19 @@ class BrowserSkills(AssistantSkill):
         return response
 
     @classmethod
-    def _create_url(cls, tag):
+    def _create_url(cls, domain):
         """
         Creates a url. It checks if there is .com suffix and add it if it not exist.
         :param tag: string (e.g youtube)
         :return: string (e.g http://www.youtube.com)
         """
-        if re.search('.com', tag):
-            url = 'http://www.' + tag
-        else:
-            url = 'http://www.' + tag + '.com'
+        top_level_domains = ['.com', '.org', '.net', '.int', '.edu', '.gov', '.mil']
+        url = None
+        for top_level_domain in top_level_domains:
+            if re.search(top_level_domain, domain):
+                url = 'http://' + domain
+
+        url = 'http://www.' + domain + '.com' if not url else url
         return url
 
     @classmethod

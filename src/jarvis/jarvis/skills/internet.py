@@ -20,10 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import subprocess
-import json
 import requests
 import logging
+import speedtest
 
 from jarvis.skills.assistant_skill import AssistantSkill
 
@@ -33,31 +32,32 @@ class InternetSkills(AssistantSkill):
     @classmethod
     def run_speedtest(cls, **kwargs):
         """
-        Run an internet speed test.
+        Run an internet speed test. Speed test will show
+        1) Download Speed
+        2) Upload Speed
+        3) Ping
         """
-        process = subprocess.Popen(["speedtest-cli", "--json"], stdout=subprocess.PIPE, shell=False)
-        out, err = process.communicate()
-        if process.returncode:
+        try:
+            cls.response("Sure! wait a second to measure")
+            st = speedtest.Speedtest()
+            server_names = []
+            st.get_servers(server_names)
 
-            decoded_json = cls._decode_json(out)
-
-            ping = decoded_json['ping']
-            up_mbps = float(decoded_json['upload']) / 1000000
-            down_mbps = float(decoded_json['download']) / 1000000
+            downlink_bps = st.download()
+            uplink_bps = st.upload()
+            ping = st.results.ping
+            up_mbps = uplink_bps / 1000000
+            down_mbps = downlink_bps / 1000000
 
             cls.response("Speedtest results:\n"
-                         "The ping is %s ms \n"
-                         "The upling is %0.2f Mbps \n"
-                         "The downling is %0.2f Mbps" % (ping, up_mbps, down_mbps)
+                         "The ping is: %s ms \n"
+                         "The upling is: %0.2f Mbps \n"
+                         "The downling is: %0.2f Mbps" % (ping, up_mbps, down_mbps)
                          )
-        else:
-            cls.response("I coudn't run a speedtest")
-            logging.error("Speedtest error with message: {0}".format(err))
 
-    @classmethod
-    def _decode_json(cls, response_bytes):
-        json_response = response_bytes.decode('utf8').replace("'", '"')
-        return json.loads(json_response)
+        except Exception as e:
+            cls.response("I coudn't run a speedtest")
+            logging.error("Speedtest error with message: {0}".format(e))
 
     @classmethod
     def internet_availability(cls, **kwargs):

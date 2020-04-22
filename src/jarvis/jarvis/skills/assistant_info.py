@@ -26,6 +26,32 @@ from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.mongoDB import db
 from jarvis.utils.console import add_dashes
 
+basic_skills_format = """
+-----------------------------------------------------------------------
+- Basic Skills                                                        -
+-----------------------------------------------------------------------
+"""
+
+basic_skills_body_format = """
+---------------------------- Skill ({0}) ----------------------------
+* Skill func: {1}
+* Description: {2}
+* Tags: {3}
+"""
+
+learned_skills_format = """
+-----------------------------------------------------------------------
+- Learned Skills                                                      -
+-----------------------------------------------------------------------
+"""
+
+learned_skills_body_format = """
+-------------------------- Learned Skill ({0}) ------------------------
+* Skill func: {1}
+* Question: {2}
+* Response: {3}
+"""
+
 
 class AssistantInfoSkills(AssistantSkill):
 
@@ -71,17 +97,24 @@ class AssistantInfoSkills(AssistantSkill):
         # For existing skills (basic skills)
         # --------------------------------------------------------------------------------------------------------------
         basic_skills = db.get_documents(collection='enabled_basic_skills')
-        response = response + '* Basic Enabled Skills:' + '\n'
+        response = response + basic_skills_format
         for skill_id, skill in enumerate(basic_skills, start=1):
-            response = response + '{0}) '.format(skill_id) + skill.get('description') + '\n'
+            response = response + basic_skills_body_format.format(skill_id,
+                                                                  skill.get('name'),
+                                                                  skill.get('description'),
+                                                                  skill.get('tags')
+                                                                  )
 
         # --------------------------------------------------------------------------------------------------------------
         # For learned skills (created from 'learn' skill)
         # --------------------------------------------------------------------------------------------------------------
         skills = db.get_documents(collection='learned_skills')
-        response = response + '\n' + '* Learned Skills:' + '\n'
+        response = response + learned_skills_format
         for skill_id, skill in enumerate(skills, start=1):
-            message = 'Learned skill - Q: ' + skill.get('tags') + ' | R: ' + skill.get('response')
-            response = response + '{0}) '.format(skill_id) + message + '\n'
+            response = response + learned_skills_body_format.format(skill_id,
+                                                                    skill.get('name'),
+                                                                    skill.get('tags'),
+                                                                    skill.get('response')
+                                                                    )
 
         return response
