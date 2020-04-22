@@ -9,7 +9,7 @@
 Jarvis is a voice assistant service in [Python 3.5+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
-#### Assistant Skills
+#### Assistant Skills 
 *   **Opens a web page** (e.g 'Jarvis open youtube')
 *   **Play a video in Youtube** (e.g 'find in you tdex in youtube')
 *   **Opens libreoffice suite applications (calc, writer, impress)** (e.g 'Jarvis open calc')
@@ -80,14 +80,13 @@ You can easily add a new skill in two steps.
 *   Create a new configurationin SKILLS in **skills_registry.py**
 ```python
 { 
-  'name': 'new_skill',
   'enable': True,
   'func': Skills.new_skill,
-  'tags': {'tag1', 'tag2'},
+  'tags': 'tag1, tag2',
   'description': 'skill description..'
 }               
 ```
-*   Create a new skill package in **skills**
+*   Create a new skill module in **skills**
 
 ### Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
@@ -98,5 +97,7 @@ In the following example he have a dimensional space with three skills.
 The user input analyzed in this space and by using a similarity metric (e.g cosine) we find the most similar skill.
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/skill_space_desicion.png)
 
-
+### Contributing
+* PRs are welcome :relaxed:
+* Try to follow PEP 8 guidelines and add comments!
 
