@@ -20,14 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import logging
-import speech_recognition as sr
-
 from jarvis.core.console_manager import ConsoleManager
-from jarvis.utils.mongoDB import db
-from jarvis.settings import SPEECH_RECOGNITION
-from jarvis.enumerations import InputMode
-import jarvis.engines as engines
+import jarvis
 
 
 class AssistantSkill:
@@ -36,16 +30,24 @@ class AssistantSkill:
     """
     first_activation = True
     console_manager = ConsoleManager()
-    engine = None
+
+
 
     @classmethod
     def console(cls, text):
+        """
+        Prints the text only in console and update the console info.
+        """
         cls.console_manager.console_output(text)
 
     @classmethod
     def response(cls, text):
-        cls.set_engine()
-        cls.engine.assistant_response(text)
+        """
+        The mode of the response depends on the output engine:
+            - TTT Engine: The response is only in text
+            - TTS Engine: The response is in voice and text
+        """
+        jarvis.output_engine.assistant_response(text)
 
     @classmethod
     def extract_tags(cls, voice_transcript, tags):
@@ -66,11 +68,5 @@ class AssistantSkill:
             tags = tags.split(',')
             return set(transcript_words).intersection(tags)
         except Exception as e:
-            logging.error("Failed to extract tags with message {0}".format(e))
+            cls.console_manager.console_output(info_log='Failed to extract tags with message: {0}'.format(e))
             return set()
-
-    @classmethod
-    def set_engine(cls):
-        if not cls.engine and not db.is_collection_empty(collection='general_settings'):
-            cls.engine = engines.TTSEngine() if db.get_documents(collection='general_settings')[0]['response_in_speech']\
-                    else engines.TTTEngine()

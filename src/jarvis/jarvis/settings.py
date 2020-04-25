@@ -68,28 +68,8 @@ Keys Description:
 
 DEFAULT_GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
-    'enabled_period': 300,
     'input_mode': InputMode.TEXT.value,
     'response_in_speech': False,
-}
-
-
-"""
-Google API Speech recognition settings
-SpeechRecognition API : https://pypi.org/project/SpeechRecognition/2.1.3
-
-Keys Description:
-    - ambient_duration: Time for auto microphone calibration
-    - pause_threshold: Minimum length silence (in seconds) at the end of a sentence
-    - energy_threshold: Microphone sensitivity, for loud places, the energy level should be up to 4000
-    - dynamic_energy_threshold: For unpredictable noise levels (Suggested to be TRUE)
-
-"""
-SPEECH_RECOGNITION = {
-    'ambient_duration': 1,
-    'pause_threshold': 1,
-    'energy_threshold': 3000,
-    'dynamic_energy_threshold': True
 }
 
 

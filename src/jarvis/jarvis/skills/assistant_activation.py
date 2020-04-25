@@ -26,7 +26,6 @@ import time
 from datetime import datetime
 
 from jarvis.skills.assistant_skill import AssistantSkill
-from jarvis.utils.console import clear
 from jarvis.utils.startup import play_activation_sound
 from jarvis.utils.mongoDB import db
 from jarvis.enumerations import InputMode, MongoCollections
@@ -57,7 +56,6 @@ class ActivationSkills(AssistantSkill):
         """
         cls.response('Bye')
         time.sleep(1)
-        clear()
         logging.debug('Application terminated gracefully.')
         sys.exit()
 

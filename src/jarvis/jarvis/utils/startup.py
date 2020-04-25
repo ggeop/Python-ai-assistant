@@ -23,10 +23,10 @@
 import os
 import requests
 import logging
+from playsound import playsound
 
 from jarvis.utils import user_input, console
 from jarvis.enumerations import InputMode, MongoCollections
-from playsound import playsound
 
 
 def play_activation_sound():
@@ -45,6 +45,7 @@ def internet_connectivity_check(url='http://www.google.com/', timeout=2):
     try:
         logging.debug('Internet connection check..')
         _ = requests.get(url, timeout=timeout)
+        logging.info('Internet connection passed!')
         return True
     except requests.ConnectionError:
         logging.warning("No internet connection.")
@@ -52,18 +53,6 @@ def internet_connectivity_check(url='http://www.google.com/', timeout=2):
 
 
 def configure_MongoDB(db, settings):
-    # ------------------------------------------------------------------------------------------------------------------
-    # Load skills
-    # ------------------------------------------------------------------------------------------------------------------
-
-    from jarvis.skills.skills_registry import CONTROL_SKILLS, ENABLED_BASIC_SKILLS
-
-    all_skills = {
-        MongoCollections.CONTROL_SKILLS.value: CONTROL_SKILLS,
-        MongoCollections.ENABLED_BASIC_SKILLS.value: ENABLED_BASIC_SKILLS,
-    }
-    for collection, documents in all_skills.items():
-        db.update_collection(collection, documents)
 
     # ------------------------------------------------------------------------------------------------------------------
     # Load settings
@@ -85,13 +74,6 @@ def configure_MongoDB(db, settings):
             print('NOTE: Set assistant name (default: Jarvis), you can activate assistant with this name')
             assistant_name = input('New assistant name: ').lower()
 
-            console.print_console_header('Enable Period')
-            print(
-                'NOTE: Enable period is the duration without need activation word to execute a command (default: {0} '
-                'seconds) '
-                .format(default_enabled_period))
-            enable_period = user_input.validate_digits_input('New enable period (seconds): ')
-
             console.print_console_header('Input Mode')
             print('NOTE: Set the type of the user input text or voice (default: {0})'.format(default_input_mode))
             print('* text: Write in console')
@@ -106,7 +88,6 @@ def configure_MongoDB(db, settings):
 
             new_settings = {
                 'assistant_name': assistant_name,
-                'enabled_period': enable_period,
                 'input_mode': input_mode,
                 'response_in_speech': response_in_speech,
             }
@@ -120,6 +101,19 @@ def configure_MongoDB(db, settings):
             if save_new_settings:
                 db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[new_settings])
                 configure = False
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # Load skills
+    # ------------------------------------------------------------------------------------------------------------------
+
+    from jarvis.skills.skills_registry import CONTROL_SKILLS, ENABLED_BASIC_SKILLS
+
+    all_skills = {
+        MongoCollections.CONTROL_SKILLS.value: CONTROL_SKILLS,
+        MongoCollections.ENABLED_BASIC_SKILLS.value: ENABLED_BASIC_SKILLS,
+    }
+    for collection, documents in all_skills.items():
+        db.update_collection(collection, documents)
 
     # --------------------------------------------------------------------------------------------------------------
     # Update skills from settings

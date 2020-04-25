@@ -21,23 +21,23 @@
 # SOFTWARE.
 import logging
 from jarvis.utils.mapping import math_symbols_mapping
+from jarvis.skills.skills_registry import db
 
 
 class SkillAnalyzer:
-    def __init__(self, weight_measure, similarity_measure, args, sensitivity, db):
+    def __init__(self, weight_measure, similarity_measure, args, sensitivity):
         self.logger = logging
         self.weight_measure = weight_measure
         self.similarity_measure = similarity_measure
         self.args = args
         self.vectorizer = self._create_vectorizer()
         self.analyzer_sensitivity = sensitivity
-        self.db = db
 
     @property
     def skills(self):
-        return self.db.get_documents(collection='control_skills')\
-               + self.db.get_documents(collection='enabled_basic_skills')\
-               + self.db.get_documents(collection='learned_skills')
+        return db.get_documents(collection='control_skills')\
+               + db.get_documents(collection='enabled_basic_skills')\
+               + db.get_documents(collection='learned_skills')
 
     @property
     def tags(self):

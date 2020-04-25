@@ -33,16 +33,17 @@ class TTTEngine:
         self.console_manager = ConsoleManager()
 
     def recognize_input(self):
-        self.logger.info("Waiting for user input.")
+        """
+        Recognize input from console and returns transcript if its not empty string.
+        """
         try:
             text_transcript = input('>> ').lower()
             while text_transcript == '':
-                self.logger.info("User didn't said something")
+                self.console_manager.console_output(info_log="User didn't said something")
                 text_transcript = input('>> ').lower()
             return text_transcript
         except EOFError as e:
-            logging.error(e)
-            return ''
+            self.console_manager.console_output(error_log='Failed to recognize user input with message: {0}'.format(e))
 
     def assistant_response(self, message):
         """
@@ -53,4 +54,4 @@ class TTTEngine:
             if message:
                 self.console_manager.console_output(message)
         except RuntimeError as e:
-            self.logger.error('Error in assistant response with message {0}'.format(e))
+            self.console_manager.console_output(error_log='Error in assistant response with message: {0}'.format(e))

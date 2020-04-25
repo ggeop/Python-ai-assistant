@@ -30,7 +30,7 @@ class UtilSkills(AssistantSkill):
         """
         Stop assistant speech.
         """
-        cls.engine.stop_speaking = True
+        cls.output_engine.stop_speaking = True
 
     @classmethod
     def clear_console(cls, **kwargs):

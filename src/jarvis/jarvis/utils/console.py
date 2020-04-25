@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 import os
-import subprocess
 
 from jarvis._version import __version__
 
@@ -39,21 +38,6 @@ class OutputStyler:
 
 
 user_input = OutputStyler.CYAN + '>> ' + OutputStyler.ENDC
-
-
-def clear():
-    """
-    Clear stdout
-    """
-    subprocess.call('tput reset' if os.name == 'posix' else 'cls', shell=True)  # check and make call for specific operating system
-
-
-def stdout_print(text):
-    """
-    Application stdout with format.
-    :param text: string
-    """
-    print(OutputStyler.CYAN + text + OutputStyler.ENDC)
 
 
 def add_dashes(text):
