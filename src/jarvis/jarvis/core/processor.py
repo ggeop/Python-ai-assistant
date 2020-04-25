@@ -29,6 +29,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from jarvis.skills.skill_analyzer import SkillAnalyzer
 from jarvis.skills.skills_registry import skill_objects, db
 from jarvis.core.nlp_processor import ResponseCreator
+from jarvis.skills.assistant_activation import ActivationSkills
 
 
 class Processor:
@@ -84,6 +85,7 @@ class Processor:
     @staticmethod
     def _execute_skill(skill):
         if skill:
+            ActivationSkills.enable_assistant()
             try:
                 logging.debug('Executing skill {0}'.format(skill.get('skill').get('name')))
                 skill_func_name = skill.get('skill').get('func')

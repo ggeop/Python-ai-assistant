@@ -48,7 +48,7 @@ from jarvis.utils.mongoDB import db
 
 CONTROL_SKILLS = [
     {
-     'func': ActivationSkills.enable_assistant,
+     'func': ActivationSkills.assistant_greeting,
      'tags': 'start, hi, hello, start, wake up',
      'description': 'Enables the assistant (ready to hear command)'
      },
@@ -61,13 +61,6 @@ CONTROL_SKILLS = [
 ]
 
 BASIC_SKILLS = [
-
-    {
-     'enable': True,
-     'func': ActivationSkills.assistant_greeting,
-     'tags': 'good morning, good afternoon, good evening',
-     'description': 'Greeting the assistant and he will greeting back'
-     },
 
     {
      'enable': True,
