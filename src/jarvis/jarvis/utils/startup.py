@@ -66,7 +66,6 @@ def configure_MongoDB(db, settings):
         configure = True
 
         while configure:
-            default_enabled_period = settings.DEFAULT_GENERAL_SETTINGS['enabled_period']
             default_input_mode = settings.DEFAULT_GENERAL_SETTINGS['input_mode']
             default_response_in_speech = settings.DEFAULT_GENERAL_SETTINGS['response_in_speech']
 
