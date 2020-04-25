@@ -20,9 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import logging
 import speech_recognition as sr
-import jarvis
 
+import jarvis
 from jarvis.core.console_manager import ConsoleManager
 
 
@@ -41,15 +42,14 @@ class STTEngine:
         self.console_manager = ConsoleManager()
         self.console_manager.console_output(info_log="Microphone configured")
 
-    def recognize_input(self):
+    def recognize_input(self, already_activated=False):
         """
         Recognize input from mic and returns transcript if activation tag (assistant name) exist
         """
 
-        find_enable_tag = False
-        while not find_enable_tag:
+        while True:
             transcript = self._recognize_speech_from_mic()
-            if self._activation_name_exist(transcript):
+            if already_activated or self._activation_name_exist(transcript):
                 return transcript
 
     def _recognize_speech_from_mic(self, ):
@@ -67,11 +67,11 @@ class STTEngine:
             self.console_manager.console_output(info_log='User said: {0}'.format(transcript))
         except sr.UnknownValueError:
             # speech was unintelligible
-            transcript = None
+            transcript = ''
             self.console_manager.console_output(info_log='Unable to recognize speech')
         except sr.RequestError:
             # API was unreachable or unresponsive
-            transcript = None
+            transcript = ''
             self.console_manager.console_output(error_log='Google API was unreachable')
         return transcript
 

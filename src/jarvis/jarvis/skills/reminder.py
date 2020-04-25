@@ -25,7 +25,6 @@ import re
 import time
 import logging
 import datetime
-import multiprocessing
 
 from threading import Thread
 from playsound import playsound
@@ -103,23 +102,18 @@ class ReminderSkills(AssistantSkill):
         # ------------------------------------------------
 
         # - User can set alarm only for the same day
-        # - Works only in text input mode
         # - Works only for specific format hh:mm
         # - Alarm sounds for 12 secs and stops, user can't stop interrupt it.
         #   -- Future improvement is to ring until user stop it.
 
-        cls.console("Yes, I will set an alarm")
-        time.sleep(1)
+        cls.response("Yes, I will set an alarm")
 
-        alarm_hour = validate_digits_input(message="Tell me the exact hour (from 0 to 24): ", values_range=[0, 24])
-        alarm_minutes = validate_digits_input(message="Now tell me the minutes (from 0 to 59): ", values_range=[0, 59])
+        alarm_hour = validate_digits_input(message="Tell me the exact hour", values_range=[0, 24])
+        alarm_minutes = validate_digits_input(message="Now tell me the minutes", values_range=[0, 59])
 
         try:
             thread = Thread(target=cls._alarm_countdown, args=(alarm_hour, alarm_minutes))
             thread.start()
-            response_message = "Alarm - {0}:{1} for today is configured "\
-                               + OutputStyler.GREEN + "successfully!" + OutputStyler.ENDC
-            cls.response(response_message.format(alarm_hour, alarm_minutes))
         except Exception as e:
             logging.error("Failed to play alarm with error message: {0}".format(e))
 
@@ -134,8 +128,14 @@ class ReminderSkills(AssistantSkill):
         if waiting_period < datetime.timedelta(0):
             # Choose 8PM today as the time the alarm fires.
             # This won't work well if it's after 8PM, though.
-            cls.response('This time has past for today.. Try another alarm')
+            cls.response('This time has past for today')
         else:
+            # Successful setup message
+            response_message = "Alarm - {0}:{1} for today is configured " \
+                               + OutputStyler.GREEN + "successfully!" + OutputStyler.ENDC
+            cls.response(response_message.format(alarm_hour, alarm_minutes))
+
+            # Alarm countdown starts
             time.sleep((alarm_time - now).total_seconds())
             cls.response("Wake up! It's {0}".format(datetime.datetime.now().strftime('%H:%M')))
 

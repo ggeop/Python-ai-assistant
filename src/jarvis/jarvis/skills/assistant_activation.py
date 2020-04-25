@@ -45,8 +45,7 @@ class ActivationSkills(AssistantSkill):
             except Exception as e:
                 logging.error("Error with the execution of skill with message {0}".format(e))
                 cls.response("Sorry I faced an issue")
-            time.sleep(1)
-        cls.assistant_greeting(kwargs)
+
 
     @classmethod
     def disable_assistant(cls, **kwargs):
@@ -60,7 +59,7 @@ class ActivationSkills(AssistantSkill):
         sys.exit()
 
     @classmethod
-    def assistant_greeting(cls, *kwargs):
+    def assistant_greeting(cls, **kwargs):
         """
         Assistant greeting based on day hour.
         """
@@ -68,8 +67,8 @@ class ActivationSkills(AssistantSkill):
         day_time = int(now.strftime('%H'))
 
         if day_time < 12:
-            cls.response('Good morning')
+            cls.response('Good morning sir')
         elif 12 <= day_time < 18:
-            cls.response('Good afternoon')
+            cls.response('Good afternoon sir')
         else:
-            cls.response('Good evening')
+            cls.response('Good evening sir')

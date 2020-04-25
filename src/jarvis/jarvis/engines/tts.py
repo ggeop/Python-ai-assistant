@@ -58,7 +58,7 @@ class TTSEngine(TTS):
     def __init__(self):
         super().__init__()
         self.logger = logging
-        self.message_queue = queue.Queue(maxsize=5)  # Maxsize is the size of the queue / capacity of messages
+        self.message_queue = queue.Queue(maxsize=9)  # Maxsize is the size of the queue / capacity of messages
         self.stop_speaking = False
         self.console_manager = ConsoleManager()
 
