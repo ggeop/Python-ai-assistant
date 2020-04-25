@@ -20,30 +20,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import jarvis
+from jarvis.core.console_manager import ConsoleManager
 
-# TODO: Add the engine for input, now works only with text input :-(
+console_manager = ConsoleManager()
+
+
 def validate_digits_input(message, values_range=None):
     """
     Checks users input to be only numbers else it will be in infinite loop for a right value.
     Extra parameter 'values_range' checks the input to be between a range.
     """
-    user_input = None
+    input_number = None
     while True:
+        jarvis.output_engine.assistant_response(message)
+        user_input = jarvis.input_engine.recognize_input(already_activated=True)
         try:
-            user_input = int(input(message + ' '))
-            if values_range:
-                min_value = values_range[0]
-                max_value = values_range[1]
-                if not min_value <= user_input <= max_value:
-                    print("Please give a number higher/equal than {0} and smaller/equal than {1}"
-                          .format(min_value, max_value))
-                    raise ValueError
+            input_number = int(user_input)
         except ValueError:
-            print("Please give a number ONLY e.g 100, 300")
             continue
-        else:
-            break
-    return user_input
+
+        if values_range:
+            min_value = values_range[0]
+            max_value = values_range[1]
+            if not min_value <= input_number <= max_value:
+                jarvis.output_engine.assistant_response("Please give a number higher/equal than {0} and smaller/equal than {1}"
+                      .format(min_value, max_value))
+                raise ValueError
+            else:
+                break
+    return input_number
 
 
 def check_input_to_continue(message):
