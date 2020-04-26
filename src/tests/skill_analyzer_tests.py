@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 import unittest
-from unittest.mock import patch
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -29,7 +28,7 @@ from jarvis import settings
 from jarvis.skills.skills_registry import CONTROL_SKILLS, BASIC_SKILLS, ENABLED_BASIC_SKILLS
 from jarvis.enumerations import MongoCollections
 from jarvis.skills.skill_analyzer import SkillAnalyzer
-from jarvis.skills.skills_registry import db
+from jarvis.utils.mongoDB import db
 
 
 class TestSkillMatching(unittest.TestCase):
