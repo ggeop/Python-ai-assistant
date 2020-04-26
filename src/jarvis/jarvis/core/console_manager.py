@@ -28,7 +28,7 @@ import logging
 from jarvis import settings
 from jarvis.utils.mongoDB import db
 from jarvis.utils.console import jarvis_logo, OutputStyler, add_dashes
-from jarvis.enumerations import MongoCollections
+from jarvis.enumerations import MongoCollections, InputMode
 
 
 class ConsoleManager:
@@ -44,7 +44,7 @@ class ConsoleManager:
 
         subprocess.call('tput reset' if os.name == 'posix' else 'cls', shell=True)
 
-    def console_output(self, text='', debug_log=None, info_log=None, error_log=None):
+    def console_output(self, text='', debug_log=None, info_log=None, error_log=None, refresh_console=True):
         """
         This method creates the assistant output.
         The output has four sectors:
@@ -78,56 +78,63 @@ class ConsoleManager:
         -------------------------------------------- - ----------------------------------------------------
         """
 
-        self.clear()
+        if refresh_console:
+            self.clear()
 
-        # -------------------------------------------------------------------------------------------------------------
-        # Logo sector
-        # -------------------------------------------------------------------------------------------------------------
-        self._stdout_print(jarvis_logo)
-        self._stdout_print("  NOTE: CTRL + C If you want to Quit.")
+            # -------------------------------------------------------------------------------------------------------------
+            # Logo sector
+            # -------------------------------------------------------------------------------------------------------------
+            self._stdout_print(jarvis_logo)
+            self._stdout_print("  NOTE: CTRL + C If you want to Quit.")
 
-        # -------------------------------------------------------------------------------------------------------------
-        # General info sector
-        # -------------------------------------------------------------------------------------------------------------
-        settings_documents = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)
-        if settings_documents:
-            settings_ = settings_documents[0]
-            print(OutputStyler.HEADER + add_dashes('GENERAL INFO') + OutputStyler.ENDC)
-            enabled = OutputStyler.GREEN + 'ENABLED' + OutputStyler.ENDC if settings_['response_in_speech'] else OutputStyler.WARNING + 'NOT ENABLED' + OutputStyler.ENDC
-            print(OutputStyler.BOLD + 'RESPONSE IN SPEECH: ' + enabled)
-            print(OutputStyler.BOLD + 'INPUT MODE: ' + OutputStyler.GREEN + '{0}'.format(settings_['input_mode'].upper() + OutputStyler.ENDC) + OutputStyler.ENDC)
+            # -------------------------------------------------------------------------------------------------------------
+            # General info sector
+            # -------------------------------------------------------------------------------------------------------------
+            settings_documents = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)
+            if settings_documents:
+                settings_ = settings_documents[0]
+                print(OutputStyler.HEADER + add_dashes('GENERAL INFO') + OutputStyler.ENDC)
+                enabled = OutputStyler.GREEN + 'ENABLED' + OutputStyler.ENDC if settings_['response_in_speech'] else OutputStyler.WARNING + 'NOT ENABLED' + OutputStyler.ENDC
+                print(OutputStyler.BOLD + 'RESPONSE IN SPEECH: ' + enabled)
+                print(OutputStyler.BOLD + 'INPUT MODE: ' + OutputStyler.GREEN + '{0}'.format(settings_['input_mode'].upper() + OutputStyler.ENDC) + OutputStyler.ENDC)
+                if settings_['input_mode'] == InputMode.VOICE.value:
+                    print(OutputStyler.BOLD + 'NOTE: ' + OutputStyler.GREEN + "Include " + "'{0}'".format(settings_['assistant_name'].upper()) + " in you command to enable assistant" + OutputStyler.ENDC + OutputStyler.ENDC)
 
-        # -------------------------------------------------------------------------------------------------------------
-        # System info sector
-        # -------------------------------------------------------------------------------------------------------------
-        print(OutputStyler.HEADER + add_dashes('SYSTEM') + OutputStyler.ENDC)
-        print(OutputStyler.BOLD +
-              'RAM USAGE: {0:.2f} GB'.format(self._get_memory()) + OutputStyler.ENDC)
+            # -------------------------------------------------------------------------------------------------------------
+            # System info sector
+            # -------------------------------------------------------------------------------------------------------------
+            print(OutputStyler.HEADER + add_dashes('SYSTEM') + OutputStyler.ENDC)
+            print(OutputStyler.BOLD +
+                  'RAM USAGE: {0:.2f} GB'.format(self._get_memory()) + OutputStyler.ENDC)
 
-        # -------------------------------------------------------------------------------------------------------------
-        # Assistant logs sector
-        # -------------------------------------------------------------------------------------------------------------
+            # -------------------------------------------------------------------------------------------------------------
+            # Assistant logs sector
+            # -------------------------------------------------------------------------------------------------------------
 
-        if debug_log:
-            logging.debug(debug_log)
+            if debug_log:
+                logging.debug(debug_log)
 
-        if info_log:
-            logging.info(info_log)
+            if info_log:
+                logging.info(info_log)
 
-        if error_log:
-            logging.error(error_log)
+            if error_log:
+                logging.error(error_log)
 
-        print(OutputStyler.HEADER + add_dashes('LOG') + OutputStyler.ENDC)
-        lines = subprocess.check_output(['tail', '-10', settings.ROOT_LOG_CONF['handlers']['file']['filename']]).decode("utf-8")
-        print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
+            print(OutputStyler.HEADER + add_dashes('LOG') + OutputStyler.ENDC)
+            lines = subprocess.check_output(['tail', '-10', settings.ROOT_LOG_CONF['handlers']['file']['filename']]).decode("utf-8")
+            print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
 
-        # -------------------------------------------------------------------------------------------------------------
-        # Assistant input/output sector
-        # -------------------------------------------------------------------------------------------------------------
-        print(OutputStyler.HEADER + add_dashes('ASSISTANT') + OutputStyler.ENDC)
-        if text:
-            print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
-            print(OutputStyler.HEADER + add_dashes('-') + OutputStyler.ENDC)
+            # -------------------------------------------------------------------------------------------------------------
+            # Assistant input/output sector
+            # -------------------------------------------------------------------------------------------------------------
+            print(OutputStyler.HEADER + add_dashes('ASSISTANT') + OutputStyler.ENDC)
+            if text:
+                print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
+                print(OutputStyler.HEADER + add_dashes('-') + OutputStyler.ENDC)
+        else:
+            if text:
+                print(OutputStyler.BOLD + text + '\r' + OutputStyler.ENDC)
+
 
     @staticmethod
     def _get_memory():

@@ -21,7 +21,7 @@
 # SOFTWARE.
 import logging
 from jarvis.utils.mapping import math_symbols_mapping
-from jarvis.skills.skills_registry import db
+from jarvis.utils.mongoDB import db
 
 
 class SkillAnalyzer:

@@ -31,23 +31,26 @@ class AssistantSkill:
     first_activation = True
     console_manager = ConsoleManager()
 
-
-
     @classmethod
-    def console(cls, text):
+    def console(cls, text, refresh_console=True):
         """
         Prints the text only in console and update the console info.
         """
-        cls.console_manager.console_output(text)
+        cls.console_manager.console_output(text=text, refresh_console=refresh_console)
 
     @classmethod
-    def response(cls, text):
+    def response(cls, text, refresh_console=True):
         """
         The mode of the response depends on the output engine:
             - TTT Engine: The response is only in text
             - TTS Engine: The response is in voice and text
         """
-        jarvis.output_engine.assistant_response(text)
+        jarvis.output_engine.assistant_response(text, refresh_console=refresh_console)
+
+    @classmethod
+    def user_input(cls):
+        user_input = jarvis.input_engine.recognize_input(already_activated=True)
+        return user_input
 
     @classmethod
     def extract_tags(cls, voice_transcript, tags):

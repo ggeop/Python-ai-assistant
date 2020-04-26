@@ -64,15 +64,15 @@ class STTEngine:
 
         try:
             transcript = self.recognizer.recognize_google(audio).lower()
-            self.console_manager.console_output(info_log='User said: {0}'.format(transcript))
+            self.console_manager.console_output(info_log='User said: {0}'.format(transcript), refresh_console=False)
         except sr.UnknownValueError:
             # speech was unintelligible
             transcript = ''
-            self.console_manager.console_output(info_log='Unable to recognize speech')
+            self.console_manager.console_output(info_log='Unable to recognize speech', refresh_console=False)
         except sr.RequestError:
             # API was unreachable or unresponsive
             transcript = ''
-            self.console_manager.console_output(error_log='Google API was unreachable')
+            self.console_manager.console_output(error_log='Google API was unreachable', refresh_console=False)
         return transcript
 
     @staticmethod

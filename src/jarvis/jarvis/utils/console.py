@@ -40,7 +40,7 @@ class OutputStyler:
 user_input = OutputStyler.CYAN + '>> ' + OutputStyler.ENDC
 
 
-def add_dashes(text):
+def add_dashes(text='-'):
     """
     Add dashes based on terminal length
     """

@@ -62,14 +62,15 @@ class TTSEngine(TTS):
         self.stop_speaking = False
         self.console_manager = ConsoleManager()
 
-    def assistant_response(self, message):
+    def assistant_response(self, message, refresh_console=True):
         """
         Assistant response in voice.
+        :param refresh_console: boolean
         :param message: string
         """
         self._insert_into_message_queue(message)
         try:
-            speech_tread = threading.Thread(target=self._speech_and_console)
+            speech_tread = threading.Thread(target=self._speech_and_console, args=(refresh_console,))
             speech_tread.start()
         except RuntimeError as e:
             self.logger.error('Error in assistant response thread with message {0}'.format(e))
@@ -80,7 +81,7 @@ class TTSEngine(TTS):
         except Exception as e:
             self.logger.error("Unable to insert message to queue with error message: {0}".format(e))
 
-    def _speech_and_console(self):
+    def _speech_and_console(self, refresh_console):
         """
         Speech method translate text batches to speech and print them in the console.
         :param text: string (e.g 'tell me about google')
@@ -95,7 +96,7 @@ class TTSEngine(TTS):
                     for batch in batches:
                         self.tts_engine.say(batch)
                         cumulative_batch += batch
-                        self.console_manager.console_output(cumulative_batch)
+                        self.console_manager.console_output(cumulative_batch, refresh_console=refresh_console)
                         self.run_engine()
                         if self.stop_speaking:
                             self.logger.debug('Speech interruption triggered')

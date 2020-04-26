@@ -32,7 +32,7 @@ class TTTEngine:
         self.logger = logging
         self.console_manager = ConsoleManager()
 
-    def recognize_input(self):
+    def recognize_input(self, **kwargs):
         """
         Recognize input from console and returns transcript if its not empty string.
         """
@@ -45,13 +45,14 @@ class TTTEngine:
         except EOFError as e:
             self.console_manager.console_output(error_log='Failed to recognize user input with message: {0}'.format(e))
 
-    def assistant_response(self, message):
+    def assistant_response(self, message, refresh_console=True):
         """
         Assistant response in voice or/and in text.
+        :param refresh_console: boolean
         :param message: string
         """
         try:
             if message:
-                self.console_manager.console_output(message)
+                self.console_manager.console_output(message, refresh_console=refresh_console)
         except RuntimeError as e:
             self.console_manager.console_output(error_log='Error in assistant response with message: {0}'.format(e))
