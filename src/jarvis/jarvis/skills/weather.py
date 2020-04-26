@@ -40,6 +40,9 @@ class WeatherSkills(AssistantSkill):
         Tells the weather of a place
         :param tag: string (e.g 'weather')
         :param voice_transcript: string (e.g 'weather in London')
+
+        NOTE: If you have the error: 'Reason: Unable to find the resource', try another location
+        e.g weather in London
         """
         tags = cls.extract_tags(voice_transcript, skill['tags'])
         for tag in tags:
