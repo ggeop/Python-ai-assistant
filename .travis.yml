@@ -1,8 +1,17 @@
-dist: bionic # Run build in Ubuntu 18.04 platform
-language: python
-python:
-  - "3.5"
-  - "3.6"
+matrix:
+  include:
+    - name: "Ubuntu 18.04 Job"
+    - os: linux
+    - dist: bionic
+    - python:
+        - "3.5"
+        - "3.6"
+    - name: "Ubuntu 16.04 Job"
+    - os: linux
+    - dist: xenial
+    - python:
+        - "3.5"
+        - "3.6"
 install:
   - sudo bash setup.sh
 script:
