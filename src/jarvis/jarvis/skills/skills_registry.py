@@ -93,7 +93,7 @@ BASIC_SKILLS = [
     {
         'enable': True,
         'func': BrowserSkills.tell_me_about,
-        'tags': 'about, what is',
+        'tags': 'search',
         'description': 'Tells about something based on Google search'
     },
 
@@ -157,7 +157,7 @@ BASIC_SKILLS = [
     {
         'enable': True,
         'func': BrowserSkills.open_in_youtube,
-        'tags': 'open in youtube, find in youtube, play in youtube',
+        'tags': 'youtube, find in youtube, play in youtube',
         'description': 'Plays a video in Youtube'
     },
 
@@ -171,7 +171,7 @@ BASIC_SKILLS = [
     {
         'enable': True,
         'func': InternetSkills.internet_availability,
-        'tags': 'internet conection, internet',
+        'tags': 'internet conection',
         'description': 'Checks for internet availability'
     },
 
@@ -185,7 +185,7 @@ BASIC_SKILLS = [
     {
         'enable': True,
         'func': ReminderSkills.create_reminder,
-        'tags': 'reminder, remind me',
+        'tags': 'reminder',
         'description': 'Create a time reminder'
     },
 
