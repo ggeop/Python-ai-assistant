@@ -39,7 +39,6 @@ class TTTEngine:
         try:
             text_transcript = input('>> ').lower()
             while text_transcript == '':
-                self.console_manager.console_output(info_log="User didn't said something")
                 text_transcript = input('>> ').lower()
             return text_transcript
         except EOFError as e:
