@@ -25,17 +25,18 @@ from unittest.mock import patch
 
 from jarvis.core.processor import Processor
 from jarvis import settings
-from jarvis.utils.mongoDB import db
 from jarvis.skills.skills_registry import CONTROL_SKILLS, BASIC_SKILLS, ENABLED_BASIC_SKILLS
 from jarvis.enumerations import MongoCollections
+from jarvis.core.console_manager import ConsoleManager
 
 
-def get_skill_name_from_call_args(call_agrs):
-    return call_agrs[0][0]['skill']['name']
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+from jarvis.skills.skill_analyzer import SkillAnalyzer
+from jarvis.skills.skills_registry import skill_objects, db
 
 
-@patch('jarvis.core.processor.Processor._execute_skill')
-@patch('jarvis.core.processor.engines.TTTEngine')
 class TestSkillMatching(unittest.TestCase):
 
     def setUp(self):
@@ -48,42 +49,25 @@ class TestSkillMatching(unittest.TestCase):
             db.update_collection(collection, documents)
 
         default_assistant_name = settings.DEFAULT_GENERAL_SETTINGS['assistant_name']
-        default_enabled_period = settings.DEFAULT_GENERAL_SETTINGS['enabled_period']
         default_input_mode = settings.DEFAULT_GENERAL_SETTINGS['input_mode']
         default_response_in_speech = settings.DEFAULT_GENERAL_SETTINGS['response_in_speech']
 
         default_settings = {
             'assistant_name': default_assistant_name,
-            'enabled_period': default_enabled_period,
             'input_mode': default_input_mode,
             'response_in_speech': default_response_in_speech,
         }
 
         db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[default_settings])
 
-        # Add assistant name in  skill 'enable_assistant' + 'assistant_check' tags
-        assistant_name = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)[0]['assistant_name']
+        self.skill_analyzer = SkillAnalyzer(
+                                            weight_measure=TfidfVectorizer,
+                                            similarity_measure=cosine_similarity,
+                                            args=settings.SKILL_ANALYZER.get('args'),
+                                            sensitivity=settings.SKILL_ANALYZER.get('sensitivity'),
+                                            )
 
-        # Update enable_assistant skill
-        existing_enable_assistant_tags = db.get_documents(collection=MongoCollections.CONTROL_SKILLS.value,
-                                                          key={'name': 'enable_assistant'})[0]['tags']
-        new_enable_assistant_tags = {'tags': existing_enable_assistant_tags + ' ' + assistant_name}
-        db.update_document(collection=MongoCollections.CONTROL_SKILLS.value,
-                           query={'name': 'enable_assistant'},
-                           new_value=new_enable_assistant_tags
-                           )
-
-        # Update assistant_check
-        existing_assistant_check_tags = db.get_documents(collection=MongoCollections.ENABLED_BASIC_SKILLS.value,
-                                                         key={'name': 'assistant_check'})[0]['tags']
-        new_assistant_check_tags = {'tags': existing_assistant_check_tags + ' ' + assistant_name}
-        db.update_document(collection=MongoCollections.ENABLED_BASIC_SKILLS.value,
-                           query={'name': 'assistant_check'},
-                           new_value=new_assistant_check_tags
-                           )
-
-
-    def test_all_skill_matches(self, mocked_ttt_engine, mocked_execute_skill):
+    def test_all_skill_matches(self):
         """
         In this test we examine the matches or  ALL skill tags with the functions
         If all skills matched right then the test passes otherwise not.
@@ -94,20 +78,14 @@ class TestSkillMatching(unittest.TestCase):
 
         verifications_errors = []
 
-        self.processor = Processor(settings, db)
-        mocked_ttt_engine.return_value.recognize_input.return_value = 'hi'
-        self.processor.run()
-
         for basic_skill in BASIC_SKILLS:
             print('--------------------------------------------------------------------------------------')
             print('Examine skill: {0}'.format(basic_skill.get('name')))
             for tag in basic_skill.get('tags',).split(','):
                 # If the skill has matching tags
                 if tag:
-                    mocked_ttt_engine.return_value.recognize_input.return_value = tag
-                    self.processor.run()
                     expected_skill = basic_skill.get('name')
-                    actual_skill = get_skill_name_from_call_args(mocked_execute_skill.call_args)
+                    actual_skill = self.skill_analyzer.extract(tag).get('name')
                     try:
                         self.assertEqual(expected_skill, actual_skill)
                     except AssertionError as e:
