@@ -31,6 +31,7 @@ from jarvis.skills.skills_registry import skill_objects
 from jarvis.core.nlp_processor import ResponseCreator
 from jarvis.skills.assistant_activation import ActivationSkills
 from jarvis.utils.mongoDB import db
+from jarvis.skills.wolframalpha import WolframSkills
 
 
 class Processor:
@@ -82,9 +83,10 @@ class Processor:
         skill = self.skill_analyzer.extract(transcript)
         if skill:
             return {'voice_transcript': transcript, 'skill': skill}
+        else:
+            return WolframSkills.call_wolframalpha(transcript)
 
-    @staticmethod
-    def _execute_skill(skill):
+    def _execute_skill(self, skill):
         if skill:
             try:
                 ActivationSkills.enable_assistant()
@@ -93,4 +95,4 @@ class Processor:
                 skill_func = skill_objects[skill_func_name]
                 skill_func(**skill)
             except Exception as e:
-                logging.debug("Error with the execution of skill with message {0}".format(e))
+                self.console_manager.console_output(error_log="Error with the execution of skill with message {0}".format(e))

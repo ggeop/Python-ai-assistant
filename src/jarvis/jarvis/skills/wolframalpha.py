@@ -32,7 +32,7 @@ from jarvis.skills.assistant_skill import AssistantSkill
 class WolframSkills(AssistantSkill):
     
     @classmethod
-    def call_wolframalpha(cls, voice_transcript):
+    def call_wolframalpha(cls, voice_transcript, **kwargs):
         """
         Make a request in wolfram Alpha API and prints the response.
         """
@@ -40,6 +40,7 @@ class WolframSkills(AssistantSkill):
         if voice_transcript:
             try:
                 if WOLFRAMALPHA_API['key']:
+                    cls.response("Wait a second, I search..")
                     res = client.query(voice_transcript)
                     cls.response(next(res.results).text)
                     logging.debug('Successful response from Wolframalpha')
@@ -48,4 +49,4 @@ class WolframSkills(AssistantSkill):
                           "You can get an API key from: https://developer.wolframalpha.com/portal/myapps/ ")
             except Exception as e:
                 logging.debug('There is not answer with wolframalpha with error: {0}'.format(e))
-                cls.response('Sorry, but I can not understand what do you want')
+                cls.response('Sorry, but I could not find someting')
