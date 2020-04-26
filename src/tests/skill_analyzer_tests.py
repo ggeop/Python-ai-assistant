@@ -22,19 +22,14 @@
 
 import unittest
 from unittest.mock import patch
-
-from jarvis.core.processor import Processor
-from jarvis import settings
-from jarvis.skills.skills_registry import CONTROL_SKILLS, BASIC_SKILLS, ENABLED_BASIC_SKILLS
-from jarvis.enumerations import MongoCollections
-from jarvis.core.console_manager import ConsoleManager
-
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from jarvis import settings
+from jarvis.skills.skills_registry import CONTROL_SKILLS, BASIC_SKILLS, ENABLED_BASIC_SKILLS
+from jarvis.enumerations import MongoCollections
 from jarvis.skills.skill_analyzer import SkillAnalyzer
-from jarvis.skills.skills_registry import skill_objects, db
+from jarvis.skills.skills_registry import db
 
 
 class TestSkillMatching(unittest.TestCase):

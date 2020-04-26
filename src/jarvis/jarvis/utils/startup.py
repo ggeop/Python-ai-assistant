@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import os
+import time
 import requests
 import logging
 from playsound import playsound
@@ -61,45 +62,30 @@ def configure_MongoDB(db, settings):
     # Only in first time or if 'general_settings' collection is deleted
     if db.is_collection_empty(collection=MongoCollections.GENERAL_SETTINGS.value):
         console.print_console_header()
-        print('First time configuration')
+        print('First time configuration..')
         console.print_console_header()
-        configure = True
+        time.sleep(1)
 
-        while configure:
-            default_input_mode = settings.DEFAULT_GENERAL_SETTINGS['input_mode']
-            default_response_in_speech = settings.DEFAULT_GENERAL_SETTINGS['response_in_speech']
+        default_assistant_name = settings.DEFAULT_GENERAL_SETTINGS['assistant_name']
+        default_input_mode = settings.DEFAULT_GENERAL_SETTINGS['input_mode']
+        default_response_in_speech = settings.DEFAULT_GENERAL_SETTINGS['response_in_speech']
 
+        new_settings = {
+            'assistant_name': default_assistant_name,
+            'input_mode': default_input_mode,
+            'response_in_speech': default_response_in_speech,
+        }
+
+        try:
+            db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[new_settings])
             console.print_console_header('Assistant Name')
-            print('NOTE: Set assistant name (default: Jarvis), you can activate assistant with this name')
-            assistant_name = input('New assistant name: ').lower()
+            print('Assistant name- {0} configured successfully!'.format(default_assistant_name.lower()))
+            print('Input mode - {0} configured successfully!'.format(default_input_mode))
+            print('Speech response output- {0} configured successfully!'.format(default_response_in_speech))
+            time.sleep(2)
 
-            console.print_console_header('Input Mode')
-            print('NOTE: Set the type of the user input text or voice (default: {0})'.format(default_input_mode))
-            print('* text: Write in console')
-            print('* voice: Talk in microphone')
-            input_mode_values = [mode.value for mode in InputMode]
-            input_mode = user_input.validate_input_with_choices(message='Set input mode: ',
-                                                                available_choices=input_mode_values)
-
-            console.print_console_header('Response in Speech')
-            print('NOTE: Choose also speech response output (default: {0})'.format(default_response_in_speech))
-            response_in_speech = user_input.check_input_to_continue('Response in speech')
-
-            new_settings = {
-                'assistant_name': assistant_name,
-                'input_mode': input_mode,
-                'response_in_speech': response_in_speech,
-            }
-
-            print("\n The new settings are the following: \n")
-            for setting_desc, value in new_settings.items():
-                print('* {0}: {1}'.format(setting_desc, value))
-
-            save_new_settings = input('Do you want to save new settings (y/n): ').lower() in ['y', 'yes']
-
-            if save_new_settings:
-                db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[new_settings])
-                configure = False
+        except Exception as e:
+            logging.error('Failed to configure assistant settings with error message {0}'.format(e))
 
     # ------------------------------------------------------------------------------------------------------------------
     # Load skills
