@@ -31,16 +31,18 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Clear bash console** (e.g 'Jarvis clear console')
 *   **Has help command, which prints all the skills with their descriptions** (e.g 'help')
 *   **Do basic calculations** (e.g 'Jarvis (5 + 6) * 8')
+*   **Change settings on runtime** (e.g 'Jarvis change settings')
 
 #### Assistant Features
 *   **Asynchronous command execution & speech interruption**
-*   **Custom wake words**, can be triggered with any word or phrase e.g ('hi', 'hi Jarvis', 'wake up') 
-*   **Continues listening service**, triggered by a phrase e.g ('hi', 'hello jarvis')
+*   Supports **two different user input modes (text or speech)**, user can write or speek in the mic.
+*   Answers in **general questions** (via call Wolfram API), e.g ('Jarvis tell me the highest building') 
+*   **Change input mode on run time**, triggered by a phrase e.g 'Jarvis change settings')
 *   Easy **voice-command customization**
-*   Configurable **assistant name** (e.g 'Jarvis', 'Sofia', 'John' etc.)
+*   Configurable **assistant name** (e.g 'Jarvis', 'Sofia', 'John' etc.) (change on run time supported)
 *   **Log preview** in console
 *   **Vocal or/and text response**
-*   **Keeps commands history and learned skills** in MongoDB.
+*   **Keeps commands history and learned skills** in MongoDB.'
 
 ## Getting Started
 ### Create KEYs for third party APIs
@@ -97,7 +99,9 @@ In the following example he have a dimensional space with three skills.
 The user input analyzed in this space and by using a similarity metric (e.g cosine) we find the most similar skill.
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/skill_space_desicion.png)
 
-### Contributing
+---
+
+## Contributing
 * PRs are welcome :relaxed:
 * Try to follow PEP 8 guidelines and add comments!
 
