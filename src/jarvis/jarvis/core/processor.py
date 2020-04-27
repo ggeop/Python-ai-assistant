@@ -57,21 +57,26 @@ class Processor:
         - STEP 5: Insert user transcript and response in history collection (in MongoDB)
 
         """
-        # STEP 1
+
         transcript = jarvis.input_engine.recognize_input()
+        skill = self.skill_analyzer.extract(transcript)
 
-        # STEP 2
-        skill_to_execute = self._extract_skill(transcript)
+        if skill:
+            skill_to_execute = {'voice_transcript': transcript, 'skill': skill}
 
-        # STEP 3
-        response = self.response_creator.create_positive_response(transcript) if skill_to_execute \
-            else self.response_creator.create_negative_response(transcript)
-        jarvis.output_engine.assistant_response(response)
+            response = self.response_creator.create_positive_response(transcript) if skill_to_execute \
+                else self.response_creator.create_negative_response(transcript)
+            jarvis.output_engine.assistant_response(response)
 
-        # STEP 4
-        self._execute_skill(skill_to_execute)
+            self._execute_skill(skill_to_execute)
 
-        # STEP 5
+        else:
+            skill_to_execute = {'voice_transcript': transcript, 'skill': {
+                'name': WolframSkills.call_wolframalpha.__name__}
+                                }
+
+            response = WolframSkills.call_wolframalpha(transcript)
+
         record = {'user_transcript': transcript,
                   'response': response if response else '--',
                   'executed_skill': skill_to_execute if skill_to_execute else '--'
@@ -79,20 +84,15 @@ class Processor:
 
         db.insert_many_documents('history', [record])
 
-    def _extract_skill(self, transcript):
-        skill = self.skill_analyzer.extract(transcript)
-        if skill:
-            return {'voice_transcript': transcript, 'skill': skill}
-        else:
-            return WolframSkills.call_wolframalpha(transcript)
-
     def _execute_skill(self, skill):
         if skill:
+            skill_func_name = skill.get('skill').get('func')
+            self.console_manager.console_output(info_log='Executing skill {0}'.format(skill_func_name))
             try:
                 ActivationSkills.enable_assistant()
-                logging.debug('Executing skill {0}'.format(skill.get('skill').get('name')))
                 skill_func_name = skill.get('skill').get('func')
                 skill_func = skill_objects[skill_func_name]
                 skill_func(**skill)
             except Exception as e:
-                self.console_manager.console_output(error_log="Error with the execution of skill with message {0}".format(e))
+                self.console_manager.console_output(error_log="Failed to execute skill {0} with message {1}"
+                                                    .format(skill_func_name, e))

@@ -25,7 +25,7 @@ import json
 import logging
 
 from jarvis.settings import IPSTACK_API
-
+from jarvis.skills.internet import InternetSkills
 from jarvis.skills.assistant_skill import AssistantSkill
 
 
@@ -49,5 +49,8 @@ class LocationSkill(AssistantSkill):
             city = geo_json['city']
             return city, latitude, longitude
         except Exception as e:
-            logging.debug("Unable to get current location with error message: {0}".format(e))
-            return None
+            if InternetSkills.internet_availability():
+                # If there is an error but the internet connect is good, then the location API has problem
+                cls.console(error_log=e)
+                logging.debug("Unable to get current location with error message: {0}".format(e))
+                return None

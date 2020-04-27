@@ -25,7 +25,7 @@ from jarvis.enumerations import InputMode
 ROOT_LOG_CONF = {
     'version': 1,
     'root': {
-        'level': 'DEBUG',
+        'level': 'INFO',
         'handlers': ['file'],
     },
     'handlers': {

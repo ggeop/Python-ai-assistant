@@ -47,6 +47,7 @@ class DatetimeSkills(AssistantSkill):
         """
         Tells ths current time
         """
+
         now = datetime.now()
         hour, minute = now.hour, now.minute
         # TODO: tim_in_text only in speech response
@@ -58,6 +59,7 @@ class DatetimeSkills(AssistantSkill):
         """
         Tells ths current date
         """
+
         today = date.today()
         cls.response('The current date is: {0}'.format(today))
 

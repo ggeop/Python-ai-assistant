@@ -22,7 +22,6 @@
 
 import re
 import time
-import logging
 
 from jarvis.skills.assistant_skill import AssistantSkill
 
@@ -46,5 +45,5 @@ class WordSkills(AssistantSkill):
                         cls.response(letter)
                         time.sleep(2)
             except Exception as e:
-                logging.debug(e)
+                cls.console(error_log=e)
                 cls.response("I can't spell the word")

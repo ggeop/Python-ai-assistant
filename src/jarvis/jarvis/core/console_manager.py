@@ -44,7 +44,7 @@ class ConsoleManager:
 
         subprocess.call('tput reset' if os.name == 'posix' else 'cls', shell=True)
 
-    def console_output(self, text='', debug_log=None, info_log=None, error_log=None, refresh_console=True):
+    def console_output(self, text='', debug_log=None, info_log=None, warn_log=None, error_log=None, refresh_console=True):
         """
         This method creates the assistant output.
         The output has four sectors:
@@ -116,6 +116,9 @@ class ConsoleManager:
 
             if info_log:
                 logging.info(info_log)
+
+            if warn_log:
+                logging.warning(warn_log)
 
             if error_log:
                 logging.error(error_log)

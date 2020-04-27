@@ -21,18 +21,15 @@
 # SOFTWARE.
 
 import re
-import logging
 
 from jarvis.skills.assistant_skill import AssistantSkill
-from jarvis.utils import console
 from jarvis.utils.mongoDB import db
 
 header = """
-------------------------
-- History              -
-------------------------
-* Note: The default limit is 3. Change the limit by adding a number e.g 
-show me user history 10.
+-----------------------------------------------------------------------------------------------
+- History                                                                                     -
+-----------------------------------------------------------------------------------------------
+* Note: The default limit is 3. Change the limit by adding a number e.g show me user history 10.
 
 """
 
@@ -40,7 +37,7 @@ response_base = """
 * User Transcript: {0}
 * Response: {1}
 * Executed Skill: {2}
-------------------------"""
+-----------------------------------------------------------------------------------------------"""
 
 
 class HistorySkills(AssistantSkill):
@@ -70,7 +67,7 @@ class HistorySkills(AssistantSkill):
                                                  document.get('executed_skill') else '--'
                                                  )
         except Exception as e:
-            logging.error(e)
+            cls.console(error_log=e)
         finally:
             from jarvis.utils import user_input, console
             return header + response

@@ -22,7 +22,6 @@
 
 import subprocess
 
-
 from jarvis.skills.assistant_skill import AssistantSkill
 
 

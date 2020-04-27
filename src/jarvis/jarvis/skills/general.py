@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from jarvis.skills.assistant_skill import AssistantSkill
+import jarvis
 
 
 class UtilSkills(AssistantSkill):
@@ -30,7 +31,7 @@ class UtilSkills(AssistantSkill):
         """
         Stop assistant speech.
         """
-        cls.output_engine.stop_speaking = True
+        jarvis.output_engine.stop_speaking = True
 
     @classmethod
     def clear_console(cls, **kwargs):

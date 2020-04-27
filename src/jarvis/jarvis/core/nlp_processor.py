@@ -122,7 +122,7 @@ class ResponseCreator(NLP):
             logging.info('The user speech has an inverse question')
             answer = 'I ' + ' ' + verb + ' ' + noun
         else:
-            logging.info('Unclassified question type')
+            logging.debug('Unclassified question type')
             answer = ''
 
         return re.sub('\s\s+', ' ', answer)

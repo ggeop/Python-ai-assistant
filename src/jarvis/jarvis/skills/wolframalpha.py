@@ -20,12 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import logging
 import wolframalpha
 
-
 from jarvis.settings import WOLFRAMALPHA_API
-
+from jarvis.skills.internet import InternetSkills
 from jarvis.skills.assistant_skill import AssistantSkill
 
 
@@ -40,13 +38,19 @@ class WolframSkills(AssistantSkill):
         if voice_transcript:
             try:
                 if WOLFRAMALPHA_API['key']:
+                    cls.console(info_log='Wolfarm APi call with query message: {0}'.format(voice_transcript))
                     cls.response("Wait a second, I search..")
                     res = client.query(voice_transcript)
-                    cls.response(next(res.results).text)
-                    logging.debug('Successful response from Wolframalpha')
+                    wolfram_result = next(res.results).text
+                    cls.console(debug_log='Successful response from Wolframalpha')
+                    cls.response(wolfram_result)
+                    return wolfram_result
                 else:
                     cls.response("WolframAlpha API is not working.\n"
                           "You can get an API key from: https://developer.wolframalpha.com/portal/myapps/ ")
             except Exception as e:
-                logging.debug('There is not answer with wolframalpha with error: {0}'.format(e))
-                cls.response('Sorry, but I could not find someting')
+                if InternetSkills.internet_availability():
+                    # If there is an error but the internet connect is good, then the Wolfram API has problem
+                    cls.console(error_log='There is no result from Wolfram API with error: {0}'.format(e))
+                else:
+                    cls.response('Sorry, but I could not find something')

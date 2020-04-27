@@ -26,8 +26,10 @@ import requests
 import logging
 from playsound import playsound
 
-from jarvis.utils import user_input, console
-from jarvis.enumerations import InputMode, MongoCollections
+from jarvis.utils import console
+from jarvis.enumerations import MongoCollections
+from jarvis.core.console_manager import ConsoleManager
+
 
 
 def play_activation_sound():
@@ -43,13 +45,15 @@ def internet_connectivity_check(url='http://www.google.com/', timeout=2):
     """
     Checks for internet connection availability based on google page.
     """
+    console_manager = ConsoleManager()
     try:
-        logging.debug('Internet connection check..')
+        console_manager.console_output(info_log='Checking internet connection..')
         _ = requests.get(url, timeout=timeout)
-        logging.info('Internet connection passed!')
+        console_manager.console_output(info_log='Internet connection passed!')
         return True
     except requests.ConnectionError:
-        logging.warning("No internet connection.")
+        console_manager.console_output(warn_log="No internet connection.")
+        console_manager.console_output(warn_log="Skills with internet connection will not work")
         return False
 
 

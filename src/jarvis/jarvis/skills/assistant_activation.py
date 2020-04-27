@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import logging
 import sys
 import time
 from datetime import datetime
@@ -38,14 +37,10 @@ class ActivationSkills(AssistantSkill):
         """
         Plays activation sound and creates the assistant response according to the day hour.
         """
+
         input_mode = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)[0]['input_mode']
         if input_mode == InputMode.VOICE.value:
-            try:
-                play_activation_sound()
-            except Exception as e:
-                logging.error("Error with the execution of skill with message {0}".format(e))
-                cls.response("Sorry I faced an issue")
-
+            play_activation_sound()
 
     @classmethod
     def disable_assistant(cls, **kwargs):
@@ -53,9 +48,10 @@ class ActivationSkills(AssistantSkill):
         - Clear console
         - Shutdown the assistant service
         """
+
         cls.response('Bye')
         time.sleep(1)
-        logging.debug('Application terminated gracefully.')
+        cls.console(info_log='Application terminated gracefully.')
         sys.exit()
 
     @classmethod

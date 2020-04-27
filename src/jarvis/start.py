@@ -33,7 +33,7 @@ def main():
 
     console_manager = ConsoleManager()
 
-    console_manager.console_output(info_log='Startup checks..')
+    console_manager.console_output(info_log='Startup checks')
 
     internet_connectivity_check()
 

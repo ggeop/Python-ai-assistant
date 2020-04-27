@@ -23,7 +23,6 @@
 import os
 import re
 import time
-import logging
 import datetime
 
 from threading import Thread
@@ -91,7 +90,7 @@ class ReminderSkills(AssistantSkill):
                 scheduler.start()
 
         except Exception as e:
-            logging.debug(e)
+            cls.console(error_log=e)
             cls.response("I can't create a reminder")
 
     @classmethod
@@ -115,7 +114,7 @@ class ReminderSkills(AssistantSkill):
             thread = Thread(target=cls._alarm_countdown, args=(alarm_hour, alarm_minutes))
             thread.start()
         except Exception as e:
-            logging.error("Failed to play alarm with error message: {0}".format(e))
+            cls.console(error_log="Failed to play alarm with error message: {0}".format(e))
 
     @classmethod
     def _alarm_countdown(cls, alarm_hour, alarm_minutes):

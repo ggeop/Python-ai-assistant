@@ -25,6 +25,7 @@ import logging
 import speedtest
 
 from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.utils.startup import internet_connectivity_check
 
 
 class InternetSkills(AssistantSkill):
@@ -64,9 +65,9 @@ class InternetSkills(AssistantSkill):
         """
         Tells to the user is the internet is available or not.
         """
-        try:
-            _ = requests.get('http://www.google.com/', timeout=1)
-            cls.response("Yes, the internet connection is ok")
-        except requests.ConnectionError as e:
-            cls.response("No the internet is down for now")
-            logging.error("No internet connection with message: {0}".format(e))
+        if internet_connectivity_check():
+            cls.response("The internet connection is ok")
+            return True
+        else:
+            cls.response("The internet is down for now")
+            return False

@@ -23,12 +23,12 @@
 
 from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.mongoDB import db
-from jarvis.utils import console, user_input
+from jarvis.utils import user_input
 
 header = """
--------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
 I would like to learn, tell me the right answer!
--------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
 * Note: Create new skill! Write your question and the appropriate answer.
 \n
 """

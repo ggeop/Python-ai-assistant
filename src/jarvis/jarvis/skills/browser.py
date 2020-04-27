@@ -22,7 +22,6 @@
 
 import wikipedia
 import requests
-import logging
 import time
 import re
 import urllib.request
@@ -47,16 +46,16 @@ class BrowserSkills(AssistantSkill):
         only_text_pattern = '([a-zA-Z]+)'
         for tag in tags:
             reg_ex = re.search(tag + ' ' + only_text_pattern, voice_transcript)
-            try:
-                if reg_ex:
-                    topic = reg_ex.group(1)
+            if reg_ex:
+                topic = reg_ex.group(1)
+                try:
                     response = cls._decoded_wiki_response(topic)
                     cls.response(response)
-            except Exception as e:
-                logging.error("Error with the execution of skill with message {0}".format(e))
-                cls.response(" I can't find what you want, and I will open a new tab in browser")
-                time.sleep(1)
-                cls._search_on_google(topic)
+                except Exception as e:
+                    cls.console(error_log="Error with the execution of skill with message {0}".format(e))
+                    cls.response(" I can't find what you want, and I will open a new tab in browser")
+                    time.sleep(1)
+                    cls._search_on_google(topic)
 
     @classmethod
     def open_in_youtube(cls, voice_transcript, skill):
@@ -65,6 +64,7 @@ class BrowserSkills(AssistantSkill):
         :param voice_transcript: string (e.g 'about google')
         :param skill: dict (e.g
         """
+
         tags = cls.extract_tags(voice_transcript, skill['tags'])
         for tag in tags:
             reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
@@ -79,7 +79,7 @@ class BrowserSkills(AssistantSkill):
                     video = 'https://www.youtube.com' + vids[0]['href']
                     subprocess.Popen(["python", "-m", "webbrowser", "-t", video], stdout=subprocess.PIPE, shell=False)
             except Exception as e:
-                logging.error("Error with the execution of skill with message {0}".format(e))
+                cls.console(error_log="Error with the execution of skill with message {0}".format(e))
                 cls.response("I can't find what do you want in Youtube..")
 
     @classmethod
@@ -115,7 +115,7 @@ class BrowserSkills(AssistantSkill):
                     webbrowser.open_new_tab(url)
                     cls.response('I opened the {0}'.format(domain))
             except Exception as e:
-                logging.error("Error with the execution of skill with message {0}".format(e))
+                cls.console(error_log="Error with the execution of skill with message {0}".format(e))
                 cls.response("I can't find this domain..")
 
     @classmethod
@@ -133,7 +133,7 @@ class BrowserSkills(AssistantSkill):
                 response += data.decode()
             cls.response(response)
         except Exception as e:
-            logging.error("Error with the execution of skill with message {0}".format(e))
+            cls.console(error_log="Error with the execution of skill with message {0}".format(e))
             cls.response("I can't find about daily news..")
 
     @classmethod
@@ -171,6 +171,6 @@ class BrowserSkills(AssistantSkill):
         try:
             webbrowser.open_new_tab(url)
         except Exception as e:
-            logging.error("Error with the execution of skill with message {0}".format(e))
+            cls.console(error_log="Error with the execution of skill with message {0}".format(e))
             cls.response("Sorry I faced an issue with google search")
 

@@ -20,8 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import logging
-
 from jarvis.skills.assistant_skill import AssistantSkill
 from jarvis.utils.mongoDB import db
 from jarvis.utils.console import add_dashes
@@ -72,7 +70,7 @@ class AssistantInfoSkills(AssistantSkill):
             response = cls._create_skill_response(response_base)
             cls.response(response)
         except Exception as e:
-            logging.error("Error with the execution of skill with message {0}".format(e))
+            cls.console(error_log="Error with the execution of skill with message {0}".format(e))
             cls.response("Sorry I faced an issue")
 
     @classmethod

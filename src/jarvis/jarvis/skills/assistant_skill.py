@@ -28,15 +28,22 @@ class AssistantSkill:
     """
     This class is the parent of all skill classes.
     """
+
     first_activation = True
     console_manager = ConsoleManager()
 
     @classmethod
-    def console(cls, text, refresh_console=True):
+    def console(cls, text='', debug_log=None, info_log=None, warn_log=None, error_log=None, refresh_console=True):
         """
         Prints the text only in console and update the console info.
         """
-        cls.console_manager.console_output(text=text, refresh_console=refresh_console)
+
+        cls.console_manager.console_output(text=text,
+                                           debug_log=debug_log,
+                                           info_log=info_log,
+                                           warn_log=warn_log,
+                                           error_log=error_log,
+                                           refresh_console=refresh_console)
 
     @classmethod
     def response(cls, text, refresh_console=True):
@@ -66,6 +73,7 @@ class AssistantSkill:
         :param tags: string
         :return: set
         """
+
         try:
             transcript_words = voice_transcript.split()
             tags = tags.split(',')
