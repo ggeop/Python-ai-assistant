@@ -3,7 +3,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/ggeop/Python-ai-assistant.svg?branch=master)](https://travis-ci.org/ggeop/Python-ai-assistant)
 
-![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
+
+![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/jarvis_logo.png)
 
 # About Jarvis 🧠
 Jarvis is a voice assistant service in [Python 3.5+](https://www.python.org/downloads/release/python-360/)
@@ -71,15 +72,16 @@ nano Jarvis/src/jarvis/jarvis/setting.py
 ```
 
 ### Start voice assistant
+![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
+
 *   Start the assistant service:
 ```bash
 bash run_jarvis.sh
 ```
 
-
 ### How to add a new Skill
 You can easily add a new skill in two steps.
-*   Create a new configurationin SKILLS in **skills_registry.py**
+*   Create a new configurationin SKILLS in **skills/registry.py**
 ```python
 { 
   'enable': True,
@@ -88,7 +90,7 @@ You can easily add a new skill in two steps.
   'description': 'skill description..'
 }               
 ```
-*   Create a new skill module in **skills**
+*   Create a new skill module in **skills/collection**
 
 ### Desicion Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
