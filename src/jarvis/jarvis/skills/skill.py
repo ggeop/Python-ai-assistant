@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.core.console_manager import ConsoleManager
+from jarvis.core.console import ConsoleManager
 import jarvis
 
 

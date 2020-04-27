@@ -23,8 +23,8 @@
 import wolframalpha
 
 from jarvis.settings import WOLFRAMALPHA_API
-from jarvis.skills.internet import InternetSkills
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.collection.internet import InternetSkills
+from jarvis.skills.skill import AssistantSkill
 
 
 class WolframSkills(AssistantSkill):

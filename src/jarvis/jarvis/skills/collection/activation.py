@@ -20,45 +20,51 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import subprocess
-import logging
+import sys
 import time
+from datetime import datetime
 
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.skill import AssistantSkill
+from jarvis.utils.startup import play_activation_sound
+from jarvis.utils.mongoDB import db
+from jarvis.enumerations import InputMode, MongoCollections
 
 
-class LinuxAppSkills(AssistantSkill):
-
-    @classmethod
-    def open_new_bash(cls, **kwargs):
-        """
-        Opens new bash terminal.
-        """
-        try:
-            subprocess.Popen(['gnome-terminal'], stderr=subprocess.PIPE, shell=False).communicate()
-        except Exception as e:
-            cls.response("An error occurred, I can't open new bash terminal")
-            logging.debug(e)
+class ActivationSkills(AssistantSkill):
 
     @classmethod
-    def open_note_app(cls, **kwargs):
+    def enable_assistant(cls, **kwargs):
         """
-        Opens a note editor (gedit).
+        Plays activation sound and creates the assistant response according to the day hour.
         """
-        try:
-            subprocess.Popen(['gedit'], stderr=subprocess.PIPE, shell=False).communicate()
-        except FileNotFoundError:
-            cls.response("You don't have installed the gedit")
-            time.sleep(2)
-            cls.response("Install gedit with the following command: 'sudo apt-get install gedit'")
+
+        input_mode = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)[0]['input_mode']
+        if input_mode == InputMode.VOICE.value:
+            play_activation_sound()
 
     @classmethod
-    def open_new_browser_window(cls, **kwargs):
+    def disable_assistant(cls, **kwargs):
         """
-        Opens new browser window.
+        - Clear console
+        - Shutdown the assistant service
         """
-        try:
-            subprocess.Popen(['firefox'], stderr=subprocess.PIPE, shell=False).communicate()
-        except Exception as e:
-            cls.response("An error occurred, I can't open firefox")
-            logging.debug(e)
+
+        cls.response('Bye')
+        time.sleep(1)
+        cls.console(info_log='Application terminated gracefully.')
+        sys.exit()
+
+    @classmethod
+    def assistant_greeting(cls, **kwargs):
+        """
+        Assistant greeting based on day hour.
+        """
+        now = datetime.now()
+        day_time = int(now.strftime('%H'))
+
+        if day_time < 12:
+            cls.response('Good morning sir')
+        elif 12 <= day_time < 18:
+            cls.response('Good afternoon sir')
+        else:
+            cls.response('Good evening sir')

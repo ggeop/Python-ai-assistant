@@ -20,25 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-import psutil
-
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.skill import AssistantSkill
+import jarvis
 
 
-class SystemHealthSkills(AssistantSkill):
+class UtilSkills(AssistantSkill):
 
     @classmethod
-    def tell_memory_consumption(cls,**kwargs):
+    def speech_interruption(cls, **kwargs):
         """
-        Responds the memory consumption of the assistant process.
+        Stop assistant speech.
         """
-        memory = cls._get_memory_consumption()
-        cls.response("I use {0:.2f} GB..".format(memory))
+        jarvis.output_engine.stop_speaking = True
 
     @classmethod
-    def _get_memory_consumption(cls):
-        pid = os.getpid()
-        py = psutil.Process(pid)
-        memory_use = py.memory_info()[0] / 2. ** 30  # memory use in GB...I think
-        return memory_use
+    def clear_console(cls, **kwargs):
+        cls.console("Sure")
+

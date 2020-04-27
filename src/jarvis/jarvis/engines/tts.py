@@ -25,7 +25,7 @@ import logging
 import pyttsx3
 import queue
 
-from jarvis.core.console_manager import ConsoleManager
+from jarvis.core.console import ConsoleManager
 
 
 class TTS:

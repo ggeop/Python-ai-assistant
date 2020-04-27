@@ -20,37 +20,45 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import requests
-import json
+import subprocess
 import logging
+import time
 
-from jarvis.settings import IPSTACK_API
-from jarvis.skills.internet import InternetSkills
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.skill import AssistantSkill
 
 
-class LocationSkill(AssistantSkill):
+class LinuxAppSkills(AssistantSkill):
 
     @classmethod
-    def get_current_location(cls, **kwargs):
-        location_results = cls.get_location()
-        if location_results:
-            city, latitude, longitude = location_results
-            cls.response("You are in {0}".format(city))
-    
-    @classmethod
-    def get_location(cls):
+    def open_new_bash(cls, **kwargs):
+        """
+        Opens new bash terminal.
+        """
         try:
-            send_url = "http://api.ipstack.com/check?access_key=" + IPSTACK_API['key']
-            geo_req = requests.get(send_url)
-            geo_json = json.loads(geo_req.text)
-            latitude = geo_json['latitude']
-            longitude = geo_json['longitude']
-            city = geo_json['city']
-            return city, latitude, longitude
+            subprocess.Popen(['gnome-terminal'], stderr=subprocess.PIPE, shell=False).communicate()
         except Exception as e:
-            if InternetSkills.internet_availability():
-                # If there is an error but the internet connect is good, then the location API has problem
-                cls.console(error_log=e)
-                logging.debug("Unable to get current location with error message: {0}".format(e))
-                return None
+            cls.response("An error occurred, I can't open new bash terminal")
+            logging.debug(e)
+
+    @classmethod
+    def open_note_app(cls, **kwargs):
+        """
+        Opens a note editor (gedit).
+        """
+        try:
+            subprocess.Popen(['gedit'], stderr=subprocess.PIPE, shell=False).communicate()
+        except FileNotFoundError:
+            cls.response("You don't have installed the gedit")
+            time.sleep(2)
+            cls.response("Install gedit with the following command: 'sudo apt-get install gedit'")
+
+    @classmethod
+    def open_new_browser_window(cls, **kwargs):
+        """
+        Opens new browser window.
+        """
+        try:
+            subprocess.Popen(['firefox'], stderr=subprocess.PIPE, shell=False).communicate()
+        except Exception as e:
+            cls.response("An error occurred, I can't open firefox")
+            logging.debug(e)

@@ -20,36 +20,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import subprocess
+import re
+import time
 
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.skill import AssistantSkill
 
 
-class LibreofficeSkills(AssistantSkill):
-
+class WordSkills(AssistantSkill):
+    
     @classmethod
-    def open_libreoffice_calc(cls, **kwargs):
+    def spell_a_word(cls, voice_transcript, skill, **kwargs):
         """
-        Opens libreoffice_suite_skills calc application.
+        Spell a words letter by letter.
+        :param voice_transcript: string (e.g 'spell word animal')
+        :param skill: dict (e.g
         """
-        cls._open_libreoffice_app('calc')
-
-    @classmethod
-    def open_libreoffice_impress(cls, **kwargs):
-        """
-        Opens libreoffice_suite_skills impress application.
-        """
-        cls._open_libreoffice_app('impress')
-
-    @classmethod
-    def open_libreoffice_writer(cls, **kwargs):
-        """
-        Opens libreoffice_suite_skills writer application.
-        """
-        cls._open_libreoffice_app('writer')
-
-    @classmethod
-    def _open_libreoffice_app(cls, app):
-        app_arg = '-' + app
-        subprocess.Popen(['libreoffice', app_arg], stdout=subprocess.PIPE, shell=False)
-        cls.console('I opened a new' + app + ' document..')
+        tags = cls.extract_tags(voice_transcript, skill['tags'])
+        for tag in tags:
+            reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
+            try:
+                if reg_ex:
+                    search_text = reg_ex.group(1)
+                    for letter in search_text:
+                        cls.response(letter)
+                        time.sleep(2)
+            except Exception as e:
+                cls.console(error_log=e)
+                cls.response("I can't spell the word")

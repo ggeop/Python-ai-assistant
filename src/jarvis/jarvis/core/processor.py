@@ -20,18 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import logging
 import jarvis
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from jarvis.skills.skill_analyzer import SkillAnalyzer
-from jarvis.skills.skills_registry import skill_objects
-from jarvis.core.nlp_processor import ResponseCreator
-from jarvis.skills.assistant_activation import ActivationSkills
+from jarvis.skills.analyzer import SkillAnalyzer
+from jarvis.skills.registry import skill_objects
+from jarvis.core.nlp import ResponseCreator
+from jarvis.skills.collection.activation import ActivationSkills
 from jarvis.utils.mongoDB import db
-from jarvis.skills.wolframalpha import WolframSkills
+from jarvis.skills.collection.wolframalpha import WolframSkills
 
 
 class Processor:

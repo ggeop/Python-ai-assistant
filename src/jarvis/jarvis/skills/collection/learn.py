@@ -21,9 +21,9 @@
 # SOFTWARE.
 
 
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.skill import AssistantSkill
 from jarvis.utils.mongoDB import db
-from jarvis.utils import user_input
+from jarvis.utils import input
 
 header = """
 -----------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ class LearnSkills(AssistantSkill):
             cls.response("I can't find learned skills in my database")
         else:
             cls.response('I found learned skills..')
-            user_input.check_input_to_continue('Are you sure to remove learned skills')
+            input.check_input_to_continue('Are you sure to remove learned skills')
             user_answer = input('Are you sure to remove learned skills (y/n): ').lower()
             if user_answer:
                 db.drop_collection(collection='learned_skills')

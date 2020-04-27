@@ -22,12 +22,12 @@
 import importlib
 
 
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.skill import AssistantSkill
 from jarvis import settings
 from jarvis.utils.mongoDB import db
 from jarvis.enumerations import InputMode, MongoCollections
 from jarvis.utils import console
-from jarvis.utils import user_input
+from jarvis.utils import input
 
 input_mode = db.get_documents(collection='general_settings')[0]['input_mode']
 response_in_speech = db.get_documents(collection='general_settings')[0]['response_in_speech']
@@ -51,11 +51,11 @@ class ConfigurationSkills(AssistantSkill):
         console.add_dashes()
         cls.response('Set new input mode (text or voice): ')
         input_mode_values = [mode.value for mode in InputMode]
-        new_input_mode = user_input.validate_input_with_choices(available_choices=input_mode_values)
+        new_input_mode = input.validate_input_with_choices(available_choices=input_mode_values)
 
         console.add_dashes()
         cls.response('Do you want response in speech?', refresh_console=False)
-        new_response_in_speech = user_input.check_input_to_continue()
+        new_response_in_speech = input.check_input_to_continue()
 
         new_settings = {
             'assistant_name': new_assistant_name,
@@ -68,7 +68,7 @@ class ConfigurationSkills(AssistantSkill):
             cls.console('* {0}: {1}'.format(setting_desc, value), refresh_console=False)
 
         cls.response('Do you want to save new settings? ', refresh_console=False)
-        save = user_input.check_input_to_continue()
+        save = input.check_input_to_continue()
         if save:
             db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[new_settings])
 

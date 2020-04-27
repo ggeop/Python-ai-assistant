@@ -30,7 +30,7 @@ import webbrowser
 
 from bs4 import BeautifulSoup as bs
 
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.skill import AssistantSkill
 
 
 class BrowserSkills(AssistantSkill):

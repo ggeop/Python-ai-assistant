@@ -22,7 +22,7 @@
 
 from word2number import w2n
 
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.skill import AssistantSkill
 from jarvis.utils.mapping import math_symbols_mapping
 
 

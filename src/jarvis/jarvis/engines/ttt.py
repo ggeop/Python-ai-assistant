@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 import logging
-from jarvis.core.console_manager import ConsoleManager
+from jarvis.core.console import ConsoleManager
 
 
 class TTTEngine:

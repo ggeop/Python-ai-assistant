@@ -20,24 +20,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.skills.assistant_activation import ActivationSkills
-from jarvis.skills.assistant_info import AssistantInfoSkills
-from jarvis.skills.datetime import DatetimeSkills
-from jarvis.skills.browser import BrowserSkills
-from jarvis.skills.general import UtilSkills
-from jarvis.skills.internet import InternetSkills
-from jarvis.skills.libreoffice import LibreofficeSkills
-from jarvis.skills.linux import LinuxAppSkills
-from jarvis.skills.location import LocationSkill
-from jarvis.skills.reminder import ReminderSkills
-from jarvis.skills.system_health import SystemHealthSkills
-from jarvis.skills.weather import WeatherSkills
-from jarvis.skills.text import WordSkills
-from jarvis.skills.history import HistorySkills
-from jarvis.skills.learn import LearnSkills
-from jarvis.skills.math import MathSkills
+from jarvis.skills.collection.activation import ActivationSkills
+from jarvis.skills.collection.info import AssistantInfoSkills
+from jarvis.skills.collection.datetime import DatetimeSkills
+from jarvis.skills.collection.browser import BrowserSkills
+from jarvis.skills.collection.general import UtilSkills
+from jarvis.skills.collection.internet import InternetSkills
+from jarvis.skills.collection.libreoffice import LibreofficeSkills
+from jarvis.skills.collection.linux import LinuxAppSkills
+from jarvis.skills.collection.location import LocationSkill
+from jarvis.skills.collection.reminder import ReminderSkills
+from jarvis.skills.collection.system_health import SystemHealthSkills
+from jarvis.skills.collection.weather import WeatherSkills
+from jarvis.skills.collection.text import WordSkills
+from jarvis.skills.collection.history import HistorySkills
+from jarvis.skills.collection.learn import LearnSkills
+from jarvis.skills.collection.math import MathSkills
 from jarvis.utils.mapping import math_tags
-from jarvis.skills.configuration import ConfigurationSkills
+from jarvis.skills.collection.configuration import ConfigurationSkills
 
 # All available assistant skills
 # Keys description:

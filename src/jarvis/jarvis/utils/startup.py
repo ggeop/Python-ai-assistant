@@ -28,7 +28,7 @@ from playsound import playsound
 
 from jarvis.utils import console
 from jarvis.enumerations import MongoCollections
-from jarvis.core.console_manager import ConsoleManager
+from jarvis.core.console import ConsoleManager
 
 
 
@@ -95,7 +95,7 @@ def configure_MongoDB(db, settings):
     # Load skills
     # ------------------------------------------------------------------------------------------------------------------
 
-    from jarvis.skills.skills_registry import CONTROL_SKILLS, ENABLED_BASIC_SKILLS
+    from jarvis.skills.registry import CONTROL_SKILLS, ENABLED_BASIC_SKILLS
 
     all_skills = {
         MongoCollections.CONTROL_SKILLS.value: CONTROL_SKILLS,

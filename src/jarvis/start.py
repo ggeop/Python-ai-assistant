@@ -23,7 +23,7 @@
 from jarvis import settings
 from jarvis.utils.startup import internet_connectivity_check
 from jarvis.core.processor import Processor
-from jarvis.core.console_manager import ConsoleManager
+from jarvis.core.console import ConsoleManager
 
 
 def main():
@@ -32,13 +32,9 @@ def main():
     """
 
     console_manager = ConsoleManager()
-
     console_manager.console_output(info_log='Startup checks')
-
     internet_connectivity_check()
-
     console_manager.console_output(info_log='Application started')
-
     processor = Processor(console_manager=console_manager, settings_=settings)
 
     while True:

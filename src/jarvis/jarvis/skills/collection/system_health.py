@@ -20,30 +20,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import re
-import time
+import os
+import psutil
 
-from jarvis.skills.assistant_skill import AssistantSkill
+from jarvis.skills.skill import AssistantSkill
 
 
-class WordSkills(AssistantSkill):
-    
+class SystemHealthSkills(AssistantSkill):
+
     @classmethod
-    def spell_a_word(cls, voice_transcript, skill, **kwargs):
+    def tell_memory_consumption(cls,**kwargs):
         """
-        Spell a words letter by letter.
-        :param voice_transcript: string (e.g 'spell word animal')
-        :param skill: dict (e.g
+        Responds the memory consumption of the assistant process.
         """
-        tags = cls.extract_tags(voice_transcript, skill['tags'])
-        for tag in tags:
-            reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
-            try:
-                if reg_ex:
-                    search_text = reg_ex.group(1)
-                    for letter in search_text:
-                        cls.response(letter)
-                        time.sleep(2)
-            except Exception as e:
-                cls.console(error_log=e)
-                cls.response("I can't spell the word")
+        memory = cls._get_memory_consumption()
+        cls.response("I use {0:.2f} GB..".format(memory))
+
+    @classmethod
+    def _get_memory_consumption(cls):
+        pid = os.getpid()
+        py = psutil.Process(pid)
+        memory_use = py.memory_info()[0] / 2. ** 30  # memory use in GB...I think
+        return memory_use
