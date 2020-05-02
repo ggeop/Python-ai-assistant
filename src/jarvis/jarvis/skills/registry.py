@@ -121,8 +121,8 @@ BASIC_SKILLS = [
     {
         'enable': True,
         'func': AssistantInfoSkills.assistant_check,
-        'tags': 'hear, hey, are you there',
-        'description': 'Tells the current location'
+        'tags': 'hey, hi',
+        'description': 'User check if assistant works'
     },
 
     {
@@ -278,6 +278,34 @@ BASIC_SKILLS = [
         'func': ConfigurationSkills.configure_assistant,
         'tags': 'configure, change settings',
         'description': 'Change the assistant setting values'
+    },
+
+    {
+        'enable': True,
+        'func': UtilSkills.increase_master_volume,
+        'tags': 'increase volume, volume up, speak louder',
+        'description': 'Increases the speakers master volume'
+    },
+
+    {
+        'enable': True,
+        'func': UtilSkills.reduce_master_volume,
+        'tags': 'reduce volume, volume down',
+        'description': 'Decreases the speakers master volume'
+    },
+
+    {
+        'enable': True,
+        'func': UtilSkills.mute_master_volume,
+        'tags': 'mute',
+        'description': 'Mutes the speakers master volume'
+    },
+
+    {
+        'enable': True,
+        'func': UtilSkills.max_master_volume,
+        'tags': 'volume max',
+        'description': 'Set max the speakers master volume'
     },
 
 ]

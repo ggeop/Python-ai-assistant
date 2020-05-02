@@ -22,7 +22,7 @@
 
 from jarvis.skills.skill import AssistantSkill
 from jarvis.utils.mongoDB import db
-from jarvis.utils.console import add_dashes
+from jarvis.utils.console import headerize
 
 basic_skills_format = """
 -----------------------------------------------------------------------
@@ -58,7 +58,7 @@ class AssistantInfoSkills(AssistantSkill):
         """
         Responses that assistant can hear the user.
         """
-        cls.response('Yes, I hear you!')
+        cls.response('Hey human!')
 
     @classmethod
     def tell_the_skills(cls, **kwargs):
@@ -79,13 +79,13 @@ class AssistantInfoSkills(AssistantSkill):
         Assistant help prints valuable information about the application.
 
         """
-        cls.console(add_dashes('Help'))
+        cls.console(headerize('Help'))
         response_base = ''
         try:
             response = cls._create_skill_response(response_base)
             cls.console(response)
         except Exception as e:
-            logging.error("Error with the execution of skill with message {0}".format(e))
+            cls.console(error_log="Error with the execution of skill with message {0}".format(e))
             cls.response("Sorry I faced an issue")
 
     @classmethod
