@@ -39,31 +39,42 @@ class OutputStyler:
 
 user_input = OutputStyler.CYAN + ':-$ ' + OutputStyler.ENDC
 
+DASH = '='
 
-def add_dashes(text='='):
+
+def headerize(text=DASH):
     """
-    Add dashes based on terminal length
+    Add dashes based on terminal length.
+
+    Example:
+    ---------------------------------------------------
+    text   -->                  Result
+    ---------------------------------------------------
+
+    SYSTEM --> ================ SYSTEM ================
+    None   --> ========================================
+
     """
+
     process = os.popen('stty size', 'r')
     result = process.read()
     process.close()
-    if result:
-        rows, columns = result.split()
+    terminal_height, terminal_length = result.split()
+    if text:
         text_length = len(text)
-        remaining_places = int(columns) - text_length
+        remaining_places = int(terminal_length) - text_length
         if remaining_places > 0:
-            return '=' * (remaining_places // 2 - 1) + ' ' + text + ' ' + '=' * (remaining_places // 2 - 1)
-        else:
-            return text
+            return DASH * (remaining_places // 2 - 1) + ' ' + text + ' ' + DASH * (remaining_places // 2 - 1)
     else:
-        return text
+        # If there is no text, it returns a line with the length of terminal.
+        return DASH * int(terminal_length)
 
 
-def print_console_header(text='-'):
+def print_console_header(text=DASH):
     """
     Create a dynamic header based on terminal length.
     """
-    print(add_dashes(text))
+    print(headerize(text))
 
 
 jarvis_logo = "\n" \

@@ -41,19 +41,19 @@ class ConfigurationSkills(AssistantSkill):
 
         console.print_console_header('Configure assistant')
         cls.console('NOTE: Current name: {0}'.format(assistant_name), refresh_console=False)
-        console.add_dashes()
+        console.headerize()
         cls.response('Set new assistant name: ', refresh_console=False)
         new_assistant_name = cls.user_input()
 
-        console.add_dashes()
+        console.headerize()
 
         cls.console('NOTE: Current mode: {0}'.format(input_mode), refresh_console=False)
-        console.add_dashes()
+        console.headerize()
         cls.response('Set new input mode (text or voice): ')
         input_mode_values = [mode.value for mode in InputMode]
         new_input_mode = input.validate_input_with_choices(available_choices=input_mode_values)
 
-        console.add_dashes()
+        console.headerize()
         cls.response('Do you want response in speech?', refresh_console=False)
         new_response_in_speech = input.check_input_to_continue()
 

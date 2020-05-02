@@ -70,8 +70,9 @@ class Processor:
             self._execute_skill(skill_to_execute)
 
         else:
-            skill_to_execute = {'voice_transcript': transcript, 'skill': {
-                'name': WolframSkills.call_wolframalpha.__name__}
+            # If no skill to execute, it calls the WolframAlpha API
+            skill_to_execute = {'voice_transcript': transcript,
+                                'skill': {'name': WolframSkills.call_wolframalpha.__name__}
                                 }
 
             response = WolframSkills.call_wolframalpha(transcript)

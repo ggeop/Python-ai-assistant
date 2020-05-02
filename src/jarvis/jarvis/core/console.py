@@ -27,7 +27,7 @@ import logging
 
 from jarvis import settings
 from jarvis.utils.mongoDB import db
-from jarvis.utils.console import jarvis_logo, start_text, OutputStyler, add_dashes
+from jarvis.utils.console import jarvis_logo, start_text, OutputStyler, headerize
 from jarvis.enumerations import MongoCollections, InputMode
 
 
@@ -93,7 +93,7 @@ class ConsoleManager:
             settings_documents = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)
             if settings_documents:
                 settings_ = settings_documents[0]
-                print(OutputStyler.HEADER + add_dashes('GENERAL INFO') + OutputStyler.ENDC)
+                print(OutputStyler.HEADER + headerize('GENERAL INFO') + OutputStyler.ENDC)
                 enabled = OutputStyler.GREEN + 'ENABLED' + OutputStyler.ENDC if settings_['response_in_speech'] else OutputStyler.WARNING + 'NOT ENABLED' + OutputStyler.ENDC
                 print(OutputStyler.BOLD + 'RESPONSE IN SPEECH: ' + enabled)
                 print(OutputStyler.BOLD + 'INPUT MODE: ' + OutputStyler.GREEN + '{0}'.format(settings_['input_mode'].upper() + OutputStyler.ENDC) + OutputStyler.ENDC)
@@ -103,7 +103,7 @@ class ConsoleManager:
             # ----------------------------------------------------------------------------------------------------------
             # System info sector
             # ----------------------------------------------------------------------------------------------------------
-            print(OutputStyler.HEADER + add_dashes('SYSTEM') + OutputStyler.ENDC)
+            print(OutputStyler.HEADER + headerize('SYSTEM') + OutputStyler.ENDC)
             print(OutputStyler.BOLD +
                   'RAM USAGE: {0:.2f} GB'.format(self._get_memory()) + OutputStyler.ENDC)
 
@@ -128,18 +128,18 @@ class ConsoleManager:
 
             lines = subprocess.check_output(['tail', '-' + str(MAX_NUMBER_OF_LOG_LINES), log_path]).decode("utf-8")
             actual_number_of_log_lines = len(lines)
-            print(OutputStyler.HEADER + add_dashes('LOG -{0} (Total Lines: {1})'.format(log_path,
-                                                                                        actual_number_of_log_lines)
-                                                   ) + OutputStyler.ENDC)
+            print(OutputStyler.HEADER + headerize('LOG -{0} (Total Lines: {1})'.format(log_path,
+                                                                                       actual_number_of_log_lines)
+                                                  ) + OutputStyler.ENDC)
             print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
 
             # ----------------------------------------------------------------------------------------------------------
             # Assistant input/output sector
             # ----------------------------------------------------------------------------------------------------------
-            print(OutputStyler.HEADER + add_dashes('ASSISTANT') + OutputStyler.ENDC)
+            print(OutputStyler.HEADER + headerize('ASSISTANT') + OutputStyler.ENDC)
             if text:
                 print(OutputStyler.BOLD + '> ' + text + '\r' + OutputStyler.ENDC)
-                print(OutputStyler.HEADER + add_dashes('-') + OutputStyler.ENDC)
+                print(OutputStyler.HEADER + headerize() + OutputStyler.ENDC)
         else:
             if text:
                 print(OutputStyler.BOLD + text + '\r' + OutputStyler.ENDC)

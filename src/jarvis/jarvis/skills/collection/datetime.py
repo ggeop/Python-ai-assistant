@@ -50,7 +50,6 @@ class DatetimeSkills(AssistantSkill):
 
         now = datetime.now()
         hour, minute = now.hour, now.minute
-        # TODO: tim_in_text only in speech response
         converted_time = cls._time_in_text(hour, minute)
         cls.response('The current time is: {0}'.format(converted_time))
 
