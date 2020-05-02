@@ -32,9 +32,10 @@ def main():
     """
 
     console_manager = ConsoleManager()
-    console_manager.console_output(info_log='Startup checks')
+    console_manager.console_output(info_log='Wait a second for startup checks..')
     internet_connectivity_check()
     console_manager.console_output(info_log='Application started')
+    console_manager.console_output(info_log="I'm ready! Say something :-)")
     processor = Processor(console_manager=console_manager, settings_=settings)
 
     while True:

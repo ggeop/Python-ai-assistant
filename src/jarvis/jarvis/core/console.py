@@ -123,8 +123,14 @@ class ConsoleManager:
             if error_log:
                 logging.error(error_log)
 
-            print(OutputStyler.HEADER + add_dashes('LOG') + OutputStyler.ENDC)
-            lines = subprocess.check_output(['tail', '-10', settings.ROOT_LOG_CONF['handlers']['file']['filename']]).decode("utf-8")
+            MAX_NUMBER_OF_LOG_LINES = 25
+            log_path = settings.ROOT_LOG_CONF['handlers']['file']['filename']
+
+            lines = subprocess.check_output(['tail', '-' + str(MAX_NUMBER_OF_LOG_LINES), log_path]).decode("utf-8")
+            actual_number_of_log_lines = len(lines)
+            print(OutputStyler.HEADER + add_dashes('LOG -{0} (Total Lines: {1})'.format(log_path,
+                                                                                        actual_number_of_log_lines)
+                                                   ) + OutputStyler.ENDC)
             print(OutputStyler.BOLD + lines + OutputStyler.ENDC)
 
             # ----------------------------------------------------------------------------------------------------------

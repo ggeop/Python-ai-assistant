@@ -31,13 +31,12 @@ from jarvis.enumerations import MongoCollections
 from jarvis.core.console import ConsoleManager
 
 
-
 def play_activation_sound():
     """
     Plays a sound when the assistant enables.
     """
     utils_dir = os.path.dirname(__file__)
-    activation_soundfile = os.path.join(utils_dir, '..', 'files', 'enable_sound.wav')
+    activation_soundfile = os.path.join(utils_dir, '..', 'files', 'activation_sound.wav')
     playsound(activation_soundfile)
 
 

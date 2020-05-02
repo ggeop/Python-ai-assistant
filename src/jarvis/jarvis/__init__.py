@@ -37,8 +37,8 @@ config.dictConfig(ROOT_LOG_CONF)
 # ----------------------------------------------------------------------------------------------------------------------
 # Clear log file in each assistant fresh start
 # ----------------------------------------------------------------------------------------------------------------------
-with open(ROOT_LOG_CONF['handlers']['file']['filename'], 'r+') as f:
-    f.truncate(0)
+with open(ROOT_LOG_CONF['handlers']['file']['filename'], 'w') as f:
+    f.close()
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Configuare MongoDB, load skills and settings

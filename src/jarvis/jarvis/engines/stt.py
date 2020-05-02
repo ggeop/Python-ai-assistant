@@ -37,10 +37,12 @@ class STTEngine:
 
     def __init__(self):
         super().__init__()
-        self.recognizer = sr.Recognizer()
-        self.microphone = sr.Microphone()
         self.console_manager = ConsoleManager()
-        self.console_manager.console_output(info_log="Microphone configured")
+        self.console_manager.console_output(info_log="Configuring Mic..")
+        self.recognizer = sr.Recognizer()
+        self.recognizer.pause_threshold = 0.5
+        self.microphone = sr.Microphone()
+        self.console_manager.console_output(info_log="Microphone configured successfully!")
 
     def recognize_input(self, already_activated=False):
         """
@@ -50,6 +52,7 @@ class STTEngine:
         while True:
             transcript = self._recognize_speech_from_mic()
             if already_activated or self._activation_name_exist(transcript):
+                transcript = self._remove_activation_word(transcript)
                 return transcript
 
     def _recognize_speech_from_mic(self, ):
@@ -64,7 +67,7 @@ class STTEngine:
 
         try:
             transcript = self.recognizer.recognize_google(audio).lower()
-            self.console_manager.console_output(info_log='User said: {0}'.format(transcript), refresh_console=False)
+            self.console_manager.console_output(info_log='User said: {0}'.format(transcript))
         except sr.UnknownValueError:
             # speech was unintelligible
             transcript = ''
@@ -72,7 +75,7 @@ class STTEngine:
         except sr.RequestError:
             # API was unreachable or unresponsive
             transcript = ''
-            self.console_manager.console_output(error_log='Google API was unreachable', refresh_console=False)
+            self.console_manager.console_output(error_log='Google API was unreachable')
         return transcript
 
     @staticmethod
@@ -86,3 +89,8 @@ class STTEngine:
             return bool(set(transcript_words).intersection([jarvis.assistant_name]))
         else:
             return False
+
+    @staticmethod
+    def _remove_activation_word(transcript):
+        transcript = transcript.replace(jarvis.assistant_name, '')
+        return transcript
