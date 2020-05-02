@@ -37,10 +37,10 @@ class OutputStyler:
     UNDERLINE = '\033[4m'
 
 
-user_input = OutputStyler.CYAN + '>> ' + OutputStyler.ENDC
+user_input = OutputStyler.CYAN + ':-$ ' + OutputStyler.ENDC
 
 
-def add_dashes(text='-'):
+def add_dashes(text='='):
     """
     Add dashes based on terminal length
     """
@@ -52,7 +52,7 @@ def add_dashes(text='-'):
         text_length = len(text)
         remaining_places = int(columns) - text_length
         if remaining_places > 0:
-            return '-' * (remaining_places // 2 - 1) + ' ' + text + ' ' + '-' * (remaining_places // 2 - 1)
+            return '=' * (remaining_places // 2 - 1) + ' ' + text + ' ' + '=' * (remaining_places // 2 - 1)
         else:
             return text
     else:

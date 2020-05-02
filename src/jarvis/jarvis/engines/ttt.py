@@ -22,6 +22,7 @@
 
 import logging
 from jarvis.core.console import ConsoleManager
+from jarvis.utils.console import user_input
 
 
 class TTTEngine:
@@ -37,9 +38,9 @@ class TTTEngine:
         Recognize input from console and returns transcript if its not empty string.
         """
         try:
-            text_transcript = input('>> ').lower()
+            text_transcript = input(user_input).lower()
             while text_transcript == '':
-                text_transcript = input('>> ').lower()
+                text_transcript = input(user_input).lower()
             return text_transcript
         except EOFError as e:
             self.console_manager.console_output(error_log='Failed to recognize user input with message: {0}'.format(e))
