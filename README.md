@@ -12,7 +12,8 @@ It can understand human speech, talk to user and execute basic commands.
 
 #### Assistant Skills 
 *   **Opens a web page** (e.g 'Jarvis open youtube')
-*   **Play music in Youtube** (e.g 'play mozart')
+*   **Play music in Youtube** (e.g 'Jarvis play mozart')
+*   **Increase/decrease** the speakers master volume (also can set max/mute speakers volume) ** (e.g 'Jarvis volume up!')
 *   **Opens libreoffice suite applications (calc, writer, impress)** (e.g 'Jarvis open calc')
 *   **Tells about something**, by searching on the internet (e.g 'Jarvis tells me about oranges')
 *   **Tells the weather** for a place (e.g 'Jarvis tell_the_skills me the weather in London')
@@ -28,10 +29,10 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Tells the current location** (e.g 'Jarvis tell me your current location')
 *   **Tells how much memory consumes** (e.g 'Jarvis tell me your memory consumption)
 *   **Tells users commands history** (e.g 'Jarvis tell me my history')
-*   **Write/tell 'learn' and enable learning mode and add new responses on demand!** (e.g 'learn')
+*   **Write/tell 'remember' and enable learning mode and add new responses on demand!** (e.g 'Jarvis remember')
 *   **Clear bash console** (e.g 'Jarvis clear console')
-*   **Has help command, which prints all the skills with their descriptions** (e.g 'help')
-*   **Do basic calculations** (e.g 'Jarvis (5 + 6) * 8')
+*   **Has help command, which prints all the skills with their descriptions** (e.g 'Jarvis help')
+*   **Do basic calculations** (e.g 'Jarvis (5 + 6) * 8' or 'Jarvis one plus one')
 *   **Change settings on runtime** (e.g 'Jarvis change settings')
 
 #### Assistant Features
