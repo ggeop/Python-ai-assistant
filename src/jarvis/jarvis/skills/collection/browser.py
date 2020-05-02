@@ -61,22 +61,24 @@ class BrowserSkills(AssistantSkill):
     def open_in_youtube(cls, voice_transcript, skill):
         """
         Open a video in youtube.
-        :param voice_transcript: string (e.g 'about google')
+        :param voice_transcript: string (e.g 'play mozart')
         :param skill: dict (e.g
         """
 
         tags = cls.extract_tags(voice_transcript, skill['tags'])
         for tag in tags:
-            reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
+            reg_ex = re.search(tag + ' (.*)', voice_transcript)
+
             try:
                 if reg_ex:
                     search_text = reg_ex.group(1)
-                    base = "https://www.youtube.com/results?search_query=" + "&orderby=viewCount"
-                    r = requests.get(base + search_text.replace(' ', '+'))
+                    base = "https://www.youtube.com/results?search_query={0}&orderby=viewCount"
+                    r = requests.get(base.format(search_text.replace(' ', '+')))
                     page = r.text
                     soup = bs(page, 'html.parser')
                     vids = soup.findAll('a', attrs={'class': 'yt-uix-tile-link'})
-                    video = 'https://www.youtube.com' + vids[0]['href']
+                    video = 'https://www.youtube.com' + vids[0]['href'] + "&autoplay=1"
+                    cls.console(info_log="Play Youtube video: {0}".format(video))
                     subprocess.Popen(["python", "-m", "webbrowser", "-t", video], stdout=subprocess.PIPE, shell=False)
             except Exception as e:
                 cls.console(error_log="Error with the execution of skill with message {0}".format(e))

@@ -157,8 +157,8 @@ BASIC_SKILLS = [
     {
         'enable': True,
         'func': BrowserSkills.open_in_youtube,
-        'tags': 'youtube, find in youtube, play in youtube',
-        'description': 'Plays a video in Youtube'
+        'tags': 'play',
+        'description': 'Plays music in Youtube'
     },
 
     {

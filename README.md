@@ -12,7 +12,7 @@ It can understand human speech, talk to user and execute basic commands.
 
 #### Assistant Skills 
 *   **Opens a web page** (e.g 'Jarvis open youtube')
-*   **Play a video in Youtube** (e.g 'find in you tdex in youtube')
+*   **Play music in Youtube** (e.g 'play mozart')
 *   **Opens libreoffice suite applications (calc, writer, impress)** (e.g 'Jarvis open calc')
 *   **Tells about something**, by searching on the internet (e.g 'Jarvis tells me about oranges')
 *   **Tells the weather** for a place (e.g 'Jarvis tell_the_skills me the weather in London')
