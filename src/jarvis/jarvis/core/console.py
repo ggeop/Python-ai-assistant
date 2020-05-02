@@ -27,7 +27,7 @@ import logging
 
 from jarvis import settings
 from jarvis.utils.mongoDB import db
-from jarvis.utils.console import jarvis_logo, OutputStyler, add_dashes
+from jarvis.utils.console import jarvis_logo, start_text, OutputStyler, add_dashes
 from jarvis.enumerations import MongoCollections, InputMode
 
 
@@ -84,8 +84,8 @@ class ConsoleManager:
             # ----------------------------------------------------------------------------------------------------------
             # Logo sector
             # ----------------------------------------------------------------------------------------------------------
-            self._stdout_print(jarvis_logo)
-            self._stdout_print("  NOTE: CTRL + C If you want to Quit.")
+            self._stdout_print(jarvis_logo + start_text)
+            self._stdout_print("     NOTE: CTRL + C If you want to Quit.")
 
             # ----------------------------------------------------------------------------------------------------------
             # General info sector
