@@ -34,16 +34,17 @@ I would like to learn, tell me the right answer!
 """
 
 
-class LearnSkills(AssistantSkill):
+class RememberSkills(AssistantSkill):
 
     @classmethod
-    def learn(cls, **kwargs):
+    def remember(cls, **kwargs):
         cls.console(header)
-        continue_add = 'y'
-        while continue_add == 'y':
-            # TODO: Add also speech input based on assistant mode.
-            tags = input('Question: ')
-            response = input('Suggested Response: ')
+        continue_add = True
+        while continue_add:
+            cls.console(text='Question: ')
+            tags = cls.user_input()
+            cls.console(text='Suggested Response: ')
+            response = cls.user_input()
             new_skill = {'name': 'learned_skill',
                          'enable': True,
                          'func': cls.tell_response.__name__,
@@ -51,7 +52,8 @@ class LearnSkills(AssistantSkill):
                          'tags': tags,
                          },
 
-            continue_add = input('Continue add skills (y/n): ').lower()
+            cls.response('Add more? ', refresh_console=False)
+            continue_add = input.check_input_to_continue()
             db.insert_many_documents(collection='learned_skills', documents=new_skill)
 
     @classmethod
@@ -64,8 +66,8 @@ class LearnSkills(AssistantSkill):
             cls.response("I can't find learned skills in my database")
         else:
             cls.response('I found learned skills..')
-            input.check_input_to_continue('Are you sure to remove learned skills')
-            user_answer = input('Are you sure to remove learned skills (y/n): ').lower()
+            cls.response('Are you sure to remove learned skills? ', refresh_console=False)
+            user_answer = input.check_input_to_continue()
             if user_answer:
                 db.drop_collection(collection='learned_skills')
                 cls.response("Perfect I have deleted them all")

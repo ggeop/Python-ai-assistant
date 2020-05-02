@@ -34,7 +34,7 @@ from jarvis.skills.collection.system_health import SystemHealthSkills
 from jarvis.skills.collection.weather import WeatherSkills
 from jarvis.skills.collection.text import WordSkills
 from jarvis.skills.collection.history import HistorySkills
-from jarvis.skills.collection.learn import LearnSkills
+from jarvis.skills.collection.remember import RememberSkills
 from jarvis.skills.collection.math import MathSkills
 from jarvis.utils.mapping import math_tags
 from jarvis.skills.collection.configuration import ConfigurationSkills
@@ -233,21 +233,21 @@ BASIC_SKILLS = [
 
     {
         'enable': True,
-        'func': LearnSkills.learn,
-        'tags': 'learn new skills, learn',
-        'description': 'Learn new skills'
+        'func': RememberSkills.remember,
+        'tags': 'remember',
+        'description': 'Remember question - answer pairs'
     },
 
     {
         'enable': True,
-        'func': LearnSkills.tell_response,
+        'func': RememberSkills.tell_response,
         'tags': '',
         'description': 'Util skill, there is no tags to call it'
     },
 
     {
         'enable': True,
-        'func': LearnSkills.clear_learned_skills,
+        'func': RememberSkills.clear_learned_skills,
         'tags': 'clear learned skills, drop learned skills, remove learned skills',
         'description': 'Clear the learned skills'
     },
