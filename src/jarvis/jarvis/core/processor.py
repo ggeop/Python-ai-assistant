@@ -39,11 +39,11 @@ class Processor:
         self.settings = settings_
         self.response_creator = ResponseCreator()
         self.skill_analyzer = SkillAnalyzer(
-                                            weight_measure=TfidfVectorizer,
-                                            similarity_measure=cosine_similarity,
-                                            args=self.settings.SKILL_ANALYZER.get('args'),
-                                            sensitivity=self.settings.SKILL_ANALYZER.get('sensitivity'),
-                                            )
+            weight_measure=TfidfVectorizer,
+            similarity_measure=cosine_similarity,
+            args=self.settings.SKILL_ANALYZER.get('args'),
+            sensitivity=self.settings.SKILL_ANALYZER.get('sensitivity'),
+        )
 
     def run(self):
         """
@@ -61,26 +61,50 @@ class Processor:
         skill = self.skill_analyzer.extract(transcript)
 
         if skill:
-            skill_to_execute = {'voice_transcript': transcript, 'skill': skill}
+            # ----------------------------------------------------------------------------------------------------------
+            # Successfully extracted skill
+            # ----------------------------------------------------------------------------------------------------------
 
-            response = self.response_creator.create_positive_response(transcript) if skill_to_execute \
-                else self.response_creator.create_negative_response(transcript)
+            # ---------------
+            # Positive answer
+            # ---------------
+            response = self.response_creator.create_positive_response(transcript)
             jarvis.output_engine.assistant_response(response)
 
+            # ---------------
+            # Skill execution
+            # ---------------
+            skill_to_execute = {'voice_transcript': transcript, 'skill': skill}
             self._execute_skill(skill_to_execute)
 
         else:
-            # If no skill to execute, it calls the WolframAlpha API
+            # ----------------------------------------------------------------------------------------------------------
+            # No skill extracted
+            # ----------------------------------------------------------------------------------------------------------
+
+            # ---------------
+            # Negative answer
+            # ---------------
+            response = self.response_creator.create_negative_response(transcript)
+            jarvis.output_engine.assistant_response(response)
+
+            # ---------------
+            # WolframAlpha API Call
+            # ---------------
             skill_to_execute = {'voice_transcript': transcript,
                                 'skill': {'name': WolframSkills.call_wolframalpha.__name__}
                                 }
 
             response = WolframSkills.call_wolframalpha(transcript)
 
+        # --------------------------------------------------------------------------------------------------------------
+        # Add new record to history
+        # --------------------------------------------------------------------------------------------------------------
+
         record = {'user_transcript': transcript,
                   'response': response if response else '--',
                   'executed_skill': skill_to_execute if skill_to_execute else '--'
-        }
+                  }
 
         db.insert_many_documents('history', [record])
 
@@ -94,5 +118,5 @@ class Processor:
                 skill_func = skill_objects[skill_func_name]
                 skill_func(**skill)
             except Exception as e:
-                self.console_manager.console_output(error_log="Failed to execute skill {0} with message {1}"
+                self.console_manager.console_output(error_log="Failed to execute skill {0} with message: {1}"
                                                     .format(skill_func_name, e))

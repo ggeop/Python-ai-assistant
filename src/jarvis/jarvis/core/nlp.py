@@ -113,7 +113,7 @@ class ResponseCreator(NLP):
         noun = self._extract_noun(parts_of_speech)
 
         # ----------------------------
-        # Question type classification
+        # Command type classification
         # ----------------------------
         if self.is_question_with_modal(parts_of_speech):
             logging.info('The user speech has a modal question')
@@ -122,7 +122,7 @@ class ResponseCreator(NLP):
             logging.info('The user speech has an inverse question')
             answer = 'I ' + ' ' + verb + ' ' + noun
         else:
-            logging.debug('Unclassified question type')
+            logging.info('Unclassified user command..')
             answer = ''
 
         return re.sub('\s\s+', ' ', answer)
