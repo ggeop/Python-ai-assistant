@@ -44,3 +44,4 @@ pymongo==3.10.1
 playsound==1.2.2
 vext==0.7.3
 vext.gi==0.7.0
+word2number==1.1
