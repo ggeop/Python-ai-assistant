@@ -53,7 +53,7 @@ All the following APIs have free no-commercial API calls. Subscribe to the follo
 *   [OpenWeatherMap](https://openweathermap.org/appid): API for weather forecast.
 *   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
 *   [IPSTACK](https://ipstack.com/signup/free): API for current location.
-### Setup Jarvis in Ubundu/Debian system
+### Setup Jarvis in Ubuntu/Debian system
 *   Download the Jarvis repo localy:
 
 ```bash
