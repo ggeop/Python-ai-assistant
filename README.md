@@ -63,6 +63,38 @@ git clone https://github.com/ggeop/Jarvis.git
 ```bash
 bash setup.sh
 ```
+### Setup Jarvis on Windows 10 Attention currently alpha state some skills might not be working as intended or they won't work at all
+*  Install python 3.8.x
+```bash
+ Download the repo as zip file https://github.com/11Tuvork28/Python-ai-assistant/archive/master.zip
+```
+*   Extract the zip file and go into the folder. The open a Powershell window. Press shift+right_click -> open Powershell here
+
+```bash
+python3 -m pip install virtualenv
+```
+*  After it installed create an virtualenv via, remember to
+```bash
+virtualenv jarvis_virtualenv
+
+source jarvis_virtualenv/bin/activate
+
+pip install -r requirements.txt
+
+python -c "import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')"
+
+deactivate
+```
+*  Now you need to install MongoDB but don't close the Powershell window 
+
+Download their [installer](https://fastdl.mongodb.org/win32/mongodb-win32-x86_64-2012plus-4.2.8-signed.msi) and run it. During the installation process you will be asked if it should be install as a service just leave the default selection and press next. That's i, you should now be albe to start the assistant by running in the powershell. If you have any issues don't hesitate  to open an issue at my [repo](https://github.com/11Tuvork28/Python-ai-assistant)
+
+```bash
+source jarvis_virtualenv/bin/activate 
+
+python src/jarvis/start.py
+```
+* All done
 
 *   Put the Keys in settings
 
