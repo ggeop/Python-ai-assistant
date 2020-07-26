@@ -64,6 +64,7 @@ git clone https://github.com/ggeop/Jarvis.git
 bash setup.sh
 ```
 ### Setup Jarvis on Windows 10 Attention currently alpha state some skills might not be working as intended or they won't work at all
+Also note that you need to use my fork of repo because the changes made to the project aren't really compatible with the linux version
 *  Install python 3.8.x
 ```bash
  Download the repo as zip file https://github.com/11Tuvork28/Python-ai-assistant/archive/master.zip
