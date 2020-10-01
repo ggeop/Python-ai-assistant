@@ -8,7 +8,7 @@
 
 # About Jarvis 🧠
 Jarvis is a voice commanding assistant service in [Python 3.5+](https://www.python.org/downloads/release/python-360/)
-It can understand human speech, talk to user and execute basic commands.
+It can recognize human speech, talk to user and execute basic commands.
 
 #### Assistant Skills 
 *   **Opens a web page** (e.g 'Jarvis open youtube')
