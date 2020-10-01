@@ -7,7 +7,7 @@
 ![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/jarvis_logo.png)
 
 # About Jarvis 🧠
-Jarvis is a voice assistant service in [Python 3.5+](https://www.python.org/downloads/release/python-360/)
+Jarvis is a voice commanding assistant service in [Python 3.5+](https://www.python.org/downloads/release/python-360/)
 It can understand human speech, talk to user and execute basic commands.
 
 #### Assistant Skills 
@@ -36,7 +36,7 @@ It can understand human speech, talk to user and execute basic commands.
 *   **Change settings on runtime** (e.g 'Jarvis change settings')
 
 #### Assistant Features
-*   **Asynchronous command execution & speech interruption**
+*   **Asynchronous command execution & speech recognition and interpretation**
 *   Supports **two different user input modes (text or speech)**, user can write or speek in the mic.
 *   Answers in **general questions** (via call Wolfram API), e.g ('Jarvis tell me the highest building') 
 *   **Change input mode on run time**, triggered by a phrase e.g 'Jarvis change settings')
@@ -72,7 +72,7 @@ bash setup.sh
 nano Jarvis/src/jarvis/jarvis/setting.py
 ```
 
-### Start voice assistant
+### Start voice commanding assistant
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/Jarvis_printscreen.PNG)
 
 *   Start the assistant service:
@@ -80,7 +80,7 @@ nano Jarvis/src/jarvis/jarvis/setting.py
 bash run_jarvis.sh
 ```
 
-### How to add a new Skill
+### How to add a new Skill to assistant
 You can easily add a new skill in two steps.
 *   Create a new configurationin SKILLS in **skills/registry.py**
 ```python
