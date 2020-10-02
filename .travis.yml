@@ -1,18 +1,11 @@
 language: python
-matrix:
+jobs:
   include:
-    - name: "Ubuntu 18.04 Job"
-    - os: linux
-    - dist: bionic
-    - python:
-        - "3.5"
-        - "3.6"
-    - name: "Ubuntu 16.04 Job"
-    - os: linux
-    - dist: xenial
-    - python:
-        - "3.5"
-        - "3.6"
+    - name: "Python 3.8 on Focal"
+      os: linux
+      dist: focal
+      python: 3.8
+
 install:
   - sudo bash setup.sh
 script:

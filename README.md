@@ -1,14 +1,20 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/ggeop/python-ai-assistant/badge)](https://www.codefactor.io/repository/github/ggeop/Python-ai-assistant)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c90305e22186cc2c9d5/maintainability)](https://codeclimate.com/github/ggeop/Python-ai-assistant/maintainability)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/ggeop/Python-ai-assistant.svg?branch=master)](https://travis-ci.org/ggeop/Python-ai-assistant)
+[![Build Status](https://app.travis-ci.com/ggeop/Python-ai-assistant.svg?branch=master)](https://travis-ci.org/ggeop/Python-ai-assistant)
 
 
 ![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/jarvis_logo.png)
 
-# About Jarvis 🧠
-Jarvis is a voice commanding assistant service in [Python 3.5+](https://www.python.org/downloads/release/python-360/)
+# About Jarvis - An Intelligent AI Consciousness 🧠
+Jarvis is a voice commanding assistant service in [Python 3.8](https://www.python.org/downloads/release/python-360/)
 It can recognize human speech, talk to user and execute basic commands.
+
+#### Requirements
+
+* Operation system: **Ubuntu 20.04 (Focal Fossa)**
+* Python Version: **3.8.x**
+
 
 #### Assistant Skills 
 *   **Opens a web page** (e.g 'Jarvis open youtube')
@@ -17,7 +23,7 @@ It can recognize human speech, talk to user and execute basic commands.
 *   **Opens libreoffice suite applications (calc, writer, impress)** (e.g 'Jarvis open calc')
 *   **Tells about something**, by searching on the internet (e.g 'Jarvis tells me about oranges')
 *   **Tells the weather** for a place (e.g 'Jarvis tell_the_skills me the weather in London')
-*   **Tells the current time and/or date** (e.g 'Jarvis tells me time or date')
+*   **Tells the current time and/or date** (e.g 'Jarvis tell me time or date')
 *   **Set an alarm** (e.g 'Jarvis create a new alarm')
 *   **Tells the internet speed (ping, uplink and downling)** (e.g 'Jarvis tell_the_skills me the internet speed')
 *   **Tells the internet availability** (e.g 'Jarvis is the internet connection ok?')
@@ -54,10 +60,14 @@ All the following APIs have free no-commercial API calls. Subscribe to the follo
 *   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
 *   [IPSTACK](https://ipstack.com/signup/free): API for current location.
 ### Setup Jarvis in Ubuntu/Debian system
-*   Download the Jarvis repo localy:
+*   Download the Jarvis repo locally:
 
 ```bash
 git clone https://github.com/ggeop/Jarvis.git
+```
+*   Change working directory
+```bash
+cd Jarvis
 ```
 *   Setup Jarvis and system dependencies:
 ```bash
