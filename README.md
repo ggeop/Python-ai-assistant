@@ -69,7 +69,7 @@ bash setup.sh
 **NOTE:** *For better exprerience, before you start the application you can put the free KEYs in the settings.py*
 
 ```bash
-nano Jarvis/src/jarvis/jarvis/setting.py
+nano Jarvis/src/jarvis/jarvis/settings.py
 ```
 
 ### Start voice commanding assistant
