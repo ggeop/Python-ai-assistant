@@ -1,18 +1,12 @@
 language: python
 matrix:
   include:
-    - name: "Ubuntu 18.04 Job"
+    - name: "Ubuntu 20.04 Job"
     - os: linux
-    - dist: bionic
+    - dist: focal
     - python:
-        - "3.5"
-        - "3.6"
-    - name: "Ubuntu 16.04 Job"
-    - os: linux
-    - dist: xenial
-    - python:
-        - "3.5"
-        - "3.6"
+        - "3.8"
+
 install:
   - sudo bash setup.sh
 script:

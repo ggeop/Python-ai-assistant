@@ -7,8 +7,14 @@
 ![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/jarvis_logo.png)
 
 # About Jarvis - An Intelligent AI Consciousness 🧠
-Jarvis is a voice commanding assistant service in [Python 3.5+](https://www.python.org/downloads/release/python-360/)
+Jarvis is a voice commanding assistant service in [Python 3.8](https://www.python.org/downloads/release/python-360/)
 It can recognize human speech, talk to user and execute basic commands.
+
+#### Requirements
+
+* Operation system: **Ubuntu 20.04 (Focal Fossa)**
+* Python Version: **3.8.x**
+
 
 #### Assistant Skills 
 *   **Opens a web page** (e.g 'Jarvis open youtube')
@@ -54,10 +60,14 @@ All the following APIs have free no-commercial API calls. Subscribe to the follo
 *   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
 *   [IPSTACK](https://ipstack.com/signup/free): API for current location.
 ### Setup Jarvis in Ubuntu/Debian system
-*   Download the Jarvis repo localy:
+*   Download the Jarvis repo locally:
 
 ```bash
 git clone https://github.com/ggeop/Jarvis.git
+```
+*   Change working directory
+```bash
+cd Jarvis
 ```
 *   Setup Jarvis and system dependencies:
 ```bash
