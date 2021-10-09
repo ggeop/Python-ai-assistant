@@ -35,7 +35,8 @@ sudo apt-get install python3-pip && /
 sudo apt-get install python3-setuptools && /
 sudo apt-get install libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0  && /
 sudo apt install mongodb && /
-sudo apt-get install gnupg
+sudo apt-get install gnupg && /
+sudo apt-get install python3-venv
 
 # Reload local package database
 sudo apt-get update
@@ -49,27 +50,9 @@ else
 fi
 
 #-----------------------------------
-# Install virtualenv
-#-----------------------------------
-pip3 install virtualenv
-
-RESULT=$?
-if  [ $RESULT -eq 0 ]; then
-    echo "${green} Install virtualenv succeeded! ${reset}"
-else
-    echo "${red} Install virtualenv failed ${reset}"
-    exit 1
-fi
-
-#-----------------------------------
-# Reload PATH
-#-----------------------------------
-#. ~/.profile
-
-#-----------------------------------
 # Create Jarvis virtual env
 #-----------------------------------
-virtualenv -p $PYTHON_PATH $JARVIS_DIR/$VIRTUAL_ENV
+python3 -m venv $JARVIS_DIR/$VIRTUAL_ENV
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
@@ -87,10 +70,8 @@ source $JARVIS_DIR/$VIRTUAL_ENV/bin/activate
 # Install pip in virtualenv
 sudo apt-get install python3-pip
 
-
-pip3 install --upgrade cython
-
 # Install python requirements
+pip3 install --upgrade cython
 pip3 install -r $JARVIS_DIR/requirements.txt
 
 RESULT=$?
