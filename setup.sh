@@ -64,12 +64,12 @@ fi
 #-----------------------------------
 # Reload PATH
 #-----------------------------------
-. ~/.profile
+#. ~/.profile
 
 #-----------------------------------
 # Create Jarvis virtual env
 #-----------------------------------
-virtualenv --creator venv -p $PYTHON_PATH $JARVIS_DIR/$VIRTUAL_ENV
+virtualenv -p $PYTHON_PATH $JARVIS_DIR/$VIRTUAL_ENV
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
