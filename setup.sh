@@ -20,23 +20,24 @@ then
     exit 1
 else
     PYTHON_PATH=$(which python3)
+    echo "${green} System Python version is: Python ${version} ${reset}"
 fi
 
 #-----------------------------------
 # System dependencies installation
 #-----------------------------------
 sudo apt-get update && /
-sudo apt-get install python3-dev && /
 sudo apt-get install build-essential && /
+sudo apt-get install python3-dev && /
+sudo apt-get install python3-setuptools && /
+sudo apt-get install python3-pip && /
+sudo apt-get install python3-venv && /
 sudo apt-get install portaudio19-dev python3-pyaudio python3-pyaudio && /
 sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev libxml2-dev libxslt-dev sox ffmpeg && /
 sudo apt-get install espeak && /
-sudo apt-get install python3-pip && /
-sudo apt-get install python3-setuptools && /
 sudo apt-get install libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0  && /
 sudo apt install mongodb && /
-sudo apt-get install gnupg && /
-sudo apt-get install python3-venv
+sudo apt-get install gnupg
 
 # Reload local package database
 sudo apt-get update
@@ -67,8 +68,8 @@ fi
 #-----------------------------------
 source $JARVIS_DIR/$VIRTUAL_ENV/bin/activate
 
-# Install pip in virtualenv
-sudo apt-get install python3-pip
+ACTIVATED_PYTHON_ENV=$(which python)
+echo "${green} ${ACTIVATED_PYTHON_ENV} activated!${reset}"
 
 # Install python requirements
 pip3 install --upgrade cython
