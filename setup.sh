@@ -26,7 +26,7 @@ fi
 # System dependencies installation
 #-----------------------------------
 sudo apt-get update && /
-sudo apt-get install python-dev python3-dev && /
+sudo apt-get install python3-dev && /
 sudo apt-get install build-essential && /
 sudo apt-get install portaudio19-dev python3-pyaudio python3-pyaudio && /
 sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev libxml2-dev libxslt-dev sox ffmpeg && /
