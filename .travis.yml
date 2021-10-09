@@ -5,9 +5,7 @@ matrix:
     - os: linux
     - dist: focal
     - python:
-        - "3.8.10"
-    - virtualenv:
-        system_site_packages: true
+        - "3.8"
 
 install:
   - sudo bash setup.sh

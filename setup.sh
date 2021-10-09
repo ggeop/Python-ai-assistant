@@ -69,7 +69,7 @@ fi
 #-----------------------------------
 # Create Jarvis virtual env
 #-----------------------------------
-virtualenv -p $PYTHON_PATH $JARVIS_DIR/$VIRTUAL_ENV
+virtualenv --creator venv -p $PYTHON_PATH $JARVIS_DIR/$VIRTUAL_ENV
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
