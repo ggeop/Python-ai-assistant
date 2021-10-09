@@ -21,7 +21,7 @@ nltk==3.4.5
 numpy==1.16.4
 patch==1.16
 playsound==1.2.2
-psutil==5.6.2
+psutil==5.6.6
 PTable==0.9.2
 PyAudio==0.2.11
 pycairo==1.20.1
@@ -40,7 +40,7 @@ SpeechRecognition==3.8.1
 speedtest-cli==2.1.1
 textblob==0.15.3
 tzlocal==1.5.1
-urllib3==1.24.3
+urllib3==1.26.5
 web-cache==1.1.0
 wikipedia==1.4.0
 wolframalpha==3.0.1
