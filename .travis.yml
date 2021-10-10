@@ -7,9 +7,9 @@ jobs:
       python: 3.8
 
 install:
-  - echo "install"
+  - echo 1
 script:
-  - echo "script"
+  - echo 2
 notifications:
   email: false
 
@@ -20,7 +20,7 @@ before_deploy:
 deploy:
   provider: releases
   skip_cleanup: true
-  github-token: $GITHUB_TOKEN
+  api_key: $GITHUB_TOKEN
   file: jarvis_package.tar
   on:
     branch: master
