@@ -8,12 +8,28 @@ jobs:
 
 install:
   - echo "sudo bash setup.sh"
+  on:
+    branch: develop
+
 script:
   - echo "sudo bash run_tests.sh"
+  on:
+    branch: develop
+
 notifications:
   email: false
 
-after_success: sudo bash ./Scripts/merge_develop_to_master.sh
+after_success:
+    - git config --global user.email "builds@travis-ci.com"
+    - git config --global user.name "Travis CI"
+    - git remote set-branches --add origin master || echo "Set origin master failed"
+    - git fetch
+    - git reset --hard
+    - git checkout master || echo "Git checkout master failed"
+    - git merge "$TRAVIS_COMMIT" || echo "Merge develop to master failed"
+    - git push -q https://$GITHUB_TOKEN@github.com/ggeop/Python-ai-assistant master
+  on:
+    branch: develop
 
 before_deploy:
   - echo "Build Jarvis package"
@@ -24,6 +40,8 @@ before_deploy:
   - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - git push -q https://$GITHUB_TOKEN@github.com/ggeop/Python-ai-assistant --tags
+  on:
+    branch: master
 
 deploy:
   provider: releases
