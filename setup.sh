@@ -16,115 +16,114 @@ reset=`tput sgr0`
 version=$(python3 -V 2>&1 | grep -Po '(?<=Python )(3.8.+)')
 if [[ -z "$version" ]]
 then
-    echo "${red} No Python 3.8.x in your system${reset}"
+    echo "${red} No Python 3.8 in your system${reset}"
 
-    echo "Try to install Python 3.8 to our system"
+    echo "${green}Install Python 3.8 to our system${reset}"
     sudo apt update
     sudo apt install software-properties-common
     sudo add-apt-repository -- yes ppa:deadsnakes/ppa
     sudo apt install python3.8
 
-    PYTHON_PATH=$(which python3)
-    echo "${green} System Python version after installation is: Python ${PYTHON_PATH} ${reset}"
+    python_version=$(python3 --version)
+    echo "${green} System Python version after installation is: Python ${python_version} ${reset}"
 else
-    PYTHON_PATH=$(which python3)
-    echo "${green} System Python version is: Python ${PYTHON_PATH} ${reset}"
+    echo "${green} System Python version is: Python ${version} ${reset}"
 fi
 
-#-----------------------------------
-# System dependencies installation
-#-----------------------------------
-sudo apt-get update && /
-sudo apt-get install build-essential && /
-sudo apt-get install python3-dev && /
-sudo apt-get install python3-setuptools && /
-sudo apt-get install python3-pip && /
-sudo apt-get install python3-venv && /
-sudo apt-get install portaudio19-dev python3-pyaudio python3-pyaudio && /
-sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev libxml2-dev libxslt-dev sox ffmpeg && /
-sudo apt-get install espeak && /
-sudo apt-get install libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0  && /
-sudo apt install mongodb && /
-sudo apt-get install gnupg
-
-# Reload local package database
-sudo apt-get update
-
-RESULT=$?
-if  [ $RESULT -eq 0 ]; then
-    echo "${green} System dependencies installation succeeded! ${reset}"
-else
-    echo "${red} System dependencies installation failed ${reset}"
-    exit 1
-fi
-
-#-----------------------------------
-# Create Jarvis virtual env
-#-----------------------------------
-python3 -m venv $JARVIS_DIR/$VIRTUAL_ENV
-
-RESULT=$?
-if  [ $RESULT -eq 0 ]; then
-    echo "${green} Jarvis virtual env creation succeeded! ${reset}"
-else
-    echo "${red} Jarvis virtual env creation failed ${reset}"
-    exit 1
-fi
-
-#-----------------------------------
-# Install Python dependencies
-#-----------------------------------
-source $JARVIS_DIR/$VIRTUAL_ENV/bin/activate
-
-ACTIVATED_PYTHON_ENV=$(which python)
-echo "${green} ${ACTIVATED_PYTHON_ENV} activated!${reset}"
-
-# Install python requirements
-pip3 install --upgrade cython
-pip3 install -r $JARVIS_DIR/requirements.txt
-
-RESULT=$?
-if  [ $RESULT -eq 0 ]; then
-    echo "${green} Install Python dependencies succeeded! ${reset}"
-else
-    echo "${red} Install Python dependencies failed ${reset}"
-    exit 1
-fi
-
-#-----------------------------------
-# Install nltk dependencies
-#-----------------------------------
-python3 -c "import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')"
-
-RESULT=$?
-if  [ $RESULT -eq 0 ]; then
-    echo "${green} Install nltk dependencies succeeded! ${reset}"
-else
-    echo "${red} Install nltk dependencies failed ${reset}"
-    exit 1
-fi
-
-#-----------------------------------
-# Create log access
-#-----------------------------------
-sudo touch /var/log/jarvis.log && \
-sudo chmod 777 /var/log/jarvis.log
-
-RESULT=$?
-if  [ $RESULT -eq 0 ]; then
-    echo "${green} Create log access succeeded! ${reset}"
-else
-    echo "${red}Create log access failed ${reset}"
-    exit 1
-fi
-
-#-----------------------------------
-# Deactivate virtualenv
-#-----------------------------------
-deactivate
-
-#-----------------------------------
-# Finished
-#-----------------------------------
-echo "${green} Jarvis setup succeed! ${reset}"
-echo "Start Jarvis: bash run_jarvis.sh"
+##-----------------------------------
+## System dependencies installation
+##-----------------------------------
+#sudo apt-get update && /
+#sudo apt-get install build-essential && /
+#sudo apt-get install python3-dev && /
+#sudo apt-get install python3-setuptools && /
+#sudo apt-get install python3-pip && /
+#sudo apt-get install python3-venv && /
+#sudo apt-get install portaudio19-dev python3-pyaudio python3-pyaudio && /
+#sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev libxml2-dev libxslt-dev sox ffmpeg && /
+#sudo apt-get install espeak && /
+#sudo apt-get install libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0  && /
+#sudo apt install mongodb && /
+#sudo apt-get install gnupg
+#
+## Reload local package database
+#sudo apt-get update
+#
+#RESULT=$?
+#if  [ $RESULT -eq 0 ]; then
+#    echo "${green} System dependencies installation succeeded! ${reset}"
+#else
+#    echo "${red} System dependencies installation failed ${reset}"
+#    exit 1
+#fi
+#
+##-----------------------------------
+## Create Jarvis virtual env
+##-----------------------------------
+#python3 -m venv $JARVIS_DIR/$VIRTUAL_ENV
+#
+#RESULT=$?
+#if  [ $RESULT -eq 0 ]; then
+#    echo "${green} Jarvis virtual env creation succeeded! ${reset}"
+#else
+#    echo "${red} Jarvis virtual env creation failed ${reset}"
+#    exit 1
+#fi
+#
+##-----------------------------------
+## Install Python dependencies
+##-----------------------------------
+#source $JARVIS_DIR/$VIRTUAL_ENV/bin/activate
+#
+#ACTIVATED_PYTHON_ENV=$(which python)
+#echo "${green} ${ACTIVATED_PYTHON_ENV} activated!${reset}"
+#
+## Install python requirements
+#pip3 install --upgrade cython
+#pip3 install -r $JARVIS_DIR/requirements.txt
+#
+#RESULT=$?
+#if  [ $RESULT -eq 0 ]; then
+#    echo "${green} Install Python dependencies succeeded! ${reset}"
+#else
+#    echo "${red} Install Python dependencies failed ${reset}"
+#    exit 1
+#fi
+#
+##-----------------------------------
+## Install nltk dependencies
+##-----------------------------------
+#python3 -c "import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')"
+#
+#RESULT=$?
+#if  [ $RESULT -eq 0 ]; then
+#    echo "${green} Install nltk dependencies succeeded! ${reset}"
+#else
+#    echo "${red} Install nltk dependencies failed ${reset}"
+#    exit 1
+#fi
+#
+##-----------------------------------
+## Create log access
+##-----------------------------------
+#sudo touch /var/log/jarvis.log && \
+#sudo chmod 777 /var/log/jarvis.log
+#
+#RESULT=$?
+#if  [ $RESULT -eq 0 ]; then
+#    echo "${green} Create log access succeeded! ${reset}"
+#else
+#    echo "${red}Create log access failed ${reset}"
+#    exit 1
+#fi
+#
+##-----------------------------------
+## Deactivate virtualenv
+##-----------------------------------
+#deactivate
+#
+##-----------------------------------
+## Finished
+##-----------------------------------
+#echo "${green} Jarvis setup succeed! ${reset}"
+#echo "Start Jarvis: bash run_jarvis.sh"
