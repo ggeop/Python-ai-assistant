@@ -1,9 +1,6 @@
 language: python
 python:
     - "3.8"
-virtualenv:
-    system_site_packages: true
-
 install:
   - sudo bash setup.sh
 script:
