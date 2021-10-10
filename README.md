@@ -60,11 +60,16 @@ All the following APIs have free no-commercial API calls. Subscribe to the follo
 *   [WolframAlpha](https://developer.wolframalpha.com/portal/myapps/): API for answer questions.
 *   [IPSTACK](https://ipstack.com/signup/free): API for current location.
 ### Setup Jarvis in Ubuntu/Debian system
-*   Download the Jarvis repo locally:
-
+* Download the Jarvis repo locally:
 ```bash
-git clone https://github.com/ggeop/Jarvis.git
+git clone https://github.com/ggeop/Jarvis.git --branch master
 ```
+
+**For Contribution**:
+```bash
+git clone https://github.com/ggeop/Jarvis.git --branch develop
+```
+
 *   Change working directory
 ```bash
 cd Jarvis
@@ -115,6 +120,12 @@ The user input analyzed in this space and by using a similarity metric (e.g cosi
 ---
 
 ## Contributing
-* PRs are welcome :relaxed:
-* Try to follow PEP 8 guidelines and add comments!
+* Pull Requests (PRs) are welcome :relaxed:
+* The process for contribution is the following:
+    * Clone the project
+    * Checkout `develop` branch and create a feature branch e.g `feature_branch`
+    * Open a PR to `develop`
+    * Wait for review and approval !!
+    * `master` branch update and release is automated via [Travis CI/CD](https://app.travis-ci.com/github/ggeop/Python-ai-assistant)
+* Try to follow PEP-8 guidelines and add useful comments!
 

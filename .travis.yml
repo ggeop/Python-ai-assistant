@@ -7,10 +7,10 @@ jobs:
       python: 3.8
 
 install:
-  - echo "sudo bash setup.sh"
+  - sudo bash setup.sh
 
 script:
-  - echo "sudo bash run_tests.sh"
+  - sudo bash run_tests.sh
 
 notifications:
   email: false
