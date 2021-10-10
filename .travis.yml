@@ -2,6 +2,8 @@ language: python
 matrix:
   include:
     - name: "Ubuntu 20.04 Job"
+    - python:
+        - "3.8"
     - os: linux
     - dist: focal
 

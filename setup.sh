@@ -66,8 +66,8 @@ fi
 #-----------------------------------
 source $JARVIS_DIR/$VIRTUAL_ENV/bin/activate
 
-ACTIVATED_PYTHON_ENV=$(which python)
-echo "${green} ${ACTIVATED_PYTHON_ENV} activated!${reset}"
+activated_python_version=$(python -V)
+echo "${green} ${activated_python_version} activated!${reset}"
 
 # Install python requirements
 pip3 install --upgrade cython
