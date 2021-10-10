@@ -7,15 +7,15 @@ jobs:
       python: 3.8
 
 install:
-  - echo 1
+  - sudo bash setup.sh
 script:
-  - echo 2
+  - sudo bash run_tests.sh
 notifications:
   email: false
 
 before_deploy:
   - echo "Build Jarvis package"
-  - tar -cvf jarvis_package.tar -T package_file_list.txt
+  - tar -cvf jarvis_package.tar -T config/package_file_list.txt
 
 deploy:
   provider: releases
