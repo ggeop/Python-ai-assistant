@@ -6,17 +6,9 @@ jobs:
       dist: focal
       python: 3.8
 
-#install:
-#  - sudo bash setup.sh
-#script:
-#  - sudo bash run_tests.sh
-#notifications:
-#  email: false
-
-deploy:
-  provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
-  file: "FILE TO UPLOAD"
-  skip_cleanup: true
-  on:
-    tags: true
+install:
+  - sudo bash setup.sh
+script:
+  - sudo bash run_tests.sh
+notifications:
+  email: false
