@@ -1,9 +1,6 @@
 language: python
 matrix:
   include:
-    - name: "Ubuntu 20.04 Job"
-    - os: linux
-    - dist: focal
     - python:
         - "3.8"
     - virtualenv:

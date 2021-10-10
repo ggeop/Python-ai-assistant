@@ -25,10 +25,10 @@ then
     sudo apt install python3.8
 
     PYTHON_PATH=$(which python3)
-    echo "${green} System Python version after installation is: Python ${version} ${reset}"
+    echo "${green} System Python version after installation is: Python ${PYTHON_PATH} ${reset}"
 else
     PYTHON_PATH=$(which python3)
-    echo "${green} System Python version is: Python ${version} ${reset}"
+    echo "${green} System Python version is: Python ${PYTHON_PATH} ${reset}"
 fi
 
 #-----------------------------------
