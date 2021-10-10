@@ -7,9 +7,9 @@ jobs:
       python: 3.8
 
 install:
-  - echo 1
+  - echo "sudo bash setup.sh"
 script:
-  - echo 2
+  - echo "sudo bash run_tests.sh"
 notifications:
   email: false
 
@@ -21,7 +21,7 @@ before_deploy:
   - git config --global user.name "Travis CI"
   - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
-  - git push git push origin --tags
+  - git push -q https://github.com/ggeop/Python-ai-assistant --tags
 
 deploy:
   provider: releases
