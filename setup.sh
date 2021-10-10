@@ -13,10 +13,11 @@ reset=`tput sgr0`
 # -----------------------------------
 # Python version compatibility check
 # -----------------------------------
-version=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
+version=$(python3 -V 2>&1 | grep -Po '(?<=Python )(.+)')
 if [[ -z "$version" ]]
 then
     echo "${red} No Python 3.x.x in your system${reset}"
+    exit 1
 else
     echo "${green} System Python version is: Python ${version} ${reset}"
 fi
