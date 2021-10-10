@@ -7,15 +7,21 @@ jobs:
       python: 3.8
 
 install:
-  - sudo bash setup.sh
+  - echo 1
 script:
-  - sudo bash run_tests.sh
+  - echo 2
 notifications:
   email: false
 
 before_deploy:
   - echo "Build Jarvis package"
   - tar -cvf jarvis_package.tar -T config/package_file_list.txt
+  - echo "Add tags to new release"
+  - git config --global user.email "builds@travis-ci.com"
+  - git config --global user.name "Travis CI"
+  - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
+  - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+  - git push git push origin --tags
 
 deploy:
   provider: releases
