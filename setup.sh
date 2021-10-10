@@ -13,11 +13,19 @@ reset=`tput sgr0`
 # -----------------------------------
 # Python version compatibility check
 # -----------------------------------
-version=$(python3 -V 2>&1 | grep -Po '(?<=Python )(.+)')
+version=$(python3 -V 2>&1 | grep -Po '(?<=Python )(3.8.+)')
 if [[ -z "$version" ]]
 then
-    echo "${red} No Python 3.x.x in your system! Install Python and try again! ${reset}"
-    exit 1
+    echo "${red} No Python 3.8.x in your system${reset}"
+
+    echo "Try to install Python 3.8 to our system"
+    sudo apt update
+    sudo apt install software-properties-common
+    sudo add-apt-repository -- yes ppa:deadsnakes/ppa
+    sudo apt install python3.8
+
+    PYTHON_PATH=$(which python3)
+    echo "${green} System Python version after installation is: Python ${version} ${reset}"
 else
     PYTHON_PATH=$(which python3)
     echo "${green} System Python version is: Python ${version} ${reset}"
