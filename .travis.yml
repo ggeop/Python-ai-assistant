@@ -12,3 +12,15 @@ script:
   - sudo bash run_tests.sh
 notifications:
   email: false
+
+before_deploy:
+  - echo "Build Jarvis package"
+  - tar -cvf jarvis_package.tar -T config/package_file_list.txt
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key: $GITHUB_TOKEN
+  file: jarvis_package.tar
+  on:
+    branch: master
