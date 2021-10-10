@@ -6,12 +6,12 @@ jobs:
       dist: focal
       python: 3.8
 
-#install:
-#  - sudo bash setup.sh
-#script:
-#  - sudo bash run_tests.sh
-#notifications:
-#  email: false
+install:
+  - echo "install"
+script:
+  - echo "script"
+notifications:
+  email: false
 
 before_deploy:
   - echo "Build Jarvis package"
