@@ -13,7 +13,7 @@ script:
 notifications:
   email: false
 
-after_success: ./Scripts/merge_develop_to_master.sh
+after_success: sudo bash ./Scripts/merge_develop_to_master.sh
 
 before_deploy:
   - echo "Build Jarvis package"
