@@ -12,3 +12,10 @@ script:
   - sudo bash run_tests.sh
 notifications:
   email: false
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github-token: $GITHUB_TOKEN
+  on:
+    branch: master
