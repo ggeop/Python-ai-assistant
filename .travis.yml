@@ -6,16 +6,21 @@ jobs:
       dist: focal
       python: 3.8
 
-install:
-  - sudo bash setup.sh
-script:
-  - sudo bash run_tests.sh
-notifications:
-  email: false
+#install:
+#  - sudo bash setup.sh
+#script:
+#  - sudo bash run_tests.sh
+#notifications:
+#  email: false
+
+before_deploy:
+  - echo "Build Jarvis package"
+  - tar -cvf jarvis_package.tar -T package_file_list.txt
 
 deploy:
-  provider: pages
+  provider: releases
   skip_cleanup: true
   github-token: $GITHUB_TOKEN
+  file: jarvis_package.tar
   on:
     branch: master
