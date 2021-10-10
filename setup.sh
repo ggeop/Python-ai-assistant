@@ -71,6 +71,8 @@ echo "${green} ${activated_python_version} activated!${reset}"
 
 # Install python requirements
 pip3 install --upgrade cython
+pip3 install wheel
+python setup.py bdist_wheel
 pip3 install -r $JARVIS_DIR/requirements.txt
 
 RESULT=$?
