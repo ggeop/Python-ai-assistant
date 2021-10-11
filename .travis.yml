@@ -14,10 +14,6 @@ jobs:
         - bash bin/deploy/install_python_dependencies.sh
       script:
         - sudo bash bin/tests/run_tests_on_travis.sh
-    - stage: merge (feature branch --> develop)
-      install: skip
-      script:
-        - sudo bash bin/deploy/merge_feature_branch_to_develop.sh
     - stage: merge (develop --> master)
       install: skip
       script:
@@ -41,8 +37,6 @@ jobs:
 stages:
   - name: test
     if: NOT(branch==master)
-  - name: merge (feature branch --> develop)
-    if: (NOT (branch IN (develop,master))) AND (NOT(type==pull_request))
   - name: merge (develop --> master)
     if: branch==develop AND (NOT(type==pull_request))
   - name: deploy
