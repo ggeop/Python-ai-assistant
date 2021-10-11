@@ -8,10 +8,10 @@ jobs:
       python: 3.8
 
 before_install:
-  - bin/deploy/install_system_dependencies.sh
+  - sudo bash bin/deploy/install_system_dependencies.sh
 
 install:
-  - bin/deploy/install_python_dependencies.sh
+  - sudo bash bin/deploy/install_python_dependencies.sh
 
 script:
   - sudo bash run_tests.sh
