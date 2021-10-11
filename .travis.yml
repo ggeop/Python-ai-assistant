@@ -40,6 +40,8 @@ jobs:
         skip_cleanup: true
         api_key: $GITHUB_TOKEN
         file: $RELEASE_PACKAGE
+        on:
+          branch: master
 
 stages:
   - name: test
