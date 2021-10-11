@@ -9,11 +9,15 @@ jobs:
 
 install:
   - echo "Install"
+  - sudo apt-get update
+  - sudo apt install mongodb
+  - sudo apt-get update
+  - source ~/virtualenv/python3.8/bin/activate
   - pip install -U scikit-learn
   - export PYTHONPATH="${PYTHONPATH}:./src/jarvis"
 
 script:
-  - python -m unittest discover -s ./src -p "*tests.py"
+  - sudo bash run_tests.sh
 
 #notifications:
 #  email: false
