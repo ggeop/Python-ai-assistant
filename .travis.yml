@@ -7,13 +7,14 @@ jobs:
       dist: focal
       python: 3.8
 
-#install:
-#  - sudo bash setup.sh
-
-script:
+install:
+  - echo "Install"
   - pip install --upgrade cython
   - pip install wheel
   - python setup.py bdist_wheel
+  #- sudo bash setup.sh
+
+script:
   - sudo bash run_tests.sh
 
 #notifications:
