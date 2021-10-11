@@ -129,4 +129,4 @@ The user input analyzed in this space and by using a similarity metric (e.g cosi
 * Try to follow PEP-8 guidelines and add useful comments!
 
 ## CI/CD Flow
-![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/Travis Flow.png)
+![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/TravisFlow.png)
