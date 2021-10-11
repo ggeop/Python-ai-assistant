@@ -11,7 +11,7 @@ before_install:
   - sudo bash bin/deploy/install_system_dependencies.sh
 
 install:
-  - sudo bash bin/deploy/install_python_dependencies.sh
+  - bash bin/deploy/install_python_dependencies.sh
 
 script:
   - sudo bash run_tests.sh
