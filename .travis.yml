@@ -6,15 +6,25 @@ jobs:
       dist: focal
       python: 3.8
 
+before_install:
+- sudo apt-get update
+- sudo apt-get install build-essential
+- sudo apt-get install python3-dev
+- sudo apt-get install python3-setuptools
+- sudo apt-get install python3-pip
+- sudo apt-get install python3-venv
+- sudo apt-get install portaudio19-dev python3-pyaudio python3-pyaudio
+- sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev libxml2-dev libxslt-dev sox ffmpeg
+- sudo apt-get install espeak
+- sudo apt-get install libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0
+- sudo apt install mongodb
+- sudo apt-get install gnupg
+
+
 install:
   - echo "Install"
-  - sudo apt-get update
-  - sudo apt install mongodb
-  - sudo apt-get update
-  - source ~/virtualenv/python3.8/bin/activate
-  - pip install -r requirements.txt
+  - pip install --user -r requirements.txt
   - pip install -U scikit-learn
-  - export PYTHONPATH="${PYTHONPATH}:./src/jarvis"
 
 script:
   - sudo bash run_tests.sh
