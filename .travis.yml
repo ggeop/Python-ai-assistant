@@ -15,13 +15,16 @@ jobs:
       script:
         - sudo bash bin/tests/run_tests_on_travis.sh
     - stage: merge (feature branch --> develop)
+      install: skip
       script:
         - sudo bash bin/deploy/merge_feature_branch_to_develop.sh
     - stage: merge (develop --> master)
+      install: skip
       script:
         - sudo bash bin/deploy/merge_develop_to_master.sh
     - stage: deploy
       install: skip
+      script: skip
       env:
         - RELEASE_PACKAGE=jarvis_package.tar
       before_deploy:
