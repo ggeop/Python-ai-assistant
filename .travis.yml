@@ -9,12 +9,13 @@ jobs:
 
 install:
   - echo "Install"
+  - python -V
   - sudo apt-get install build-essential
   - sudo apt-get install python3-dev
   - sudo apt-get install python3-setuptools
   - sudo apt-get update
-  - pip install --upgrade cython
-  - pip install wheel
+  - pip3 install --upgrade cython
+  - pip3 install wheel
   - python setup.py bdist_wheel
   #- sudo bash setup.sh
 
