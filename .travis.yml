@@ -16,7 +16,12 @@ install:
 script:
   - sudo bash run_tests.sh
 
+after_success:
+    - sudo bash bin/deploy/merge_develop_to_master.sh
+
 before_deploy:
+  - echo "Deployment preperation"
+  - sudo bash setup.sh
   - bash bin/deploy/new_release_auto_tagging.sh
 
 deploy:
@@ -26,9 +31,6 @@ deploy:
   file: jarvis_package.tar
   on:
     branch: master
-
-after_deploy:
-  - sudo bash bin/deploy/merge_develop_to_master.sh
 
 notifications:
   email: false
