@@ -1,5 +1,3 @@
-wheel
-cython
 appdirs==1.4.3
 APScheduler==3.6.0
 backports.entry-points-selectable==1.1.0

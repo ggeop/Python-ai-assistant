@@ -11,6 +11,9 @@ jobs:
 #  - sudo bash setup.sh
 
 script:
+  - pip install --upgrade cython
+  - pip install wheel
+  - python setup.py bdist_wheel
   - sudo bash run_tests.sh
 
 #notifications:
