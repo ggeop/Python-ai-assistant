@@ -42,11 +42,11 @@ stages:
   - name: test
     if: NOT(branch==master)
   - name: merge (feature branch --> develop)
-    if: (NOT (branch IN (develop,master)))
+    if: (NOT (branch IN (develop,master))) AND (NOT(type==pull_request))
   - name: merge (develop --> master)
-    if: branch==develop
+    if: branch==develop AND (NOT(type==pull_request))
   - name: deploy
-    if: branch==master
+    if: branch==master AND (NOT(type==pull_request))
 
 notifications:
   email: false
