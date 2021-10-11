@@ -14,7 +14,7 @@ install:
   - bash bin/deploy/install_python_dependencies.sh
 
 script:
-  - sudo bash run_tests.sh
+  - sudo bash bin/tests/run_tests_on_travis.sh
 
 after_success:
     - sudo bash bin/deploy/merge_develop_to_master.sh
@@ -22,6 +22,7 @@ after_success:
 before_deploy:
   - echo "Deployment preperation"
   - sudo bash setup.sh
+  - sudo bash run_tests.sh
   - bash bin/deploy/new_release_auto_tagging.sh
 
 deploy:
