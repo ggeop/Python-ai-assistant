@@ -13,10 +13,16 @@ jobs:
       install:
         - bash bin/deploy/install_python_dependencies.sh
       script:
+        # Run tests by using Travis virtual env (quick way, pip deps are cached)
         - sudo bash bin/tests/run_tests_on_travis.sh
     - stage: merge (develop --> master)
-      install: skip
+      install:
+        - sudo bash setup.sh
       script:
+        # Run tests with the same way as locally
+        # With this way setup script (setup.sh) is validated
+        - sudo bash run_tests.sh
+      after_success:
         - bash bin/deploy/new_release_auto_tagging.sh
         - sudo bash bin/deploy/merge_develop_to_master.sh
     - stage: deploy
@@ -25,8 +31,6 @@ jobs:
       env:
         - RELEASE_PACKAGE=jarvis_package.tar
       before_deploy:
-        - sudo bash setup.sh
-        - sudo bash run_tests.sh
         - bash bin/deploy/create_release_package.sh
       deploy:
         provider: releases
