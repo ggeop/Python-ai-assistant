@@ -7,6 +7,7 @@ python: 3.8
 
 jobs:
   include:
+
     - stage: test
       before_install:
         - sudo bash bin/deploy/install_system_dependencies.sh
@@ -15,6 +16,7 @@ jobs:
       script:
         # Run tests by using Travis virtual env (quick way, pip deps are cached)
         - sudo bash bin/tests/run_tests_on_travis.sh
+
     - stage: merge (develop --> master)
       install:
         - sudo bash setup.sh
@@ -25,6 +27,7 @@ jobs:
       after_success:
         - bash bin/deploy/new_release_auto_tagging.sh
         - sudo bash bin/deploy/merge_develop_to_master.sh
+
     - stage: deploy
       install: skip
       script: skip
@@ -40,11 +43,11 @@ jobs:
 
 stages:
   - name: test
-    if: NOT(branch==master)
+    if: branch!=master AND branch!=^untagged.*
   - name: merge (develop --> master)
-    if: branch==develop AND (NOT(type==pull_request))
+    if: branch==develop AND type!=pull_request
   - name: deploy
-    if: branch==master AND (NOT(type==pull_request))
+    if: branch==master AND type!=pull_request
 
 notifications:
   email: false
