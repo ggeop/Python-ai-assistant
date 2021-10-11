@@ -14,22 +14,33 @@ jobs:
         - bash bin/deploy/install_python_dependencies.sh
       script:
         - sudo bash bin/tests/run_tests_on_travis.sh
-      after_success:
-          - sudo bash bin/deploy/merge_develop_to_master.sh
+    - stage: merge (feature branch --> develop)
+      script:
+        - sudo bash bin/deploy/merge_feature_branch_to_develop.sh
+    - stage: merge (develop --> master)
+      script:
+        - sudo bash bin/deploy/merge_develop_to_master.sh
     - stage: deploy
       env:
         - RELEASE_PACKAGE=jarvis_package.tar
       before_deploy:
-        - sudo bash setup.sh
-        - sudo bash run_tests.sh
+#        - sudo bash setup.sh
+#        - sudo bash run_tests.sh
         - bash bin/deploy/new_release_auto_tagging.sh
       deploy:
         provider: releases
         skip_cleanup: true
         api_key: $GITHUB_TOKEN
         file: $RELEASE_PACKAGE
-        on:
-          branch: master
+
+stages:
+  - name: test
+  - name: merge (feature branch --> develop)
+    if: (NOT (branch IN (develop,master)))
+  - name: merge (develop --> master)
+    if: branch==develop
+  - name: deploy
+    if: branch==master
 
 notifications:
   email: false
