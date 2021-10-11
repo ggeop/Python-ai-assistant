@@ -21,13 +21,14 @@ jobs:
       script:
         - sudo bash bin/deploy/merge_develop_to_master.sh
     - stage: deploy
-      script: skip
+      install: skip
       env:
         - RELEASE_PACKAGE=jarvis_package.tar
       before_deploy:
 #        - sudo bash setup.sh
 #        - sudo bash run_tests.sh
         - bash bin/deploy/new_release_auto_tagging.sh
+        - bash bin/deploy/create_release_package.sh
       deploy:
         provider: releases
         skip_cleanup: true
