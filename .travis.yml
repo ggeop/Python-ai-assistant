@@ -1,5 +1,4 @@
 language: python
-cache: pip
 jobs:
   include:
     - name: "Python 3.8 on Focal"
