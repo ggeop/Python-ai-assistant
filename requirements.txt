@@ -35,7 +35,6 @@ pyowm==2.10.0
 pyttsx3==2.71
 pytz==2019.1
 requests==2.21.0
-scikit-learn==0.21.2
 scipy==1.5.4
 six==1.12.0
 soupsieve==1.9.1

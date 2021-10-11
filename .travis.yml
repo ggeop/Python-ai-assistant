@@ -1,4 +1,5 @@
 language: python
+cache: pip
 jobs:
   include:
     - name: "Python 3.8 on Focal"
@@ -12,7 +13,7 @@ install:
   - sudo apt install mongodb
   - sudo apt-get update
   - source ~/virtualenv/python3.8/bin/activate
-  - pip install -U scikit-learn
+  - pip install -U scikit-learn==0.21.2
   - export PYTHONPATH="${PYTHONPATH}:./src/jarvis"
 
 script:
