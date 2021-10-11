@@ -9,14 +9,9 @@ jobs:
 
 install:
   - echo "Install"
-  - python -V
-  - sudo apt-get install build-essential
-  - sudo apt-get install python3-dev
-  - sudo apt-get install python3-setuptools
-  - sudo apt-get update
-  - pip3 install --upgrade cython
-  - pip3 install wheel
-  #- sudo bash setup.sh
+  - pip3 install -U scikit-learn
+
+      #- sudo bash setup.sh
 
 script:
   - sudo bash run_tests.sh
