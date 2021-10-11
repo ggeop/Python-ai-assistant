@@ -21,6 +21,7 @@ jobs:
       script:
         - sudo bash bin/deploy/merge_develop_to_master.sh
     - stage: deploy
+      script: skip
       env:
         - RELEASE_PACKAGE=jarvis_package.tar
       before_deploy:
@@ -35,6 +36,7 @@ jobs:
 
 stages:
   - name: test
+    if: NOT(branch==master)
   - name: merge (feature branch --> develop)
     if: (NOT (branch IN (develop,master)))
   - name: merge (develop --> master)
