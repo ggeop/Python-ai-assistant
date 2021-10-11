@@ -13,7 +13,7 @@ install:
   - sudo apt install mongodb
   - sudo apt-get update
   - source ~/virtualenv/python3.8/bin/activate
-  - pip install -U scikit-learn==0.21.2
+  - pip install -U scikit-learn
   - export PYTHONPATH="${PYTHONPATH}:./src/jarvis"
 
 script:
