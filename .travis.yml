@@ -5,19 +5,20 @@ os: linux
 dist: focal
 python: 3.8
 
-env:
-  - RELEASE_PACKAGE=jarvis_package.tar
-
 jobs:
   include:
     - stage: test
-      script:
+      before_install:
         - sudo bash bin/deploy/install_system_dependencies.sh
+      install:
         - bash bin/deploy/install_python_dependencies.sh
+      script:
         - sudo bash bin/tests/run_tests_on_travis.sh
       after_success:
-        - sudo bash bin/deploy/merge_develop_to_master.sh
+          - sudo bash bin/deploy/merge_develop_to_master.sh
     - stage: deploy
+      env:
+        - RELEASE_PACKAGE=jarvis_package.tar
       before_deploy:
         - sudo bash setup.sh
         - sudo bash run_tests.sh

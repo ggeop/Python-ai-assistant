@@ -1,8 +1,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/ggeop/python-ai-assistant/badge)](https://www.codefactor.io/repository/github/ggeop/Python-ai-assistant)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8c90305e22186cc2c9d5/maintainability)](https://codeclimate.com/github/ggeop/Python-ai-assistant/maintainability)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://app.travis-ci.com/ggeop/Python-ai-assistant.svg?branch=master)](https://travis-ci.org/ggeop/Python-ai-assistant)
-
+[![Build Status](https://app.travis-ci.com/ggeop/Python-ai-assistant.svg?branch=master)](https://app.travis-ci.com/ggeop/Python-ai-assistant)
 
 ![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/jarvis_logo.png)
 
