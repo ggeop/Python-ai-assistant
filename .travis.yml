@@ -9,12 +9,11 @@ jobs:
 
 install:
   - echo "Install"
-  - pip3 install -U scikit-learn
-
-      #- sudo bash setup.sh
+  - pip install -U scikit-learn
+  - export PYTHONPATH="${PYTHONPATH}:./src/jarvis"
 
 script:
-  - sudo bash run_tests.sh
+  - python -m unittest discover -s ./src -p "*tests.py"
 
 #notifications:
 #  email: false
