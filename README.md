@@ -128,3 +128,5 @@ The user input analyzed in this space and by using a similarity metric (e.g cosi
     * `master` branch update and release is automated via [Travis CI/CD](https://app.travis-ci.com/github/ggeop/Python-ai-assistant)
 * Try to follow PEP-8 guidelines and add useful comments!
 
+## CI/CD Flow
+![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/Travis Flow.png)
