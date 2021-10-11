@@ -1,37 +1,37 @@
 language: python
+
 cache: pip
+
+notifications:
+  email: false
+
 jobs:
   include:
-    - name: "Python 3.8 on Focal"
+    - stage: test
+      
       os: linux
       dist: focal
       python: 3.8
 
-before_install:
-  - sudo bash bin/deploy/install_system_dependencies.sh
+      before_install:
+        - sudo bash bin/deploy/install_system_dependencies.sh
+      install:
+        - bash bin/deploy/install_python_dependencies.sh
+      script:
+        - sudo bash bin/tests/run_tests_on_travis.sh
 
-install:
-  - bash bin/deploy/install_python_dependencies.sh
 
-script:
-  - sudo bash bin/tests/run_tests_on_travis.sh
-
-after_success:
-    - sudo bash bin/deploy/merge_develop_to_master.sh
-
-before_deploy:
-  - echo "Deployment preperation"
-  - sudo bash setup.sh
-  - sudo bash run_tests.sh
-  - bash bin/deploy/new_release_auto_tagging.sh
-
-deploy:
-  provider: releases
-  skip_cleanup: true
-  api_key: $GITHUB_TOKEN
-  file: jarvis_package.tar
-  on:
-    branch: master
-
-notifications:
-  email: false
+#before_deploy:
+#  - echo "Deployment preperation"
+#  - sudo bash setup.sh
+#  - sudo bash run_tests.sh
+#  - bash bin/deploy/new_release_auto_tagging.sh
+#
+#deploy:
+#  provider: releases
+#  skip_cleanup: true
+#  api_key: $GITHUB_TOKEN
+#  file: jarvis_package.tar
+#  on:
+#    branch: master
+#
