@@ -45,7 +45,7 @@ jobs:
 
 stages:
   - name: test
-    if: NOT (branch IN (develop,master))
+    if: NOT (branch IN (develop,master)) AND (NOT(branch==^untagged.*))
   - name: merge (develop --> master)
     if: branch==develop AND NOT(type==pull_request)
   - name: deploy
