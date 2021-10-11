@@ -7,7 +7,7 @@ if [ "$TRAVIS_BRANCH" == "develop" ]; then
     git fetch
     git reset --hard
     git checkout master || echo "Git checkout master failed"
-    git merge --ff-only "$TRAVIS_COMMIT" || echo "Merge develop to master failed"
+    git merge "$TRAVIS_COMMIT" || echo "Merge develop to master failed"
     git push -q https://$GITHUB_TOKEN@github.com/ggeop/Python-ai-assistant master
 fi
 
