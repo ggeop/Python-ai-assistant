@@ -9,6 +9,9 @@ jobs:
 
 install:
   - echo "Install"
+  - apt-get install build-essential
+  - apt-get install python3-dev
+  - apt-get install python3-setuptools
   - pip install --upgrade cython
   - pip install wheel
   - python setup.py bdist_wheel
