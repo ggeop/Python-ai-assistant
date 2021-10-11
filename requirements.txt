@@ -20,7 +20,7 @@ joblib==0.14.0
 lxml==4.6.3
 mock==3.0.5
 more-itertools==7.0.0
-nltk==3.4.5
+nltk==3.6.5
 numpy==1.16.4
 patch==1.16
 platformdirs==2.4.0
