@@ -16,7 +16,6 @@ install:
   - sudo apt-get update
   - pip3 install --upgrade cython
   - pip3 install wheel
-  - python setup.py bdist_wheel
   #- sudo bash setup.sh
 
 script:
