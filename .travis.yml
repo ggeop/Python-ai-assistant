@@ -23,7 +23,7 @@ before_install:
 
 install:
   - echo "Install"
-  - pip install --user -r requirements.txt
+  - pip install -r requirements.txt
   - pip install -U scikit-learn
 
 script:
