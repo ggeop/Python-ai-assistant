@@ -16,26 +16,19 @@ install:
 script:
   - sudo bash run_tests.sh
 
-#notifications:
-#  email: false
-#
-#after_success:
-#  - sudo bash ./Scripts/merge_develop_to_master.sh
-#
-#before_deploy:
-#  - echo "Build Jarvis package"
-#  - tar -cvf jarvis_package.tar -T config/package_file_list.txt
-#  - echo "Add tags to new release"
-#  - git config --global user.email "builds@travis-ci.com"
-#  - git config --global user.name "Travis CI"
-#  - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
-#  - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
-#  - git push -q https://$GITHUB_TOKEN@github.com/ggeop/Python-ai-assistant --tags
-#
-#deploy:
-#  provider: releases
-#  skip_cleanup: true
-#  api_key: $GITHUB_TOKEN
-#  file: jarvis_package.tar
-#  on:
-#    branch: master
+before_deploy:
+  - bash bin/deploy/new_release_auto_tagging.sh
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key: $GITHUB_TOKEN
+  file: jarvis_package.tar
+  on:
+    branch: master
+
+after_deploy:
+  - sudo bash bin/deploy/merge_develop_to_master.sh
+
+notifications:
+  email: false
