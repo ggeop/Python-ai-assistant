@@ -40,14 +40,16 @@ jobs:
         skip_cleanup: true
         api_key: $GITHUB_TOKEN
         file: $RELEASE_PACKAGE
+        on:
+          branch: master
 
 stages:
   - name: test
     if: branch!=master AND branch!=^untagged.*
   - name: merge (develop --> master)
-    if: branch==develop AND type!=pull_request
+    if: branch=develop AND type!=pull_request
   - name: deploy
-    if: branch==master AND type!=pull_request
+    if: branch=master
 
 notifications:
   email: false
