@@ -75,6 +75,7 @@ pip3 install --upgrade cython
 pip3 install wheel
 python setup.py bdist_wheel
 pip3 install -r $JARVIS_DIR/requirements.txt
+pip3 install -U scikit-learn
 
 RESULT=$?
 if  [ $RESULT -eq 0 ]; then
