@@ -25,10 +25,10 @@ import os
 import psutil
 import logging
 
-from jarvis import settings
-from jarvis.utils.mongoDB import db
-from jarvis.utils.console import jarvis_logo, start_text, OutputStyler, headerize
-from jarvis.enumerations import MongoCollections, InputMode
+from server import settings
+from server.utils.mongoDB import db
+from server.utils.console import jarvis_logo, start_text, OutputStyler, headerize
+from server.enumerations import MongoCollections, InputMode
 
 
 class ConsoleManager:

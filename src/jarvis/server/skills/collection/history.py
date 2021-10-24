@@ -22,8 +22,8 @@
 
 import re
 
-from jarvis.skills.skill import AssistantSkill
-from jarvis.utils.mongoDB import db
+from server.skills.skill import AssistantSkill
+from server.utils.mongoDB import db
 
 header = """
 -----------------------------------------------------------------------------------------------

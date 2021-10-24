@@ -22,7 +22,7 @@
 
 import os
 
-from jarvis._version import __version__
+from server._version import __version__
 
 
 class OutputStyler:

@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from datetime import datetime, date
-from jarvis.skills.skill import AssistantSkill
+from server.skills.skill import AssistantSkill
 
 hour_mapping = {'0': 'twelve',
                 '1': 'one',

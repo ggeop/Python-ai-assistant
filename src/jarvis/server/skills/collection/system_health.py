@@ -23,7 +23,7 @@
 import os
 import psutil
 
-from jarvis.skills.skill import AssistantSkill
+from server.skills.skill import AssistantSkill
 
 
 class SystemHealthSkills(AssistantSkill):

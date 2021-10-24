@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.enumerations import InputMode
+from server.enumerations import InputMode
 
 ROOT_LOG_CONF = {
     'version': 1,

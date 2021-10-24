@@ -23,11 +23,11 @@
 from logging import config
 
 from jarvis import settings
-from jarvis.settings import ROOT_LOG_CONF
-from jarvis.utils.mongoDB import db
-from jarvis.utils.startup import configure_MongoDB
-from jarvis.enumerations import InputMode
-import jarvis.engines as engines
+from server.settings import ROOT_LOG_CONF
+from server.utils.mongoDB import db
+from server.utils.startup import configure_MongoDB
+from server.enumerations import InputMode
+import server.engines as engines
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Create a Console & Rotating file logger

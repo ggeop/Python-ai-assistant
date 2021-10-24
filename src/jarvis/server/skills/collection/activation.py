@@ -24,10 +24,10 @@ import sys
 import time
 from datetime import datetime
 
-from jarvis.skills.skill import AssistantSkill
-from jarvis.utils.startup import play_activation_sound
-from jarvis.utils.mongoDB import db
-from jarvis.enumerations import InputMode, MongoCollections
+from server.utils.startup import play_activation_sound
+from server.skills.skill import AssistantSkill
+from server.utils.mongoDB import db
+from server.enumerations import InputMode, MongoCollections
 
 
 class ActivationSkills(AssistantSkill):

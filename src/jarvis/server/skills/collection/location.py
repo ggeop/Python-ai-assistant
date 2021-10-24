@@ -24,9 +24,9 @@ import requests
 import json
 import logging
 
-from jarvis.settings import IPSTACK_API
-from jarvis.skills.collection.internet import InternetSkills
-from jarvis.skills.skill import AssistantSkill
+from server.settings import IPSTACK_API
+from server.skills.collection.internet import InternetSkills
+from server.skills.skill import AssistantSkill
 
 
 class LocationSkill(AssistantSkill):

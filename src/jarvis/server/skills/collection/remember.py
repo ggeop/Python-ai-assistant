@@ -21,9 +21,9 @@
 # SOFTWARE.
 
 
-from jarvis.skills.skill import AssistantSkill
-from jarvis.utils.mongoDB import db
-from jarvis.utils import input
+from server.skills.skill import AssistantSkill
+from server.utils.mongoDB import db
+from server.utils import input
 
 header = """
 -----------------------------------------------------------------------------------------------

@@ -23,8 +23,8 @@
 import logging
 import speech_recognition as sr
 
-import jarvis
-from jarvis.core.console import ConsoleManager
+import server
+from server.core.console import ConsoleManager
 
 
 class STTEngine:

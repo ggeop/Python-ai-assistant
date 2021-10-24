@@ -21,8 +21,8 @@
 # SOFTWARE.
 
 import logging
-from jarvis.core.console import ConsoleManager
-from jarvis.utils.console import user_input
+from server.core.console import ConsoleManager
+from server.utils.console import user_input
 
 
 class TTTEngine:

@@ -20,24 +20,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.skills.collection.activation import ActivationSkills
-from jarvis.skills.collection.info import AssistantInfoSkills
-from jarvis.skills.collection.datetime import DatetimeSkills
-from jarvis.skills.collection.browser import BrowserSkills
-from jarvis.skills.collection.general import UtilSkills
-from jarvis.skills.collection.internet import InternetSkills
-from jarvis.skills.collection.libreoffice import LibreofficeSkills
-from jarvis.skills.collection.linux import LinuxAppSkills
-from jarvis.skills.collection.location import LocationSkill
-from jarvis.skills.collection.reminder import ReminderSkills
-from jarvis.skills.collection.system_health import SystemHealthSkills
-from jarvis.skills.collection.weather import WeatherSkills
-from jarvis.skills.collection.text import WordSkills
-from jarvis.skills.collection.history import HistorySkills
-from jarvis.skills.collection.remember import RememberSkills
-from jarvis.skills.collection.math import MathSkills
-from jarvis.utils.mapping import math_tags
-from jarvis.skills.collection.configuration import ConfigurationSkills
+from server.skills.collection.activation import ActivationSkills
+from server.skills.collection.info import AssistantInfoSkills
+from server.skills.collection.datetime import DatetimeSkills
+from server.skills.collection.browser import BrowserSkills
+from server.skills.collection.general import UtilSkills
+from server.skills.collection.internet import InternetSkills
+from server.skills.collection.libreoffice import LibreofficeSkills
+from server.skills.collection.linux import LinuxAppSkills
+from server.skills.collection.location import LocationSkill
+from server.skills.collection.reminder import ReminderSkills
+from server.skills.collection.system_health import SystemHealthSkills
+from server.skills.collection.weather import WeatherSkills
+from server.skills.collection.text import WordSkills
+from server.skills.collection.history import HistorySkills
+from server.skills.collection.remember import RememberSkills
+from server.skills.collection.math import MathSkills
+from server.utils.mapping import math_tags
+from server.skills.collection.configuration import ConfigurationSkills
 
 # All available assistant skills
 # Keys description:

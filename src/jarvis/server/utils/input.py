@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 import jarvis
-from jarvis.core.console import ConsoleManager
+from server.core.console import ConsoleManager
 
 console_manager = ConsoleManager()
 

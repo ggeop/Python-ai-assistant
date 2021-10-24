@@ -26,9 +26,9 @@ import requests
 import logging
 from playsound import playsound
 
-from jarvis.utils import console
-from jarvis.enumerations import MongoCollections
-from jarvis.core.console import ConsoleManager
+from server.utils import console
+from server.enumerations import MongoCollections
+from server.core.console import ConsoleManager
 
 
 def play_activation_sound():

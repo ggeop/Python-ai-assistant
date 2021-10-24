@@ -20,10 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis import settings
-from jarvis.utils.startup import internet_connectivity_check
-from jarvis.core.processor import Processor
-from jarvis.core.console import ConsoleManager
+from server import settings
+from server.utils.startup import internet_connectivity_check
+from server.core.processor import Processor
+from server.core.console import ConsoleManager
 
 
 def main():

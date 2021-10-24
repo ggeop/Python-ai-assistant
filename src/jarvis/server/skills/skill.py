@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.core.console import ConsoleManager
-import jarvis
+from server.core.console import ConsoleManager
+import server
 
 
 class AssistantSkill:

@@ -25,12 +25,12 @@ import jarvis
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from jarvis.skills.analyzer import SkillAnalyzer
-from jarvis.skills.registry import skill_objects
-from jarvis.core.nlp import ResponseCreator
-from jarvis.skills.collection.activation import ActivationSkills
-from jarvis.utils.mongoDB import db
-from jarvis.skills.collection.wolframalpha import WolframSkills
+from server.skills.analyzer import SkillAnalyzer
+from server.skills.registry import skill_objects
+from server.core.nlp import ResponseCreator
+from server.skills.collection.activation import ActivationSkills
+from server.utils.mongoDB import db
+from server.skills.collection.wolframalpha import WolframSkills
 
 
 class Processor:
