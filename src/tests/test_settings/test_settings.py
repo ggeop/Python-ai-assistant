@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jarvis.settings import *
+from jarvis.server.settings import *
 
 ROOT_LOG_CONF = {
     'version': 1,
