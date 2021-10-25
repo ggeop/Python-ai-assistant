@@ -25,7 +25,7 @@ from jarvis.enumerations import InputMode
 ROOT_LOG_CONF = {
     'version': 1,
     'root': {
-        'level': 'INFO',
+        'level': 'DEBUG',
         'handlers': ['file'],
     },
     'handlers': {
@@ -68,7 +68,7 @@ Keys Description:
 
 DEFAULT_GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',
-    'input_mode': InputMode.TEXT.value,
+    'input_mode': InputMode.VOICE.value,
     'response_in_speech': False,
 }
 
