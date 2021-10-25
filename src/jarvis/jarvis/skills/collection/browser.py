@@ -72,8 +72,8 @@ class BrowserSkills(AssistantSkill):
             reg_ex = re.search(tag + ' (.*)', voice_transcript)
             try:
                 search_text = reg_ex.group(1)
-                base = f"https://www.youtube.com/results?search_query={search_text.replace(' ', '+')}&orderby=viewCount"
-                r = requests.get(base)
+                base = "https://www.youtube.com/results?search_query={0}&orderby=viewCount"
+                r = requests.get(base.format(search_text.replace(' ', '+')))                
                 page = r.text
                 reg_ex = re.search("var ytInitialData = (.*);<\/script>", page)
                 yt_initial_data = json.loads(reg_ex.group(1))
@@ -84,14 +84,16 @@ class BrowserSkills(AssistantSkill):
                         'title': Coalesce("radioRenderer.title.simpleText",
                                             "videoRenderer.title.accessibility.accessibilityData.label", default="Unknown")
                     }]), default=None),
-                ], lambda x: x[0][0])
-                # glom with yt_specs returns a nested result-list, lamnda-func at the end selects the top-result
-                yt_topresult = glom(yt_initial_data, yt_spec)
-                video = f"https://youtube.com{yt_topresult['url']}"
-                cls.console(info_log=f"Now playing: {yt_topresult['title']}")
+                ], lambda x: [elem for elem in x[0] if elem['url'] != None])
+                # glom with yt_specs returns a nested result-list, lamnda-func filters the list
+                yt_results = glom(yt_initial_data, yt_spec)
+                if not yt_results:
+                    raise Exception(f"No YT-video was found for '{search_text}'.")
+                video = f"https://youtube.com{yt_results[0]['url']}"
+                cls.console(info_log=f"Now playing: {yt_results[0]['title']}")
                 subprocess.Popen(["python", "-m", "webbrowser", "-t", video], stdout=subprocess.PIPE, shell=False)
             except Exception as e:
-                cls.console(error_log="Error with the execution of skill with message {0}".format(e))
+                cls.console(error_log="Error with the execution of skill with message: {0}".format(e))
                 cls.response("I can't find what do you want in Youtube..")
 
     @classmethod
