@@ -1,6 +1,3 @@
-import enum
-
-
 from enum import Enum
 
 class Status_code(Enum):
