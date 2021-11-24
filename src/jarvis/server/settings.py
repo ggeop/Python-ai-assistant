@@ -33,7 +33,7 @@ ROOT_LOG_CONF = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'DEBUG',
             'formatter': 'detailed',
-            'filename': '/var/log/jarvis.log',
+            'filename': 'jarvis.log',
             'mode': 'a',
             'maxBytes': 10000000,
             'backupCount': 3,
