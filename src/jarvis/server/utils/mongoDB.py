@@ -22,6 +22,7 @@
 
 import logging
 from pymongo import MongoClient, DESCENDING
+from bson.objectid import ObjectId
 
 
 class MongoDB:
@@ -29,8 +30,8 @@ class MongoDB:
     This class encapsulates methods related to MongoDB 
     """
 
-    def __init__(self, host='localhost', port=27017):
-        self.client = MongoClient(host, port)
+    def __init__(self, host='mongodb_container', port=27017):
+        self.client = MongoClient(f'mongodb://root:rootpassword@{host}:{port}')
         self.database = self.client['jarvis']
 
     def get_documents(self, collection, key=None, limit=None):
@@ -72,7 +73,10 @@ class MongoDB:
             return collection_obj.estimated_document_count() == 0
         except Exception as e:
             logging.error(e)
-
+    def findOne(self, collection, obj_id):
+        print(collection)
+        collection_obj = self.database[collection]
+        return collection_obj.find_one({'_id':ObjectId(obj_id)})
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Create MongoDB connection instance
