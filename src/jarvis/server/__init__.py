@@ -22,12 +22,10 @@
 
 from logging import config
 
-from jarvis import settings
+import server.settings
 from server.settings import ROOT_LOG_CONF
 from server.utils.mongoDB import db
 from server.utils.startup import configure_MongoDB
-from server.enumerations import InputMode
-import server.engines as engines
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Create a Console & Rotating file logger
@@ -55,5 +53,5 @@ assistant_name = db.get_documents(collection='general_settings')[0]['assistant_n
 # ----------------------------------------------------------------------------------------------------------------------
 # Create assistant input and output engine instances
 # ----------------------------------------------------------------------------------------------------------------------
-input_engine = engines.STTEngine() if input_mode == InputMode.VOICE.value else engines.TTTEngine()
-output_engine = engines.TTSEngine() if response_in_speech else engines.TTTEngine()
+#input_engine = engines.STTEngine() if input_mode == InputMode.VOICE.value else engines.TTTEngine()
+#output_engine = engines.TTSEngine() if response_in_speech else engines.TTTEngine()
