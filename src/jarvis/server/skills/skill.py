@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from server.core.console import ConsoleManager
 import server
 
 
@@ -30,7 +29,6 @@ class AssistantSkill:
     """
 
     first_activation = True
-    console_manager = ConsoleManager()
 
     @classmethod
     def console(cls, text='', debug_log=None, info_log=None, warn_log=None, error_log=None, refresh_console=True):
@@ -52,11 +50,11 @@ class AssistantSkill:
             - TTT Engine: The response is only in text
             - TTS Engine: The response is in voice and text
         """
-        jarvis.output_engine.assistant_response(text, refresh_console=refresh_console)
+        print(text, refresh_console)
 
     @classmethod
     def user_input(cls):
-        user_input = jarvis.input_engine.recognize_input(already_activated=True)
+        user_input = "voice"
         return user_input
 
     @classmethod
