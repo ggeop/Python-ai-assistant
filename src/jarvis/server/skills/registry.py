@@ -22,22 +22,22 @@
 
 from server.skills.collection.activation import ActivationSkills
 from server.skills.collection.info import AssistantInfoSkills
-from server.skills.collection.datetime import DatetimeSkills
+#from server.skills.collection.datetime import DatetimeSkills
 from server.skills.collection.browser import BrowserSkills
 from server.skills.collection.general import UtilSkills
-from server.skills.collection.internet import InternetSkills
+#from server.skills.collection.internet import InternetSkills
 from server.skills.collection.libreoffice import LibreofficeSkills
 from server.skills.collection.linux import LinuxAppSkills
-from server.skills.collection.location import LocationSkill
-from server.skills.collection.reminder import ReminderSkills
-from server.skills.collection.system_health import SystemHealthSkills
-from server.skills.collection.weather import WeatherSkills
+# from server.skills.collection.location import LocationSkill
+#from server.skills.collection.reminder import ReminderSkills
+#from server.skills.collection.system_health import SystemHealthSkills
+#from server.skills.collection.weather import WeatherSkills
 from server.skills.collection.text import WordSkills
 from server.skills.collection.history import HistorySkills
-from server.skills.collection.remember import RememberSkills
+#from server.skills.collection.remember import RememberSkills
 from server.skills.collection.math import MathSkills
 from server.utils.mapping import math_tags
-from server.skills.collection.configuration import ConfigurationSkills
+#from server.skills.collection.configuration import ConfigurationSkills
 
 # All available assistant skills
 # Keys description:
@@ -76,19 +76,19 @@ BASIC_SKILLS = [
         'description': 'Tells the daily news (find on Google newsfeed)'
     },
 
-    {
-        'enable': True,
-        'func': DatetimeSkills.tell_the_time,
-        'tags': 'time, hour',
-        'description': 'Tells the current time'
-    },
+    # {
+    #     'enable': True,
+    #     'func': DatetimeSkills.tell_the_time,
+    #     'tags': 'time, hour',
+    #     'description': 'Tells the current time'
+    # },
 
-    {
-        'enable': True,
-        'func': DatetimeSkills.tell_the_date,
-        'tags': 'date',
-        'description': 'Tells the current date'
-    },
+    # {
+    #     'enable': True,
+    #     'func': DatetimeSkills.tell_the_date,
+    #     'tags': 'date',
+    #     'description': 'Tells the current date'
+    # },
 
     {
         'enable': True,
@@ -111,12 +111,12 @@ BASIC_SKILLS = [
         'description': 'A list with all the available skills'
     },
 
-    {
-        'enable': True,
-        'func': WeatherSkills.tell_the_weather,
-        'tags': 'weather, temperature, weather prediction',
-        'description': 'Tells the weather for a location (default in current location)'
-    },
+    # {
+    #     'enable': True,
+    #     'func': WeatherSkills.tell_the_weather,
+    #     'tags': 'weather, temperature, weather prediction',
+    #     'description': 'Tells the weather for a location (default in current location)'
+    # },
 
     {
         'enable': True,
@@ -146,13 +146,13 @@ BASIC_SKILLS = [
         'description': 'Opens impress application'
     },
 
-    {
-        'enable': True,
-        'func': SystemHealthSkills.tell_memory_consumption,
-        'tags': 'ram, ram usage, memory, memory consumption',
-        'description': 'The assistant current memory consumption, '
+    # {
+    #     'enable': True,
+    #     'func': SystemHealthSkills.tell_memory_consumption,
+    #     'tags': 'ram, ram usage, memory, memory consumption',
+    #     'description': 'The assistant current memory consumption, '
 
-    },
+    # },
 
     {
         'enable': True,
@@ -161,19 +161,20 @@ BASIC_SKILLS = [
         'description': 'Plays music in Youtube'
     },
 
-    {
-        'enable': True,
-        'func': InternetSkills.run_speedtest,
-        'tags': 'speedtest, internet speed, ping',
-        'description': 'Checks internet speed'
-    },
+    #{
+      #  'enable': True,
+     #   'func': InternetSkills.run_speedtest,
+     #   'tags': 'speedtest, internet speed, ping',
+     #   'description': 'Checks internet speed'
+    #
+    # },
 
-    {
-        'enable': True,
-        'func': InternetSkills.internet_availability,
-        'tags': 'internet conection',
-        'description': 'Checks for internet availability'
-    },
+    #{
+    #    'enable': True,
+    #    'func': InternetSkills.internet_availability,
+    #    'tags': 'internet conection',
+    #    'description': 'Checks for internet availability'
+    #},
 
     {
         'enable': True,
@@ -182,12 +183,12 @@ BASIC_SKILLS = [
         'description': 'Spells a word'
     },
 
-    {
-        'enable': True,
-        'func': ReminderSkills.create_reminder,
-        'tags': 'reminder',
-        'description': 'Create a time reminder'
-    },
+    # {
+    #     'enable': True,
+    #     'func': ReminderSkills.create_reminder,
+    #     'tags': 'reminder',
+    #     'description': 'Create a time reminder'
+    # },
 
     {
         'enable': True,
@@ -217,12 +218,12 @@ BASIC_SKILLS = [
         'description': 'Ask to open new bash'
     },
 
-    {
-        'enable': True,
-        'func': LocationSkill.get_current_location,
-        'tags': 'my location, current location',
-        'description': 'Ask to tell you your current location'
-    },
+    # {
+    #     'enable': True,
+    #     'func': LocationSkill.get_current_location,
+    #     'tags': 'my location, current location',
+    #     'description': 'Ask to tell you your current location'
+    # },
 
     {
         'enable': True,
@@ -231,26 +232,26 @@ BASIC_SKILLS = [
         'description': 'Ask to tell you asked commands'
     },
 
-    {
-        'enable': True,
-        'func': RememberSkills.remember,
-        'tags': 'remember',
-        'description': 'Remember question - answer pairs'
-    },
+    # {
+    #     'enable': True,
+    #     'func': RememberSkills.remember,
+    #     'tags': 'remember',
+    #     'description': 'Remember question - answer pairs'
+    # },
 
-    {
-        'enable': True,
-        'func': RememberSkills.tell_response,
-        'tags': '',
-        'description': 'Util skill, there is no tags to call it'
-    },
+    # {
+    #     'enable': True,
+    #     'func': RememberSkills.tell_response,
+    #     'tags': '',
+    #     'description': 'Util skill, there is no tags to call it'
+    # },
 
-    {
-        'enable': True,
-        'func': RememberSkills.clear_learned_skills,
-        'tags': 'clear learned skills, drop learned skills, remove learned skills',
-        'description': 'Clear the learned skills'
-    },
+    # {
+    #     'enable': True,
+    #     'func': RememberSkills.clear_learned_skills,
+    #     'tags': 'clear learned skills, drop learned skills, remove learned skills',
+    #     'description': 'Clear the learned skills'
+    # },
 
     {
         'enable': True,
@@ -259,12 +260,12 @@ BASIC_SKILLS = [
         'description': 'Clears bash console'
     },
 
-    {
-        'enable': True,
-        'func': ReminderSkills.set_alarm,
-        'tags': 'alarm, set alarm',
-        'description': 'Set daily alarm (the assistant service should be running)'
-    },
+    # {
+    #     'enable': True,
+    #     'func': ReminderSkills.set_alarm,
+    #     'tags': 'alarm, set alarm',
+    #     'description': 'Set daily alarm (the assistant service should be running)'
+    # },
 
     {
         'enable': True,
@@ -273,12 +274,12 @@ BASIC_SKILLS = [
         'description': 'Do basic math calculations in bash terminal e.g " (5+5) ^ 2"'
     },
 
-    {
-        'enable': True,
-        'func': ConfigurationSkills.configure_assistant,
-        'tags': 'configure, change settings',
-        'description': 'Change the assistant setting values'
-    },
+    # {
+    #     'enable': True,
+    #     'func': ConfigurationSkills.configure_assistant,
+    #     'tags': 'configure, change settings',
+    #     'description': 'Change the assistant setting values'
+    # },
 
     {
         'enable': True,
@@ -307,10 +308,9 @@ BASIC_SKILLS = [
         'tags': 'volume max',
         'description': 'Set max the speakers master volume'
     },
-
 ]
 
-# Add name key in both BASIC_SKILLS and CONTROL_SKILLS
+#Add name key in both BASIC_SKILLS and CONTROL_SKILLS
 for skill in BASIC_SKILLS + CONTROL_SKILLS:
     skill['name'] = skill['func'].__name__
 
