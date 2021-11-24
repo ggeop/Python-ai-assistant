@@ -20,103 +20,88 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import server
-
+from typing import Optional
+from fastapi import FastAPI
+from server.core.nlp import ResponseCreator
+from server.settings import SKILL_ANALYZER
+from server.skills.registry import BASIC_SKILLS
+from server.skills.analyzer import SkillAnalyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
-from server.skills.analyzer import SkillAnalyzer
-from server.skills.registry import skill_objects
-from server.core.nlp import ResponseCreator
-from server.skills.collection.activation import ActivationSkills
+import json
+from bson import ObjectId
 from server.utils.mongoDB import db
-from server.skills.collection.wolframalpha import WolframSkills
 
-
+from server import settings
 class Processor:
-    def __init__(self, console_manager, settings_):
-        self.console_manager = console_manager
-        self.settings = settings_
+    def __init__(self):
         self.response_creator = ResponseCreator()
         self.skill_analyzer = SkillAnalyzer(
             weight_measure=TfidfVectorizer,
             similarity_measure=cosine_similarity,
-            args=self.settings.SKILL_ANALYZER.get('args'),
-            sensitivity=self.settings.SKILL_ANALYZER.get('sensitivity'),
+            args=settings.SKILL_ANALYZER.get('args'),
+            sensitivity=settings.SKILL_ANALYZER.get('sensitivity'),
         )
-
-    def run(self):
-        """
-         Assistant starting point.
-
-        - STEP 1: Get user input based on the input mode (voice or text)
-        - STEP 2: Matches the input with a skill
-        - STEP 3: Create a response
-        - STEP 4: Execute matched skill
-        - STEP 5: Insert user transcript and response in history collection (in MongoDB)
-
-        """
-
-        transcript = jarvis.input_engine.recognize_input()
+        self.skill = {}
+        self.response = {}
+    def all_skills(self):
+        return len(BASIC_SKILLS)
+    def extract_command(self, transcript):
         skill = self.skill_analyzer.extract(transcript)
-
+        print(skill)
         if skill:
-            # ----------------------------------------------------------------------------------------------------------
-            # Successfully extracted skill
-            # ----------------------------------------------------------------------------------------------------------
-
-            # ---------------
-            # Positive answer
-            # ---------------
-            response = self.response_creator.create_positive_response(transcript)
-            jarvis.output_engine.assistant_response(response)
-
-            # ---------------
-            # Skill execution
-            # ---------------
-            skill_to_execute = {'voice_transcript': transcript, 'skill': skill}
-            self._execute_skill(skill_to_execute)
+            return {'voice_transcript': transcript, 'skill': skill, 'response' :self.response_creator.create_positive_response(transcript)}
 
         else:
-            # ----------------------------------------------------------------------------------------------------------
-            # No skill extracted
-            # ----------------------------------------------------------------------------------------------------------
-
-            # ---------------
-            # Negative answer
-            # ---------------
-            response = self.response_creator.create_negative_response(transcript)
-            jarvis.output_engine.assistant_response(response)
-
-            # ---------------
-            # WolframAlpha API Call
-            # ---------------
-            skill_to_execute = {'voice_transcript': transcript,
-                                'skill': {'name': WolframSkills.call_wolframalpha.__name__}
+            return {'voice_transcript': transcript,
+                                'skill': {'name': WolframSkills.call_wolframalpha.__name__},
+                                'response': self.response_creator.create_negative_response(transcript)
                                 }
-
-            response = WolframSkills.call_wolframalpha(transcript)
-
-        # --------------------------------------------------------------------------------------------------------------
-        # Add new record to history
-        # --------------------------------------------------------------------------------------------------------------
-
-        record = {'user_transcript': transcript,
-                  'response': response if response else '--',
-                  'executed_skill': skill_to_execute if skill_to_execute else '--'
-                  }
-
-        db.insert_many_documents('history', [record])
-
     def _execute_skill(self, skill):
         if skill:
             skill_func_name = skill.get('skill').get('func')
-            self.console_manager.console_output(info_log='Executing skill {0}'.format(skill_func_name))
             try:
                 ActivationSkills.enable_assistant()
                 skill_func_name = skill.get('skill').get('func')
                 skill_func = skill_objects[skill_func_name]
                 skill_func(**skill)
             except Exception as e:
-                self.console_manager.console_output(error_log="Failed to execute skill {0} with message: {1}"
-                                                    .format(skill_func_name, e))
+                return "Failed to execute skill {0} with message: {1}".format(skill_func_name, e)
+    def query_wolfram(self, query):
+        WolframSkills.call_wolframalpha(query)
+    def write_to_db(self,transcript):
+        record = {'user_transcript': transcript,
+                  'response': self.response if self.response else '--',
+                  'executed_skill': self.skill  if self.skill else '--'
+                  }
+
+        db.insert_many_documents('history', [record])
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
+
+app = FastAPI()
+processor = Processor()
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+
+@app.get("/commands")
+def list_skills():
+    return {'skills':processor.all_skills()}
+
+@app.post("/commands")
+def extract_skill(transcript: str):
+    skill = processor.extract_command(transcript)
+    return JSONEncoder().encode(skill)
+@app.get("/execute/{skill_id}")
+def extract_skill(skill_id: str):
+    skill= db.findOne('control_skills', skill_id)
+    print(skill_id)
+    response = processor._execute_skill(skill)
+    return response
