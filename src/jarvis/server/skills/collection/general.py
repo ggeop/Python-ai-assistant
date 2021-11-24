@@ -23,7 +23,7 @@
 import subprocess
 
 from server.skills.skill import AssistantSkill
-import jarvis
+import server
 
 
 def get_master_volume():
