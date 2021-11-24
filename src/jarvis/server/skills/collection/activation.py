@@ -24,23 +24,10 @@ import sys
 import time
 from datetime import datetime
 
-from server.utils.startup import play_activation_sound
 from server.skills.skill import AssistantSkill
-from server.utils.mongoDB import db
-from server.enumerations import InputMode, MongoCollections
 
 
 class ActivationSkills(AssistantSkill):
-
-    @classmethod
-    def enable_assistant(cls, **kwargs):
-        """
-        Plays activation sound and creates the assistant response according to the day hour.
-        """
-
-        input_mode = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)[0]['input_mode']
-        if input_mode == InputMode.VOICE.value:
-            play_activation_sound()
 
     @classmethod
     def disable_assistant(cls, **kwargs):
