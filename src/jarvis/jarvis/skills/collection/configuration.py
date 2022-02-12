@@ -24,14 +24,15 @@ import importlib
 
 from jarvis.skills.skill import AssistantSkill
 from jarvis import settings
-from jarvis.utils.mongoDB import db
+from jarvis.utils.settings_database import settingsDB
 from jarvis.enumerations import InputMode, MongoCollections
 from jarvis.utils import console
 from jarvis.utils import input
 
-input_mode = db.get_documents(collection='general_settings')[0]['input_mode']
-response_in_speech = db.get_documents(collection='general_settings')[0]['response_in_speech']
-assistant_name = db.get_documents(collection='general_settings')[0]['assistant_name']
+generalSettings = settingsDB.getGeneralSettings()
+input_mode = generalSettings.input_mode
+response_in_speech = generalSettings.response_in_speech
+assistant_name = generalSettings.assistant_name
 
 
 class ConfigurationSkills(AssistantSkill):
@@ -70,7 +71,10 @@ class ConfigurationSkills(AssistantSkill):
         cls.response('Do you want to save new settings? ', refresh_console=False)
         save = input.check_input_to_continue()
         if save:
-            db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[new_settings])
+            generalSettings.input_mode = new_input_mode
+            generalSettings.assistant_name = new_assistant_name
+            generalSettings.response_in_speech = new_response_in_speech
+            settingsDB.updateGeneralSettings(generalSettings)
 
             import jarvis
             importlib.reload(jarvis)

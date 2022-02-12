@@ -26,7 +26,7 @@ import psutil
 import logging
 
 from jarvis import settings
-from jarvis.utils.mongoDB import db
+from jarvis.utils.settings_database import settingsDB
 from jarvis.utils.console import jarvis_logo, start_text, OutputStyler, headerize
 from jarvis.enumerations import MongoCollections, InputMode
 
@@ -90,15 +90,13 @@ class ConsoleManager:
             # ----------------------------------------------------------------------------------------------------------
             # General info sector
             # ----------------------------------------------------------------------------------------------------------
-            settings_documents = db.get_documents(collection=MongoCollections.GENERAL_SETTINGS.value)
-            if settings_documents:
-                settings_ = settings_documents[0]
-                print(OutputStyler.HEADER + headerize('GENERAL INFO') + OutputStyler.ENDC)
-                enabled = OutputStyler.GREEN + 'ENABLED' + OutputStyler.ENDC if settings_['response_in_speech'] else OutputStyler.WARNING + 'NOT ENABLED' + OutputStyler.ENDC
-                print(OutputStyler.BOLD + 'RESPONSE IN SPEECH: ' + enabled)
-                print(OutputStyler.BOLD + 'INPUT MODE: ' + OutputStyler.GREEN + '{0}'.format(settings_['input_mode'].upper() + OutputStyler.ENDC) + OutputStyler.ENDC)
-                if settings_['input_mode'] == InputMode.VOICE.value:
-                    print(OutputStyler.BOLD + 'NOTE: ' + OutputStyler.GREEN + "Include " + "'{0}'".format(settings_['assistant_name'].upper()) + " in you command to enable assistant" + OutputStyler.ENDC + OutputStyler.ENDC)
+            settings_ = settingsDB.getGeneralSettings()
+            print(OutputStyler.HEADER + headerize('GENERAL INFO') + OutputStyler.ENDC)
+            enabled = OutputStyler.GREEN + 'ENABLED' + OutputStyler.ENDC if settings_.response_in_speech else OutputStyler.WARNING + 'NOT ENABLED' + OutputStyler.ENDC
+            print(OutputStyler.BOLD + 'RESPONSE IN SPEECH: ' + enabled)
+            print(OutputStyler.BOLD + 'INPUT MODE: ' + OutputStyler.GREEN + '{0}'.format(settings_.input_mode.upper() + OutputStyler.ENDC) + OutputStyler.ENDC)
+            if settings_.input_mode == InputMode.VOICE.value:
+                print(OutputStyler.BOLD + 'NOTE: ' + OutputStyler.GREEN + "Include " + "'{0}'".format(settings_.assistant_name.upper()) + " in you command to enable assistant" + OutputStyler.ENDC + OutputStyler.ENDC)
 
             # ----------------------------------------------------------------------------------------------------------
             # System info sector

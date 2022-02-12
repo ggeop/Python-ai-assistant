@@ -67,8 +67,6 @@ class STTEngineVosk(STTEngine):
 
         self.console_manager.console_output(info_log="Settings: device={}, samplerate: {}".format(device_id, self.sample_rate))
         self.mic_stream = sd.RawInputStream(samplerate=self.sample_rate, device=device_id, blocksize = 8000, dtype='int16', channels=1,
-                            # callback=self.callback)
-                            # callback=other_callback)
                             callback=lambda indata, frames, time, status: self.callback(self, indata, frames, time, status))
         self.mic_stream.start()
         self.console_manager.console_output(info_log="Mic status: {}".format(self.mic_stream.active))
@@ -79,13 +77,12 @@ class STTEngineVosk(STTEngine):
         self.mic_stream.close()
     
     @staticmethod
-
     def callback(self, indata, frames, time, status):
         """This is called (from a separate thread) for each audio block."""
         # self.console_manager.console_output(info_log="Callback...")
         # print("callback...")
         if status:
-            print("Callback status: " + status)
+            print("Callback status: %s" % status)
             # self.console_manager.console_output(info_log="Callback status: " + status)
         self.work_queue.put(bytes(indata))
 
