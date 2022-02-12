@@ -24,10 +24,10 @@ from logging import config
 
 from jarvis import settings
 from jarvis.settings import ROOT_LOG_CONF
-from jarvis.utils.mongoDB import db
-from jarvis.utils.startup import configure_MongoDB
+from jarvis.utils.startup import configure_defaults
 from jarvis.enumerations import InputMode
 import jarvis.engines as engines
+from jarvis.utils.settings_database import settingsDB
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Create a Console & Rotating file logger
@@ -43,17 +43,19 @@ with open(ROOT_LOG_CONF['handlers']['file']['filename'], 'w') as f:
 # ----------------------------------------------------------------------------------------------------------------------
 # Configuare MongoDB, load skills and settings
 # ----------------------------------------------------------------------------------------------------------------------
-configure_MongoDB(db, settings)
+configure_defaults(settings)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Get assistant settings
 # ----------------------------------------------------------------------------------------------------------------------
-input_mode = db.get_documents(collection='general_settings')[0]['input_mode']
-response_in_speech = db.get_documents(collection='general_settings')[0]['response_in_speech']
-assistant_name = db.get_documents(collection='general_settings')[0]['assistant_name']
+generalSettings = settingsDB.getGeneralSettings()
+input_mode = generalSettings.input_mode
+response_in_speech = generalSettings.response_in_speech
+assistant_name = generalSettings.assistant_name
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Create assistant input and output engine instances
 # ----------------------------------------------------------------------------------------------------------------------
-input_engine = engines.STTEngineVosk()# if input_mode == InputMode.VOICE.value else engines.TTTEngine()
-output_engine = engines.TTSEngine()# if response_in_speech else engines.TTTEngine()
+#input_engine = engines.STTEngineVosk()# if input_mode == InputMode.VOICE.value else engines.TTTEngine()
+input_engine = engines.STTEngineGoogle() if input_mode == InputMode.VOICE.value else engines.TTTEngine()
+output_engine = engines.TTSEngine() if response_in_speech else engines.TTTEngine()

@@ -29,7 +29,7 @@ from jarvis.skills.analyzer import SkillAnalyzer
 from jarvis.skills.registry import skill_objects
 from jarvis.core.nlp import ResponseCreator
 from jarvis.skills.collection.activation import ActivationSkills
-from jarvis.utils.mongoDB import db
+from jarvis.utils.history_database import historyDB, History
 from jarvis.skills.collection.wolframalpha import WolframSkills
 
 
@@ -53,7 +53,7 @@ class Processor:
         - STEP 2: Matches the input with a skill
         - STEP 3: Create a response
         - STEP 4: Execute matched skill
-        - STEP 5: Insert user transcript and response in history collection (in MongoDB)
+        - STEP 5: Insert user transcript and response in history collection
 
         """
 
@@ -100,13 +100,10 @@ class Processor:
         # --------------------------------------------------------------------------------------------------------------
         # Add new record to history
         # --------------------------------------------------------------------------------------------------------------
-
-        record = {'user_transcript': transcript,
-                  'response': response if response else '--',
-                  'executed_skill': skill_to_execute if skill_to_execute else '--'
-                  }
-
-        db.insert_many_documents('history', [record])
+        historyDB.addHistory(History(
+            user_transcript=transcript,
+            response=response,
+            executed_skill='--' if not skill_to_execute else skill_to_execute['skill']['name']))
 
     def _execute_skill(self, skill):
         if skill:
