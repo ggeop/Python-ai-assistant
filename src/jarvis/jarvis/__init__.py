@@ -55,5 +55,5 @@ assistant_name = db.get_documents(collection='general_settings')[0]['assistant_n
 # ----------------------------------------------------------------------------------------------------------------------
 # Create assistant input and output engine instances
 # ----------------------------------------------------------------------------------------------------------------------
-input_engine = engines.STTEngine() if input_mode == InputMode.VOICE.value else engines.TTTEngine()
-output_engine = engines.TTSEngine() if response_in_speech else engines.TTTEngine()
+input_engine = engines.STTEngineVosk()# if input_mode == InputMode.VOICE.value else engines.TTTEngine()
+output_engine = engines.TTSEngine()# if response_in_speech else engines.TTTEngine()

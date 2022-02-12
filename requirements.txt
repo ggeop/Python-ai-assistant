@@ -21,7 +21,6 @@ lxml==4.6.3
 mock==3.0.5
 more-itertools==7.0.0
 nltk==3.4.5
-numpy==1.16.4
 patch==1.16
 platformdirs==2.4.0
 playsound==1.2.2
@@ -44,8 +43,10 @@ textblob==0.15.3
 tzlocal==1.5.1
 urllib3==1.24.3
 virtualenv==20.8.1
+vosk==0.3.32
 web-cache==1.1.0
 wikipedia==1.4.0
 wolframalpha==3.0.1
 word2number==1.1
 xmltodict==0.12.0
+sounddevice==0.4.4

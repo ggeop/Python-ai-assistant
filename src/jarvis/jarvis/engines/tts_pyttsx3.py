@@ -70,8 +70,8 @@ class TTSEngine(TTS):
         """
         self._insert_into_message_queue(message)
         try:
-            speech_thread = threading.Thread(target=self._speech_and_console, args=(refresh_console,))
-            speech_thread.start()
+            speech_tread = threading.Thread(target=self._speech_and_console, args=(refresh_console,))
+            speech_tread.start()
         except RuntimeError as e:
             self.logger.error('Error in assistant response thread with message {0}'.format(e))
 
