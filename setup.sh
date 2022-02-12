@@ -25,19 +25,16 @@ fi
 #-----------------------------------
 # System dependencies installation
 #-----------------------------------
-sudo apt-get update && /
-sudo apt-get install build-essential && /
-sudo apt-get install python3-dev && /
-sudo apt-get install python3-setuptools && /
-sudo apt-get install python3-pip && /
-sudo apt-get install python3-venv && /
-sudo apt-get install portaudio19-dev python3-pyaudio python3-pyaudio && /
-sudo apt-get install python3-numpy && /
-sudo apt-get install libasound2-plugins libsox-fmt-all libsox-dev libxml2-dev libxslt-dev sox ffmpeg && /
-sudo apt-get install espeak && /
-sudo apt-get install libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0  && /
-sudo apt install mongodb && /
-sudo apt-get install gnupg
+sudo apt-get update && \
+sudo apt-get install build-essential \
+    python3-dev python3-setuptools python3-pip python3-venv \
+    portaudio19-dev python3-pyaudio python3-pyaudio \
+    python3-numpy \
+    libasound2-plugins libsox-fmt-all libsox-dev libxml2-dev libxslt-dev sox ffmpeg \
+    espeak \
+    libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0  \
+    mongodb \
+    gnupg
 
 # Reload local package database
 sudo apt-get update
@@ -74,7 +71,7 @@ echo "${green} ${activated_python_version} activated!${reset}"
 # Install python requirements
 pip3 install --upgrade cython
 pip3 install wheel
-python setup.py bdist_wheel
+python3 setup.py bdist_wheel
 pip3 install -r $JARVIS_DIR/requirements.txt
 pip3 install -U scikit-learn
 
