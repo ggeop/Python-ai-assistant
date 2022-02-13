@@ -27,7 +27,7 @@ from datetime import datetime
 from jarvis.skills.skill import AssistantSkill
 from jarvis.utils.startup import play_activation_sound
 from jarvis.utils.settings_database import settingsDB
-from jarvis.enumerations import InputMode, MongoCollections
+from jarvis.enumerations import InputMode
 
 
 class ActivationSkills(AssistantSkill):

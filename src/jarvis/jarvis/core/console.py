@@ -28,7 +28,7 @@ import logging
 from jarvis import settings
 from jarvis.utils.settings_database import settingsDB
 from jarvis.utils.console import jarvis_logo, start_text, OutputStyler, headerize
-from jarvis.enumerations import MongoCollections, InputMode
+from jarvis.enumerations import InputMode
 
 
 class ConsoleManager:

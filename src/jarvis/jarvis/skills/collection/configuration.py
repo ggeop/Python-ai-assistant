@@ -25,7 +25,7 @@ import importlib
 from jarvis.skills.skill import AssistantSkill
 from jarvis import settings
 from jarvis.utils.settings_database import settingsDB
-from jarvis.enumerations import InputMode, MongoCollections
+from jarvis.enumerations import InputMode
 from jarvis.utils import console
 from jarvis.utils import input
 
