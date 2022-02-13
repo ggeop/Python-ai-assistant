@@ -44,7 +44,6 @@ textblob==0.15.3
 tzlocal==1.5.1
 urllib3==1.24.3
 virtualenv==20.8.1
-vosk==0.3.32
 web-cache==1.1.0
 wikipedia==1.4.0
 wolframalpha==3.0.1

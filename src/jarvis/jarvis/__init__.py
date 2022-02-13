@@ -61,6 +61,5 @@ assistant_name = generalSettings.assistant_name
 # ----------------------------------------------------------------------------------------------------------------------
 # Create assistant input and output engine instances
 # ----------------------------------------------------------------------------------------------------------------------
-#input_engine = engines.STTEngineVosk()# if input_mode == InputMode.VOICE.value else engines.TTTEngine()
-input_engine = engines.STTEngineGoogle() if input_mode == InputMode.VOICE.value else engines.TTTEngine()
+input_engine = engines.STTEngine() if input_mode == InputMode.VOICE.value else engines.TTTEngine()
 output_engine = engines.TTSEngine() if response_in_speech else engines.TTTEngine()
