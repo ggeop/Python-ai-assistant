@@ -27,7 +27,6 @@ import logging
 from playsound import playsound
 
 from jarvis.utils import console
-from jarvis.enumerations import MongoCollections
 from jarvis.core.console import ConsoleManager
 from jarvis.utils.settings_database import settingsDB, GeneralSettings
 
@@ -93,16 +92,3 @@ def configure_defaults(settings):
 
         except Exception as e:
             logging.error('Failed to configure assistant settings with error message {0}'.format(e))
-
-    # ------------------------------------------------------------------------------------------------------------------
-    # Load skills
-    # ------------------------------------------------------------------------------------------------------------------
-
-    from jarvis.skills.registry import CONTROL_SKILLS, ENABLED_BASIC_SKILLS
-
-    all_skills = {
-        MongoCollections.CONTROL_SKILLS.value: CONTROL_SKILLS,
-        MongoCollections.ENABLED_BASIC_SKILLS.value: ENABLED_BASIC_SKILLS,
-    }
-    for collection, documents in all_skills.items():
-        db.update_collection(collection, documents)

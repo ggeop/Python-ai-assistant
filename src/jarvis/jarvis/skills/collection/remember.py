@@ -22,7 +22,7 @@
 
 
 from jarvis.skills.skill import AssistantSkill
-from jarvis.utils.mongoDB import db
+from jarvis.utils.skills_database import skillsDB
 from jarvis.utils import input
 
 header = """
@@ -50,11 +50,11 @@ class RememberSkills(AssistantSkill):
                          'func': cls.tell_response.__name__,
                          'response': response,
                          'tags': tags,
-                         },
+                         }
 
             cls.response('Add more? ', refresh_console=False)
             continue_add = input.check_input_to_continue()
-            db.insert_many_documents(collection='learned_skills', documents=new_skill)
+            skillsDB.addLearnedSkill(new_skill)
 
     @classmethod
     def tell_response(cls, **kwargs):
@@ -62,12 +62,12 @@ class RememberSkills(AssistantSkill):
 
     @classmethod
     def clear_learned_skills(cls, **kwargs):
-        if db.is_collection_empty(collection='learned_skills'):
+        if skillsDB.hasLearnedSkills():
             cls.response("I can't find learned skills in my database")
         else:
             cls.response('I found learned skills..')
             cls.response('Are you sure to remove learned skills? ', refresh_console=False)
             user_answer = input.check_input_to_continue()
             if user_answer:
-                db.drop_collection(collection='learned_skills')
+                skillsDB.clearLearnedSkills()
                 cls.response("Perfect I have deleted them all")

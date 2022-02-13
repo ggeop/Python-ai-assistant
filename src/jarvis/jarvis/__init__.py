@@ -28,6 +28,8 @@ from jarvis.utils.startup import configure_defaults
 from jarvis.enumerations import InputMode
 import jarvis.engines as engines
 from jarvis.utils.settings_database import settingsDB
+from jarvis.utils.skills_registry import skills_registry
+from jarvis.skills.registry import skill_objects, CONTROL_SKILLS, ENABLED_BASIC_SKILLS
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Create a Console & Rotating file logger
@@ -41,9 +43,12 @@ with open(ROOT_LOG_CONF['handlers']['file']['filename'], 'w') as f:
     f.close()
 
 # ----------------------------------------------------------------------------------------------------------------------
-# Configuare MongoDB, load skills and settings
+# Configuare defaults, load skills and settings
 # ----------------------------------------------------------------------------------------------------------------------
 configure_defaults(settings)
+skills_registry.skill_objects = skill_objects
+skills_registry.basic_skills = ENABLED_BASIC_SKILLS
+skills_registry.control_skills = CONTROL_SKILLS
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Get assistant settings

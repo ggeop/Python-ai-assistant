@@ -26,7 +26,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from jarvis.skills.analyzer import SkillAnalyzer
-from jarvis.skills.registry import skill_objects
+from jarvis.utils.skills_registry import skills_registry
 from jarvis.core.nlp import ResponseCreator
 from jarvis.skills.collection.activation import ActivationSkills
 from jarvis.utils.history_database import historyDB, History
@@ -112,7 +112,7 @@ class Processor:
             try:
                 ActivationSkills.enable_assistant()
                 skill_func_name = skill.get('skill').get('func')
-                skill_func = skill_objects[skill_func_name]
+                skill_func = skills_registry.skill_objects[skill_func_name]
                 skill_func(**skill)
             except Exception as e:
                 self.console_manager.console_output(error_log="Failed to execute skill {0} with message: {1}"
