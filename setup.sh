@@ -31,6 +31,7 @@ sudo apt-get install build-essential \
     portaudio19-dev python3-pyaudio python3-pyaudio \
     python3-numpy \
     libasound2-plugins libsox-fmt-all libsox-dev libxml2-dev libxslt-dev sox ffmpeg \
+    libgstreamer1.0-dev libgstreamer1.0-0 \
     espeak \
     libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0  \
     mongodb \
