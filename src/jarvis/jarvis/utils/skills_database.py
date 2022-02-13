@@ -1,6 +1,9 @@
 from signal import pause
 import sqlite3
 import json
+from os.path import isdir, dirname
+
+from jarvis.settings import DATABASE_SETTINGS
 
 class SkillsDatabase:
     def __init__(self, database='skills.db'):
@@ -8,6 +11,9 @@ class SkillsDatabase:
         self._ensure_database_exists()
     
     def _ensure_database_exists(self):
+        if not isdir(dirname(self.database)):
+            raise IOError("Database base dir %s does not exist" % dirname(self.database))
+
         conn = sqlite3.connect(self.database)
         conn.execute(
             """create table if not exists collections (
@@ -56,4 +62,4 @@ class SkillsDatabase:
         conn.close()
 
 
-skillsDB = SkillsDatabase()
+skillsDB = SkillsDatabase(DATABASE_SETTINGS['base_dir'] + DATABASE_SETTINGS['skills_filename'])

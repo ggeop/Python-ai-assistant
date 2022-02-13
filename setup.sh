@@ -34,7 +34,6 @@ sudo apt-get install build-essential \
     libgstreamer1.0-dev libgstreamer1.0-0 \
     espeak \
     libcairo2-dev libgirepository1.0-dev gir1.2-gtk-3.0  \
-    mongodb \
     gnupg
 
 # Reload local package database

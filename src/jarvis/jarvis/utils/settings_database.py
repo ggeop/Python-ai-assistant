@@ -1,5 +1,8 @@
 import sqlite3
 import json
+from os.path import isdir, dirname
+
+from jarvis.settings import DATABASE_SETTINGS
 
 class GeneralSettings:
     def __init__(self, input_mode='voice', assistant_name='jarvis', response_in_speech='true'):
@@ -10,25 +13,15 @@ class GeneralSettings:
         return "input_mode=%s, assistant_name=%s, response_in_speech=%s" % (
             self.input_mode, self.assistant_name, self.response_in_speech)
 
-# class ControlSkills:
-#     def __init__(self):
-#         self.something = 0
-
-# class EnabledBasicSkills:
-#     def __init__(self):
-#         self.something = 0
-
-# class LearnedSkills:
-#     def __init__(self):
-#         self.something = 0
-
-
 class SettingsDatabase:
     def __init__(self, database='settings.db'):
         self.database = database
         self._ensure_database_exists()
     
     def _ensure_database_exists(self):
+        if not isdir(dirname(self.database)):
+            raise IOError("Database base dir %s does not exist" % dirname(self.database))
+
         conn = sqlite3.connect(self.database)
         conn.execute(
             """create table if not exists collections (
@@ -73,12 +66,4 @@ class SettingsDatabase:
         conn.commit()
         conn.close()
 
-#print("Create settings")
-settingsDB = SettingsDatabase()
-# print("Get settings")
-# gen = settingsDB.getGeneralSettings()
-# print("Gen = (%s)" % gen)
-# gen.assistant_name = 'travis'
-# settingsDB.updateGeneralSettings(gen)
-# gen = settingsDB.getGeneralSettings()
-# print("Gen = (%s)" % gen)
+settingsDB = SettingsDatabase(DATABASE_SETTINGS['base_dir'] + DATABASE_SETTINGS['settings_filename'])

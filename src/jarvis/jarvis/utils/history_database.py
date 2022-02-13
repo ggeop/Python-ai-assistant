@@ -1,5 +1,8 @@
 import sqlite3
 from time import time
+from os.path import isdir, dirname
+
+from jarvis.settings import DATABASE_SETTINGS
 
 class History:
     def __init__(self, user_transcript = '--', response = '--', executed_skill = '--', timestamp=0):
@@ -21,6 +24,9 @@ class HistoryDatabase:
         self._ensure_database_exists()
 
     def _ensure_database_exists(self):
+        if not isdir(dirname(self.database)):
+            raise IOError("Database base dir %s does not exist" % dirname(self.database))
+
         conn = sqlite3.connect(self.database)
         conn.execute(
             """create table if not exists history (
@@ -60,12 +66,4 @@ class HistoryDatabase:
         conn.commit()
         conn.close()
 
-historyDB = HistoryDatabase()
-# his = historyDB.getHistory()
-# print("history = %s" % his)
-# historyDB.addHistory(History(user_transcript='test1', response='resp1', executed_skill='skill1'))
-# historyDB.addHistory(History(user_transcript='test2', response='resp2', executed_skill='skill2'))
-# historyDB.addHistory(History(user_transcript='test3', response='resp3', executed_skill='skill3'))
-# his = historyDB.getHistory(limit=3)
-# for h in his:
-#     print (h)
+historyDB = HistoryDatabase(DATABASE_SETTINGS['base_dir'] + DATABASE_SETTINGS['history_filename'])
