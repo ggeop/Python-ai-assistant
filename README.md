@@ -80,7 +80,7 @@ bash setup.sh
 
 *   Put the Keys in settings
 
-**NOTE:** *For better exprerience, before you start the application you can put the free KEYs in the settings.py*
+**NOTE:** *For better experience, before you start the application you can put the free KEYs in the settings.py*
 
 ```bash
 nano Jarvis/src/jarvis/jarvis/setting.py
@@ -96,7 +96,7 @@ bash run_jarvis.sh
 
 ### How to add a new Skill to assistant
 You can easily add a new skill in two steps.
-*   Create a new configurationin SKILLS in **skills/registry.py**
+*   Create a new configuration SKILLS in **skills/registry.py**
 ```python
 { 
   'enable': True,
@@ -107,7 +107,7 @@ You can easily add a new skill in two steps.
 ```
 *   Create a new skill module in **skills/collection**
 
-### Desicion Model
+### Decision Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
 
 ### Extract skill
