@@ -65,6 +65,12 @@ Keys Description:
 
 """
 
+DATABASE_SETTINGS = {
+    'base_dir': './data/',
+    'history_filename': 'history.db',
+    'settings_filename': 'settings.db',
+    'skills_filename': 'skills.db'
+}
 
 DEFAULT_GENERAL_SETTINGS = {
     'assistant_name': 'Jarvis',

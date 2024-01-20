@@ -23,7 +23,7 @@
 import re
 
 from jarvis.skills.skill import AssistantSkill
-from jarvis.utils.mongoDB import db
+from jarvis.utils.history_database import historyDB
 
 header = """
 -----------------------------------------------------------------------------------------------
@@ -52,19 +52,18 @@ class HistorySkills(AssistantSkill):
 
         limit = cls._extract_history_limit(voice_transcript, skill)
         limit = limit if limit else cls.default_limit
-        documents = db.get_documents(collection='history', limit=limit)
-        response = cls._create_response(documents)
+        records = historyDB.getHistory(limit=limit)
+        response = cls._create_response(records)
         cls.console(response)
 
     @classmethod
-    def _create_response(cls, documents):
+    def _create_response(cls, records):
         response = ''
         try:
-            for document in documents:
-                response += response_base.format(document.get('user_transcript', '--'),
-                                                 document.get('response', '--'),
-                                                 document.get('executed_skill').get('skill').get('name') if
-                                                 document.get('executed_skill') else '--'
+            for record in records:
+                response += response_base.format(record.user_transcript,
+                                                 record.response,
+                                                 record.executed_skill
                                                  )
         except Exception as e:
             cls.console(error_log=e)

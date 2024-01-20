@@ -38,6 +38,7 @@ from jarvis.skills.collection.remember import RememberSkills
 from jarvis.skills.collection.math import MathSkills
 from jarvis.utils.mapping import math_tags
 from jarvis.skills.collection.configuration import ConfigurationSkills
+from jarvis.utils.skills_registry import skills_registry
 
 # All available assistant skills
 # Keys description:

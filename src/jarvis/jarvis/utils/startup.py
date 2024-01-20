@@ -27,9 +27,8 @@ import logging
 from playsound import playsound
 
 from jarvis.utils import console
-from jarvis.enumerations import MongoCollections
 from jarvis.core.console import ConsoleManager
-
+from jarvis.utils.settings_database import settingsDB, GeneralSettings
 
 def play_activation_sound():
     """
@@ -56,14 +55,14 @@ def internet_connectivity_check(url='http://www.google.com/', timeout=2):
         return False
 
 
-def configure_MongoDB(db, settings):
+def configure_defaults(settings):
 
     # ------------------------------------------------------------------------------------------------------------------
     # Load settings
     # ------------------------------------------------------------------------------------------------------------------
 
     # Only in first time or if 'general_settings' collection is deleted
-    if db.is_collection_empty(collection=MongoCollections.GENERAL_SETTINGS.value):
+    if not settingsDB.hasGeneralSettings():
         console.print_console_header()
         print('First time configuration..')
         console.print_console_header()
@@ -80,7 +79,11 @@ def configure_MongoDB(db, settings):
         }
 
         try:
-            db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[new_settings])
+            settingsDB.updateGeneralSettings(GeneralSettings(
+                input_mode=default_input_mode,
+                assistant_name=default_assistant_name,
+                response_in_speech=default_response_in_speech
+            ))
             console.print_console_header('Assistant Name')
             print('Assistant name- {0} configured successfully!'.format(default_assistant_name.lower()))
             print('Input mode - {0} configured successfully!'.format(default_input_mode))
@@ -89,16 +92,3 @@ def configure_MongoDB(db, settings):
 
         except Exception as e:
             logging.error('Failed to configure assistant settings with error message {0}'.format(e))
-
-    # ------------------------------------------------------------------------------------------------------------------
-    # Load skills
-    # ------------------------------------------------------------------------------------------------------------------
-
-    from jarvis.skills.registry import CONTROL_SKILLS, ENABLED_BASIC_SKILLS
-
-    all_skills = {
-        MongoCollections.CONTROL_SKILLS.value: CONTROL_SKILLS,
-        MongoCollections.ENABLED_BASIC_SKILLS.value: ENABLED_BASIC_SKILLS,
-    }
-    for collection, documents in all_skills.items():
-        db.update_collection(collection, documents)

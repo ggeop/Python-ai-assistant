@@ -21,8 +21,7 @@
 # SOFTWARE.
 import logging
 from jarvis.utils.mapping import math_symbols_mapping
-from jarvis.utils.mongoDB import db
-
+from jarvis.utils.skills_registry import skills_registry
 
 class SkillAnalyzer:
     def __init__(self, weight_measure, similarity_measure, args, sensitivity):
@@ -35,9 +34,7 @@ class SkillAnalyzer:
 
     @property
     def skills(self):
-        return db.get_documents(collection='control_skills')\
-               + db.get_documents(collection='enabled_basic_skills')\
-               + db.get_documents(collection='learned_skills')
+        return skills_registry.basic_skills + skills_registry.control_skills + skills_registry.learned_skills
 
     @property
     def tags(self):

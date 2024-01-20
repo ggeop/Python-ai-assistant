@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from jarvis.skills.skill import AssistantSkill
-from jarvis.utils.mongoDB import db
+from jarvis.utils.skills_registry import skills_registry
 from jarvis.utils.console import headerize
 
 basic_skills_format = """
@@ -94,7 +94,8 @@ class AssistantInfoSkills(AssistantSkill):
         # --------------------------------------------------------------------------------------------------------------
         # For existing skills (basic skills)
         # --------------------------------------------------------------------------------------------------------------
-        basic_skills = db.get_documents(collection='enabled_basic_skills')
+        # basic_skills = db.get_documents(collection='enabled_basic_skills')
+        basic_skills = skills_registry.basic_skills
         response = response + basic_skills_format
         for skill_id, skill in enumerate(basic_skills, start=1):
             response = response + basic_skills_body_format.format(skill_id,
@@ -106,7 +107,7 @@ class AssistantInfoSkills(AssistantSkill):
         # --------------------------------------------------------------------------------------------------------------
         # For learned skills (created from 'learn' skill)
         # --------------------------------------------------------------------------------------------------------------
-        skills = db.get_documents(collection='learned_skills')
+        skills = skills_registry.learned_skills
         response = response + learned_skills_format
         for skill_id, skill in enumerate(skills, start=1):
             response = response + learned_skills_body_format.format(skill_id,
