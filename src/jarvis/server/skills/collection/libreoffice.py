@@ -20,28 +20,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from server import settings
-from server.utils.startup import internet_connectivity_check
-from server.core.processor import Processor
-from server.core.console import ConsoleManager
+import subprocess
+
+from server.skills.skill import AssistantSkill
 
 
-def main():
-    """
-    Do initial checks, clear the console and print the assistant logo.
-    """
+class LibreofficeSkills(AssistantSkill):
 
-    console_manager = ConsoleManager()
-    console_manager.console_output(info_log='Wait a second for startup checks..')
-    internet_connectivity_check()
-    console_manager.console_output(info_log='Application started')
-    console_manager.console_output(info_log="I'm ready! Say something :-)")
-    processor = Processor(console_manager=console_manager, settings_=settings)
+    @classmethod
+    def open_libreoffice_calc(cls, **kwargs):
+        """
+        Opens libreoffice_suite_skills calc application.
+        """
+        cls._open_libreoffice_app('calc')
 
-    while True:
-        processor.run()
+    @classmethod
+    def open_libreoffice_impress(cls, **kwargs):
+        """
+        Opens libreoffice_suite_skills impress application.
+        """
+        cls._open_libreoffice_app('impress')
 
+    @classmethod
+    def open_libreoffice_writer(cls, **kwargs):
+        """
+        Opens libreoffice_suite_skills writer application.
+        """
+        cls._open_libreoffice_app('writer')
 
-if __name__ == '__main__':
-    main()
-
+    @classmethod
+    def _open_libreoffice_app(cls, app):
+        app_arg = '-' + app
+        subprocess.Popen(['libreoffice', app_arg], stdout=subprocess.PIPE, shell=False)
+        cls.console('I opened a new' + app + ' document..')

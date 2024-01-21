@@ -20,28 +20,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from server import settings
-from server.utils.startup import internet_connectivity_check
-from server.core.processor import Processor
-from server.core.console import ConsoleManager
+import sys
+import time
+from datetime import datetime
+
+from server.skills.skill import AssistantSkill
 
 
-def main():
-    """
-    Do initial checks, clear the console and print the assistant logo.
-    """
+class ActivationSkills(AssistantSkill):
 
-    console_manager = ConsoleManager()
-    console_manager.console_output(info_log='Wait a second for startup checks..')
-    internet_connectivity_check()
-    console_manager.console_output(info_log='Application started')
-    console_manager.console_output(info_log="I'm ready! Say something :-)")
-    processor = Processor(console_manager=console_manager, settings_=settings)
+    @classmethod
+    def disable_assistant(cls, **kwargs):
+        """
+        - Clear console
+        - Shutdown the assistant service
+        """
 
-    while True:
-        processor.run()
+        cls.response('Bye')
+        time.sleep(1)
+        cls.console(info_log='Application terminated gracefully.')
+        sys.exit()
 
+    @classmethod
+    def assistant_greeting(cls, **kwargs):
+        """
+        Assistant greeting based on day hour.
+        """
+        now = datetime.now()
+        day_time = int(now.strftime('%H'))
 
-if __name__ == '__main__':
-    main()
-
+        if day_time < 12:
+            cls.response('Good morning sir')
+        elif 12 <= day_time < 18:
+            cls.response('Good afternoon sir')
+        else:
+            cls.response('Good evening sir')
