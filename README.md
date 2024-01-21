@@ -130,3 +130,5 @@ The user input analyzed in this space and by using a similarity metric (e.g cosi
 
 ## CI/CD Flow
 ![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/TravisFlow.png)
+
+[![Run on Repl.it](https://replit.com/badge/github/ggeop/Python-ai-assistant.git)](https://replit.com/new/github/ggeop/Python-ai-assistant.git)
