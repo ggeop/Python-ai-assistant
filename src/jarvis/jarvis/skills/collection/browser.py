@@ -27,8 +27,10 @@ import re
 import urllib.request
 import subprocess
 import webbrowser
+import json
 
 from bs4 import BeautifulSoup as bs
+from glom import glom, Coalesce
 
 from jarvis.skills.skill import AssistantSkill
 
@@ -68,17 +70,28 @@ class BrowserSkills(AssistantSkill):
         tags = cls.extract_tags(voice_transcript, skill['tags'])
         for tag in tags:
             reg_ex = re.search(tag + ' (.*)', voice_transcript)
-
             try:
-                if reg_ex:
-                    search_text = reg_ex.group(1)
-                    base = "https://www.youtube.com/results?search_query={0}&orderby=viewCount"
-                    r = requests.get(base.format(search_text.replace(' ', '+')))
-                    page = r.text
-                    soup = bs(page, 'html.parser')
-                    vids = soup.findAll('a', attrs={'class': 'yt-uix-tile-link'})
-                    video = 'https://www.youtube.com' + vids[0]['href'] + "&autoplay=1"
-                    cls.console(info_log="Play Youtube video: {0}".format(video))
+                search_text = reg_ex.group(1)
+                base = "https://www.youtube.com/results?search_query={0}&orderby=viewCount"
+                r = requests.get(base.format(search_text.replace(' ', '+')))
+                page = r.text
+                reg_ex = re.search("var ytInitialData = (.*);<\/script>", page)
+                yt_initial_data = json.loads(reg_ex.group(1))
+                yt_spec = ('contents.twoColumnSearchResultsRenderer.primaryContents.sectionListRenderer.contents', [
+                    Coalesce(('itemSectionRenderer.contents', [{
+                        'url': Coalesce('radioRenderer.navigationEndpoint.commandMetadata.webCommandMetadata.url',
+                                        'videoRenderer.navigationEndpoint.commandMetadata.webCommandMetadata.url', default=None),
+                        'title': Coalesce("radioRenderer.title.simpleText",
+                                          "videoRenderer.title.accessibility.accessibilityData.label", default="Unknown")
+                    }]), default=None),
+                ], lambda x: [elem for elem in x[0] if elem['url'] != None])
+                # glom with yt_specs returns a nested result-list, lamnda-func filters the list
+                yt_results = glom(yt_initial_data, yt_spec)
+                if not yt_results:
+                    cls.response(f"I could not find a video searching for {search_text}")
+                else:
+                    video = f"https://youtube.com{yt_results[0]['url']}"
+                    cls.console(info_log=f"Now playing: {yt_results[0]['title']}")
                     subprocess.Popen(["python", "-m", "webbrowser", "-t", video], stdout=subprocess.PIPE, shell=False)
             except Exception as e:
                 cls.console(error_log="Error with the execution of skill with message {0}".format(e))
@@ -175,4 +188,3 @@ class BrowserSkills(AssistantSkill):
         except Exception as e:
             cls.console(error_log="Error with the execution of skill with message {0}".format(e))
             cls.response("Sorry I faced an issue with google search")
-

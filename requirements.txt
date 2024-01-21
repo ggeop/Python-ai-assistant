@@ -49,3 +49,4 @@ wikipedia==1.4.0
 wolframalpha==3.0.1
 word2number==1.1
 xmltodict==0.12.0
+glom==20.11.0
