@@ -80,7 +80,7 @@ bash setup.sh
 
 *   Put the Keys in settings
 
-**NOTE:** *For better exprerience, before you start the application you can put the free KEYs in the settings.py*
+**NOTE:** *For better experience, before you start the application you can put the free KEYs in the settings.py*
 
 ```bash
 nano Jarvis/src/jarvis/jarvis/setting.py
@@ -96,7 +96,7 @@ bash run_jarvis.sh
 
 ### How to add a new Skill to assistant
 You can easily add a new skill in two steps.
-*   Create a new configurationin SKILLS in **skills/registry.py**
+*   Create a new configuration SKILLS in **skills/registry.py**
 ```python
 { 
   'enable': True,
@@ -107,7 +107,7 @@ You can easily add a new skill in two steps.
 ```
 *   Create a new skill module in **skills/collection**
 
-### Desicion Model
+### Decision Model
 ![alt text](https://github.com/ggeop/Jarvis/blob/master/imgs/desicion_model.png)
 
 ### Extract skill
@@ -130,3 +130,23 @@ The user input analyzed in this space and by using a similarity metric (e.g cosi
 
 ## CI/CD Flow
 ![alt text](https://github.com/ggeop/Python-ai-assistant/blob/master/imgs/TravisFlow.png)
+
+## 🔗 Related Projects
+
+If you enjoy this virtual assistant, you might also be interested in my other AI-powered project: [DataDialogue](https://github.com/ggeop/DataDialogueLLM)
+
+Transform the way you interact with databases through natural conversations! DataDialogue enables anyone to:
+
+- 💬 **Query databases using natural language**
+- 📊 **Get instant data visualizations**
+- 🔍 **Explore data without SQL knowledge**
+- 🤝 **Bridge the gap between data and business users**
+
+<div align="center">
+<div style="position: relative; display: inline-block; width: fit-content;">
+  <a href="https://www.youtube.com/watch?v=breOr5o7r3Y" style="text-decoration: none;">
+    <img src="https://github.com/ggeop/DataDialogueLLM/blob/main/media/imgs/data_dialogue_agent_responses.png" alt="DataDialogue Demo" width="600" style="display: block; border-radius: 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);"/>
+  </a>
+</div>
+</div>
+
