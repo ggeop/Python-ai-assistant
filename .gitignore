@@ -4,3 +4,7 @@ __pycache__
 
 # Exclude pycharm metadata
  .idea/
+
+model/
+jarvis_virtualenv/
+*.log

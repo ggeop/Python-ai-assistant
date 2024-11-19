@@ -25,34 +25,13 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from jarvis import settings
-from jarvis.skills.registry import CONTROL_SKILLS, BASIC_SKILLS, ENABLED_BASIC_SKILLS
-from jarvis.enumerations import MongoCollections
+from jarvis.skills.registry import BASIC_SKILLS
 from jarvis.skills.analyzer import SkillAnalyzer
-from jarvis.utils.mongoDB import db
 
 
 class TestSkillMatching(unittest.TestCase):
 
     def setUp(self):
-
-        all_skills = {
-            MongoCollections.CONTROL_SKILLS.value: CONTROL_SKILLS,
-            MongoCollections.ENABLED_BASIC_SKILLS.value: ENABLED_BASIC_SKILLS,
-        }
-        for collection, documents in all_skills.items():
-            db.update_collection(collection, documents)
-
-        default_assistant_name = settings.DEFAULT_GENERAL_SETTINGS['assistant_name']
-        default_input_mode = settings.DEFAULT_GENERAL_SETTINGS['input_mode']
-        default_response_in_speech = settings.DEFAULT_GENERAL_SETTINGS['response_in_speech']
-
-        default_settings = {
-            'assistant_name': default_assistant_name,
-            'input_mode': default_input_mode,
-            'response_in_speech': default_response_in_speech,
-        }
-
-        db.update_collection(collection=MongoCollections.GENERAL_SETTINGS.value, documents=[default_settings])
 
         self.skill_analyzer = SkillAnalyzer(
                                             weight_measure=TfidfVectorizer,
