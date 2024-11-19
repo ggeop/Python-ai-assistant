@@ -20,28 +20,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from server import settings
-from server.utils.startup import internet_connectivity_check
-from server.core.processor import Processor
-from server.core.console import ConsoleManager
+import os
+import psutil
+
+from server.skills.skill import AssistantSkill
 
 
-def main():
-    """
-    Do initial checks, clear the console and print the assistant logo.
-    """
+class SystemHealthSkills(AssistantSkill):
 
-    console_manager = ConsoleManager()
-    console_manager.console_output(info_log='Wait a second for startup checks..')
-    internet_connectivity_check()
-    console_manager.console_output(info_log='Application started')
-    console_manager.console_output(info_log="I'm ready! Say something :-)")
-    processor = Processor(console_manager=console_manager, settings_=settings)
+    @classmethod
+    def tell_memory_consumption(cls,**kwargs):
+        """
+        Responds the memory consumption of the assistant process.
+        """
+        memory = cls._get_memory_consumption()
+        cls.response("I use {0:.2f} GB..".format(memory))
 
-    while True:
-        processor.run()
-
-
-if __name__ == '__main__':
-    main()
-
+    @classmethod
+    def _get_memory_consumption(cls):
+        pid = os.getpid()
+        py = psutil.Process(pid)
+        memory_use = py.memory_info()[0] / 2. ** 30  # memory use in GB...I think
+        return memory_use

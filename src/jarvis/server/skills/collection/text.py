@@ -20,28 +20,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from server import settings
-from server.utils.startup import internet_connectivity_check
-from server.core.processor import Processor
-from server.core.console import ConsoleManager
+import re
+import time
+
+from server.skills.skill import AssistantSkill
 
 
-def main():
-    """
-    Do initial checks, clear the console and print the assistant logo.
-    """
-
-    console_manager = ConsoleManager()
-    console_manager.console_output(info_log='Wait a second for startup checks..')
-    internet_connectivity_check()
-    console_manager.console_output(info_log='Application started')
-    console_manager.console_output(info_log="I'm ready! Say something :-)")
-    processor = Processor(console_manager=console_manager, settings_=settings)
-
-    while True:
-        processor.run()
-
-
-if __name__ == '__main__':
-    main()
-
+class WordSkills(AssistantSkill):
+    
+    @classmethod
+    def spell_a_word(cls, voice_transcript, skill, **kwargs):
+        """
+        Spell a words letter by letter.
+        :param voice_transcript: string (e.g 'spell word animal')
+        :param skill: dict (e.g
+        """
+        tags = cls.extract_tags(voice_transcript, skill['tags'])
+        for tag in tags:
+            reg_ex = re.search(tag + ' ([a-zA-Z]+)', voice_transcript)
+            try:
+                if reg_ex:
+                    search_text = reg_ex.group(1)
+                    for letter in search_text:
+                        cls.response(letter)
+                        time.sleep(2)
+            except Exception as e:
+                cls.console(error_log=e)
+                cls.response("I can't spell the word")
